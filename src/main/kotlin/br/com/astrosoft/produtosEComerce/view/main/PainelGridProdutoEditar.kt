@@ -7,6 +7,7 @@ import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
+import com.github.mvysny.karibudsl.v10.refresh
 import com.vaadin.flow.component.HasSize
 import com.vaadin.flow.component.HasValue
 import com.vaadin.flow.component.combobox.ComboBox
@@ -64,12 +65,10 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
       editor.editItem(event.item)
       marcaField.focus()
     }
-    editor.binder.addValueChangeListener {_ ->
-      editor.refresh()
-    }
     editor.addCloseListener {
-      it.item?.setProduto(editor.binder.bean)
+      //it.item?.setProduto(editor.binder.bean)
       view.salvaProduto(editor.binder.bean)
+      refresh()
     }
   }
   
