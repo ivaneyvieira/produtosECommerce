@@ -41,6 +41,11 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
                                  editado = EEditor.EDITADO,
                                  categoria = filtro.categoria)
   }
+  
+  fun salvaProduto(bean: Produto?) = exec{
+    bean ?: return@exec
+    Produto.save(bean)
+  }
 }
 
 interface IFiltroEditar {
@@ -65,6 +70,7 @@ interface IFiltroEditado {
 interface IProdutosEComerceView: IView {
   fun updateGridEditar(itens: List<Produto>)
   fun updateGridEditado(itens: List<Produto>)
+  fun salvaProduto(bean: Produto?)
   
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado

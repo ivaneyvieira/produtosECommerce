@@ -7,10 +7,16 @@ import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
+import com.vaadin.flow.component.HasSize
+import com.vaadin.flow.component.HasValue
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
+import com.vaadin.flow.data.binder.Binder
+import com.vaadin.flow.dom.DomEvent
 
 class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGrid<Produto>(view, blockUpdate) {
@@ -19,15 +25,66 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
     colBarcode()
     colDescricao()
     colGrade()
-    colMarca()
-    colCategoria()
-    colDescricaoCompleta()
-    colBitola()
-    colImagem()
+    val colMarca = colMarca()
+    val colCategoria = colCategoria()
+    val colDescricaoCompleta = colDescricaoCompleta()
+    val colBitola = colBitola()
+    val colImagem = colImagem()
     colPeso()
     colAltura()
     colComprimento()
     colLargura()
+    val binder = Binder(Produto::class.java)
+    editor.binder = binder
+    editor.isBuffered = false
+    val marcaField = TextField().setKeys(this) as TextField
+    val categoriaField = IntegerField().setKeys(this) as IntegerField
+    val descricaoCompletaField = TextField().setKeys(this) as TextField
+    val bitolaField = TextField().setKeys(this) as TextField
+    val imagemField = TextField().setKeys(this) as TextField
+    
+    editor.binder.forField(marcaField)
+      .bind(Produto::marca.name)
+    editor.binder.forField(categoriaField)
+      .bind(Produto::categoria.name)
+    editor.binder.forField(descricaoCompletaField)
+      .bind(Produto::descricaoCompleta.name)
+    editor.binder.forField(bitolaField)
+      .bind(Produto::bitola.name)
+    editor.binder.forField(imagemField)
+      .bind(Produto::imagem.name)
+    
+    colMarca.editorComponent = marcaField
+    colCategoria.editorComponent = categoriaField
+    colDescricaoCompleta.editorComponent = descricaoCompletaField
+    colBitola.editorComponent = bitolaField
+    colImagem.editorComponent = imagemField
+    
+    addItemDoubleClickListener {event ->
+      editor.editItem(event.item)
+      marcaField.focus()
+    }
+    editor.binder.addValueChangeListener {_ ->
+      editor.refresh()
+    }
+    editor.addCloseListener {
+      it.item?.setProduto(editor.binder.bean)
+      view.salvaProduto(editor.binder.bean)
+    }
+  }
+  
+  private fun HasValue<*, *>.setKeys(grid: Grid<Produto>): HasValue<*, *> {
+    element.addEventListener("keydown") {event: DomEvent? ->
+      grid.editor.cancel()
+    }.filter = "event.key === 'Tab' && event.shiftKey"
+    when(this) {
+      is TextField    -> this.addThemeVariants(LUMO_SMALL)
+      is IntegerField -> {
+        this.addThemeVariants(LUMO_SMALL, LUMO_ALIGN_RIGHT)
+      }
+    }
+    (this as? HasSize)?.setSizeFull()
+    return this
   }
   
   override fun filterBar() = FilterBarEditar()
@@ -60,7 +117,7 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
         addValueChangeListener {blockUpdate()}
       }
     }
-  
+    
     override val codigo: Int
       get() = edtCodigo.value ?: 0
     override val descricaoI: String
@@ -75,4 +132,6 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
       get() = edtCl.value
   }
 }
+
+
 

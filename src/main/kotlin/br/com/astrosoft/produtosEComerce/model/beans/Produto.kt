@@ -14,17 +14,26 @@ data class Produto(
   val typeName: String,
   val clno: Int,
   val clname: String,
-  val marca: String,
-  val categoria: Int,
-  val descricaoCompleta: String,
-  val bitola: String,
-  val imagem: String,
+  var marca: String,
+  var categoria: Int,
+  var descricaoCompleta: String,
+  var bitola: String,
+  var imagem: String,
   val peso: Double,
   val altura: Double,
   val comprimento: Double,
   val largura: Double,
   val editado: Int
                   ) {
+  fun setProduto(bean: Produto?) {
+    bean ?: return
+    marca = bean.marca
+    categoria = bean.categoria
+    descricaoCompleta = bean.descricaoCompleta
+    bitola = bean.bitola
+    imagem = bean.imagem
+  }
+  
   companion object {
     private val userSaci: UserSaci by lazy {
       AppConfig.userSaci as UserSaci
@@ -40,6 +49,10 @@ data class Produto(
                                 clno = cl?.clno ?: 0,
                                 editado = editado?.value ?: 0,
                                 categoria = categoria?.categoriaNo ?: 0)
+    }
+  
+    fun save(bean: Produto) {
+      saci.salvaProduto(bean)
     }
   }
 }

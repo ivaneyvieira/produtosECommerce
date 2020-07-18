@@ -52,7 +52,7 @@ class QuerySaci: QueryDB(driver, url, username, password) {
   
   fun listaCategoria(): List<Categoria> {
     return query("""select categoriaNo, grupo, departamento, secao
-      |             from produtoEcomerce.produto group by clno""".trimMargin(),
+      |             from produtoEcomerce.categoria""".trimMargin(),
                  Categoria::class)
   }
   
@@ -72,6 +72,10 @@ class QuerySaci: QueryDB(driver, url, username, password) {
       addOptionalParameter("editado", editado)
       addOptionalParameter("categoria", categoria)
     }
+  }
+  
+  fun salvaProduto(bean: Produto) {
+    val sql = "/sqlSaci/salvaProduto.sql"
   }
   
   companion object {

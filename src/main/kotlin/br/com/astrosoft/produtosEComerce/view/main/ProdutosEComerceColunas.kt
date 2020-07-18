@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosEComerce.view.main
 
 import br.com.astrosoft.framework.view.addColumnDouble
+import br.com.astrosoft.framework.view.addColumnInt
 import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
@@ -17,6 +18,8 @@ import com.vaadin.flow.component.combobox.ComboBox.ItemFilter
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.component.textfield.TextFieldVariant
+import com.vaadin.flow.data.renderer.TemplateRenderer
 
 fun Grid<Produto>.colCodigo() = addColumnString(Produto::codigo) {
   setHeader("Código")
@@ -50,7 +53,7 @@ fun Grid<Produto>.colCl() = addColumnString(Produto::clname) {
   setHeader("Cl")
 }
 
-fun Grid<Produto>.colCategoria() = addColumnString(Produto::descricao) {
+fun Grid<Produto>.colCategoria() = addColumnInt(Produto::categoria) {
   setHeader("Categoria")
 }
 
@@ -84,14 +87,17 @@ fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
 
 //
 fun HasComponents.codigoField(block: IntegerField.() -> Unit = {}) = integerField("Código") {
+  addThemeVariants(TextFieldVariant.LUMO_SMALL)
   block()
 }
 
 fun HasComponents.descricaoIField(block: TextField.() -> Unit = {}) = textField("Descrição Inicial") {
+  addThemeVariants(TextFieldVariant.LUMO_SMALL)
   block()
 }
 
 fun HasComponents.descricaoFField(block: TextField.() -> Unit = {}) = textField("Descrição Final") {
+  addThemeVariants(TextFieldVariant.LUMO_SMALL)
   block()
 }
 
@@ -104,9 +110,14 @@ fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
   isClearButtonVisible = true
   this.setItems(filter, saci.listaFornecedores())
   setItemLabelGenerator {
-    it.fornecedor
+    "${it.vendno} ${it.fornecedor}"
   }
+  setRenderer(TemplateRenderer.of<Fornecedor>(
+    "<div>[[item.vendno]]<br><small>[[item.fornecedor]]</small></div>")
+                .withProperty("vendno", Fornecedor::vendno)
+                .withProperty("fornecedor", Fornecedor::fornecedor))
   block()
+  element.setAttribute("theme", "small")
 }
 
 fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox<TypePrd>("Tipo") {
@@ -118,8 +129,14 @@ fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox
   isClearButtonVisible = true
   this.setItems(filter, saci.listaType())
   setItemLabelGenerator {
-    it.typeName
+    "${it.typeno} ${it.typeName}"
   }
+  setRenderer(TemplateRenderer.of<TypePrd>(
+    "<div>[[item.typeno]]<br><small>[[item.typeName]]</small></div>")
+                .withProperty("typeno", TypePrd::typeno)
+                .withProperty("typeName", TypePrd::typeName))
+  width = "10em"
+  element.setAttribute("theme", "small")
   block()
 }
 
@@ -132,8 +149,14 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
   isClearButtonVisible = true
   this.setItems(filter, saci.listaCl())
   setItemLabelGenerator {
-    it.clname
+    "${it.clno} ${it.clname}"
   }
+  setRenderer(TemplateRenderer.of<Cl>(
+    "<div>[[item.clno]]<br><small>[[item.clname]]</small></div>")
+                .withProperty("clno", Cl::clno)
+                .withProperty("clname", Cl::clname))
+  width="18em"
+  element.setAttribute("theme", "small")
   block()
 }
 
@@ -146,8 +169,13 @@ fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = c
   isClearButtonVisible = true
   this.setItems(filter, saci.listaCategoria())
   setItemLabelGenerator {
-    it.descricao
+    "${it.categoriaNo} ${it.descricao}"
   }
+  setRenderer(TemplateRenderer.of<Categoria>(
+    "<div>[[item.categoriaNo]]<br><small>[[item.clname]]</small></div>")
+                .withProperty("categoriaNo", Categoria::categoriaNo)
+                .withProperty("descricao", Categoria::descricao))
+  element.setAttribute("theme", "small")
   block()
 }
 

@@ -43,6 +43,10 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     gridEditado.updateGrid(itens)
   }
   
+  override fun salvaProduto(bean: Produto?) {
+    viewModel.salvaProduto(bean)
+  }
+  
   override val filtroEditar: IFiltroEditar
     get() = gridEditar.filterBar as IFiltroEditar
   override val filtroEditado: IFiltroEditado
@@ -53,5 +57,3 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     const val TAB_EDITADO: String = "Editado"
   }
 }
-
-
