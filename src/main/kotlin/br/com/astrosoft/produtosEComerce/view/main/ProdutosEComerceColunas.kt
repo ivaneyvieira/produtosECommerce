@@ -39,6 +39,8 @@ fun Grid<Produto>.colDescricao() = addColumnString(Produto::descricao) {
 
 fun Grid<Produto>.colMarca() = addColumnString(Produto::marca) {
   setHeader("Marca")
+  isAutoWidth = false
+  width = "10em"
 }
 
 fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
@@ -59,14 +61,20 @@ fun Grid<Produto>.colCategoria() = addColumnInt(Produto::categoria) {
 
 fun Grid<Produto>.colDescricaoCompleta() = addColumnString(Produto::descricaoCompleta) {
   setHeader("Descrição Completa")
+  isAutoWidth = false
+  width = "20em"
 }
 
 fun Grid<Produto>.colBitola() = addColumnString(Produto::bitola) {
   setHeader("Bitola")
+  isAutoWidth = false
+  width = "10em"
 }
 
 fun Grid<Produto>.colImagem() = addColumnString(Produto::imagem) {
   setHeader("Imagem")
+  isAutoWidth = false
+  width = "20em"
 }
 
 fun Grid<Produto>.colPeso() = addColumnDouble(Produto::peso) {
@@ -116,8 +124,9 @@ fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
     "<div>[[item.vendno]]<br><small>[[item.fornecedor]]</small></div>")
                 .withProperty("vendno", Fornecedor::vendno)
                 .withProperty("fornecedor", Fornecedor::fornecedor))
-  block()
+  width = "15em"
   element.setAttribute("theme", "small")
+  block()
 }
 
 fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox<TypePrd>("Tipo") {
@@ -135,7 +144,7 @@ fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox
     "<div>[[item.typeno]]<br><small>[[item.typeName]]</small></div>")
                 .withProperty("typeno", TypePrd::typeno)
                 .withProperty("typeName", TypePrd::typeName))
-  width = "10em"
+  width = "15em"
   element.setAttribute("theme", "small")
   block()
 }
@@ -155,7 +164,7 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
     "<div>[[item.clno]]<br><small>[[item.clname]]</small></div>")
                 .withProperty("clno", Cl::clno)
                 .withProperty("clname", Cl::clname))
-  width="18em"
+  width = "18em"
   element.setAttribute("theme", "small")
   block()
 }
@@ -176,6 +185,7 @@ fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = c
                 .withProperty("categoriaNo", Categoria::categoriaNo)
                 .withProperty("descricao", Categoria::descricao))
   element.setAttribute("theme", "small")
+  width = "20em"
   block()
 }
 

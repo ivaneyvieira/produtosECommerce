@@ -90,7 +90,7 @@ abstract class ViewLayout<VM: ViewModel<*>>: VerticalLayout(), IView, BeforeLeav
       .open()
   }
   
-  fun showForm(caption: String, form: FormLayout, runConfirm: (() -> Unit)) {
+  fun showForm(caption: String, form: Component, runConfirm: (() -> Unit)) {
     ConfirmDialog.create()
       .withCaption(caption)
       .withMessage(form)

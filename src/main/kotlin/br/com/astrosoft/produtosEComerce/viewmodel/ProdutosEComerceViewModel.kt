@@ -41,11 +41,6 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
                                  editado = EEditor.EDITADO,
                                  categoria = filtro.categoria)
   }
-  
-  fun salvaProduto(bean: Produto?) = exec{
-    bean ?: return@exec
-    Produto.save(bean)
-  }
 }
 
 interface IFiltroEditar {
@@ -70,8 +65,27 @@ interface IFiltroEditado {
 interface IProdutosEComerceView: IView {
   fun updateGridEditar(itens: List<Produto>)
   fun updateGridEditado(itens: List<Produto>)
-  fun salvaProduto(bean: Produto?)
+  fun processaProdutos(produto: Produto?)
   
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado
+}
+
+data class ProcessaBean(var marca: String? = "",
+                        var categoria: Categoria? = null,
+                        var descricaoCompleta: String? = "",
+                        var bitola: String? = "",
+                        var imagem: String? = "") {
+  companion object {
+    fun fromProduto(produto: Produto): ProcessaBean {
+      return ProcessaBean(
+        marca = produto.marca,
+        categoria = Categoria.findAll()
+          .firstOrNull {it.categoriaNo == produto.categoria},
+        descricaoCompleta = produto.descricaoCompleta,
+        bitola = produto.bitola,
+        imagem = produto.imagem
+                         )
+    }
+  }
 }

@@ -8,10 +8,19 @@ import br.com.astrosoft.produtosEComerce.view.layout.ProdutoEComerceLayout
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
+import br.com.astrosoft.produtosEComerce.viewmodel.ProcessaBean
 import br.com.astrosoft.produtosEComerce.viewmodel.ProdutosEComerceViewModel
 import com.github.mvysny.karibudsl.v10.TabSheet
+import com.github.mvysny.karibudsl.v10.bind
+import com.github.mvysny.karibudsl.v10.h3
+import com.github.mvysny.karibudsl.v10.horizontalLayout
+import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.tabSheet
+import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.dependency.HtmlImport
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
+import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 
@@ -43,8 +52,16 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     gridEditado.updateGrid(itens)
   }
   
-  override fun salvaProduto(bean: Produto?) {
-    viewModel.salvaProduto(bean)
+  override fun processaProdutos(produto: Produto?) {
+    if(produto == null)
+      showError("Não há produto selecionado")
+    else {
+      val form = FormProcessamento()
+      form.bean = ProcessaBean.fromProduto(produto)
+      
+      showForm("Processamento de Produto", form) {
+      }
+    }
   }
   
   override val filtroEditar: IFiltroEditar
@@ -56,4 +73,53 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     const val TAB_EDITAR: String = "Editar"
     const val TAB_EDITADO: String = "Editado"
   }
+}
+
+class FormProcessamento: VerticalLayout() {
+  private val binder = Binder<ProcessaBean>(ProcessaBean::class.java)
+  
+  init {
+    h3("Processa produtos")
+    width = "100%"
+    horizontalLayout {
+      width = "100%"
+      textField("Marca") {
+        this.bind(binder)
+          .bind(ProcessaBean::marca)
+        addThemeVariants(LUMO_SMALL)
+      }
+      categoriaField {
+        this.bind(binder)
+          .bind(ProcessaBean::categoria)
+        isExpand = true
+      }
+    }
+    textField("Descricação Completa") {
+      width = "100%"
+      this.bind(binder)
+        .bind(ProcessaBean::descricaoCompleta)
+      addThemeVariants(LUMO_SMALL)
+      isExpand = true
+    }
+    horizontalLayout {
+      width = "100%"
+      textField("Bitola") {
+        this.bind(binder)
+          .bind(ProcessaBean::bitola)
+        addThemeVariants(LUMO_SMALL)
+      }
+      textField("Imagem") {
+        this.bind(binder)
+          .bind(ProcessaBean::imagem)
+        addThemeVariants(LUMO_SMALL)
+        isExpand = true
+      }
+    }
+  }
+  
+  var bean
+    get() = binder.bean
+    set(value) {
+      binder.bean = value
+    }
 }

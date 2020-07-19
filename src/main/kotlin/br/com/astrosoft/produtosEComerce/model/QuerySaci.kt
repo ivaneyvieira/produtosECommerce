@@ -76,6 +76,52 @@ class QuerySaci: QueryDB(driver, url, username, password) {
   
   fun salvaProduto(bean: Produto) {
     val sql = "/sqlSaci/salvaProduto.sql"
+    script(sql) {
+      addOptionalParameter("marca", bean.marca)
+      addOptionalParameter("categoria", bean.categoria)
+      addOptionalParameter("descricaoCompleta", bean.descricaoCompleta)
+      addOptionalParameter("bitola", bean.bitola)
+      addOptionalParameter("imagem", bean.imagem)
+      addOptionalParameter("codigo", bean.codigo)
+      addOptionalParameter("grade", bean.grade)
+    }
+  }
+  
+  fun findAllCategoria(): List<Categoria> {
+    return listaCategoria()
+  }
+  
+  fun addCategoria(categoria: Categoria) {
+    val sql = """INSERT INTO produtoEcomerce.categoria(categoriaNo, grupo, departamento, secao)
+           |  VALUES(:categoriaNo, :grupo, :departamento, :secao)""".trimMargin()
+    script(sql) {
+      addOptionalParameter("categoriaNo", categoria.categoriaNo)
+      addOptionalParameter("grupo", categoria.grupo)
+      addOptionalParameter("secao", categoria.secao)
+      addOptionalParameter("departamento", categoria.departamento)
+    }
+  }
+  
+  fun updateCategoria(categoria: Categoria) {
+    val sql = """UPDATE produtoEcomerce.categoria
+                        |  SET grupo       = :grupo,
+                        |  departamento    = :departamento,
+                        |  secao           = :secao,
+                        |  categoriaNo     = :categoriaNo
+                        |WHERE categoriaNo = :categoriaNo""".trimMargin()
+    script(sql) {
+      addOptionalParameter("categoriaNo", categoria.categoriaNo)
+      addOptionalParameter("grupo", categoria.grupo)
+      addOptionalParameter("secao", categoria.secao)
+      addOptionalParameter("departamento", categoria.departamento)
+    }
+  }
+  
+  fun deleteCategoria(categoria: Categoria) {
+    val sql = "DELETE FROM categoria WHERE produtoEcomerce.categoriaNo = :categoriaNo"
+    script(sql) {
+      addOptionalParameter("categoriaNo", categoria.categoriaNo)
+    }
   }
   
   companion object {

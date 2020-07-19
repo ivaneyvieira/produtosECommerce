@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosEComerce.view.layout
 
 import br.com.astrosoft.AppConfig
+import br.com.astrosoft.produtosEComerce.view.categoria.CategoriaView
 import br.com.astrosoft.produtosEComerce.view.main.ProdutosEComerceView
 import br.com.astrosoft.produtosEComerce.view.user.UsuarioView
 import com.github.mvysny.karibudsl.v10.anchor
@@ -52,7 +53,12 @@ class ProdutoEComerceLayout: AppLayout() {
         orientation = Tabs.Orientation.VERTICAL
         tab {
           this.icon(VaadinIcon.FORM)
-          routerLink(text = "Pedidos", viewType = ProdutosEComerceView::class)
+          routerLink(text = "Produtos", viewType = ProdutosEComerceView::class)
+        }
+        tab {
+          this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
+          this.icon(VaadinIcon.CUBES)
+          routerLink(text = "Categoria", viewType = CategoriaView::class)
         }
         tab {
           this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false

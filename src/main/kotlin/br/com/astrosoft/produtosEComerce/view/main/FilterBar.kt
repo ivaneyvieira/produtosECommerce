@@ -8,7 +8,7 @@ abstract class FilterBar: HorizontalLayout() {
     isMargin = false
     isPadding = false
     isSpacing = true
-    content { align(left, baseline) }
+    content {align(left, baseline)}
     width = "100%"
     addComponents()
   }

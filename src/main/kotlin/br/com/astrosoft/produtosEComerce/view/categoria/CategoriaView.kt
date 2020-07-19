@@ -1,15 +1,15 @@
-package br.com.astrosoft.produtosEComerce.view.user
+package br.com.astrosoft.produtosEComerce.view.categoria
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.produtosEComerce.model.beans.UserSaci
+import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.view.layout.ProdutoEComerceLayout
 import br.com.astrosoft.produtosEComerce.view.user.UserCrudFormFactory.Companion.TITLE
-import br.com.astrosoft.produtosEComerce.viewmodel.IUserView
-import br.com.astrosoft.produtosEComerce.viewmodel.UsuarioViewModel
+import br.com.astrosoft.produtosEComerce.viewmodel.CategoriaViewModel
+import br.com.astrosoft.produtosEComerce.viewmodel.ICategoriaView
 import com.github.mvysny.karibudsl.v10.alignSelf
+import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.karibudsl.v10.button
-import com.github.mvysny.karibudsl.v10.comboBox
 import com.github.mvysny.karibudsl.v10.formLayout
 import com.github.mvysny.karibudsl.v10.getColumnBy
 import com.github.mvysny.karibudsl.v10.horizontalLayout
@@ -22,19 +22,14 @@ import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY
-import com.vaadin.flow.component.combobox.ComboBox.ItemFilter
-import com.vaadin.flow.component.grid.ColumnTextAlign
-import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
 import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
-import com.vaadin.flow.component.icon.VaadinIcon.CHECK_CIRCLE_O
-import com.vaadin.flow.component.icon.VaadinIcon.CIRCLE_THIN
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
 import com.vaadin.flow.data.binder.Binder
-import com.vaadin.flow.data.renderer.TemplateRenderer
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import org.claspina.confirmdialog.ConfirmDialog
@@ -45,20 +40,21 @@ import org.vaadin.crudui.crud.CrudOperation.READ
 import org.vaadin.crudui.crud.CrudOperation.UPDATE
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
+import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
 import org.vaadin.gatanaso.MultiselectComboBox
 
 @Route(layout = ProdutoEComerceLayout::class)
 @PageTitle(TITLE)
-class UsuarioView: ViewLayout<UsuarioViewModel>(), IUserView {
-  override val viewModel = UsuarioViewModel(this)
+class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
+  override val viewModel = CategoriaViewModel(this)
   
   override fun isAccept() = AppConfig.userSaci?.roles()
     ?.contains("ADMIN") == true
   
   init {
-    form("Editor de usuários")
+    form("Editor de categorias")
     setSizeFull()
-    val crud: GridCrud<UserSaci> = gridCrud()
+    val crud: GridCrud<Categoria> = gridCrud()
     // layout configuration
     setSizeFull()
     this.add(crud)
@@ -66,94 +62,74 @@ class UsuarioView: ViewLayout<UsuarioViewModel>(), IUserView {
     setOperation(crud)
   }
   
-  private fun gridCrud(): GridCrud<UserSaci> {
-    val crud: GridCrud<UserSaci> = GridCrud(UserSaci::class.java)
+  private fun gridCrud(): GridCrud<Categoria> {
+    val crud: GridCrud<Categoria> = GridCrud(Categoria::class.java)
     crud.grid
-      .setColumns(UserSaci::no.name, UserSaci::login.name, UserSaci::storeno.name, UserSaci::name.name)
-    crud.grid.getColumnBy(UserSaci::storeno)
-      .setHeader("Loja")
+      .setColumns(Categoria::categoriaNo.name,
+                  Categoria::grupo.name,
+                  Categoria::departamento.name,
+                  Categoria::secao.name)
+    crud.grid.getColumnBy(Categoria::categoriaNo)
+      .setHeader("Número")
+    crud.grid.getColumnBy(Categoria::grupo)
+      .setHeader("Grupo")
+    crud.grid.getColumnBy(Categoria::departamento)
+      .setHeader("Departamento")
+    crud.grid.getColumnBy(Categoria::secao)
+      .setHeader("Seção")
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
-    crud.crudFormFactory = UserCrudFormFactory(viewModel)
+    crud.crudFormFactory = CategoriaCrudFormFactory()
     crud.setSizeFull()
+    (crud.crudLayout  as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
     return crud
   }
   
-  private fun setOperation(crud: GridCrud<UserSaci>) {
+  private fun setOperation(crud: GridCrud<Categoria>) {
     crud.setOperations(
       {viewModel.findAll()},
-      {user: UserSaci -> viewModel.add(user)},
-      {user: UserSaci? -> viewModel.update(user)},
-      {user: UserSaci? -> viewModel.delete(user)})
-  }
-  
-  private fun Grid<UserSaci>.addColumnBool(caption: String, value: UserSaci.() -> Boolean) {
-    val column = this.addComponentColumn {bean ->
-      if(bean.value()) CHECK_CIRCLE_O.create()
-      else CIRCLE_THIN.create()
-    }
-    column.setHeader(caption)
-    column.textAlign = ColumnTextAlign.CENTER
+      {user: Categoria -> viewModel.add(user)},
+      {user: Categoria? -> viewModel.update(user)},
+      {user: Categoria? -> viewModel.delete(user)})
   }
 }
 
-class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrudFormFactory<UserSaci>() {
-  private lateinit var comboAbreviacao: MultiselectComboBox<String>
+class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
   
   override fun buildNewForm(operation: CrudOperation?,
-                            domainObject: UserSaci?,
+                            domainObject: Categoria?,
                             readOnly: Boolean,
                             cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
                             operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
-    val binder = Binder<UserSaci>(UserSaci::class.java)
+    val binder = Binder<Categoria>(Categoria::class.java)
     return VerticalLayout().apply {
       isSpacing = false
       isMargin = false
       formLayout {
-        if(operation in listOf(READ, DELETE, UPDATE))
-          integerField("Número") {
-            isReadOnly = true
-            binder.bind(this, UserSaci::no.name)
-          }
-        if(operation in listOf(ADD, READ, DELETE, UPDATE))
-          comboBox<UserSaci>("Login") {
-            val allUser = viewModel.findAllUser()
-            val filter: ItemFilter<UserSaci> =
-              ItemFilter {user: UserSaci, filterString: String ->
-                user.login
-                  .contains(filterString, ignoreCase = true)
-                || user.name
-                  .contains(filterString, ignoreCase = true)
-                || user.no == filterString.toIntOrNull() ?: 0
-              }
-            this.setItems(filter, allUser)
-            this.setItemLabelGenerator(UserSaci::login)
-            this.setRenderer(TemplateRenderer.of<UserSaci>("<div>[[item.login]]<br><small>[[item.nome]]</small></div>")
-                               .withProperty("login") {
-                                 it.login
-                               }
-                               .withProperty("nome") {user ->
-                                 "${user.no} - ${user.name}"
-                               })
-            binder.bind(this, {bean ->
-              bean
-            }, {bean, field ->
-                          bean.no = field.no
-                          bean.name = field.name
-                          bean.login = field.login
-                        })
-          }
-        if(operation in listOf(READ, DELETE, UPDATE))
-          textField("Nome") {
-            isReadOnly = true
-            binder.bind(this, UserSaci::name.name)
-          }
-        if(operation in listOf(ADD, READ, DELETE, UPDATE))
-          integerField("Loja") {
-            isReadOnly = false
-            binder.bind(this, UserSaci::storeno.name)
-          }
+        this.responsiveSteps {
+          "0px"(1, top)
+          "10em"(4, aside)
+        }
+        integerField("Número") {
+          binder.bind(this, Categoria::categoriaNo.name)
+          addThemeVariants(LUMO_ALIGN_RIGHT)
+          this.isAutofocus=true
+          this.isAutoselect=true
+          width = "10em"
+        }
+        textField("Grupo") {
+          binder.bind(this, Categoria::grupo.name)
+          colspan = 4
+        }
+        textField("Departamento") {
+          binder.bind(this, Categoria::departamento.name)
+          colspan = 4
+        }
+        textField("Seção") {
+          binder.bind(this, Categoria::secao.name)
+          colspan = 4
+        }
       }
       hr()
       horizontalLayout {
@@ -178,7 +154,7 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrud
     }
   }
   
-  override fun buildCaption(operation: CrudOperation?, domainObject: UserSaci?): String {
+  override fun buildCaption(operation: CrudOperation?, domainObject: Categoria?): String {
     return operation?.let {crudOperation ->
       when(crudOperation) {
         READ   -> "Consulta"
