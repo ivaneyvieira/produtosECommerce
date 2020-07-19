@@ -40,6 +40,7 @@ group = "produtosEComerce"
 dependencies {
   //Spring
   implementation("org.springframework.boot:spring-boot-starter-security")
+  implementation("org.springframework.boot:spring-boot-devtools")
   implementation("org.springframework.session:spring-session-core")
   providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
   // Vaadin-on-Kotlin dependency, includes Vaadin

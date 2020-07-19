@@ -7,17 +7,20 @@ import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
+import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.github.mvysny.karibudsl.v10.refresh
 import com.vaadin.flow.component.HasSize
 import com.vaadin.flow.component.HasValue
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.component.textfield.TextFieldVariant
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
-import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
-import com.vaadin.flow.dom.DomEvent
 
 class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGrid<Produto>(view, blockUpdate) {
@@ -66,20 +69,18 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
       marcaField.focus()
     }
     editor.addCloseListener {
-      //it.item?.setProduto(editor.binder.bean)
-      view.salvaProduto(editor.binder.bean)
       refresh()
     }
   }
   
   private fun HasValue<*, *>.setKeys(grid: Grid<Produto>): HasValue<*, *> {
-    element.addEventListener("keydown") {event: DomEvent? ->
+    element.addEventListener("keydown") {_ ->
       grid.editor.cancel()
     }.filter = "event.key === 'Tab' && event.shiftKey"
     when(this) {
-      is TextField    -> this.addThemeVariants(LUMO_SMALL)
+      is TextField    -> this.addThemeVariants(TextFieldVariant.LUMO_SMALL)
       is IntegerField -> {
-        this.addThemeVariants(LUMO_SMALL, LUMO_ALIGN_RIGHT)
+        this.addThemeVariants(TextFieldVariant.LUMO_SMALL, LUMO_ALIGN_RIGHT)
       }
     }
     (this as? HasSize)?.setSizeFull()
@@ -97,6 +98,14 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
     private lateinit var edtCodigo: IntegerField
     
     override fun FilterBar.contentBlock() {
+      button("Processar") {
+        icon = VaadinIcon.COG.create()
+        addThemeVariants(ButtonVariant.LUMO_SMALL)
+        onLeftClick {
+          val item = selectionItem()
+          view.processaProdutos(item)
+        }
+      }
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
       }

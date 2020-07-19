@@ -5,7 +5,7 @@ import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
 
-class UsuarioViewModel(view: IUsuarioView): ViewModel<IUsuarioView>(view) {
+class UsuarioViewModel(view: IUserView): ViewModel<IUserView>(view) {
   fun findAll(): List<UserSaci>? {
     return UserSaci.findAllAtivos()
   }
@@ -48,4 +48,4 @@ class UsuarioViewModel(view: IUsuarioView): ViewModel<IUsuarioView>(view) {
   }
 }
 
-interface IUsuarioView: IView
+interface IUserView: IView
