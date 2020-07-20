@@ -8,7 +8,7 @@ import br.com.astrosoft.produtosEComerce.model.saci
 object AppConfig {
   val version = ViewUtil.versao
   const val commpany = "Engecopi"
-  const val title = "Produtos E_comerce"
+  const val title = "Produtos E-comerce"
   const val shortName = title
   const val iconPath = "icons/logo.png"
   val test: Boolean?

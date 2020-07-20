@@ -50,6 +50,9 @@ interface IFiltroEditar {
   val fornecedor: Fornecedor?
   val type: TypePrd?
   val cl: Cl?
+  
+  fun empty() = codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null
+                && type == null && cl == null
 }
 
 interface IFiltroEditado {
@@ -60,6 +63,9 @@ interface IFiltroEditado {
   val type: TypePrd?
   val cl: Cl?
   val categoria: Categoria?
+  
+  fun empty() = codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null
+                && type == null && cl == null && categoria == null
 }
 
 interface IProdutosEComerceView: IView {

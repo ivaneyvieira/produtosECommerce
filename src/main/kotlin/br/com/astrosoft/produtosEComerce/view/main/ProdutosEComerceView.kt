@@ -79,7 +79,6 @@ class FormProcessamento: VerticalLayout() {
   private val binder = Binder<ProcessaBean>(ProcessaBean::class.java)
   
   init {
-    h3("Processa produtos")
     width = "100%"
     horizontalLayout {
       width = "100%"
