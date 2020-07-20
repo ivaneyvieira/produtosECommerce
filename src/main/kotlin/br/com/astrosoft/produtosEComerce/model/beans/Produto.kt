@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosEComerce.model.beans
 
 import br.com.astrosoft.AppConfig
+import br.com.astrosoft.produtosEComerce.model.local
 import br.com.astrosoft.produtosEComerce.model.saci
 
 data class Produto(
@@ -41,7 +42,7 @@ data class Produto(
     
     fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, fornecedor: Fornecedor?,
                       type: TypePrd?, cl: Cl?, editado: EEditor?, categoria: Categoria?): List<Produto> {
-      return saci.listaProdutos(codigo = codigo,
+      return local.listaProdutos(codigo = codigo,
                                 descricaoI = descricaoI,
                                 descricaoF = descricaoF,
                                 vendno = fornecedor?.vendno ?: 0,
@@ -52,7 +53,7 @@ data class Produto(
     }
   
     fun save(bean: Produto) {
-      saci.salvaProduto(bean)
+      local.salvaProduto(bean)
     }
   }
 }

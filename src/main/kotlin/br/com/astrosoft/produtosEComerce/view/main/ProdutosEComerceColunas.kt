@@ -8,6 +8,7 @@ import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
+import br.com.astrosoft.produtosEComerce.model.local
 import br.com.astrosoft.produtosEComerce.model.saci
 import com.github.mvysny.karibudsl.v10.comboBox
 import com.github.mvysny.karibudsl.v10.integerField
@@ -116,7 +117,7 @@ fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
     element.vendno.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, saci.listaFornecedores())
+  this.setItems(filter, local.listaFornecedores())
   setItemLabelGenerator {
     "${it.vendno} ${it.fornecedor}"
   }
@@ -136,7 +137,7 @@ fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox
     element.typeno.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, saci.listaType())
+  this.setItems(filter, local.listaType())
   setItemLabelGenerator {
     "${it.typeno} ${it.typeName}"
   }
@@ -156,7 +157,7 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
     element.clno.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, saci.listaCl())
+  this.setItems(filter, local.listaCl())
   setItemLabelGenerator {
     "${it.clno} ${it.clname}"
   }
@@ -176,7 +177,7 @@ fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = c
     element.categoriaNo.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, saci.listaCategoria())
+  this.setItems(filter, local.listaCategoria())
   setItemLabelGenerator {
     "${it.categoriaNo} ${it.descricao}"
   }
