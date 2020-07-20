@@ -21,4 +21,4 @@ FROM sqldados.prd           AS P
 	      ON T.no = P.typeno
   LEFT JOIN sqldados.cl
 	      ON cl.no = P.clno
-GROUP BY codigo, grade
+GROUP BY codigo, grade;
