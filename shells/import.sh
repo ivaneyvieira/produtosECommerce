@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SQL_IMPORT=`cat prd.sql`;
+SQL_IMPORT=`cat prd.sql categoria.sql`;
 MYOPC_SACI="-h${HOST_MYSQL} -p${PASS_MYSQL} -u${USER_MYSQL}"
 MYOPC_LOCAL="--protocol=TCP"
 
