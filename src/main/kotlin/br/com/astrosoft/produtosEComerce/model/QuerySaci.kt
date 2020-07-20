@@ -10,7 +10,7 @@ import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.model.beans.UserSaci
 
-class QuerySaci: QueryDB(driver, url, username, password) {
+class QuerySaci: QueryDB("saci", driver, url, username, password) {
   fun findUser(login: String?): List<UserSaci> {
     login ?: return emptyList()
     val sql = "/sqlSaci/userSenha.sql"

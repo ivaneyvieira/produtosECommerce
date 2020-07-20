@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
 
 typealias QueryHandle = Query.() -> Unit
 
-open class QueryDB(driver: String, url: String, username: String, password: String) {
+open class QueryDB(val name : String, driver: String, url: String, username: String, password: String) {
   protected val sql2o: Sql2o
   
   init {
@@ -31,6 +31,7 @@ open class QueryDB(driver: String, url: String, username: String, password: Stri
     config.addDataSourceProperty("prepStmtCacheSize", "250")
     config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
     config.isAutoCommit = false
+    config.poolName = name
     val ds = HikariDataSource(config)
     ds.maximumPoolSize = 5
     val maps = HashMap<Class<*>, Converter<*>>()
