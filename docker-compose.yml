@@ -1,10 +1,10 @@
 version: "3"
 services:
-  engecopi_retira:
+  engecopi_prdecomerce:
     image: tomcat:8
-    container_name: eng_pedido_retira
+    container_name: eng_pedido_prdecomerce
     ports:
-      - "8016:8080"
+      - "8017:8080"
     environment:
       TZ: "America/Fortaleza"
       EBEAN_PROPS: /etc/ebean.properties
@@ -12,15 +12,15 @@ services:
       LANGUAGE: 'pt_BR:pt'
       LC_ALL: 'pt_BR.UTF-8'
     volumes:
-      - ./build/libs/producao.war:/usr/local/tomcat/webapps/pedidosretira.war
+      - ./build/libs/producao.war:/usr/local/tomcat/webapps/produtosEcomerce.war
       - ./ebean.properties:/etc/ebean.properties
     restart: always
     networks:
-      rede_pedido_retira:
-        ipv4_address: 172.116.1.1
+      rede_pedido_prdecomerce:
+        ipv4_address: 172.117.1.1
 networks:
-  rede_pedido_retira:
+  rede_pedido_prdecomerce:
     ipam:
       driver: default
       config:
-        - subnet: 172.116.0.0/16
+        - subnet: 172.117.0.0/16
