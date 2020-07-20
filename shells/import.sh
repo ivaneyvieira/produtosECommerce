@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SQL_IMPORT=`cat prd.sql categoria.sql`;
+SQL_IMPORT=`cat prd.sql`;
 MYOPC_SACI="-h${HOST_MYSQL} -p${PASS_MYSQL} -u${USER_MYSQL}"
 MYOPC_LOCAL="--protocol=TCP"
 
@@ -57,4 +57,5 @@ mysql_local "ALTER TABLE $TABLE ADD comprimento DECIMAL(15, 4) DEFAULT 0;" ${DAT
 mysql_local "ALTER TABLE $TABLE ADD largura DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD editado INT DEFAULT 0;" ${DATABASE}
 
+mysql_local `cat categoria.sql` ${DATABASE}
 
