@@ -29,62 +29,15 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
     colBarcode()
     colDescricao()
     colGrade()
-    val colMarca = colMarca()
-    val colCategoria = colCategoria()
-    val colDescricaoCompleta = colDescricaoCompleta()
-    val colBitola = colBitola()
-    val colImagem = colImagem()
+    colMarca()
+    colCategoria()
+    colDescricaoCompleta()
+    colBitola()
+    colImagem()
     colPeso()
     colAltura()
     colComprimento()
     colLargura()
-    val binder = Binder(Produto::class.java)
-    editor.binder = binder
-    editor.isBuffered = false
-    val marcaField = TextField().setKeys(this) as TextField
-    val categoriaField = IntegerField().setKeys(this) as IntegerField
-    val descricaoCompletaField = TextField().setKeys(this) as TextField
-    val bitolaField = TextField().setKeys(this) as TextField
-    val imagemField = TextField().setKeys(this) as TextField
-    
-    editor.binder.forField(marcaField)
-      .bind(Produto::marca.name)
-    editor.binder.forField(categoriaField)
-      .bind(Produto::categoria.name)
-    editor.binder.forField(descricaoCompletaField)
-      .bind(Produto::descricaoCompleta.name)
-    editor.binder.forField(bitolaField)
-      .bind(Produto::bitola.name)
-    editor.binder.forField(imagemField)
-      .bind(Produto::imagem.name)
-    
-    colMarca.editorComponent = marcaField
-    colCategoria.editorComponent = categoriaField
-    colDescricaoCompleta.editorComponent = descricaoCompletaField
-    colBitola.editorComponent = bitolaField
-    colImagem.editorComponent = imagemField
-    
-    addItemDoubleClickListener {event ->
-      editor.editItem(event.item)
-      marcaField.focus()
-    }
-    editor.addCloseListener {
-      refresh()
-    }
-  }
-  
-  private fun HasValue<*, *>.setKeys(grid: Grid<Produto>): HasValue<*, *> {
-    element.addEventListener("keydown") {_ ->
-      grid.editor.cancel()
-    }.filter = "event.key === 'Tab' && event.shiftKey"
-    when(this) {
-      is TextField    -> this.addThemeVariants(TextFieldVariant.LUMO_SMALL)
-      is IntegerField -> {
-        this.addThemeVariants(TextFieldVariant.LUMO_SMALL, LUMO_ALIGN_RIGHT)
-      }
-    }
-    (this as? HasSize)?.setSizeFull()
-    return this
   }
   
   override fun filterBar() = FilterBarEditar()
