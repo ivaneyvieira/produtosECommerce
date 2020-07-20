@@ -1,3 +1,5 @@
+
+
 CREATE TABLE categoria  (
   categoriaNo 	int(11) NOT NULL,
   grupo       	varchar(40) NOT NULL,
@@ -5,3 +7,4 @@ CREATE TABLE categoria  (
   secao       	varchar(40) NOT NULL,
   PRIMARY KEY(categoriaNo) USING BTREE
 );
+
