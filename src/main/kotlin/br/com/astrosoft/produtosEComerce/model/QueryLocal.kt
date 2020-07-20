@@ -8,10 +8,8 @@ import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
-import br.com.astrosoft.produtosEComerce.model.beans.UserSaci
 
-class QueryLocal: QueryDB(driver, url, username, password) {
- 
+class QueryLocal: QueryDB("local", driver, url, username, password) {
   fun listaFornecedores(): List<Fornecedor> {
     return query("select vendno, fornecedor from produtoEcomerce.produto group by vendno",
                  Fornecedor::class)

@@ -19,7 +19,7 @@ class Bootstrap: ServletContextListener {
     Locale.setDefault( Locale ("pt", "BR"))
     log?.info("Starting up")
     val home = System.getenv("HOME")
-    val fileName = System.getenv("EBEAN_PROPS") ?: "$home/ebean.pintos.properties"
+    val fileName = System.getenv("EBEAN_PROPS") ?: "$home/ebean.properties"
     System.setProperty("ebean.props.file", fileName)
     println("##################### $fileName")
   }
