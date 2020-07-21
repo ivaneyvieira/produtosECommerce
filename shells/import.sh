@@ -57,5 +57,5 @@ mysql_local "ALTER TABLE $TABLE ADD comprimento DECIMAL(15, 4) DEFAULT 0;" ${DAT
 mysql_local "ALTER TABLE $TABLE ADD largura DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD editado INT DEFAULT 0;" ${DATABASE}
 
-mysql_local `cat categoria.sql` ${DATABASE}
+mysql_local "$(cat categoria.sql)" ${DATABASE}
 
