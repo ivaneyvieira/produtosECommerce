@@ -22,6 +22,7 @@ import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.textfield.TextFieldVariant
 import com.vaadin.flow.data.renderer.TemplateRenderer
+import com.vaadin.flow.data.value.ValueChangeMode.TIMEOUT
 
 fun Grid<Produto>.colCodigo() = addColumnString(Produto::codigo) {
   setHeader("Código")
@@ -96,16 +97,19 @@ fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
 //
 fun HasComponents.codigoField(block: IntegerField.() -> Unit = {}) = integerField("Código") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
+  this.valueChangeMode = TIMEOUT
   block()
 }
 
 fun HasComponents.descricaoIField(block: TextField.() -> Unit = {}) = textField("Descrição Inicial") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
+  this.valueChangeMode = TIMEOUT
   block()
 }
 
 fun HasComponents.descricaoFField(block: TextField.() -> Unit = {}) = textField("Descrição Final") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
+  this.valueChangeMode = TIMEOUT
   block()
 }
 
