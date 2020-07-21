@@ -116,7 +116,7 @@ fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
     element.vendno.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, local.listaFornecedores())
+  this.setItems(filter, saci.listaFornecedores())
   setItemLabelGenerator {
     "${it.vendno} ${it.fornecedor}"
   }
@@ -136,7 +136,7 @@ fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox
     element.typeno.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, local.listaType())
+  this.setItems(filter, saci.listaType())
   setItemLabelGenerator {
     "${it.typeno} ${it.typeName}"
   }
@@ -153,10 +153,10 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
   val filter = ItemFilter {element: Cl, filterString: String? ->
     filterString ?: return@ItemFilter true
     element.clname.contains(filterString, ignoreCase = true) ||
-    element.clno.toString() == filterString
+    element.clno.startsWith(filterString)
   }
   isClearButtonVisible = true
-  this.setItems(filter, local.listaCl())
+  this.setItems(filter, saci.listaCl())
   setItemLabelGenerator {
     "${it.clno} ${it.clname}"
   }
