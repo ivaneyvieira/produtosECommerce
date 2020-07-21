@@ -12,7 +12,7 @@ import br.com.astrosoft.produtosEComerce.viewmodel.ProcessaBean
 import br.com.astrosoft.produtosEComerce.viewmodel.ProdutosEComerceViewModel
 import com.github.mvysny.karibudsl.v10.TabSheet
 import com.github.mvysny.karibudsl.v10.bind
-import com.github.mvysny.karibudsl.v10.h3
+import com.github.mvysny.karibudsl.v10.checkBox
 import com.github.mvysny.karibudsl.v10.horizontalLayout
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.tabSheet
@@ -52,15 +52,11 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     gridEditado.updateGrid(itens)
   }
   
-  override fun processaProdutos(produto: Produto?) {
-    if(produto == null)
-      showError("Não há produto selecionado")
-    else {
-      val form = FormProcessamento()
-      form.bean = ProcessaBean.fromProduto(produto)
-      
-      showForm("Processamento de Produto", form) {
-      }
+  override fun processaProdutos() {
+    val form = FormProcessamento()
+    form.bean = ProcessaBean()
+    
+    showForm("Processamento de Produto", form) {
     }
   }
   
@@ -82,10 +78,17 @@ class FormProcessamento: VerticalLayout() {
     width = "100%"
     horizontalLayout {
       width = "100%"
-      textField("Marca") {
+      checkBox {
+        this.bind(binder)
+          .bind(ProcessaBean::marcaCheck)
+      }
+      marcaField {
         this.bind(binder)
           .bind(ProcessaBean::marca)
-        addThemeVariants(LUMO_SMALL)
+      }
+      checkBox {
+        this.bind(binder)
+          .bind(ProcessaBean::categoriaCheck)
       }
       categoriaField {
         this.bind(binder)
@@ -93,19 +96,34 @@ class FormProcessamento: VerticalLayout() {
         isExpand = true
       }
     }
-    textField("Descricação Completa") {
+    horizontalLayout {
       width = "100%"
-      this.bind(binder)
-        .bind(ProcessaBean::descricaoCompleta)
-      addThemeVariants(LUMO_SMALL)
-      isExpand = true
+      checkBox {
+        this.bind(binder)
+          .bind(ProcessaBean::descricaoCompletaCheck)
+      }
+      textField("Descricação Completa") {
+        width = "100%"
+        this.bind(binder)
+          .bind(ProcessaBean::descricaoCompleta)
+        addThemeVariants(LUMO_SMALL)
+        isExpand = true
+      }
     }
     horizontalLayout {
       width = "100%"
+      checkBox {
+        this.bind(binder)
+          .bind(ProcessaBean::bitolaCheck)
+      }
       textField("Bitola") {
         this.bind(binder)
           .bind(ProcessaBean::bitola)
         addThemeVariants(LUMO_SMALL)
+      }
+      checkBox {
+        this.bind(binder)
+          .bind(ProcessaBean::imagemCheck)
       }
       textField("Imagem") {
         this.bind(binder)

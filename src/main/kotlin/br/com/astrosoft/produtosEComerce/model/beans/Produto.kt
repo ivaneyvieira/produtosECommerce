@@ -15,7 +15,7 @@ data class Produto(
   val typeName: String,
   val clno: Int,
   val clname: String,
-  var marca: String,
+  var marca: Int,
   var categoria: Int,
   var descricaoCompleta: String,
   var bitola: String,

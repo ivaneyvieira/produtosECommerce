@@ -3,6 +3,7 @@ package br.com.astrosoft.produtosEComerce.view.layout
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.produtosEComerce.view.categoria.CategoriaView
 import br.com.astrosoft.produtosEComerce.view.main.ProdutosEComerceView
+import br.com.astrosoft.produtosEComerce.view.marca.MarcaView
 import br.com.astrosoft.produtosEComerce.view.user.UsuarioView
 import com.github.mvysny.karibudsl.v10.anchor
 import com.github.mvysny.karibudsl.v10.drawer
@@ -59,6 +60,11 @@ class ProdutoEComerceLayout: AppLayout() {
           this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
           this.icon(VaadinIcon.CUBES)
           routerLink(text = "Categoria", viewType = CategoriaView::class)
+        }
+        tab {
+          this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
+          this.icon(VaadinIcon.CUBE)
+          routerLink(text = "Marca", viewType = MarcaView::class)
         }
         tab {
           this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false

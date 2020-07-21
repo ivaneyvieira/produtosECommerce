@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.EEditor
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
+import br.com.astrosoft.produtosEComerce.model.beans.Marca
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 
@@ -71,27 +72,20 @@ interface IFiltroEditado {
 interface IProdutosEComerceView: IView {
   fun updateGridEditar(itens: List<Produto>)
   fun updateGridEditado(itens: List<Produto>)
-  fun processaProdutos(produto: Produto?)
+  fun processaProdutos()
   
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado
 }
 
-data class ProcessaBean(var marca: String? = "",
+data class ProcessaBean(var marca: Marca? = null,
+                        var marcaCheck : Boolean = true,
                         var categoria: Categoria? = null,
+                        var categoriaCheck : Boolean = true,
                         var descricaoCompleta: String? = "",
+                        var descricaoCompletaCheck : Boolean = true,
                         var bitola: String? = "",
-                        var imagem: String? = "") {
-  companion object {
-    fun fromProduto(produto: Produto): ProcessaBean {
-      return ProcessaBean(
-        marca = produto.marca,
-        categoria = Categoria.findAll()
-          .firstOrNull {it.categoriaNo == produto.categoria},
-        descricaoCompleta = produto.descricaoCompleta,
-        bitola = produto.bitola,
-        imagem = produto.imagem
-                         )
-    }
-  }
-}
+                        var bitolaCheck : Boolean = true,
+                        var imagem: String? = "",
+                        var imagemCheck : Boolean = true
+                       )
