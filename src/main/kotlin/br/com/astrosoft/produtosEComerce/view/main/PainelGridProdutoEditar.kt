@@ -55,8 +55,7 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
         icon = VaadinIcon.COG.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)
         onLeftClick {
-          val item = selectionItem()
-          view.processaProdutos(item)
+          view.processaProdutos()
         }
       }
       edtCodigo = codigoField {

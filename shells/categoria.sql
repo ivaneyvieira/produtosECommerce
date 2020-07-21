@@ -1,5 +1,5 @@
 
-
+DROP TABLE IF EXISTS categoria;
 CREATE TABLE categoria  (
   categoriaNo 	int(11) NOT NULL,
   grupo       	varchar(40) NOT NULL,

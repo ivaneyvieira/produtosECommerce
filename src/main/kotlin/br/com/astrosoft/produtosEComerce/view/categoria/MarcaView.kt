@@ -1,12 +1,12 @@
-package br.com.astrosoft.produtosEComerce.view.categoria
+package br.com.astrosoft.produtosEComerce.view.marca
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.produtosEComerce.model.beans.Categoria
+import br.com.astrosoft.produtosEComerce.model.beans.Marca
 import br.com.astrosoft.produtosEComerce.view.layout.ProdutoEComerceLayout
 import br.com.astrosoft.produtosEComerce.view.user.UserCrudFormFactory.Companion.TITLE
-import br.com.astrosoft.produtosEComerce.viewmodel.CategoriaViewModel
-import br.com.astrosoft.produtosEComerce.viewmodel.ICategoriaView
+import br.com.astrosoft.produtosEComerce.viewmodel.MarcaViewModel
+import br.com.astrosoft.produtosEComerce.viewmodel.IMarcaView
 import com.github.mvysny.karibudsl.v10.alignSelf
 import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.karibudsl.v10.button
@@ -45,16 +45,16 @@ import org.vaadin.gatanaso.MultiselectComboBox
 
 @Route(layout = ProdutoEComerceLayout::class)
 @PageTitle(TITLE)
-class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
-  override val viewModel = CategoriaViewModel(this)
+class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
+  override val viewModel = MarcaViewModel(this)
   
   override fun isAccept() = AppConfig.userSaci?.roles()
     ?.contains("ADMIN") == true
   
   init {
-    form("Editor de categorias")
+    form("Editor de marcas")
     setSizeFull()
-    val crud: GridCrud<Categoria> = gridCrud()
+    val crud: GridCrud<Marca> = gridCrud()
     // layout configuration
     setSizeFull()
     this.add(crud)
@@ -62,47 +62,41 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
     setOperation(crud)
   }
   
-  private fun gridCrud(): GridCrud<Categoria> {
-    val crud: GridCrud<Categoria> = GridCrud(Categoria::class.java)
+  private fun gridCrud(): GridCrud<Marca> {
+    val crud: GridCrud<Marca> = GridCrud(Marca::class.java)
     crud.grid
-      .setColumns(Categoria::categoriaNo.name,
-                  Categoria::grupo.name,
-                  Categoria::departamento.name,
-                  Categoria::secao.name)
-    crud.grid.getColumnBy(Categoria::categoriaNo)
+      .setColumns(Marca::marcaNo.name,
+                  Marca::name.name)
+    crud.grid.getColumnBy(Marca::marcaNo)
       .setHeader("Número")
-    crud.grid.getColumnBy(Categoria::grupo)
+    crud.grid.getColumnBy(Marca::name)
       .setHeader("Grupo")
-    crud.grid.getColumnBy(Categoria::departamento)
-      .setHeader("Departamento")
-    crud.grid.getColumnBy(Categoria::secao)
-      .setHeader("Seção")
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
-    crud.crudFormFactory = CategoriaCrudFormFactory()
+    crud.crudFormFactory = MarcaCrudFormFactory()
     crud.setSizeFull()
     (crud.crudLayout  as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
     return crud
   }
   
-  private fun setOperation(crud: GridCrud<Categoria>) {
+  private fun setOperation(crud: GridCrud<Marca>) {
     crud.setOperations(
       {viewModel.findAll()},
-      {user: Categoria -> viewModel.add(user)},
-      {user: Categoria? -> viewModel.update(user)},
-      {user: Categoria? -> viewModel.delete(user)})
+      {user: Marca -> viewModel.add(user)},
+      {user: Marca? -> viewModel.update(user)},
+      {user: Marca? -> viewModel.delete(user)})
   }
 }
 
-class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
+class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
   
   override fun buildNewForm(operation: CrudOperation?,
-                            domainObject: Categoria?,
+                            domainObject: Marca?,
                             readOnly: Boolean,
                             cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
                             operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
-    val binder = Binder<Categoria>(Categoria::class.java)
+    val binder = Binder<Marca>(Marca::class.java)
     return VerticalLayout().apply {
       isSpacing = false
       isMargin = false
@@ -112,22 +106,14 @@ class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
           "10em"(4, aside)
         }
         integerField("Número") {
-          binder.bind(this, Categoria::categoriaNo.name)
+          binder.bind(this, Marca::marcaNo.name)
           addThemeVariants(LUMO_ALIGN_RIGHT)
           this.isAutofocus=true
           this.isAutoselect=true
           width = "10em"
         }
         textField("Grupo") {
-          binder.bind(this, Categoria::grupo.name)
-          colspan = 4
-        }
-        textField("Departamento") {
-          binder.bind(this, Categoria::departamento.name)
-          colspan = 4
-        }
-        textField("Seção") {
-          binder.bind(this, Categoria::secao.name)
+          binder.bind(this, Marca::name.name)
           colspan = 4
         }
       }
@@ -154,7 +140,7 @@ class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
     }
   }
   
-  override fun buildCaption(operation: CrudOperation?, domainObject: Categoria?): String {
+  override fun buildCaption(operation: CrudOperation?, domainObject: Marca?): String {
     return operation?.let {crudOperation ->
       when(crudOperation) {
         READ   -> "Consulta"
@@ -173,6 +159,6 @@ class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
   }
   
   companion object {
-    const val TITLE = "Categoria"
+    const val TITLE = "Marca"
   }
 }

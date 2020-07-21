@@ -6,6 +6,7 @@ import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
+import br.com.astrosoft.produtosEComerce.model.beans.Marca
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.model.local
@@ -38,10 +39,8 @@ fun Grid<Produto>.colDescricao() = addColumnString(Produto::descricao) {
   setHeader("Descrição")
 }
 
-fun Grid<Produto>.colMarca() = addColumnString(Produto::marca) {
+fun Grid<Produto>.colMarca() = addColumnInt(Produto::marca) {
   setHeader("Marca")
-  isAutoWidth = false
-  width = "10em"
 }
 
 fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
@@ -185,6 +184,22 @@ fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = c
     "<div>[[item.categoriaNo]]<br><small>[[item.clname]]</small></div>")
                 .withProperty("categoriaNo", Categoria::categoriaNo)
                 .withProperty("descricao", Categoria::descricao))
+  element.setAttribute("theme", "small")
+  width = "20em"
+  block()
+}
+
+fun HasComponents.marcaField(block: ComboBox<Marca>.() -> Unit = {}) = comboBox<Marca>("Marca") {
+  val filter = ItemFilter {element: Marca, filterString: String? ->
+    filterString ?: return@ItemFilter true
+    element.name.contains(filterString, ignoreCase = true) ||
+    element.marcaNo.toString() == filterString
+  }
+  isClearButtonVisible = true
+  this.setItems(filter, local.listaMarca())
+  setItemLabelGenerator {
+    "${it.marcaNo} ${it.name}"
+  }
   element.setAttribute("theme", "small")
   width = "20em"
   block()

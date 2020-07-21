@@ -6,6 +6,7 @@ import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
+import br.com.astrosoft.produtosEComerce.model.beans.Marca
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 
@@ -29,6 +30,12 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
     return query("""select categoriaNo, grupo, departamento, secao
       |             from produtoEcomerce.categoria""".trimMargin(),
                  Categoria::class)
+  }
+  
+  fun listaMarca(): List<Marca> {
+    return query("""select marcaNo, name
+      |             from produtoEcomerce.marca""".trimMargin(),
+                 Marca::class)
   }
   
   fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, vendno: Int, typeno: Int,
@@ -93,9 +100,39 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
   }
   
   fun deleteCategoria(categoria: Categoria) {
-    val sql = "DELETE FROM categoria WHERE produtoEcomerce.categoriaNo = :categoriaNo"
+    val sql = "DELETE FROM produtoEcomerce.categoria WHERE categoriaNo = :categoriaNo"
     script(sql) {
       addOptionalParameter("categoriaNo", categoria.categoriaNo)
+    }
+  }
+  
+  fun findAllMarca(): List<Marca> {
+    return listaMarca()
+  }
+  
+  fun addMarca(marca: Marca) {
+    val sql = """INSERT INTO produtoEcomerce.marca(marcaNo, name)
+           |  VALUES(:marcaNo, :name)""".trimMargin()
+    script(sql) {
+      addOptionalParameter("marcaNo", marca.marcaNo)
+      addOptionalParameter("name", marca.name)
+    }
+  }
+  
+  fun updateMarca(marca: Marca) {
+    val sql = """UPDATE produtoEcomerce.marca
+                        |  SET name       = :name
+                        |WHERE marcaNo = :marcaNo""".trimMargin()
+    script(sql) {
+      addOptionalParameter("marcaNo", marca.marcaNo)
+      addOptionalParameter("name", marca.name)
+    }
+  }
+  
+  fun deleteMarca(marca: Marca) {
+    val sql = "DELETE FROM  produtoEcomerce.marca WHERE marcaNo = :marcaNo"
+    script(sql) {
+      addOptionalParameter("marcaNo", marca.marcaNo)
     }
   }
   
