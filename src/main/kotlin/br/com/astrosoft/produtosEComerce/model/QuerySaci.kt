@@ -35,6 +35,21 @@ class QuerySaci: QueryDB("saci", driver, url, username, password) {
     }
   }
   
+  fun listaType(): List<TypePrd> {
+    return query("select no as typeno, name as typeName from sqldados.type group by no;",
+                 TypePrd::class)
+  }
+  
+  fun listaCl(): List<Cl> {
+    return query("select CAST(LPAD(no, 6, '0') AS CHAR) as clno, name as clname from sqldados.cl group by no",
+                 Cl::class)
+  }
+  
+  fun listaFornecedores(): List<Fornecedor> {
+    return query("select no as vendno, name as fornecedor from sqldados.vend group by no",
+                 Fornecedor::class)
+  }
+  
   companion object {
     private val db = DB("saci")
     internal val driver = db.driver

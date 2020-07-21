@@ -16,7 +16,9 @@ mysql_local() {
   echo "$SQL"
   mysql --verbose -NB ${MYOPC_LOCAL} --execute="$SQL" --database=${DATABASE}
 }
+
 TABLE=produto
+
 create_table() {
   local TABLE=$1
   echo "DROP TABLE IF EXISTS $TABLE;"

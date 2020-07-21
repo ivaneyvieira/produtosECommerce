@@ -11,20 +11,6 @@ import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 
 class QueryLocal: QueryDB("local", driver, url, username, password) {
-  fun listaFornecedores(): List<Fornecedor> {
-    return query("select vendno, fornecedor from produtoEcomerce.produto group by vendno",
-                 Fornecedor::class)
-  }
-  
-  fun listaType(): List<TypePrd> {
-    return query("select typeno, typeName from produtoEcomerce.produto group by typeno",
-                 TypePrd::class)
-  }
-  
-  fun listaCl(): List<Cl> {
-    return query("select clno, clname from produtoEcomerce.produto group by clno",
-                 Cl::class)
-  }
   
   fun listaCategoria(): List<Categoria> {
     return query("""select categoriaNo, grupo, departamento, secao
@@ -39,7 +25,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
   }
   
   fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, vendno: Int, typeno: Int,
-                    clno: Int, editado: Int, categoria: Int):
+                    clno: String, editado: Int, categoria: Int):
     List<Produto> {
     val sql = "/sqlSaci/produtos.sql"
     return query(sql, Produto::class) {

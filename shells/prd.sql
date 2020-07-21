@@ -6,7 +6,7 @@ SELECT cast(LPAD(TRIM(P.no), 6, '0') AS CHAR) AS codigo,
        F.name                                 AS fornecedor,
        P.typeno,
        T.name                                 AS typeName,
-       P.clno,
+       CAST(LPAD(P.clno, 6, '0') AS CHAR)     AS clno,
        cl.name                                AS clname
 FROM sqldados.prd           AS P
   LEFT JOIN sqldados.grade  AS G
