@@ -9,22 +9,20 @@ import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
-import com.github.mvysny.karibudsl.v10.refresh
-import com.vaadin.flow.component.HasSize
-import com.vaadin.flow.component.HasValue
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
+import com.vaadin.flow.component.grid.GridMultiSelectionModel
+import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility.VISIBLE
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.component.textfield.TextFieldVariant
-import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
-import com.vaadin.flow.data.binder.Binder
 
 class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGrid<Produto>(view, blockUpdate) {
   override fun Grid<Produto>.gridConfig() {
+    setSelectionMode(MULTI)
     colCodigo()
     colBarcode()
     colDescricao()
@@ -38,6 +36,14 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
     colAltura()
     colComprimento()
     colLargura()
+  }
+  
+  override fun updateGrid(itens: List<Produto>) {
+    super.updateGrid(itens)
+    val filter = filterBar as? IFiltroEditar
+    if(filter?.isEmpty() == false)
+      //(grid.selectionModel as GridMultiSelectionModel<*>).selectAllCheckboxVisibility = VISIBLE
+      itens.forEach(grid::select)
   }
   
   override fun filterBar() = FilterBarEditar()
@@ -55,7 +61,7 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
         icon = VaadinIcon.COG.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)
         onLeftClick {
-          view.processaProdutos()
+          view.processaProdutos(multiSelect())
         }
       }
       edtCodigo = codigoField {

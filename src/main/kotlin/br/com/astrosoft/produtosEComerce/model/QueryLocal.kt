@@ -52,6 +52,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("imagem", bean.imagem)
       addOptionalParameter("codigo", bean.codigo)
       addOptionalParameter("grade", bean.grade)
+      addOptionalParameter("editado", bean.editado)
     }
   }
   
