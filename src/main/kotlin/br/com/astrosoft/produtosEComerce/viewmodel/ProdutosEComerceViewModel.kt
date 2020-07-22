@@ -5,6 +5,8 @@ import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.EEditor
+import br.com.astrosoft.produtosEComerce.model.beans.EEditor.EDITADO
+import br.com.astrosoft.produtosEComerce.model.beans.EEditor.EDITAR
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosEComerce.model.beans.Marca
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
@@ -42,6 +44,45 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
                                  editado = EEditor.EDITADO,
                                  categoria = filtro.categoria)
   }
+  
+  fun processaProduto(bean: ProcessaBean, itens: List<Produto>) {
+    itens.forEach {produto ->
+      processaProduto(bean, produto)
+    }
+    updateGridEditar()
+  }
+  
+  private fun processaProduto(bean: ProcessaBean, produto: Produto) {
+    if(bean.marcaCheck)
+      produto.marca = bean.marca?.marcaNo ?: 0
+    if(bean.categoriaCheck)
+      produto.categoria = bean.categoria?.categoriaNo ?: 0
+    if(bean.descricaoCompletaCheck)
+      produto.descricaoCompleta = bean.descricaoCompleta ?: ""
+    if(bean.bitolaCheck)
+      produto.bitola = bean.bitola ?: ""
+    if(bean.imagemCheck)
+      produto.imagem = bean.imagem ?: ""
+    produto.editado = EDITADO.value
+    Produto.save(produto)
+  }
+  
+  fun desProcessaProduto(itens: List<Produto>) {
+    itens.forEach {produto ->
+      desProcessaProduto(produto)
+    }
+    updateGridEditado()
+  }
+  
+  private fun desProcessaProduto(produto: Produto) {
+    produto.marca = 0
+    produto.categoria = 0
+    produto.descricaoCompleta = ""
+    produto.bitola = ""
+    produto.imagem = ""
+    produto.editado = EDITAR.value
+    Produto.save(produto)
+  }
 }
 
 interface IFiltroEditar {
@@ -52,8 +93,8 @@ interface IFiltroEditar {
   val type: TypePrd?
   val cl: Cl?
   
-  fun empty() = codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null
-                && type == null && cl == null
+  fun isEmpty() = codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null
+                  && type == null && cl == null
 }
 
 interface IFiltroEditado {
@@ -72,20 +113,21 @@ interface IFiltroEditado {
 interface IProdutosEComerceView: IView {
   fun updateGridEditar(itens: List<Produto>)
   fun updateGridEditado(itens: List<Produto>)
-  fun processaProdutos()
+  fun processaProdutos(itens: List<Produto>)
+  fun desProcessaProdutos(itens: List<Produto>)
   
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado
 }
 
 data class ProcessaBean(var marca: Marca? = null,
-                        var marcaCheck : Boolean = true,
+                        var marcaCheck: Boolean = true,
                         var categoria: Categoria? = null,
-                        var categoriaCheck : Boolean = true,
+                        var categoriaCheck: Boolean = true,
                         var descricaoCompleta: String? = "",
-                        var descricaoCompletaCheck : Boolean = true,
+                        var descricaoCompletaCheck: Boolean = true,
                         var bitola: String? = "",
-                        var bitolaCheck : Boolean = true,
+                        var bitolaCheck: Boolean = true,
                         var imagem: String? = "",
-                        var imagemCheck : Boolean = true
+                        var imagemCheck: Boolean = true
                        )

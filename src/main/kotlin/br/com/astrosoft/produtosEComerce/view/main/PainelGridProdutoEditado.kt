@@ -1,22 +1,30 @@
 package br.com.astrosoft.produtosEComerce.view.main
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
+import br.com.astrosoft.produtosEComerce.model.beans.UserSaci
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
+import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGrid<Produto>(view, blockUpdate) {
   override fun Grid<Produto>.gridConfig() {
+    setSelectionMode(MULTI)
     colCodigo()
     colBarcode()
     colDescricao()
@@ -44,6 +52,14 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     private lateinit var edtCodigo: IntegerField
     
     override fun FilterBar.contentBlock() {
+      button("Desprocessa") {
+        this.isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
+        icon = VaadinIcon.COG_O.create()
+        addThemeVariants(ButtonVariant.LUMO_SMALL)
+        onLeftClick {
+          view.desProcessaProdutos(multiSelect())
+        }
+      }
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
       }

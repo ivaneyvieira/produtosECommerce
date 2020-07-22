@@ -52,12 +52,24 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     gridEditado.updateGrid(itens)
   }
   
-  override fun processaProdutos() {
-    val form = FormProcessamento()
-    form.bean = ProcessaBean()
-    
-    showForm("Processamento de Produto", form) {
+  override fun processaProdutos(itens: List<Produto>) {
+    if(itens.isEmpty())
+      showError("Nenhum produto selecionado")
+    else {
+      val form = FormProcessamento()
+      form.bean = ProcessaBean()
+      
+      showForm("Processamento de Produto", form) {
+        viewModel.processaProduto(form.bean, itens)
+      }
     }
+  }
+  
+  override fun desProcessaProdutos(itens: List<Produto>) {
+    if(itens.isEmpty())
+      showError("Nenhum produto selecionado")
+    else
+      viewModel.desProcessaProduto(itens)
   }
   
   override val filtroEditar: IFiltroEditar

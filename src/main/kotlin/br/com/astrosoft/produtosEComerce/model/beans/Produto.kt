@@ -24,7 +24,7 @@ data class Produto(
   val altura: Double,
   val comprimento: Double,
   val largura: Double,
-  val editado: Int
+  var editado: Int
                   ) {
   fun setProduto(bean: Produto?) {
     bean ?: return
