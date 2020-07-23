@@ -3,6 +3,7 @@ package br.com.astrosoft.produtosEComerce.view.main
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
+import br.com.astrosoft.produtosEComerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.model.beans.UserSaci
@@ -18,6 +19,8 @@ import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGridProdutoAbstract(view, blockUpdate) {
+  override fun statusDefault(): Int = EDITADO.value
+  
   override fun filterBar() = FilterBarEditado()
   
   inner class FilterBarEditado: FilterBar(), IFiltroEditado {

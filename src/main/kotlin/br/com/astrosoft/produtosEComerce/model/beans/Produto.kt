@@ -3,7 +3,7 @@ package br.com.astrosoft.produtosEComerce.model.beans
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.produtosEComerce.model.local
 
-data class Produto(
+class Produto(
   val codigo: String,
   val grade: String,
   val barcode: String,
@@ -25,14 +25,7 @@ data class Produto(
   val largura: Double,
   var editado: Int
                   ) {
-  fun setProduto(bean: Produto?) {
-    bean ?: return
-    marca = bean.marca
-    categoria = bean.categoria
-    descricaoCompleta = bean.descricaoCompleta
-    bitola = bean.bitola
-    imagem = bean.imagem
-  }
+  
   
   val categoriaDesc
     get() = Categoria.findById(categoria)?.descricao ?: ""
@@ -40,9 +33,8 @@ data class Produto(
     get() = Marca.findById(marca)?.name ?: ""
   
   companion object {
-    private val userSaci: UserSaci by lazy {
-      AppConfig.userSaci as UserSaci
-    }
+    private val userSaci: UserSaci
+      get() = AppConfig.userSaci as UserSaci
     
     fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, fornecedor: Fornecedor?,
                       type: TypePrd?, cl: Cl?, editado: EEditor?, categoria: Categoria?): List<Produto> {
@@ -59,6 +51,24 @@ data class Produto(
     fun save(bean: Produto) {
       local.salvaProduto(bean)
     }
+  }
+  
+  override fun equals(other: Any?): Boolean {
+    if(this === other) return true
+    if(javaClass != other?.javaClass) return false
+    
+    other as Produto
+    
+    if(codigo != other.codigo) return false
+    if(grade != other.grade) return false
+    
+    return true
+  }
+  
+  override fun hashCode(): Int {
+    var result = codigo.hashCode()
+    result = 31 * result + grade.hashCode()
+    return result
   }
 }
 

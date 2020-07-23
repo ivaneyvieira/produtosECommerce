@@ -53,6 +53,7 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     colImagem.editorComponent = imagemField
     
     addItemDoubleClickListener {event ->
+      event.item.editado = statusDefault()
       editor.editItem(event.item)
       descricaoCompletaField.focus()
     }
@@ -67,6 +68,8 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     
     this.sort(listOf(GridSortOrder(colDescricao, SortDirection.ASCENDING)))
   }
+  
+  abstract fun statusDefault(): Int
   
   private fun textAreaComponente() = TextArea().apply {
     this.valueChangeMode = ON_CHANGE
