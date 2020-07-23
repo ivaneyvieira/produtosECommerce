@@ -39,11 +39,3 @@ data class Descricao(val text: String) {
     return Descricao("")
   }
 }
-
-fun main() {
-  val lista = listOf("AAA BB AA AA",
-                     "AAA BB A AC",
-                     "AAA BB  AA 123 AA")
-  println(ProcessaDescricaoProduto.findPrefixo(lista))
-  println(ProcessaDescricaoProduto.findSulfixo(lista[2], lista))
-}
