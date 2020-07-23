@@ -35,7 +35,7 @@ tasks.withType<KotlinCompile> {
   kotlinOptions.jvmTarget = "1.8"
 }
 
-group = "produtosEComerce"
+group = "produtosECommerce"
 
 dependencies {
   //Spring
