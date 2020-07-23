@@ -2,7 +2,6 @@ package br.com.astrosoft.produtosEComerce.model.beans
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.produtosEComerce.model.local
-import br.com.astrosoft.produtosEComerce.model.saci
 
 data class Produto(
   val codigo: String,
@@ -35,6 +34,11 @@ data class Produto(
     imagem = bean.imagem
   }
   
+  val categoriaDesc
+    get() = Categoria.findById(categoria)?.descricao ?: ""
+  val marcaDesc
+    get() = Marca.findById(marca)?.name ?: ""
+  
   companion object {
     private val userSaci: UserSaci by lazy {
       AppConfig.userSaci as UserSaci
@@ -43,15 +47,15 @@ data class Produto(
     fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, fornecedor: Fornecedor?,
                       type: TypePrd?, cl: Cl?, editado: EEditor?, categoria: Categoria?): List<Produto> {
       return local.listaProdutos(codigo = codigo,
-                                descricaoI = descricaoI,
-                                descricaoF = descricaoF,
-                                vendno = fornecedor?.vendno ?: 0,
-                                typeno = type?.typeno ?: 0,
-                                clno = cl?.clno ?: "",
-                                editado = editado?.value ?: 0,
-                                categoria = categoria?.categoriaNo ?: 0)
+                                 descricaoI = descricaoI,
+                                 descricaoF = descricaoF,
+                                 vendno = fornecedor?.vendno ?: 0,
+                                 typeno = type?.typeno ?: 0,
+                                 clno = cl?.clno ?: "",
+                                 editado = editado?.value ?: 0,
+                                 categoria = categoria?.categoriaNo ?: 0)
     }
-  
+    
     fun save(bean: Produto) {
       local.salvaProduto(bean)
     }

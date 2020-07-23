@@ -11,6 +11,7 @@ import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.model.local
 import br.com.astrosoft.produtosEComerce.model.saci
+import com.github.mvysny.karibudsl.v10.VaadinDsl
 import com.github.mvysny.karibudsl.v10.comboBox
 import com.github.mvysny.karibudsl.v10.integerField
 import com.github.mvysny.karibudsl.v10.textField
@@ -40,7 +41,7 @@ fun Grid<Produto>.colDescricao() = addColumnString(Produto::descricao) {
   setHeader("Descrição")
 }
 
-fun Grid<Produto>.colMarca() = addColumnInt(Produto::marca) {
+fun Grid<Produto>.colMarca() = addColumnString(Produto::marcaDesc) {
   setHeader("Marca")
 }
 
@@ -56,7 +57,7 @@ fun Grid<Produto>.colCl() = addColumnString(Produto::clname) {
   setHeader("Cl")
 }
 
-fun Grid<Produto>.colCategoria() = addColumnInt(Produto::categoria) {
+fun Grid<Produto>.colCategoria() = addColumnString(Produto::categoriaDesc) {
   setHeader("Categoria")
 }
 
@@ -174,6 +175,10 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
 }
 
 fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = comboBox<Categoria>("Categoria") {
+  extensionCategoria(block)
+}
+
+fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>.() -> Unit = {}) : ComboBox<Categoria>{
   val filter = ItemFilter {element: Categoria, filterString: String? ->
     filterString ?: return@ItemFilter true
     element.descricao.contains(filterString, ignoreCase = true) ||
@@ -191,9 +196,14 @@ fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = c
   element.setAttribute("theme", "small")
   width = "20em"
   block()
+  return this
 }
 
 fun HasComponents.marcaField(block: ComboBox<Marca>.() -> Unit = {}) = comboBox<Marca>("Marca") {
+  extensionMarca(block)
+}
+
+fun @VaadinDsl ComboBox<Marca>.extensionMarca(block: ComboBox<Marca>.() -> Unit = {}) :ComboBox<Marca>{
   val filter = ItemFilter {element: Marca, filterString: String? ->
     filterString ?: return@ItemFilter true
     element.name.contains(filterString, ignoreCase = true) ||
@@ -207,5 +217,6 @@ fun HasComponents.marcaField(block: ComboBox<Marca>.() -> Unit = {}) = comboBox<
   element.setAttribute("theme", "small")
   width = "20em"
   block()
+  return this
 }
 

@@ -8,13 +8,13 @@ import br.com.astrosoft.produtosEComerce.view.user.UserCrudFormFactory.Companion
 import br.com.astrosoft.produtosEComerce.viewmodel.CategoriaViewModel
 import br.com.astrosoft.produtosEComerce.viewmodel.ICategoriaView
 import com.github.mvysny.karibudsl.v10.alignSelf
-import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.formLayout
 import com.github.mvysny.karibudsl.v10.getColumnBy
 import com.github.mvysny.karibudsl.v10.horizontalLayout
 import com.github.mvysny.karibudsl.v10.hr
 import com.github.mvysny.karibudsl.v10.integerField
+import com.github.mvysny.karibudsl.v10.responsiveSteps
 import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Component
@@ -41,7 +41,7 @@ import org.vaadin.crudui.crud.CrudOperation.UPDATE
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
-import org.vaadin.gatanaso.MultiselectComboBox
+import java.util.function.*
 
 @Route(layout = ProdutoEComerceLayout::class)
 @PageTitle(TITLE)
@@ -82,7 +82,7 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
     
     crud.crudFormFactory = CategoriaCrudFormFactory()
     crud.setSizeFull()
-    (crud.crudLayout  as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
+    (crud.crudLayout as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
     return crud
   }
   
@@ -96,6 +96,7 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
 }
 
 class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
+  private var _newInstanceSupplier: Supplier<Categoria?>? = null
   
   override fun buildNewForm(operation: CrudOperation?,
                             domainObject: Categoria?,
@@ -114,8 +115,8 @@ class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
         integerField("Número") {
           binder.bind(this, Categoria::categoriaNo.name)
           addThemeVariants(LUMO_ALIGN_RIGHT)
-          this.isAutofocus=true
-          this.isAutoselect=true
+          this.isAutofocus = true
+          this.isAutoselect = true
           width = "10em"
         }
         textField("Grupo") {
@@ -170,6 +171,27 @@ class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
       .withCaption("Erro do aplicativo")
       .withMessage(e?.message ?: "Erro desconhecido")
       .open()
+  }
+  
+  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<Categoria?>) {
+    this._newInstanceSupplier = newInstanceSupplier
+  }
+  
+  override fun getNewInstanceSupplier(): Supplier<Categoria?>? {
+    if(_newInstanceSupplier == null) {
+      _newInstanceSupplier = Supplier {
+        try {
+          return@Supplier Categoria()
+        } catch(e: InstantiationException) {
+          e.printStackTrace()
+          return@Supplier null
+        } catch(e: IllegalAccessException) {
+          e.printStackTrace()
+          return@Supplier null
+        }
+      }
+    }
+    return _newInstanceSupplier
   }
   
   companion object {

@@ -4,7 +4,6 @@ import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
-import br.com.astrosoft.produtosEComerce.model.beans.EEditor
 import br.com.astrosoft.produtosEComerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosEComerce.model.beans.EEditor.EDITAR
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
@@ -25,7 +24,7 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
                                  fornecedor = filtro.fornecedor,
                                  type = filtro.type,
                                  cl = filtro.cl,
-                                 editado = EEditor.EDITAR,
+                                 editado = EDITAR,
                                  categoria = null)
   }
   
@@ -41,12 +40,20 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
                                  fornecedor = filtro.fornecedor,
                                  type = filtro.type,
                                  cl = filtro.cl,
-                                 editado = EEditor.EDITADO,
+                                 editado = EDITADO,
                                  categoria = filtro.categoria)
   }
   
   fun processaProduto(bean: ProcessaBean, itens: List<Produto>) {
+    val descricoes =
+      itens.map {it.descricao}
+        .distinct()
     itens.forEach {produto ->
+      if(!bean.bitolaCheck) {
+        val descricao = produto.descricao
+        val bitola = ProcessaDescricaoProduto.findSulfixo(descricao, descricoes)
+        produto.bitola = bitola
+      }
       processaProduto(bean, produto)
     }
     updateGridEditar()
@@ -83,6 +90,14 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
     produto.editado = EDITAR.value
     Produto.save(produto)
   }
+  
+  fun salvaProduto(produto: Produto?) {
+    if(produto != null) {
+      Produto.save(produto)
+      updateGridEditar()
+      updateGridEditado()
+    }
+  }
 }
 
 interface IFiltroEditar {
@@ -115,6 +130,7 @@ interface IProdutosEComerceView: IView {
   fun updateGridEditado(itens: List<Produto>)
   fun processaProdutos(itens: List<Produto>)
   fun desProcessaProdutos(itens: List<Produto>)
+  fun salvaProduto(bean: Produto?)
   
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado

@@ -2,6 +2,7 @@ package br.com.astrosoft.produtosEComerce.view.marca
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
+import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Marca
 import br.com.astrosoft.produtosEComerce.view.layout.ProdutoEComerceLayout
 import br.com.astrosoft.produtosEComerce.view.user.UserCrudFormFactory.Companion.TITLE
@@ -42,6 +43,7 @@ import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
 import org.vaadin.gatanaso.MultiselectComboBox
+import java.util.function.*
 
 @Route(layout = ProdutoEComerceLayout::class)
 @PageTitle(TITLE)
@@ -90,6 +92,7 @@ class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
 }
 
 class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
+  private var _newInstanceSupplier: Supplier<Marca?>? = null
   
   override fun buildNewForm(operation: CrudOperation?,
                             domainObject: Marca?,
@@ -156,6 +159,27 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
       .withCaption("Erro do aplicativo")
       .withMessage(e?.message ?: "Erro desconhecido")
       .open()
+  }
+  
+  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<Marca?>) {
+    this._newInstanceSupplier = newInstanceSupplier
+  }
+  
+  override fun getNewInstanceSupplier(): Supplier<Marca?>? {
+    if(_newInstanceSupplier == null) {
+      _newInstanceSupplier = Supplier {
+        try {
+          return@Supplier Marca()
+        } catch(e: InstantiationException) {
+          e.printStackTrace()
+          return@Supplier null
+        } catch(e: IllegalAccessException) {
+          e.printStackTrace()
+          return@Supplier null
+        }
+      }
+    }
+    return _newInstanceSupplier
   }
   
   companion object {

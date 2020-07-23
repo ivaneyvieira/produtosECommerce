@@ -15,6 +15,8 @@ data class Categoria(var categoriaNo: Int = 0,
       return local.findAllCategoria()
     }
     
+    fun findById(id : Int) = findAll().firstOrNull{it.categoriaNo == id}
+    
     fun add(categoria: Categoria) {
       local.addCategoria(categoria)
     }
