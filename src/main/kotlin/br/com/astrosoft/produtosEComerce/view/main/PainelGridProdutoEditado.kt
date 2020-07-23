@@ -1,49 +1,27 @@
 package br.com.astrosoft.produtosEComerce.view.main
 
 import br.com.astrosoft.AppConfig
-import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosEComerce.model.beans.Categoria
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
-import br.com.astrosoft.produtosEComerce.model.beans.Produto
 import br.com.astrosoft.produtosEComerce.model.beans.TypePrd
 import br.com.astrosoft.produtosEComerce.model.beans.UserSaci
 import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditado
-import br.com.astrosoft.produtosEComerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit):
-  PainelGrid<Produto>(view, blockUpdate) {
-  override fun Grid<Produto>.gridConfig() {
-    setSelectionMode(MULTI)
-    colCodigo()
-    colBarcode()
-    colDescricao()
-    colGrade()
-    colMarca()
-    colCategoria()
-    colDescricaoCompleta()
-    colBitola()
-    colImagem()
-    colPeso()
-    colAltura()
-    colComprimento()
-    colLargura()
-  }
-  
+  PainelGridProdutoAbstract(view, blockUpdate) {
   override fun filterBar() = FilterBarEditado()
   
   inner class FilterBarEditado: FilterBar(), IFiltroEditado {
-    private lateinit var edtCategoria:  ComboBox<Categoria>
+    private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
@@ -82,7 +60,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
         addValueChangeListener {blockUpdate()}
       }
     }
-  
+    
     override val codigo: Int
       get() = edtCodigo.value ?: 0
     override val descricaoI: String

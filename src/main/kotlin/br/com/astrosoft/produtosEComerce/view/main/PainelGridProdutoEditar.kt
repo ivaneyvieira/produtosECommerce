@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosEComerce.view.main
 
-import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosEComerce.model.beans.Cl
 import br.com.astrosoft.produtosEComerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosEComerce.model.beans.Produto
@@ -11,38 +10,16 @@ import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
-import com.vaadin.flow.component.grid.GridMultiSelectionModel
-import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility.VISIBLE
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Unit):
-  PainelGrid<Produto>(view, blockUpdate) {
-  override fun Grid<Produto>.gridConfig() {
-    setSelectionMode(MULTI)
-    colCodigo()
-    colBarcode()
-    colDescricao()
-    colGrade()
-    colMarca()
-    colCategoria()
-    colDescricaoCompleta()
-    colBitola()
-    colImagem()
-    colPeso()
-    colAltura()
-    colComprimento()
-    colLargura()
-  }
-  
+  PainelGridProdutoAbstract(view, blockUpdate) {
   override fun updateGrid(itens: List<Produto>) {
     super.updateGrid(itens)
     val filter = filterBar as? IFiltroEditar
     if(filter?.isEmpty() == false)
-      //(grid.selectionModel as GridMultiSelectionModel<*>).selectAllCheckboxVisibility = VISIBLE
       itens.forEach(grid::select)
   }
   

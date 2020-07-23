@@ -46,6 +46,7 @@ import org.vaadin.crudui.crud.CrudOperation.UPDATE
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
 import org.vaadin.gatanaso.MultiselectComboBox
+import java.util.function.*
 
 @Route(layout = ProdutoEComerceLayout::class)
 @PageTitle(TITLE)
@@ -99,6 +100,7 @@ class UsuarioView: ViewLayout<UsuarioViewModel>(), IUserView {
 }
 
 class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrudFormFactory<UserSaci>() {
+  private var _newInstanceSupplier: Supplier<UserSaci?>? = null
   private lateinit var comboAbreviacao: MultiselectComboBox<String>
   
   override fun buildNewForm(operation: CrudOperation?,
@@ -194,6 +196,27 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrud
       .withCaption("Erro do aplicativo")
       .withMessage(e?.message ?: "Erro desconhecido")
       .open()
+  }
+  
+  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<UserSaci?>) {
+    this._newInstanceSupplier = newInstanceSupplier
+  }
+  
+  override fun getNewInstanceSupplier(): Supplier<UserSaci?>? {
+    if(_newInstanceSupplier == null) {
+      _newInstanceSupplier = Supplier {
+        try {
+          return@Supplier UserSaci()
+        } catch(e: InstantiationException) {
+          e.printStackTrace()
+          return@Supplier null
+        } catch(e: IllegalAccessException) {
+          e.printStackTrace()
+          return@Supplier null
+        }
+      }
+    }
+    return _newInstanceSupplier
   }
   
   companion object {

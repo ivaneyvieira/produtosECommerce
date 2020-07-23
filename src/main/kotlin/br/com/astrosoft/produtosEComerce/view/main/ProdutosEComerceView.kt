@@ -72,6 +72,10 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
       viewModel.desProcessaProduto(itens)
   }
   
+  override fun salvaProduto(produto: Produto?) {
+    viewModel.salvaProduto(produto)
+  }
+  
   override val filtroEditar: IFiltroEditar
     get() = gridEditar.filterBar as IFiltroEditar
   override val filtroEditado: IFiltroEditado
