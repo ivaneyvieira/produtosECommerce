@@ -1,7 +1,7 @@
 package br.com.astrosoft.framework.view
 
-import br.com.astrosoft.produtosEComerce.view.main.FilterBar
-import br.com.astrosoft.produtosEComerce.viewmodel.IProdutosEComerceView
+import br.com.astrosoft.produtosECommerce.view.main.FilterBar
+import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.grid
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS

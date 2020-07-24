@@ -3,7 +3,7 @@ package br.com.astrosoft
 import br.com.astrosoft.framework.spring.IUser
 import br.com.astrosoft.framework.spring.SecurityUtils
 import br.com.astrosoft.framework.view.ViewUtil
-import br.com.astrosoft.produtosEComerce.model.saci
+import br.com.astrosoft.produtosECommerce.model.saci
 
 object AppConfig {
   val version = ViewUtil.versao
