@@ -3,24 +3,12 @@ package br.com.astrosoft.produtosECommerce.model
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
+import br.com.astrosoft.produtosECommerce.model.beans.Bitola
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Marca
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 
 class QueryLocal: QueryDB("local", driver, url, username, password) {
-  
-  fun listaCategoria(): List<Categoria> {
-    return query("""select categoriaNo, grupo, departamento, secao
-      |             from produtoEcomerce.categoria""".trimMargin(),
-                 Categoria::class)
-  }
-  
-  fun listaMarca(): List<Marca> {
-    return query("""select marcaNo, name
-      |             from produtoEcomerce.marca""".trimMargin(),
-                 Marca::class)
-  }
-  
   fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, vendno: Int, typeno: Int,
                     clno: String, editado: Int, categoria: Int):
     List<Produto> {
@@ -54,7 +42,9 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
   }
   
   fun findAllCategoria(): List<Categoria> {
-    return listaCategoria()
+    return query("""select categoriaNo, grupo, departamento, secao
+      |             from produtoEcomerce.categoria""".trimMargin(),
+                 Categoria::class)
   }
   
   fun addCategoria(categoria: Categoria) {
@@ -91,7 +81,9 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
   }
   
   fun findAllMarca(): List<Marca> {
-    return listaMarca()
+    return query("""select marcaNo, name
+      |             from produtoEcomerce.marca""".trimMargin(),
+                 Marca::class)
   }
   
   fun addMarca(marca: Marca) {
@@ -117,6 +109,38 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
     val sql = "DELETE FROM  produtoEcomerce.marca WHERE marcaNo = :marcaNo"
     script(sql) {
       addOptionalParameter("marcaNo", marca.marcaNo)
+    }
+  }
+  
+  fun findAllBitola(): List<Bitola> {
+    return query("""select bitolaNo, name
+      |             from produtoEcomerce.bitola""".trimMargin(),
+                 Bitola::class)
+  }
+  
+  fun addBitola(bitola: Bitola) {
+    val sql = """INSERT INTO produtoEcomerce.bitola(bitolaNo, name)
+           |  VALUES(:bitolaNo, :name)""".trimMargin()
+    script(sql) {
+      addOptionalParameter("bitolaNo", bitola.bitolaNo)
+      addOptionalParameter("name", bitola.name)
+    }
+  }
+  
+  fun updateBitola(bitola: Bitola) {
+    val sql = """UPDATE produtoEcomerce.bitola
+                        |  SET name       = :name
+                        |WHERE bitolaNo   = :bitolaNo""".trimMargin()
+    script(sql) {
+      addOptionalParameter("bitolaNo", bitola.bitolaNo)
+      addOptionalParameter("name", bitola.name)
+    }
+  }
+  
+  fun deleteBitola(bitola: Bitola) {
+    val sql = "DELETE FROM  produtoEcomerce.bitola WHERE bitolaNo = :bitolaNo"
+    script(sql) {
+      addOptionalParameter("bitolaNo", bitola.bitolaNo)
     }
   }
   
