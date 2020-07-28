@@ -20,7 +20,7 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     setSelectionMode(MULTI)
     colCodigo()
     colBarcode()
-   val colDescricao= colDescricao()
+    val colDescricao = colDescricao()
     colGrade()
     colMarca()
     colCategoria()
@@ -56,10 +56,10 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     editor.addCloseListener {
       editor.refresh()
     }
-    editor.addCloseListener {event->
+    editor.addCloseListener {_ ->
       view.salvaProduto(binder.bean)
     }
-    element.addEventListener("keyup") {event: DomEvent? -> editor.cancel()}.filter =
+    element.addEventListener("keyup") {_: DomEvent? -> editor.cancel()}.filter =
       "event.key === 'Escape' || event.key === 'Esc'"
     
     this.sort(listOf(GridSortOrder(colDescricao, SortDirection.ASCENDING)))

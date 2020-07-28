@@ -4,7 +4,7 @@ import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
 import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
-import br.com.astrosoft.produtosECommerce.view.layout.ProdutoEComerceLayout
+import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroImportado
@@ -25,7 +25,7 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 
-@Route(layout = ProdutoEComerceLayout::class)
+@Route(layout = ProdutoECommerceLayout::class, value = "produto")
 @PageTitle(AppConfig.title)
 @HtmlImport("frontend://styles/shared-styles.html")
 class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEComerceView {
@@ -79,8 +79,8 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
       viewModel.desProcessaProduto(itens)
   }
   
-  override fun salvaProduto(produto: Produto?) {
-    viewModel.salvaProduto(produto)
+  override fun salvaProduto(bean: Produto?) {
+    viewModel.salvaProduto(bean)
   }
   
   override val filtroEditar: IFiltroEditar

@@ -1,9 +1,10 @@
 package br.com.astrosoft.produtosECommerce.view.layout
 
 import br.com.astrosoft.AppConfig
-import br.com.astrosoft.produtosECommerce.view.categoria.CategoriaView
+import br.com.astrosoft.produtosECommerce.view.cruds.BitolaView
+import br.com.astrosoft.produtosECommerce.view.cruds.CategoriaView
 import br.com.astrosoft.produtosECommerce.view.main.ProdutosEComerceView
-import br.com.astrosoft.produtosECommerce.view.marca.MarcaView
+import br.com.astrosoft.produtosECommerce.view.cruds.MarcaView
 import br.com.astrosoft.produtosECommerce.view.user.UsuarioView
 import com.github.mvysny.karibudsl.v10.anchor
 import com.github.mvysny.karibudsl.v10.drawer
@@ -33,7 +34,7 @@ import com.vaadin.flow.theme.lumo.Lumo
      shortName = AppConfig.shortName,
      iconPath = AppConfig.iconPath,
      enableInstallPrompt = false)
-class ProdutoEComerceLayout: AppLayout() {
+class ProdutoECommerceLayout: AppLayout() {
   init {
     isDrawerOpened = false
     navbar {
@@ -65,6 +66,11 @@ class ProdutoEComerceLayout: AppLayout() {
           this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
           this.icon(VaadinIcon.CUBE)
           routerLink(text = "Marca", viewType = MarcaView::class)
+        }
+        tab {
+          this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
+          this.icon(VaadinIcon.CIRCLE_THIN)
+          routerLink(text = "Bitola", viewType = BitolaView::class)
         }
         tab {
           this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false

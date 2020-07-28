@@ -1,15 +1,15 @@
-package br.com.astrosoft.produtosECommerce.view.user
+package br.com.astrosoft.produtosECommerce.view.cruds
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
+import br.com.astrosoft.produtosECommerce.model.beans.Marca
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
-import br.com.astrosoft.produtosECommerce.viewmodel.IUserView
-import br.com.astrosoft.produtosECommerce.viewmodel.UsuarioViewModel
+import br.com.astrosoft.produtosECommerce.viewmodel.MarcaViewModel
+import br.com.astrosoft.produtosECommerce.viewmodel.IMarcaView
 import com.github.mvysny.karibudsl.v10.alignSelf
+import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.karibudsl.v10.button
-import com.github.mvysny.karibudsl.v10.comboBox
 import com.github.mvysny.karibudsl.v10.formLayout
 import com.github.mvysny.karibudsl.v10.getColumnBy
 import com.github.mvysny.karibudsl.v10.horizontalLayout
@@ -22,19 +22,14 @@ import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY
-import com.vaadin.flow.component.combobox.ComboBox.ItemFilter
-import com.vaadin.flow.component.grid.ColumnTextAlign
-import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
 import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
-import com.vaadin.flow.component.icon.VaadinIcon.CHECK_CIRCLE_O
-import com.vaadin.flow.component.icon.VaadinIcon.CIRCLE_THIN
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
 import com.vaadin.flow.data.binder.Binder
-import com.vaadin.flow.data.renderer.TemplateRenderer
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import org.claspina.confirmdialog.ConfirmDialog
@@ -45,21 +40,22 @@ import org.vaadin.crudui.crud.CrudOperation.READ
 import org.vaadin.crudui.crud.CrudOperation.UPDATE
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
-import org.vaadin.gatanaso.MultiselectComboBox
+import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout
+import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
 import java.util.function.*
 
-@Route(layout = ProdutoECommerceLayout::class)
+@Route(layout = ProdutoECommerceLayout::class, value = "marca")
 @PageTitle(TITLE)
-class UsuarioView: ViewLayout<UsuarioViewModel>(), IUserView {
-  override val viewModel = UsuarioViewModel(this)
+class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
+  override val viewModel = MarcaViewModel(this)
   
   override fun isAccept() = AppConfig.userSaci?.roles()
     ?.contains("ADMIN") == true
   
   init {
-    form("Editor de usuários")
+    form("Editor de marcas")
     setSizeFull()
-    val crud: GridCrud<UserSaci> = gridCrud()
+    val crud: GridCrud<Marca> = gridCrud()
     // layout configuration
     setSizeFull()
     this.add(crud)
@@ -67,98 +63,70 @@ class UsuarioView: ViewLayout<UsuarioViewModel>(), IUserView {
     setOperation(crud)
   }
   
-  private fun gridCrud(): GridCrud<UserSaci> {
-    val crud: GridCrud<UserSaci> = GridCrud(UserSaci::class.java)
+  private fun gridCrud(): GridCrud<Marca> {
+    val crud: GridCrud<Marca> = GridCrud(Marca::class.java,  HorizontalSplitCrudLayout())
     crud.grid
-      .setColumns(UserSaci::no.name, UserSaci::login.name, UserSaci::storeno.name, UserSaci::name.name)
-    crud.grid.getColumnBy(UserSaci::storeno)
-      .setHeader("Loja")
+      .setColumns(Marca::marcaNo.name,
+                  Marca::name.name)
+    crud.grid.getColumnBy(Marca::marcaNo)
+      .setHeader("Número")
+    crud.grid.getColumnBy(Marca::name)
+      .setHeader("Grupo")
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
-    crud.crudFormFactory = UserCrudFormFactory(viewModel)
+    crud.crudFormFactory = MarcaCrudFormFactory()
+    
     crud.setSizeFull()
+    (crud.crudLayout  as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
     return crud
   }
   
-  private fun setOperation(crud: GridCrud<UserSaci>) {
+  private fun setOperation(crud: GridCrud<Marca>) {
     crud.setOperations(
       {viewModel.findAll()},
-      {user: UserSaci -> viewModel.add(user)},
-      {user: UserSaci? -> viewModel.update(user)},
-      {user: UserSaci? -> viewModel.delete(user)})
-  }
-  
-  private fun Grid<UserSaci>.addColumnBool(caption: String, value: UserSaci.() -> Boolean) {
-    val column = this.addComponentColumn {bean ->
-      if(bean.value()) CHECK_CIRCLE_O.create()
-      else CIRCLE_THIN.create()
-    }
-    column.setHeader(caption)
-    column.textAlign = ColumnTextAlign.CENTER
+      {user: Marca -> viewModel.add(user)},
+      {user: Marca? -> viewModel.update(user)},
+      {user: Marca? -> viewModel.delete(user)})
   }
 }
 
-class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrudFormFactory<UserSaci>() {
-  private var _newInstanceSupplier: Supplier<UserSaci?>? = null
-  private lateinit var comboAbreviacao: MultiselectComboBox<String>
+class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
+  private var _newInstanceSupplier: Supplier<Marca?>? = null
   
   override fun buildNewForm(operation: CrudOperation?,
-                            domainObject: UserSaci?,
+                            domainObject: Marca?,
                             readOnly: Boolean,
                             cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
                             operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
-    val binder = Binder<UserSaci>(UserSaci::class.java)
+    val binder = Binder<Marca>(Marca::class.java)
+    
     return VerticalLayout().apply {
       isSpacing = false
       isMargin = false
       formLayout {
-        if(operation in listOf(READ, DELETE, UPDATE))
-          integerField("Número") {
-            isReadOnly = true
-            binder.bind(this, UserSaci::no.name)
-          }
-        if(operation in listOf(ADD, READ, DELETE, UPDATE))
-          comboBox<UserSaci>("Login") {
-            val allUser = viewModel.findAllUser()
-            val filter: ItemFilter<UserSaci> =
-              ItemFilter {user: UserSaci, filterString: String ->
-                user.login
-                  .contains(filterString, ignoreCase = true)
-                || user.name
-                  .contains(filterString, ignoreCase = true)
-                || user.no == filterString.toIntOrNull() ?: 0
-              }
-            this.setItems(filter, allUser)
-            this.setItemLabelGenerator(UserSaci::login)
-            this.setRenderer(TemplateRenderer.of<UserSaci>("<div>[[item.login]]<br><small>[[item.nome]]</small></div>")
-                               .withProperty("login") {
-                                 it.login
-                               }
-                               .withProperty("nome") {user ->
-                                 "${user.no} - ${user.name}"
-                               })
-            binder.bind(this, {bean ->
-              bean
-            }, {bean, field ->
-                          bean.no = field.no
-                          bean.name = field.name
-                          bean.login = field.login
-                        })
-          }
-        if(operation in listOf(READ, DELETE, UPDATE))
-          textField("Nome") {
-            isReadOnly = true
-            binder.bind(this, UserSaci::name.name)
-          }
-        if(operation in listOf(ADD, READ, DELETE, UPDATE))
-          integerField("Loja") {
-            isReadOnly = false
-            binder.bind(this, UserSaci::storeno.name)
-          }
+        this.responsiveSteps {
+          "0px"(1, top)
+          "10em"(4, aside)
+        }
+        
+        integerField("Número") {
+          binder.bind(this, Marca::marcaNo.name)
+          addThemeVariants(LUMO_ALIGN_RIGHT)
+          this.isAutofocus=true
+          this.isAutoselect=true
+          width = "10em"
+          this.isReadOnly = readOnly
+        }
+        textField("Grupo") {
+          binder.bind(this, Marca::name.name)
+          colspan = 4
+          this.isReadOnly = readOnly
+        }
       }
       hr()
       horizontalLayout {
+        this.isVisible = !readOnly
         this.setWidthFull()
         this.justifyContentMode = JustifyContentMode.END
         button("Confirmar") {
@@ -180,7 +148,7 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrud
     }
   }
   
-  override fun buildCaption(operation: CrudOperation?, domainObject: UserSaci?): String {
+  override fun buildCaption(operation: CrudOperation?, domainObject: Marca?): String {
     return operation?.let {crudOperation ->
       when(crudOperation) {
         READ   -> "Consulta"
@@ -198,15 +166,15 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrud
       .open()
   }
   
-  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<UserSaci?>) {
+  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<Marca?>) {
     this._newInstanceSupplier = newInstanceSupplier
   }
   
-  override fun getNewInstanceSupplier(): Supplier<UserSaci?>? {
+  override fun getNewInstanceSupplier(): Supplier<Marca?>? {
     if(_newInstanceSupplier == null) {
       _newInstanceSupplier = Supplier {
         try {
-          return@Supplier UserSaci()
+          return@Supplier Marca()
         } catch(e: InstantiationException) {
           e.printStackTrace()
           return@Supplier null
@@ -220,6 +188,6 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrud
   }
   
   companion object {
-    const val TITLE = "Usuário"
+    const val TITLE = "Marca"
   }
 }

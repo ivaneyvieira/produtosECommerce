@@ -184,7 +184,7 @@ fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>
     element.categoriaNo.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, local.listaCategoria())
+  this.setItems(filter, local.findAllCategoria())
   setItemLabelGenerator {
     "${it.categoriaNo} ${it.descricao}"
   }
@@ -209,7 +209,7 @@ fun @VaadinDsl ComboBox<Marca>.extensionMarca(block: ComboBox<Marca>.() -> Unit 
     element.marcaNo.toString() == filterString
   }
   isClearButtonVisible = true
-  this.setItems(filter, local.listaMarca())
+  this.setItems(filter, local.findAllMarca())
   setItemLabelGenerator {
     "${it.marcaNo} ${it.name}"
   }

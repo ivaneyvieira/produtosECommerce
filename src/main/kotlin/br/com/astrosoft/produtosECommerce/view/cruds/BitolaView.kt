@@ -1,12 +1,12 @@
-package br.com.astrosoft.produtosECommerce.view.marca
+package br.com.astrosoft.produtosECommerce.view.cruds
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.produtosECommerce.model.beans.Marca
-import br.com.astrosoft.produtosECommerce.view.layout.ProdutoEComerceLayout
+import br.com.astrosoft.produtosECommerce.model.beans.Bitola
+import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
-import br.com.astrosoft.produtosECommerce.viewmodel.MarcaViewModel
-import br.com.astrosoft.produtosECommerce.viewmodel.IMarcaView
+import br.com.astrosoft.produtosECommerce.viewmodel.BitolaViewModel
+import br.com.astrosoft.produtosECommerce.viewmodel.IBitolaView
 import com.github.mvysny.karibudsl.v10.alignSelf
 import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.karibudsl.v10.button
@@ -40,21 +40,23 @@ import org.vaadin.crudui.crud.CrudOperation.READ
 import org.vaadin.crudui.crud.CrudOperation.UPDATE
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
+import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout
+import org.vaadin.crudui.layout.impl.VerticalCrudLayout
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
 import java.util.function.*
 
-@Route(layout = ProdutoEComerceLayout::class)
+@Route(layout = ProdutoECommerceLayout::class, value = "bitola")
 @PageTitle(TITLE)
-class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
-  override val viewModel = MarcaViewModel(this)
+class BitolaView: ViewLayout<BitolaViewModel>(), IBitolaView {
+  override val viewModel = BitolaViewModel(this)
   
   override fun isAccept() = AppConfig.userSaci?.roles()
     ?.contains("ADMIN") == true
   
   init {
-    form("Editor de marcas")
+    form("Editor de bitolas")
     setSizeFull()
-    val crud: GridCrud<Marca> = gridCrud()
+    val crud: GridCrud<Bitola> = gridCrud()
     // layout configuration
     setSizeFull()
     this.add(crud)
@@ -62,42 +64,42 @@ class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
     setOperation(crud)
   }
   
-  private fun gridCrud(): GridCrud<Marca> {
-    val crud: GridCrud<Marca> = GridCrud(Marca::class.java)
+  private fun gridCrud(): GridCrud<Bitola> {
+    val crud: GridCrud<Bitola> = GridCrud(Bitola::class.java, HorizontalSplitCrudLayout())
     crud.grid
-      .setColumns(Marca::marcaNo.name,
-                  Marca::name.name)
-    crud.grid.getColumnBy(Marca::marcaNo)
+      .setColumns(Bitola::bitolaNo.name,
+                  Bitola::name.name)
+    crud.grid.getColumnBy(Bitola::bitolaNo)
       .setHeader("Número")
-    crud.grid.getColumnBy(Marca::name)
+    crud.grid.getColumnBy(Bitola::name)
       .setHeader("Grupo")
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
-    crud.crudFormFactory = MarcaCrudFormFactory()
+    crud.crudFormFactory = BitolaCrudFormFactory()
     crud.setSizeFull()
     (crud.crudLayout  as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
     return crud
   }
   
-  private fun setOperation(crud: GridCrud<Marca>) {
+  private fun setOperation(crud: GridCrud<Bitola>) {
     crud.setOperations(
       {viewModel.findAll()},
-      {user: Marca -> viewModel.add(user)},
-      {user: Marca? -> viewModel.update(user)},
-      {user: Marca? -> viewModel.delete(user)})
+      {user: Bitola -> viewModel.add(user)},
+      {user: Bitola? -> viewModel.update(user)},
+      {user: Bitola? -> viewModel.delete(user)})
   }
 }
 
-class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
-  private var _newInstanceSupplier: Supplier<Marca?>? = null
+class BitolaCrudFormFactory: AbstractCrudFormFactory<Bitola>() {
+  private var _newInstanceSupplier: Supplier<Bitola?>? = null
   
   override fun buildNewForm(operation: CrudOperation?,
-                            domainObject: Marca?,
+                            domainObject: Bitola?,
                             readOnly: Boolean,
                             cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
                             operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
-    val binder = Binder<Marca>(Marca::class.java)
+    val binder = Binder<Bitola>(Bitola::class.java)
     return VerticalLayout().apply {
       isSpacing = false
       isMargin = false
@@ -107,20 +109,23 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
           "10em"(4, aside)
         }
         integerField("Número") {
-          binder.bind(this, Marca::marcaNo.name)
+          binder.bind(this, Bitola::bitolaNo.name)
           addThemeVariants(LUMO_ALIGN_RIGHT)
           this.isAutofocus=true
           this.isAutoselect=true
           width = "10em"
+          this.isReadOnly = readOnly
         }
         textField("Grupo") {
-          binder.bind(this, Marca::name.name)
+          binder.bind(this, Bitola::name.name)
           colspan = 4
+          this.isReadOnly = readOnly
         }
       }
       hr()
       horizontalLayout {
         this.setWidthFull()
+        this.isVisible = !readOnly
         this.justifyContentMode = JustifyContentMode.END
         button("Confirmar") {
           alignSelf = END
@@ -141,7 +146,7 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
     }
   }
   
-  override fun buildCaption(operation: CrudOperation?, domainObject: Marca?): String {
+  override fun buildCaption(operation: CrudOperation?, domainObject: Bitola?): String {
     return operation?.let {crudOperation ->
       when(crudOperation) {
         READ   -> "Consulta"
@@ -159,15 +164,15 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
       .open()
   }
   
-  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<Marca?>) {
+  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<Bitola?>) {
     this._newInstanceSupplier = newInstanceSupplier
   }
   
-  override fun getNewInstanceSupplier(): Supplier<Marca?>? {
+  override fun getNewInstanceSupplier(): Supplier<Bitola?>? {
     if(_newInstanceSupplier == null) {
       _newInstanceSupplier = Supplier {
         try {
-          return@Supplier Marca()
+          return@Supplier Bitola()
         } catch(e: InstantiationException) {
           e.printStackTrace()
           return@Supplier null
@@ -181,6 +186,6 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
   }
   
   companion object {
-    const val TITLE = "Marca"
+    const val TITLE = "Bitola"
   }
 }

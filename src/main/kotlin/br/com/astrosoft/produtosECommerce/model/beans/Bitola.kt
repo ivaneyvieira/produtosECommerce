@@ -5,12 +5,12 @@ import br.com.astrosoft.produtosECommerce.model.local
 data class Bitola(var bitolaNo: Int = 0, var name: String = "") {
   companion object {
     private val listBitolas = mutableListOf<Bitola>().apply {
-      addAll(local.findAllBitolas())
+      addAll(local.findAllBitola())
     }
     
     fun findAll(): List<Bitola> {
       listBitolas.clear()
-      listBitolas.addAll(local.findAllBitolas())
+      listBitolas.addAll(local.findAllBitola())
       return listBitolas
     }
     
