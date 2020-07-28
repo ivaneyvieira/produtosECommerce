@@ -10,11 +10,16 @@ data class Categoria(var categoriaNo: Int = 0,
     get() = "$grupo/$departamento/$secao"
   
   companion object {
+    private val listCategoria = mutableListOf<Categoria>().apply {
+      addAll(local.findAllCategoria())
+    }
     fun findAll(): List<Categoria> {
-      return local.findAllCategoria()
+      listCategoria.clear()
+      listCategoria.addAll(local.findAllCategoria())
+      return listCategoria.toList()
     }
     
-    fun findById(id : Int) = findAll().firstOrNull{it.categoriaNo == id}
+    fun findById(id : Int) = listCategoria.firstOrNull{it.categoriaNo == id}
     
     fun add(categoria: Categoria) {
       local.addCategoria(categoria)

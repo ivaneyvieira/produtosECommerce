@@ -23,7 +23,6 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.charts.model.style.SolidColor
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.datepicker.DatePicker.DatePickerI18n
-import com.vaadin.flow.component.formlayout.FormLayout
 import com.vaadin.flow.component.grid.ColumnTextAlign.CENTER
 import com.vaadin.flow.component.grid.ColumnTextAlign.END
 import com.vaadin.flow.component.grid.ColumnTextAlign.START
@@ -96,6 +95,7 @@ abstract class ViewLayout<VM: ViewModel<*>>: VerticalLayout(), IView, BeforeLeav
       .withMessage(form)
       .withButton(OK, Runnable {runConfirm()}, caption("Confirma"), closeOnClick(true))
       .withCancelButton(caption("Cancela"))
+      .apply {isDraggable = true}
       .open()
   }
   
@@ -184,7 +184,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnLocalDate(property: KProperty1<T, LocalDat
   //column.width = "8em"
   column.isAutoWidth = true
   column.left()
-
+  
   column.setComparator {o1, o2 ->
     val value1 = property.get(o1) ?: LocalDate.MIN
     val value2 = property.get(o2) ?: LocalDate.MIN
@@ -206,12 +206,11 @@ fun <T> (@VaadinDsl Grid<T>).addColumnLocalDateTime(property: KProperty1<T, Loca
     val dataB = property.get(b) ?: LocalDateTime.MIN
     dataA.compareTo(dataB)
   }
-
+  
   column.block()
   
   return column
 }
-
 
 fun <T> (@VaadinDsl Grid<T>).addColumnDate(property: KProperty1<T, Date?>,
                                            block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {

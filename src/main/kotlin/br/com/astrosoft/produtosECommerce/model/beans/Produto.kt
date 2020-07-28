@@ -19,18 +19,26 @@ class Produto(
   var descricaoCompleta: String,
   var bitola: String,
   var imagem: String,
-  val peso: Double,
-  val altura: Double,
-  val comprimento: Double,
-  val largura: Double,
+  var peso: Double,
+  var altura: Double,
+  var comprimento: Double,
+  var largura: Double,
   var editado: Int
-                  ) {
-  
-  
+             ) {
   val categoriaDesc
-    get() = Categoria.findById(categoria)?.descricao ?: ""
+    get() = categoriaBean?.descricao ?: ""
   val marcaDesc
-    get() = Marca.findById(marca)?.name ?: ""
+    get() = marcaBean?.name ?: ""
+  var categoriaBean
+    get() = Categoria.findById(categoria)
+    set(value) {
+      categoria = value?.categoriaNo ?: 0
+    }
+  var marcaBean
+    get() = Marca.findById(marca)
+    set(value) {
+      categoria = value?.marcaNo ?: 0
+    }
   
   companion object {
     private val userSaci: UserSaci

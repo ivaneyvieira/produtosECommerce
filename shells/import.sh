@@ -51,13 +51,16 @@ mysql_local "LOAD DATA LOCAL INFILE '${FILE_IMPORT}' INTO TABLE $TABLE" ${DATABA
 mysql_local "ALTER TABLE $TABLE ADD marca INT DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD categoria INT DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD descricaoCompleta VARCHAR(120) DEFAULT '';" ${DATABASE}
-mysql_local "ALTER TABLE $TABLE ADD bitola VARCHAR(30) DEFAULT '';" ${DATABASE}
+mysql_local "ALTER TABLE $TABLE ADD bitola INT DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD imagem VARCHAR(80) DEFAULT '';" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD peso DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD altura DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD comprimento DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD largura DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
+mysql_local "ALTER TABLE $TABLE ADD textLink VARCHAR(120) DEFAULT '';" ${DATABASE}
+mysql_local "ALTER TABLE $TABLE ADD especificacoes VARCHAR(120) DEFAULT '';" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD editado INT DEFAULT 0;" ${DATABASE}
 
 mysql_local "$(cat categoria.sql)" ${DATABASE}
 mysql_local "$(cat marca.sql)" ${DATABASE}
+mysql_local "$(cat bitola.sql)" ${DATABASE}
