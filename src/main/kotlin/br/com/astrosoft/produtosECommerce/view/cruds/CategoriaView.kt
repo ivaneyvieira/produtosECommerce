@@ -1,9 +1,9 @@
-package br.com.astrosoft.produtosECommerce.view.categoria
+package br.com.astrosoft.produtosECommerce.view.cruds
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
-import br.com.astrosoft.produtosECommerce.view.layout.ProdutoEComerceLayout
+import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
 import br.com.astrosoft.produtosECommerce.viewmodel.CategoriaViewModel
 import br.com.astrosoft.produtosECommerce.viewmodel.ICategoriaView
@@ -40,10 +40,11 @@ import org.vaadin.crudui.crud.CrudOperation.READ
 import org.vaadin.crudui.crud.CrudOperation.UPDATE
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
+import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
 import java.util.function.*
 
-@Route(layout = ProdutoEComerceLayout::class)
+@Route(layout = ProdutoECommerceLayout::class, value = "categoria")
 @PageTitle(TITLE)
 class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
   override val viewModel = CategoriaViewModel(this)
@@ -63,7 +64,7 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
   }
   
   private fun gridCrud(): GridCrud<Categoria> {
-    val crud: GridCrud<Categoria> = GridCrud(Categoria::class.java)
+    val crud: GridCrud<Categoria> = GridCrud(Categoria::class.java, HorizontalSplitCrudLayout())
     crud.grid
       .setColumns(Categoria::categoriaNo.name,
                   Categoria::grupo.name,
@@ -118,23 +119,28 @@ class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
           this.isAutofocus = true
           this.isAutoselect = true
           width = "10em"
+          this.isReadOnly = readOnly
         }
         textField("Grupo") {
           binder.bind(this, Categoria::grupo.name)
           colspan = 4
+          this.isReadOnly = readOnly
         }
         textField("Departamento") {
           binder.bind(this, Categoria::departamento.name)
           colspan = 4
+          this.isReadOnly = readOnly
         }
         textField("Seção") {
           binder.bind(this, Categoria::secao.name)
           colspan = 4
+          this.isReadOnly = readOnly
         }
       }
       hr()
       horizontalLayout {
         this.setWidthFull()
+        this.isVisible = !readOnly
         this.justifyContentMode = JustifyContentMode.END
         button("Confirmar") {
           alignSelf = END
