@@ -23,10 +23,10 @@ class Produto(
   var altura: Double,
   var comprimento: Double,
   var largura: Double,
+  var textLink : String,
+  var especificacoes : String,
   var editado: Int
              ) {
-  val categoriaDesc
-    get() = categoriaBean?.descricao ?: ""
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean

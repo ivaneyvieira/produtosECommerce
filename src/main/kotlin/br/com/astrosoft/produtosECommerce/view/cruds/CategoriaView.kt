@@ -11,6 +11,7 @@ import com.github.mvysny.karibudsl.v10.alignSelf
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.formLayout
 import com.github.mvysny.karibudsl.v10.getColumnBy
+import com.github.mvysny.karibudsl.v10.h3
 import com.github.mvysny.karibudsl.v10.horizontalLayout
 import com.github.mvysny.karibudsl.v10.hr
 import com.github.mvysny.karibudsl.v10.integerField
@@ -28,7 +29,10 @@ import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.textfield.IntegerField
+import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
@@ -47,6 +51,7 @@ import java.util.function.*
 @Route(layout = ProdutoECommerceLayout::class, value = "categoria")
 @PageTitle(TITLE)
 class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
+  private val crud: GridCrud<Categoria>
   override val viewModel = CategoriaViewModel(this)
   
   override fun isAccept() = AppConfig.userSaci?.roles()
@@ -55,7 +60,7 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
   init {
     form("Editor de categorias")
     setSizeFull()
-    val crud: GridCrud<Categoria> = gridCrud()
+    crud = gridCrud()
     // layout configuration
     setSizeFull()
     this.add(crud)
@@ -94,113 +99,142 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
       {user: Categoria? -> viewModel.update(user)},
       {user: Categoria? -> viewModel.delete(user)})
   }
-}
-
-class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
-  private var _newInstanceSupplier: Supplier<Categoria?>? = null
   
-  override fun buildNewForm(operation: CrudOperation?,
-                            domainObject: Categoria?,
-                            readOnly: Boolean,
-                            cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
-                            operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
-    val binder = Binder<Categoria>(Categoria::class.java)
-    return VerticalLayout().apply {
-      isSpacing = false
-      isMargin = false
-      formLayout {
-        this.responsiveSteps {
-          "0px"(1, top)
-          "10em"(4, aside)
-        }
-        integerField("Número") {
-          binder.bind(this, Categoria::categoriaNo.name)
-          addThemeVariants(LUMO_ALIGN_RIGHT)
-          this.isAutofocus = true
-          this.isAutoselect = true
-          width = "10em"
-          this.isReadOnly = readOnly
-        }
-        textField("Grupo") {
-          binder.bind(this, Categoria::grupo.name)
-          colspan = 4
-          this.isReadOnly = readOnly
-        }
-        textField("Departamento") {
-          binder.bind(this, Categoria::departamento.name)
-          colspan = 4
-          this.isReadOnly = readOnly
-        }
-        textField("Seção") {
-          binder.bind(this, Categoria::secao.name)
-          colspan = 4
-          this.isReadOnly = readOnly
-        }
-      }
-      hr()
-      horizontalLayout {
-        this.setWidthFull()
-        this.isVisible = !readOnly
-        this.justifyContentMode = JustifyContentMode.END
-        button("Confirmar") {
-          alignSelf = END
-          addThemeVariants(LUMO_PRIMARY)
-          addClickListener {
-            binder.writeBean(domainObject)
-            operationButtonClickListener?.onComponentEvent(it)
+  inner class CategoriaCrudFormFactory: AbstractCrudFormFactory<Categoria>() {
+    private lateinit var edtSecao: TextField
+    private lateinit var edtDepartamento: TextField
+    private lateinit var edtGrupo: TextField
+    private lateinit var edtNumero: IntegerField
+    private var _newInstanceSupplier: Supplier<Categoria?>? = null
+    
+    override fun buildNewForm(operation: CrudOperation?,
+                              domainObject: Categoria?,
+                              readOnly: Boolean,
+                              cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
+                              operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
+      val binder = Binder<Categoria>(Categoria::class.java)
+      return VerticalLayout().apply {
+        isSpacing = false
+        isMargin = false
+        isPadding = false
+        formLayout {
+          this.responsiveSteps {
+            "0px"(1, top)
+            "10em"(4, aside)
+          }
+          h3(createCaption(operation)) {
+            colspan = 4
+          }
+          edtNumero = integerField("Número") {
+            binder.bind(this, Categoria::categoriaNo.name)
+            addThemeVariants(LUMO_ALIGN_RIGHT)
+            this.isEnabled = operation != ADD
+            width = "10em"
+            this.isReadOnly = readOnly
+            this.addThemeVariants(LUMO_SMALL)
+          }
+          edtGrupo = textField("Grupo") {
+            binder.bind(this, Categoria::grupo.name)
+            this.isAutofocus = true
+            this.isAutoselect = true
+            colspan = 4
+            this.isReadOnly = readOnly
+            this.element.setAttribute("theme", "small")
+          }
+          edtDepartamento = textField("Departamento") {
+            binder.bind(this, Categoria::departamento.name)
+            colspan = 4
+            this.isReadOnly = readOnly
+            this.isClearButtonVisible = true
+            this.element.setAttribute("theme", "small")
+          }
+          edtSecao = textField("Seção") {
+            binder.bind(this, Categoria::secao.name)
+            colspan = 4
+            this.isReadOnly = readOnly
+            this.addThemeVariants(LUMO_SMALL)
           }
         }
-        button("Cancelar") {
-          alignSelf = END
-          addThemeVariants(LUMO_ERROR)
-          addClickListener(cancelButtonClickListener)
+        if(operation != READ) {
+          hr()
+          horizontalLayout {
+            this.setWidthFull()
+            this.justifyContentMode = JustifyContentMode.END
+            button("Confirmar") {
+              alignSelf = END
+              addThemeVariants(LUMO_PRIMARY)
+              addClickListener {
+                binder.writeBean(domainObject)
+                operationButtonClickListener?.onComponentEvent(it)
+              }
+            }
+            button("Cancelar") {
+              alignSelf = END
+              addThemeVariants(LUMO_ERROR)
+              addClickListener(cancelButtonClickListener)
+            }
+          }
         }
-      }
-      
-      binder.readBean(domainObject)
-    }
-  }
-  
-  override fun buildCaption(operation: CrudOperation?, domainObject: Categoria?): String {
-    return operation?.let {crudOperation ->
-      when(crudOperation) {
-        READ   -> "Consulta"
-        ADD    -> "Adiciona"
-        UPDATE -> "Atualiza"
-        DELETE -> "Remove"
-      }
-    } ?: "Erro"
-  }
-  
-  override fun showError(operation: CrudOperation?, e: Exception?) {
-    ConfirmDialog.createError()
-      .withCaption("Erro do aplicativo")
-      .withMessage(e?.message ?: "Erro desconhecido")
-      .open()
-  }
-  
-  override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<Categoria?>) {
-    this._newInstanceSupplier = newInstanceSupplier
-  }
-  
-  override fun getNewInstanceSupplier(): Supplier<Categoria?>? {
-    if(_newInstanceSupplier == null) {
-      _newInstanceSupplier = Supplier {
-        try {
-          return@Supplier Categoria()
-        } catch(e: InstantiationException) {
-          e.printStackTrace()
-          return@Supplier null
-        } catch(e: IllegalAccessException) {
-          e.printStackTrace()
-          return@Supplier null
+        binder.readBean(domainObject)
+        when {
+          domainObject?.grupo == ""        -> edtGrupo.focus()
+          domainObject?.departamento == "" -> edtDepartamento.focus()
+          else                             -> edtSecao.focus()
         }
       }
     }
-    return _newInstanceSupplier
+    
+    fun createCaption(operation: CrudOperation?): String {
+      return operation?.let {crudOperation ->
+        when(crudOperation) {
+          READ   -> "Consulta"
+          ADD    -> "Adiciona"
+          UPDATE -> "Atualiza"
+          DELETE -> "Remove"
+        }
+      } ?: "Erro"
+    }
+    
+    override fun buildCaption(operation: CrudOperation?, domainObject: Categoria?) = null
+    
+    override fun showError(operation: CrudOperation?, e: Exception?) {
+      ConfirmDialog.createError()
+        .withCaption("Erro do aplicativo")
+        .withMessage(e?.message ?: "Erro desconhecido")
+        .open()
+    }
+    
+    override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<Categoria?>) {
+      this._newInstanceSupplier = newInstanceSupplier
+    }
+    
+    override fun getNewInstanceSupplier(): Supplier<Categoria?>? {
+      if(_newInstanceSupplier == null) {
+        _newInstanceSupplier = Supplier {
+          try {
+            val categoriaSelecionada: Categoria? = crud.grid.asSingleSelect().value
+            return@Supplier Categoria().apply {
+              if(categoriaSelecionada != null) {
+                this.grupo = categoriaSelecionada.grupo
+                this.departamento = categoriaSelecionada.departamento
+                this.secao = ""
+              }
+            }
+          } catch(e: InstantiationException) {
+            e.printStackTrace()
+            return@Supplier null
+          } catch(e: IllegalAccessException) {
+            e.printStackTrace()
+            return@Supplier null
+          }
+        }
+      }
+      return _newInstanceSupplier
+    }
   }
   
   companion object {
     const val TITLE = "Categoria"
   }
 }
+

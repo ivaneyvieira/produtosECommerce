@@ -5,16 +5,17 @@ import br.com.astrosoft.framework.view.ViewLayout
 import br.com.astrosoft.produtosECommerce.model.beans.Marca
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
-import br.com.astrosoft.produtosECommerce.viewmodel.MarcaViewModel
 import br.com.astrosoft.produtosECommerce.viewmodel.IMarcaView
+import br.com.astrosoft.produtosECommerce.viewmodel.MarcaViewModel
 import com.github.mvysny.karibudsl.v10.alignSelf
-import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.formLayout
 import com.github.mvysny.karibudsl.v10.getColumnBy
+import com.github.mvysny.karibudsl.v10.h3
 import com.github.mvysny.karibudsl.v10.horizontalLayout
 import com.github.mvysny.karibudsl.v10.hr
 import com.github.mvysny.karibudsl.v10.integerField
+import com.github.mvysny.karibudsl.v10.responsiveSteps
 import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Component
@@ -29,6 +30,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
@@ -64,7 +66,7 @@ class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
   }
   
   private fun gridCrud(): GridCrud<Marca> {
-    val crud: GridCrud<Marca> = GridCrud(Marca::class.java,  HorizontalSplitCrudLayout())
+    val crud: GridCrud<Marca> = GridCrud(Marca::class.java, HorizontalSplitCrudLayout())
     crud.grid
       .setColumns(Marca::marcaNo.name,
                   Marca::name.name)
@@ -78,7 +80,7 @@ class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
     crud.crudFormFactory = MarcaCrudFormFactory()
     
     crud.setSizeFull()
-    (crud.crudLayout  as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
+    (crud.crudLayout as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
     return crud
   }
   
@@ -104,51 +106,57 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
     return VerticalLayout().apply {
       isSpacing = false
       isMargin = false
+      isPadding = false
       formLayout {
         this.responsiveSteps {
           "0px"(1, top)
           "10em"(4, aside)
         }
-        
+        h3(createCaption(operation)) {
+          colspan = 4
+        }
         integerField("Número") {
           binder.bind(this, Marca::marcaNo.name)
           addThemeVariants(LUMO_ALIGN_RIGHT)
-          this.isAutofocus=true
-          this.isAutoselect=true
+          this.isAutofocus = true
+          this.isAutoselect = true
           width = "10em"
           this.isReadOnly = readOnly
+          this.addThemeVariants(LUMO_SMALL)
         }
         textField("Grupo") {
           binder.bind(this, Marca::name.name)
           colspan = 4
           this.isReadOnly = readOnly
+          this.addThemeVariants(LUMO_SMALL)
+          this.isAutofocus = true
         }
       }
-      hr()
-      horizontalLayout {
-        this.isVisible = !readOnly
-        this.setWidthFull()
-        this.justifyContentMode = JustifyContentMode.END
-        button("Confirmar") {
-          alignSelf = END
-          addThemeVariants(LUMO_PRIMARY)
-          addClickListener {
-            binder.writeBean(domainObject)
-            operationButtonClickListener?.onComponentEvent(it)
+      if(operation != READ) {
+        hr()
+        horizontalLayout {
+          this.setWidthFull()
+          this.justifyContentMode = JustifyContentMode.END
+          button("Confirmar") {
+            alignSelf = END
+            addThemeVariants(LUMO_PRIMARY)
+            addClickListener {
+              binder.writeBean(domainObject)
+              operationButtonClickListener?.onComponentEvent(it)
+            }
+          }
+          button("Cancelar") {
+            alignSelf = END
+            addThemeVariants(LUMO_ERROR)
+            addClickListener(cancelButtonClickListener)
           }
         }
-        button("Cancelar") {
-          alignSelf = END
-          addThemeVariants(LUMO_ERROR)
-          addClickListener(cancelButtonClickListener)
-        }
       }
-      
       binder.readBean(domainObject)
     }
   }
   
-  override fun buildCaption(operation: CrudOperation?, domainObject: Marca?): String {
+  fun createCaption(operation: CrudOperation?): String {
     return operation?.let {crudOperation ->
       when(crudOperation) {
         READ   -> "Consulta"
@@ -158,6 +166,8 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
       }
     } ?: "Erro"
   }
+  
+  override fun buildCaption(operation: CrudOperation?, domainObject: Marca?) = null
   
   override fun showError(operation: CrudOperation?, e: Exception?) {
     ConfirmDialog.createError()
@@ -174,7 +184,9 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
     if(_newInstanceSupplier == null) {
       _newInstanceSupplier = Supplier {
         try {
-          return@Supplier Marca()
+          return@Supplier Marca().apply {
+            this.marcaNo = Marca.nextNo()
+          }
         } catch(e: InstantiationException) {
           e.printStackTrace()
           return@Supplier null

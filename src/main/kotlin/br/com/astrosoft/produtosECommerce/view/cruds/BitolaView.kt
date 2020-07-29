@@ -8,13 +8,14 @@ import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companio
 import br.com.astrosoft.produtosECommerce.viewmodel.BitolaViewModel
 import br.com.astrosoft.produtosECommerce.viewmodel.IBitolaView
 import com.github.mvysny.karibudsl.v10.alignSelf
-import com.github.mvysny.karibudsl.v10.*
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.formLayout
 import com.github.mvysny.karibudsl.v10.getColumnBy
+import com.github.mvysny.karibudsl.v10.h3
 import com.github.mvysny.karibudsl.v10.horizontalLayout
 import com.github.mvysny.karibudsl.v10.hr
 import com.github.mvysny.karibudsl.v10.integerField
+import com.github.mvysny.karibudsl.v10.responsiveSteps
 import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Component
@@ -29,6 +30,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
@@ -41,7 +43,6 @@ import org.vaadin.crudui.crud.CrudOperation.UPDATE
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
 import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout
-import org.vaadin.crudui.layout.impl.VerticalCrudLayout
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
 import java.util.function.*
 
@@ -78,7 +79,7 @@ class BitolaView: ViewLayout<BitolaViewModel>(), IBitolaView {
     
     crud.crudFormFactory = BitolaCrudFormFactory()
     crud.setSizeFull()
-    (crud.crudLayout  as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
+    (crud.crudLayout as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
     return crud
   }
   
@@ -103,16 +104,22 @@ class BitolaCrudFormFactory: AbstractCrudFormFactory<Bitola>() {
     return VerticalLayout().apply {
       isSpacing = false
       isMargin = false
+      isPadding = false
       formLayout {
+
         this.responsiveSteps {
           "0px"(1, top)
           "10em"(4, aside)
         }
+        h3(createCaption(operation)) {
+          colspan = 4
+        }
         integerField("Número") {
           binder.bind(this, Bitola::bitolaNo.name)
           addThemeVariants(LUMO_ALIGN_RIGHT)
-          this.isAutofocus=true
-          this.isAutoselect=true
+          this.isAutofocus = true
+          this.isAutoselect = true
+          this.addThemeVariants(LUMO_SMALL)
           width = "10em"
           this.isReadOnly = readOnly
         }
@@ -120,33 +127,36 @@ class BitolaCrudFormFactory: AbstractCrudFormFactory<Bitola>() {
           binder.bind(this, Bitola::name.name)
           colspan = 4
           this.isReadOnly = readOnly
+          this.addThemeVariants(LUMO_SMALL)
+          this.isAutofocus = true
         }
       }
-      hr()
-      horizontalLayout {
-        this.setWidthFull()
-        this.isVisible = !readOnly
-        this.justifyContentMode = JustifyContentMode.END
-        button("Confirmar") {
-          alignSelf = END
-          addThemeVariants(LUMO_PRIMARY)
-          addClickListener {
-            binder.writeBean(domainObject)
-            operationButtonClickListener?.onComponentEvent(it)
+      if(operation != READ) {
+        hr()
+        horizontalLayout {
+          this.setWidthFull()
+          
+          this.justifyContentMode = JustifyContentMode.END
+          button("Confirmar") {
+            alignSelf = END
+            addThemeVariants(LUMO_PRIMARY)
+            addClickListener {
+              binder.writeBean(domainObject)
+              operationButtonClickListener?.onComponentEvent(it)
+            }
+          }
+          button("Cancelar") {
+            alignSelf = END
+            addThemeVariants(LUMO_ERROR)
+            addClickListener(cancelButtonClickListener)
           }
         }
-        button("Cancelar") {
-          alignSelf = END
-          addThemeVariants(LUMO_ERROR)
-          addClickListener(cancelButtonClickListener)
-        }
       }
-      
       binder.readBean(domainObject)
     }
   }
   
-  override fun buildCaption(operation: CrudOperation?, domainObject: Bitola?): String {
+  fun createCaption(operation: CrudOperation?): String {
     return operation?.let {crudOperation ->
       when(crudOperation) {
         READ   -> "Consulta"
@@ -156,6 +166,8 @@ class BitolaCrudFormFactory: AbstractCrudFormFactory<Bitola>() {
       }
     } ?: "Erro"
   }
+  
+  override fun buildCaption(operation: CrudOperation?, domainObject: Bitola?) = null
   
   override fun showError(operation: CrudOperation?, e: Exception?) {
     ConfirmDialog.createError()
@@ -172,7 +184,9 @@ class BitolaCrudFormFactory: AbstractCrudFormFactory<Bitola>() {
     if(_newInstanceSupplier == null) {
       _newInstanceSupplier = Supplier {
         try {
-          return@Supplier Bitola()
+          return@Supplier Bitola().apply {
+            this.bitolaNo = Bitola.nextNo()
+          }
         } catch(e: InstantiationException) {
           e.printStackTrace()
           return@Supplier null

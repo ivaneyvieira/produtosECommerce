@@ -21,16 +21,20 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     colCodigo()
     colBarcode()
     val colDescricao = colDescricao()
-    colGrade()
-    colMarca()
-    colCategoria()
     val colDescricaoCompleta = colDescricaoCompleta()
     val colBitola = colBitola()
-    val colImagem = colImagem()
+    colGrade()
+    colMarca()
+    //
+    //colCategoria()
+    //
     colPeso()
     colAltura()
-    colComprimento()
     colLargura()
+    colComprimento()
+    val colImagem = colImagem()
+
+
     val binder = Binder(Produto::class.java)
     editor.binder = binder
     val descricaoCompletaField = textAreaComponente()
