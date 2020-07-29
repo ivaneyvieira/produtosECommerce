@@ -1,5 +1,6 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
+import br.com.astrosoft.produtosECommerce.model.beans.Marca.Companion
 import br.com.astrosoft.produtosECommerce.model.local
 
 data class Bitola(var bitolaNo: Int = 0, var name: String = "") {
@@ -27,6 +28,14 @@ data class Bitola(var bitolaNo: Int = 0, var name: String = "") {
     
     fun delete(bitola: Bitola) {
       local.deleteBitola(bitola)
+    }
+  
+    fun nextNo(): Int {
+      val maxNo =
+        findAll()
+          .map {it.bitolaNo}
+          .max() ?: 0
+      return maxNo + 1
     }
   }
 }

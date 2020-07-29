@@ -28,5 +28,14 @@ data class Marca(var marcaNo: Int = 0, var name: String = "") {
     fun delete(marca: Marca) {
       local.deleteMarca(marca)
     }
+    
+    fun nextNo(): Int {
+      val maxNo =
+        findAll().map {it.marcaNo}
+          .max() ?: 0
+      return maxNo + 1
+    }
   }
 }
+
+

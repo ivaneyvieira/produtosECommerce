@@ -11,9 +11,49 @@ class CategoriaViewModel(view: ICategoriaView): ViewModel<ICategoriaView>(view) 
   
   fun add(categoria: Categoria): Categoria? {
     exec {
+      if(categoria.categoriaNo == 0) {
+        val codigoGrupo = novoCodigoGrupo(categoria)
+        val codigoDepartamento = novoCodigoDepartamento(categoria)
+        val codigoSecao = novoCodigoSecao(categoria)
+        categoria.categoriaNo = Categoria.makeCodigo(codigoGrupo, codigoDepartamento, codigoSecao)
+                                  .toIntOrNull() ?: 0
+      }
       Categoria.add(categoria)
     }
     return categoria
+  }
+  
+  private fun novoCodigoSecao(categoria: Categoria): Int {
+    return if(categoria.departamento == "" || categoria.grupo == "" || categoria.secao == "") 0
+    else {
+      val listSecao = Categoria.listSecao(categoria.grupo, categoria.departamento)
+      val catList = listSecao
+        .firstOrNull {it.secao == categoria.secao}
+      catList?.codigoSecao ?: (listSecao.map {it.codigoSecao}
+                                 .max() ?: 0) + 1
+    }
+  }
+  
+  private fun novoCodigoDepartamento(categoria: Categoria): Int {
+    return if(categoria.departamento == "" || categoria.grupo == "") 0
+    else {
+      val listDepartamento = Categoria.listDepartamento(categoria.grupo)
+      val catList = listDepartamento
+        .firstOrNull {it.departamento == categoria.departamento}
+      catList?.codigoDepartamento ?: (listDepartamento.map {it.codigoDepartamento}
+                                        .max() ?: 0) + 1
+    }
+  }
+  
+  private fun novoCodigoGrupo(categoria: Categoria): Int {
+    return if(categoria.grupo == "") 0
+    else {
+      val listGrupo = Categoria.listGrupo()
+      val catList = listGrupo
+        .firstOrNull {it.grupo == categoria.grupo}
+      catList?.codigoGrupo ?: (listGrupo.map {it.codigoGrupo}
+                                 .max() ?: 0) + 1
+    }
   }
   
   fun update(categoria: Categoria?): Categoria? {
@@ -30,6 +70,12 @@ class CategoriaViewModel(view: ICategoriaView): ViewModel<ICategoriaView>(view) 
         Categoria.delete(categoria)
     }
   }
+  
+  fun listGrupo() = Categoria.listGrupo()
+  
+  fun listDepartamento(grupo: String) = Categoria.listDepartamento(grupo)
+  
+  fun listSecao(grupo: String, departamento: String) = Categoria.listSecao(grupo, departamento)
 }
 
 interface ICategoriaView: IView

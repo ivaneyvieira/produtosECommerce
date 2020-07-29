@@ -56,12 +56,20 @@ fun Grid<Produto>.colCl() = addColumnString(Produto::clname) {
   setHeader("Cl")
 }
 
-fun Grid<Produto>.colCategoria() = addColumnString(Produto::categoriaDesc) {
-  setHeader("Categoria")
-}
-
 fun Grid<Produto>.colDescricaoCompleta() = addColumnString(Produto::descricaoCompleta) {
   setHeader("Descrição Completa")
+  isAutoWidth = false
+  width = "20em"
+}
+
+fun Grid<Produto>.colTexLink() = addColumnString(Produto::textLink) {
+  setHeader("NOme TextLink")
+  isAutoWidth = false
+  width = "20em"
+}
+
+fun Grid<Produto>.colEspecificacoes() = addColumnString(Produto::especificacoes) {
+  setHeader("Especificacoes")
   isAutoWidth = false
   width = "20em"
 }
