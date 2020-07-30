@@ -26,7 +26,7 @@ class UserSaci: IUser {
       else bitAcesso and BIT_ATIVO.inv()
     }
   val admin
-    get() = login == "ADM" || login == "YASMINE"
+    get() = login == "ADM" || login == "YASMINE" || login == "ADM3"
   
   companion object {
     private val BIT_ATIVO = 2.pow(12)
