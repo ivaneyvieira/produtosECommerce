@@ -23,6 +23,7 @@ import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY
+import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
 import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
@@ -76,7 +77,11 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
                   Categoria::departamento.name,
                   Categoria::secao.name)
     crud.grid.getColumnBy(Categoria::categoriaNo)
-      .setHeader("Número")
+      .apply {
+        this.setHeader("Número")
+        this.setTextAlign(ColumnTextAlign.END)
+      }
+    
     crud.grid.getColumnBy(Categoria::grupo)
       .setHeader("Grupo")
     crud.grid.getColumnBy(Categoria::departamento)
@@ -128,10 +133,12 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
           edtNumero = integerField("Número") {
             binder.bind(this, Categoria::categoriaNo.name)
             addThemeVariants(LUMO_ALIGN_RIGHT)
-            this.isEnabled = operation != ADD
+            //this.isEnabled = operation != ADD
             width = "10em"
             this.isReadOnly = readOnly
+            this.isAutoselect = true
             this.addThemeVariants(LUMO_SMALL)
+            this.focus()
           }
           edtGrupo = textField("Grupo") {
             binder.bind(this, Categoria::grupo.name)
@@ -176,11 +183,6 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
           }
         }
         binder.readBean(domainObject)
-        when {
-          domainObject?.grupo == ""        -> edtGrupo.focus()
-          domainObject?.departamento == "" -> edtDepartamento.focus()
-          else                             -> edtSecao.focus()
-        }
       }
     }
     

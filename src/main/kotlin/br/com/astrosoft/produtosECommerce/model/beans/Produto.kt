@@ -23,8 +23,8 @@ class Produto(
   var altura: Double,
   var comprimento: Double,
   var largura: Double,
-  var textLink : String,
-  var especificacoes : String,
+  var textLink: String,
+  var especificacoes: String,
   var editado: Int
              ) {
   val marcaDesc
@@ -39,6 +39,8 @@ class Produto(
     set(value) {
       categoria = value?.marcaNo ?: 0
     }
+  val categoriaDesc
+    get() = categoriaBean?.descricao ?: ""
   
   companion object {
     private val userSaci: UserSaci
