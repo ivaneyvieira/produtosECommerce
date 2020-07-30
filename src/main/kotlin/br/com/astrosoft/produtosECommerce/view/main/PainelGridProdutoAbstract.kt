@@ -40,15 +40,17 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     colGrade()
     val colMarca = colMarca()
     //
-    val colCategoria = colCategoria()
+    val colCategoria = colCategoria()]
+    //
+    val colImagem = colImagem()
+    val colTexLink = colTexLink()
+    val colEspecificacoes = colEspecificacoes()
     //
     val colPeso = colPeso()
     val colAltura = colAltura()
     val colLargura = colLargura()
     val colComprimento = colComprimento()
-    val colImagem = colImagem()
-    val colTexLink = colTexLink()
-    val colEspecificacoes = colEspecificacoes()
+
     //
     val binder = Binder(Produto::class.java)
     editor.binder = binder
