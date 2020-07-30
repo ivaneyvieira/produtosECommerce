@@ -24,13 +24,6 @@ class PainelGridProdutoBase(view: IProdutosEComerceView, blockUpdate: () -> Unit
   PainelGridProdutoAbstract(view, blockUpdate) {
   override fun statusDefault(): Int = BASE.value
   
-  override fun updateGrid(itens: List<Produto>) {
-    super.updateGrid(itens)
-    val filter = filterBar as? IFiltroBase
-    if(filter?.isEmpty() == false)
-      itens.forEach(grid::select)
-  }
-  
   override fun filterBar() = FilterBarBase()
   
   inner class FilterBarBase: FilterBar(), IFiltroBase {

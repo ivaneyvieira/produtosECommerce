@@ -12,7 +12,6 @@ import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
-import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
@@ -41,9 +40,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.marcaProdutos(multiSelect(), EDITAR)}
       }
-
       
-
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
       }
