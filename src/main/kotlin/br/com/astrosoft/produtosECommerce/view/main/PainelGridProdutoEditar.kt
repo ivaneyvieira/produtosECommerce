@@ -13,6 +13,8 @@ import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.getAll
+import com.github.mvysny.karibudsl.v10.grid
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
@@ -43,6 +45,13 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
     private lateinit var edtCodigo: IntegerField
     
     override fun FilterBar.contentBlock() {
+      button {
+        isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
+        icon = VaadinIcon.COPY.create()
+        addThemeVariants(LUMO_SMALL)
+        
+        onLeftClick {view.replicarProdutos(multiSelect(), EDITAR)}
+      }
       button {
         isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
         icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()

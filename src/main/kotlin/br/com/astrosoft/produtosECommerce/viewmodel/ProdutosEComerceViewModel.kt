@@ -2,6 +2,7 @@ package br.com.astrosoft.produtosECommerce.viewmodel
 
 import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
+import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor
@@ -85,6 +86,27 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
       EDITADO -> updateGridEditado()
     }
   }
+  
+  fun replicarProdutos(itens: List<Produto>, marca: EEditor) = exec {
+    val modelo = itens.sortedBy {it.descricao}.firstOrNull {it.descricaoCompleta.isNotBlank()} ?: fail("Nenhum produto " +
+                                                                                            "selecionado")
+    itens.forEach {produto ->
+      produto.marca = modelo.marca
+      produto.categoria = modelo.categoria
+      produto.descricaoCompleta = modelo.descricaoCompleta
+      produto.bitola = modelo.bitola
+      produto.imagem = modelo.imagem
+      produto.peso = modelo.peso
+      produto.comprimento = modelo.comprimento
+      produto.largura = modelo.largura
+      produto.altura = modelo.altura
+      produto.textLink = modelo.textLink
+      produto.especificacoes = modelo.especificacoes
+      produto.editado = marca.value
+      Produto.save(produto)
+    }
+    updateGrid()
+  }
 }
 
 interface IFiltroEditar {
@@ -135,6 +157,7 @@ interface IProdutosEComerceView: IView {
   fun marcaProdutos(itens: List<Produto>, marca: EEditor)
   
   fun salvaProduto(bean: Produto?)
+  fun replicarProdutos(itens: List<Produto>, marca: EEditor)
   
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado

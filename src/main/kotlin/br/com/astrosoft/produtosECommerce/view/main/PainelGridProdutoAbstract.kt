@@ -56,13 +56,16 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     val descricaoCompletaField = textAreaComponente()
     val bitolaField = comboFieldComponente {
       Bitola.findAll()
+        .sortedBy {it.lookupValue}
     }
     val imagemField = textFieldComponente()
-    val marcaField = comboFieldComponente{
+    val marcaField = comboFieldComponente {
       Marca.findAll()
+        .sortedBy {it.lookupValue}
     }
-    val categoriaField = comboFieldComponente{
+    val categoriaField = comboFieldComponente {
       Categoria.findAll()
+        .sortedBy {it.lookupValue}
     }
     val pesoField = decimalFieldComponent()
     val alturaField = decimalFieldComponent()
@@ -157,7 +160,7 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     setSizeFull()
   }
   
-  private fun decimalFieldComponent() : BigDecimalField {
+  private fun decimalFieldComponent(): BigDecimalField {
     return BigDecimalField().apply {
       this.addThemeVariants(LUMO_ALIGN_RIGHT)
       this.setSizeFull()

@@ -82,6 +82,10 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     viewModel.salvaProduto(bean)
   }
   
+  override fun replicarProdutos(itens: List<Produto>, marca: EEditor) {
+    viewModel.replicarProdutos(itens, marca)
+  }
+  
   override val filtroEditar: IFiltroEditar
     get() = gridEditar.filterBar as IFiltroEditar
   override val filtroEditado: IFiltroEditado
