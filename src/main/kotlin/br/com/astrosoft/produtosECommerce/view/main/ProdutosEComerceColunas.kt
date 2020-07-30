@@ -118,17 +118,21 @@ fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
 fun HasComponents.codigoField(block: IntegerField.() -> Unit = {}) = integerField("Código") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
   this.valueChangeMode = TIMEOUT
+  this.valueChangeTimeout = 1000
   block()
 }
 
 fun HasComponents.descricaoIField(block: TextField.() -> Unit = {}) = textField("Descrição Inicial") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
+  this.valueChangeMode = TIMEOUT
+  this.valueChangeTimeout = 1000
   block()
 }
 
 fun HasComponents.descricaoFField(block: TextField.() -> Unit = {}) = textField("Descrição Final") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
   this.valueChangeMode = TIMEOUT
+  this.valueChangeTimeout = 1000
   block()
 }
 
