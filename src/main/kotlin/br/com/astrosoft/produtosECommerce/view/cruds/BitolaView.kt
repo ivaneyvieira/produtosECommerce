@@ -73,7 +73,7 @@ class BitolaView: ViewLayout<BitolaViewModel>(), IBitolaView {
     crud.grid.getColumnBy(Bitola::bitolaNo)
       .setHeader("Número")
     crud.grid.getColumnBy(Bitola::name)
-      .setHeader("Grupo")
+      .setHeader("Bitola")
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
@@ -123,7 +123,7 @@ class BitolaCrudFormFactory: AbstractCrudFormFactory<Bitola>() {
           width = "10em"
           this.isReadOnly = readOnly
         }
-        textField("Grupo") {
+        textField("Bitola") {
           binder.bind(this, Bitola::name.name)
           colspan = 4
           this.isReadOnly = readOnly

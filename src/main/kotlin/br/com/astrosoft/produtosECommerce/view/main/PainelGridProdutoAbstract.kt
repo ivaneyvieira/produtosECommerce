@@ -26,7 +26,7 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     colGrade()
     colMarca()
     //
-    //colCategoria()
+    colCategoria()
     //
     colPeso()
     colAltura()

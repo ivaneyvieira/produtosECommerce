@@ -73,7 +73,7 @@ class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
     crud.grid.getColumnBy(Marca::marcaNo)
       .setHeader("Número")
     crud.grid.getColumnBy(Marca::name)
-      .setHeader("Grupo")
+      .setHeader("Marca")
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
@@ -124,7 +124,7 @@ class MarcaCrudFormFactory: AbstractCrudFormFactory<Marca>() {
           this.isReadOnly = readOnly
           this.addThemeVariants(LUMO_SMALL)
         }
-        textField("Grupo") {
+        textField("Marca") {
           binder.bind(this, Marca::name.name)
           colspan = 4
           this.isReadOnly = readOnly
