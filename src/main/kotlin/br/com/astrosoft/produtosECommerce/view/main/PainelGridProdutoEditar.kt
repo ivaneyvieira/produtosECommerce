@@ -1,15 +1,20 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
+import br.com.astrosoft.AppConfig
+import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.BASE
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITAR
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
+import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditar
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
-import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
@@ -29,6 +34,7 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
   override fun filterBar() = FilterBarEditar()
   
   inner class FilterBarEditar: FilterBar(), IFiltroEditar {
+    private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
@@ -37,13 +43,18 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
     private lateinit var edtCodigo: IntegerField
     
     override fun FilterBar.contentBlock() {
-      button("Processar") {
-        icon = VaadinIcon.COG.create()
-        addThemeVariants(ButtonVariant.LUMO_SMALL)
-        onLeftClick {
-          view.processaProdutos(multiSelect())
-        }
+      button {
+        isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
+        icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {view.marcaProdutos(multiSelect(), BASE)}
       }
+      button {
+        icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {view.marcaProdutos(multiSelect(), EDITADO)}
+      }
+      
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
       }
@@ -62,6 +73,9 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
       edtCl = clField {
         addValueChangeListener {blockUpdate()}
       }
+      edtCategoria = categoriaField {
+        addValueChangeListener {blockUpdate()}
+      }
     }
     
     override val codigo: Int
@@ -76,6 +90,8 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
       get() = edtTipo.value
     override val cl: Cl?
       get() = edtCl.value
+    override val categoria: Categoria?
+      get() = edtCategoria.value
   }
 }
 

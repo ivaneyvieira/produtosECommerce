@@ -1,7 +1,10 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
+import br.com.astrosoft.framework.view.addColumnBean
 import br.com.astrosoft.framework.view.addColumnDouble
+import br.com.astrosoft.framework.view.addColumnInt
 import br.com.astrosoft.framework.view.addColumnString
+import br.com.astrosoft.produtosECommerce.model.beans.Bitola
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
@@ -22,6 +25,7 @@ import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.textfield.TextFieldVariant
 import com.vaadin.flow.data.renderer.TemplateRenderer
+import com.vaadin.flow.data.renderer.TextRenderer
 import com.vaadin.flow.data.value.ValueChangeMode.TIMEOUT
 
 fun Grid<Produto>.colCodigo() = addColumnString(Produto::codigo) {
@@ -40,8 +44,10 @@ fun Grid<Produto>.colDescricao() = addColumnString(Produto::descricao) {
   setHeader("Descrição")
 }
 
-fun Grid<Produto>.colMarca() = addColumnString(Produto::marcaDesc) {
+fun Grid<Produto>.colMarca() = addColumnBean(Produto::marcaBean) {
   setHeader("Marca")
+  isAutoWidth = false
+  width = "20em"
 }
 
 fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
@@ -56,8 +62,10 @@ fun Grid<Produto>.colCl() = addColumnString(Produto::clname) {
   setHeader("Cl")
 }
 
-fun Grid<Produto>.colCategoria() = addColumnString(Produto::categoriaDesc) {
+fun Grid<Produto>.colCategoria() = addColumnBean(Produto::categoriaBean) {
   setHeader("Categoria")
+  isAutoWidth = false
+  width = "20em"
 }
 
 fun Grid<Produto>.colDescricaoCompleta() = addColumnString(Produto::descricaoCompleta) {
@@ -67,7 +75,7 @@ fun Grid<Produto>.colDescricaoCompleta() = addColumnString(Produto::descricaoCom
 }
 
 fun Grid<Produto>.colTexLink() = addColumnString(Produto::textLink) {
-  setHeader("NOme TextLink")
+  setHeader("Nome TextLink")
   isAutoWidth = false
   width = "20em"
 }
@@ -78,7 +86,7 @@ fun Grid<Produto>.colEspecificacoes() = addColumnString(Produto::especificacoes)
   width = "20em"
 }
 
-fun Grid<Produto>.colBitola() = addColumnString(Produto::bitola) {
+fun Grid<Produto>.colBitola() = addColumnBean(Produto::bitolaBean) {
   setHeader("Bitola")
   isAutoWidth = false
   width = "10em"
@@ -115,7 +123,6 @@ fun HasComponents.codigoField(block: IntegerField.() -> Unit = {}) = integerFiel
 
 fun HasComponents.descricaoIField(block: TextField.() -> Unit = {}) = textField("Descrição Inicial") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
-  this.valueChangeMode = TIMEOUT
   block()
 }
 
@@ -189,7 +196,7 @@ fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = c
   extensionCategoria(block)
 }
 
-fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>.() -> Unit = {}) : ComboBox<Categoria>{
+fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>.() -> Unit = {}): ComboBox<Categoria> {
   val filter = ItemFilter {element: Categoria, filterString: String? ->
     filterString ?: return@ItemFilter true
     element.descricao.contains(filterString, ignoreCase = true) ||
@@ -214,7 +221,7 @@ fun HasComponents.marcaField(block: ComboBox<Marca>.() -> Unit = {}) = comboBox<
   extensionMarca(block)
 }
 
-fun @VaadinDsl ComboBox<Marca>.extensionMarca(block: ComboBox<Marca>.() -> Unit = {}) :ComboBox<Marca>{
+fun @VaadinDsl ComboBox<Marca>.extensionMarca(block: ComboBox<Marca>.() -> Unit = {}): ComboBox<Marca> {
   val filter = ItemFilter {element: Marca, filterString: String? ->
     filterString ?: return@ItemFilter true
     element.name.contains(filterString, ignoreCase = true) ||

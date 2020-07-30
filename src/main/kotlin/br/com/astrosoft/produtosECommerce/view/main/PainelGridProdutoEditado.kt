@@ -4,6 +4,7 @@ import br.com.astrosoft.AppConfig
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITAR
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
@@ -12,6 +13,7 @@ import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
@@ -33,14 +35,15 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     private lateinit var edtCodigo: IntegerField
     
     override fun FilterBar.contentBlock() {
-      button("Desprocessa") {
-        this.isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
-        icon = VaadinIcon.COG_O.create()
-        addThemeVariants(ButtonVariant.LUMO_SMALL)
-        onLeftClick {
-          view.desProcessaProdutos(multiSelect())
-        }
+      button {
+        isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
+        icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {view.marcaProdutos(multiSelect(), EDITAR)}
       }
+
+      
+
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
       }

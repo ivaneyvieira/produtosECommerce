@@ -1,34 +1,40 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
+import br.com.astrosoft.AppConfig
+import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.IMPORTADO
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.BASE
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITAR
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
-import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroImportado
+import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
+import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroBase
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 
-class PainelGridProdutoImportado(view: IProdutosEComerceView, blockUpdate: () -> Unit):
+class PainelGridProdutoBase(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGridProdutoAbstract(view, blockUpdate) {
-  override fun statusDefault(): Int = IMPORTADO.value
+  override fun statusDefault(): Int = BASE.value
   
   override fun updateGrid(itens: List<Produto>) {
     super.updateGrid(itens)
-    val filter = filterBar as? IFiltroImportado
+    val filter = filterBar as? IFiltroBase
     if(filter?.isEmpty() == false)
       itens.forEach(grid::select)
   }
   
-  override fun filterBar() = FilterBarImportado()
+  override fun filterBar() = FilterBarBase()
   
-  inner class FilterBarImportado: FilterBar(), IFiltroImportado {
+  inner class FilterBarBase: FilterBar(), IFiltroBase {
+    private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
@@ -37,12 +43,10 @@ class PainelGridProdutoImportado(view: IProdutosEComerceView, blockUpdate: () ->
     private lateinit var edtCodigo: IntegerField
     
     override fun FilterBar.contentBlock() {
-      button("Processar") {
-        icon = VaadinIcon.COG.create()
-        addThemeVariants(ButtonVariant.LUMO_SMALL)
-        onLeftClick {
-          view.processaProdutos(multiSelect())
-        }
+      button {
+        icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {view.marcaProdutos(multiSelect(), EDITAR)}
       }
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
@@ -62,6 +66,9 @@ class PainelGridProdutoImportado(view: IProdutosEComerceView, blockUpdate: () ->
       edtCl = clField {
         addValueChangeListener {blockUpdate()}
       }
+      edtCategoria = categoriaField {
+        addValueChangeListener {blockUpdate()}
+      }
     }
     
     override val codigo: Int
@@ -76,6 +83,8 @@ class PainelGridProdutoImportado(view: IProdutosEComerceView, blockUpdate: () ->
       get() = edtTipo.value
     override val cl: Cl?
       get() = edtCl.value
+    override val categoria: Categoria?
+      get() = edtCategoria.value
   }
 }
 

@@ -1,9 +1,11 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
-import br.com.astrosoft.produtosECommerce.model.beans.Marca.Companion
 import br.com.astrosoft.produtosECommerce.model.local
 
-data class Bitola(var bitolaNo: Int = 0, var name: String = "") {
+data class Bitola(var bitolaNo: Int = 0, var name: String = ""): ILookup {
+  override val lookupValue: String
+    get() = name
+  
   companion object {
     private val listBitolas = mutableListOf<Bitola>().apply {
       addAll(local.findAllBitola())
@@ -29,7 +31,7 @@ data class Bitola(var bitolaNo: Int = 0, var name: String = "") {
     fun delete(bitola: Bitola) {
       local.deleteBitola(bitola)
     }
-  
+    
     fun nextNo(): Int {
       val maxNo =
         findAll()
