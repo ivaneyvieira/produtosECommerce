@@ -3,6 +3,7 @@ package br.com.astrosoft.framework.view
 import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
+import br.com.astrosoft.produtosECommerce.model.beans.ILookup
 import com.github.mvysny.karibudsl.v10.KFormLayout
 import com.github.mvysny.karibudsl.v10.TabSheet
 import com.github.mvysny.karibudsl.v10.VaadinDsl
@@ -314,6 +315,25 @@ fun <T> (@VaadinDsl Grid<T>).addColumnButtonClipBoard(iconButton: VaadinIcon,
   }
 }
 
+fun <T, B: ILookup> (@VaadinDsl Grid<T>).addColumnBean(property: KProperty1<T, B?>,
+                                                       block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
+  val column = this.addColumnFor(property, renderer = TextRenderer {value ->
+    val bean = property.get(value) ?: return@TextRenderer ""
+    bean.lookupValue
+  })
+  column.setComparator {o1, o2 ->
+    val value1 = property.get(o1)
+    val value2 = property.get(o2)
+    val str1 = value1?.lookupValue ?: ""
+    val str2 = value2?.lookupValue ?: ""
+    str1.compareTo(str2)
+  }
+  column.width = "7em"
+  column.left()
+  column.block()
+  return column
+}
+
 fun <T> (@VaadinDsl Grid<T>).addColumnInt(property: KProperty1<T, Int?>,
                                           block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
   val column = this.addColumnFor(property)
@@ -396,4 +416,5 @@ fun <T> TabSheet.tabGrid(label: String, painelGrid: PainelGrid<T>) = tab {
   }
   button.addThemeVariants(ButtonVariant.LUMO_SMALL)
   this.addComponentAsFirst(button)
+  this.setId(label)
 }

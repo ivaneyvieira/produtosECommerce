@@ -17,7 +17,7 @@ class Produto(
   var marca: Int,
   var categoria: Int,
   var descricaoCompleta: String,
-  var bitola: String,
+  var bitola: Int,
   var imagem: String,
   var peso: Double,
   var altura: Double,
@@ -26,7 +26,7 @@ class Produto(
   var textLink: String,
   var especificacoes: String,
   var editado: Int
-             ) {
+             ) : ILookup{
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean
@@ -37,8 +37,14 @@ class Produto(
   var marcaBean
     get() = Marca.findById(marca)
     set(value) {
-      categoria = value?.marcaNo ?: 0
+      marca = value?.marcaNo ?: 0
     }
+  var bitolaBean
+    get() = Bitola.findById(bitola)
+    set(value) {
+      bitola = value?.bitolaNo ?: 0
+    }
+  
   val categoriaDesc
     get() = categoriaBean?.descricao ?: ""
   
@@ -63,6 +69,9 @@ class Produto(
     }
   }
   
+  override val lookupValue: String
+    get() = "$codigo $descricao"
+  
   override fun equals(other: Any?): Boolean {
     if(this === other) return true
     if(javaClass != other?.javaClass) return false
@@ -83,9 +92,8 @@ class Produto(
 }
 
 enum class EEditor(val value: Int) {
-  TODOS(-1),
-  EDITAR(0),
-  EDITADO(1),
-  IMPORTADO(2)
+  BASE(0),
+  EDITAR(1),
+  EDITADO(2)
 }
 

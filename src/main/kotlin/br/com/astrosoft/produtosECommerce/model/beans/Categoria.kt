@@ -6,7 +6,9 @@ import br.com.astrosoft.produtosECommerce.model.local
 data class Categoria(var categoriaNo: Int = 0,
                      var grupo: String = "",
                      var departamento: String = "",
-                     var secao: String = "") {
+                     var secao: String = ""): ILookup {
+  override val lookupValue: String
+    get() = descricao
   val codigo
     get() = categoriaNo.toString()
       .lpad(6, "0")

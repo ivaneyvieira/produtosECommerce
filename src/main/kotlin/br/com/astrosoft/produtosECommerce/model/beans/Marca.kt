@@ -2,7 +2,10 @@ package br.com.astrosoft.produtosECommerce.model.beans
 
 import br.com.astrosoft.produtosECommerce.model.local
 
-data class Marca(var marcaNo: Int = 0, var name: String = "") {
+data class Marca(var marcaNo: Int = 0, var name: String = "") : ILookup {
+  override val lookupValue: String
+    get() = name
+  
   companion object {
     private val listMarcas = mutableListOf<Marca>().apply {
       addAll(local.findAllMarca())
