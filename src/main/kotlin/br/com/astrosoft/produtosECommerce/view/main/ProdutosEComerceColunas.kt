@@ -99,19 +99,19 @@ fun Grid<Produto>.colImagem() = addColumnString(Produto::imagem) {
 }
 
 fun Grid<Produto>.colPeso() = addColumnDouble(Produto::peso) {
-  setHeader("Peso")
+  setHeader("Peso (kg)")
 }
 
 fun Grid<Produto>.colAltura() = addColumnDouble(Produto::altura) {
-  setHeader("Altura")
+  setHeader("Altura (cm)")
 }
 
 fun Grid<Produto>.colComprimento() = addColumnDouble(Produto::comprimento) {
-  setHeader("Comprimento")
+  setHeader("Comprimento (cm)")
 }
 
 fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
-  setHeader("Largura")
+  setHeader("Largura (cm)")
 }
 
 //
