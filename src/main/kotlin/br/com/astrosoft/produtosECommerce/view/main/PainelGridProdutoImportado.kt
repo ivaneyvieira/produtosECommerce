@@ -25,13 +25,6 @@ class PainelGridProdutoImportado(view: IProdutosEComerceView, blockUpdate: () ->
   PainelGridProdutoAbstract(view, blockUpdate) {
   override fun statusDefault() = IMPORTADO
   
-  override fun updateGrid(itens: List<Produto>) {
-    super.updateGrid(itens)
-    val filter = filterBar as? IFiltroImportado
-    if(filter?.isEmpty() == false)
-      itens.forEach(grid::select)
-  }
-  
   override fun filterBar() = FilterBarImportado()
   
   inner class FilterBarImportado: FilterBar(), IFiltroImportado {

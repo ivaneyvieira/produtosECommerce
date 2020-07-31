@@ -27,13 +27,6 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
   PainelGridProdutoAbstract(view, blockUpdate) {
   override fun statusDefault() = EDITAR
   
-  override fun updateGrid(itens: List<Produto>) {
-    super.updateGrid(itens)
-    val filter = filterBar as? IFiltroEditar
-    if(filter?.isEmpty() == false)
-      itens.forEach(grid::select)
-  }
-  
   override fun filterBar() = FilterBarEditar()
   
   inner class FilterBarEditar: FilterBar(), IFiltroEditar {
