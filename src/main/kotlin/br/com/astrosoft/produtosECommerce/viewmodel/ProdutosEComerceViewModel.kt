@@ -73,11 +73,11 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
   }
   
   fun updateGridImportado() {
-    view.updateGridEditado(listImportado())
+    view.updateGridImportado(listImportado())
   }
   
   private fun listImportado(): List<Produto> {
-    val filtro = view.filtroEditado
+    val filtro = view.filtroImportado
     return Produto.listaProdutos(codigo = filtro.codigo,
                                  descricaoI = filtro.descricaoI,
                                  descricaoF = filtro.descricaoF,
