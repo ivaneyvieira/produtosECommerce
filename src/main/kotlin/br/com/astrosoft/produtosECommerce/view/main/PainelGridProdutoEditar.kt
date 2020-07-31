@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.AppConfig
+import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.BASE

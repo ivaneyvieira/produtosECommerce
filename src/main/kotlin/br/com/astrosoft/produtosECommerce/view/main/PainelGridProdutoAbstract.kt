@@ -3,7 +3,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.Bitola
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
-import br.com.astrosoft.produtosECommerce.model.beans.ILookup
+import br.com.astrosoft.framework.model.ILookup
 import br.com.astrosoft.produtosECommerce.model.beans.Marca
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
@@ -28,8 +28,8 @@ import com.vaadin.flow.dom.DomEvent
 import java.math.BigDecimal
 import java.util.*
 
-abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdate: () -> Unit):
-  PainelGrid<Produto>(view, blockUpdate) {
+abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockUpdate: () -> Unit):
+  PainelGrid<Produto>(blockUpdate) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
     colCodigo()

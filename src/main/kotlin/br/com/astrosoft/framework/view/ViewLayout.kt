@@ -3,7 +3,7 @@ package br.com.astrosoft.framework.view
 import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
-import br.com.astrosoft.produtosECommerce.model.beans.ILookup
+import br.com.astrosoft.framework.model.ILookup
 import com.github.mvysny.karibudsl.v10.KFormLayout
 import com.github.mvysny.karibudsl.v10.TabSheet
 import com.github.mvysny.karibudsl.v10.VaadinDsl
@@ -316,7 +316,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnButtonClipBoard(iconButton: VaadinIcon,
 }
 
 fun <T, B: ILookup> (@VaadinDsl Grid<T>).addColumnBean(property: KProperty1<T, B?>,
-                                                       block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
+                                                                                                           block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
   val column = this.addColumnFor(property, renderer = TextRenderer {value ->
     val bean = property.get(value) ?: return@TextRenderer ""
     bean.lookupValue
