@@ -275,7 +275,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnDouble(property: KProperty1<T, Double?>,
     value1.compareTo(value2)
   }
   column.sortProperty = property
-  column.width = "6em"
+  column.width = "10em"
   column.right()
   column.block()
   return column
