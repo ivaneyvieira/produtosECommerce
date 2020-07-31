@@ -45,9 +45,9 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
         .sortedBy {it.lookupValue}
     }
     //
-    colImagem().textFieldEditor()
-    colTexLink().textFieldEditor()
-    colEspecificacoes().textFieldEditor()
+    colImagem().textAreaEditor()
+    colTexLink().textAreaEditor()
+    colEspecificacoes().textAreaEditor()
     //
     colPeso().decimalFieldEditor()
     colAltura().decimalFieldEditor()

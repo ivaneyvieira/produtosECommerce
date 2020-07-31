@@ -50,15 +50,15 @@ mysql_local "LOAD DATA LOCAL INFILE '${FILE_IMPORT}' INTO TABLE $TABLE" ${DATABA
 
 mysql_local "ALTER TABLE $TABLE ADD marca INT DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD cruds INT DEFAULT 0;" ${DATABASE}
-mysql_local "ALTER TABLE $TABLE ADD descricaoCompleta VARCHAR(120) DEFAULT '';" ${DATABASE}
+mysql_local "ALTER TABLE $TABLE ADD descricaoCompleta TEXT;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD bitola INT DEFAULT 0;" ${DATABASE}
-mysql_local "ALTER TABLE $TABLE ADD imagem VARCHAR(80) DEFAULT '';" ${DATABASE}
+mysql_local "ALTER TABLE $TABLE ADD imagem TEXT;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD peso DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD altura DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD comprimento DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD largura DECIMAL(15, 4) DEFAULT 0;" ${DATABASE}
-mysql_local "ALTER TABLE $TABLE ADD textLink VARCHAR(120) DEFAULT '';" ${DATABASE}
-mysql_local "ALTER TABLE $TABLE ADD especificacoes VARCHAR(120) DEFAULT '';" ${DATABASE}
+mysql_local "ALTER TABLE $TABLE ADD textLink TEXT;" ${DATABASE}
+mysql_local "ALTER TABLE $TABLE ADD especificacoes TEXT;" ${DATABASE}
 mysql_local "ALTER TABLE $TABLE ADD editado INT DEFAULT 0;" ${DATABASE}
 
 mysql_local "$(cat cruds.sql)" ${DATABASE}
