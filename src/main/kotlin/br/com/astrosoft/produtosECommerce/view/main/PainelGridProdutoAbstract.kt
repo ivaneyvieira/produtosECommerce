@@ -40,7 +40,7 @@ abstract class PainelGridProdutoAbstract(view: IProdutosEComerceView, blockUpdat
     colGrade()
     val colMarca = colMarca()
     //
-    val colCategoria = colCategoria()]
+    val colCategoria = colCategoria()
     //
     val colImagem = colImagem()
     val colTexLink = colTexLink()
