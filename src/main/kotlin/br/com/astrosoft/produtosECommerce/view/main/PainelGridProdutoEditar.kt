@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.AppConfig
+import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.BASE
@@ -24,7 +25,7 @@ import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGridProdutoAbstract(view, blockUpdate) {
-  override fun statusDefault(): Int = EDITAR.value
+  override fun statusDefault() = EDITAR
   
   override fun updateGrid(itens: List<Produto>) {
     super.updateGrid(itens)

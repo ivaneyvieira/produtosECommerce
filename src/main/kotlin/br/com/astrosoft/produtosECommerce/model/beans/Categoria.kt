@@ -1,5 +1,6 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
+import br.com.astrosoft.framework.model.ILookup
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.local
 
