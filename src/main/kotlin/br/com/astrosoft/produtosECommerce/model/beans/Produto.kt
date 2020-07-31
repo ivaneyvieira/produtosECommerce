@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
 import br.com.astrosoft.AppConfig
+import br.com.astrosoft.framework.model.ILookup
 import br.com.astrosoft.produtosECommerce.model.local
 
 class Produto(
@@ -26,7 +27,7 @@ class Produto(
   var textLink: String,
   var especificacoes: String,
   var editado: Int
-             ) : ILookup{
+             ) : ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean

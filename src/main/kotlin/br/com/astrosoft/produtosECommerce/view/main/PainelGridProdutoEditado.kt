@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.AppConfig
+import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
@@ -20,7 +21,7 @@ import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGridProdutoAbstract(view, blockUpdate) {
-  override fun statusDefault(): Int = EDITADO.value
+  override fun statusDefault() = EDITADO
   
   override fun filterBar() = FilterBarEditado()
   

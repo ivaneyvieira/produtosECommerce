@@ -1,4 +1,4 @@
-package br.com.astrosoft.produtosECommerce.view.main
+package br.com.astrosoft.framework.view
 
 import com.github.mvysny.karibudsl.v10.content
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
