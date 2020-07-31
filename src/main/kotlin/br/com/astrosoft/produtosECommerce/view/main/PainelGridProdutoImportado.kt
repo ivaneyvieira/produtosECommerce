@@ -46,16 +46,9 @@ class PainelGridProdutoImportado(view: IProdutosEComerceView, blockUpdate: () ->
     override fun FilterBar.contentBlock() {
       button {
         isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
-        icon = VaadinIcon.COPY.create()
-        addThemeVariants(LUMO_SMALL)
-        
-        onLeftClick {view.replicarProdutos(multiSelect(), BASE)}
-      }
-      button {
-        isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
         icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick {view.marcaProdutos(multiSelect(), EDITADO)}
+        onLeftClick {view.marcaProdutos(multiSelect(), BASE)}
       }
       button {
         icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
