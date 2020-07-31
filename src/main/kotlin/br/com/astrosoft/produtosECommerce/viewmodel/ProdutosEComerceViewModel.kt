@@ -9,6 +9,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.EEditor
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.BASE
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITAR
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.IMPORTADO
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.Marca
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
@@ -71,6 +72,22 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
     }
   }
   
+  fun updateGridImportado() {
+    view.updateGridEditado(listImportado())
+  }
+  
+  private fun listImportado(): List<Produto> {
+    val filtro = view.filtroEditado
+    return Produto.listaProdutos(codigo = filtro.codigo,
+                                 descricaoI = filtro.descricaoI,
+                                 descricaoF = filtro.descricaoF,
+                                 fornecedor = filtro.fornecedor,
+                                 type = filtro.type,
+                                 cl = filtro.cl,
+                                 editado = IMPORTADO,
+                                 categoria = filtro.categoria)
+  }
+  
   fun marcaProdutos(itens: List<Produto>, marca: EEditor) {
     itens.forEach {produto ->
       produto.editado = marca.value
@@ -84,6 +101,7 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
       BASE    -> updateGridBase()
       EDITAR  -> updateGridEditar()
       EDITADO -> updateGridEditado()
+      IMPORTADO -> updateGridImportado()
     }
   }
   
@@ -148,10 +166,24 @@ interface IFiltroBase {
                   && type == null && cl == null && categoria == null
 }
 
+interface IFiltroImportado {
+  val codigo: Int
+  val descricaoI: String
+  val descricaoF: String
+  val fornecedor: Fornecedor?
+  val type: TypePrd?
+  val cl: Cl?
+  val categoria: Categoria?
+  
+  fun isEmpty() = codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null
+                  && type == null && cl == null && categoria == null
+}
+
 interface IProdutosEComerceView: IView {
   fun updateGridEditar(itens: List<Produto>)
   fun updateGridEditado(itens: List<Produto>)
   fun updateGridBase(itens: List<Produto>)
+  fun updateGridImportado(itens: List<Produto>)
   fun panelStatus(): EEditor
   
   fun marcaProdutos(itens: List<Produto>, marca: EEditor)
@@ -162,6 +194,7 @@ interface IProdutosEComerceView: IView {
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado
   val filtroBase: IFiltroBase
+  val filtroImportado: IFiltroImportado
 }
 
 data class ProcessaBean(var marca: Marca? = null,

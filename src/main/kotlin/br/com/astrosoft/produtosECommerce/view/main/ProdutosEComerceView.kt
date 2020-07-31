@@ -7,11 +7,13 @@ import br.com.astrosoft.produtosECommerce.model.beans.EEditor
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.BASE
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITAR
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.IMPORTADO
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroBase
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditar
+import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroImportado
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import br.com.astrosoft.produtosECommerce.viewmodel.ProcessaBean
 import br.com.astrosoft.produtosECommerce.viewmodel.ProdutosEComerceViewModel
@@ -37,6 +39,7 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
   private var tabMain: TabSheet
   private val gridBase = PainelGridProdutoBase(this) {viewModel.updateGridBase()}
   private val gridEditar = PainelGridProdutoEditar(this) {viewModel.updateGridEditar()}
+  private val gridImportado = PainelGridProdutoImportado(this) {viewModel.updateGridImportado()}
   private val gridEditado = PainelGridProdutoEditado(this) {viewModel.updateGridEditado()}
   override val viewModel: ProdutosEComerceViewModel = ProdutosEComerceViewModel(this)
   
@@ -47,6 +50,7 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
       setSizeFull()
       tabGrid(TAB_BASE, gridBase)
       tabGrid(TAB_EDITAR, gridEditar)
+      tabGrid(TAB_IMPORTADO, gridImportado)
       tabGrid(TAB_EDITADO, gridEditado)
     }
     viewModel.updateGrid()
@@ -64,12 +68,17 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     gridBase.updateGrid(itens)
   }
   
+  override fun updateGridImportado(itens: List<Produto>) {
+    gridImportado.updateGrid(itens)
+  }
+  
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet {""} ?: ""
     return when(id) {
       TAB_BASE    -> BASE
       TAB_EDITAR  -> EDITAR
       TAB_EDITADO -> EDITADO
+      TAB_IMPORTADO -> IMPORTADO
       else        -> BASE
     }
   }
@@ -92,10 +101,13 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
     get() = gridEditado.filterBar as IFiltroEditado
   override val filtroBase: IFiltroBase
     get() = gridBase.filterBar as IFiltroBase
+  override val filtroImportado: IFiltroImportado
+    get() = gridImportado.filterBar as IFiltroImportado
   
   companion object {
     const val TAB_EDITAR: String = "Editar"
     const val TAB_EDITADO: String = "Editado"
+    const val TAB_IMPORTADO: String = "Importado"
     const val TAB_BASE: String = "Base"
   }
 }

@@ -95,6 +95,7 @@ class Produto(
 enum class EEditor(val value: Int) {
   BASE(0),
   EDITAR(1),
-  EDITADO(2)
+  EDITADO(2),
+  IMPORTADO(3)
 }
 
