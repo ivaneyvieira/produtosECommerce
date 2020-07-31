@@ -408,7 +408,7 @@ fun <T> ListDataProvider<T>.updateItens(itens: List<T>) {
   this.refreshAll()
 }
 
-fun <T> TabSheet.tabGrid(label: String, painelGrid: PainelGrid<T>) = tab {
+fun <T: Any> TabSheet.tabGrid(label: String, painelGrid: PainelGrid<T>) = tab {
   painelGrid
 }.apply {
   val button = Button(label) {

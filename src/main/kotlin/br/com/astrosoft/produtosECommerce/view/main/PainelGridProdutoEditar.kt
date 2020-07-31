@@ -25,7 +25,7 @@ import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGridProdutoAbstract(view, blockUpdate) {
-  override fun statusDefault(): Int = EDITAR.value
+  override fun statusDefault() = EDITAR
   
   override fun updateGrid(itens: List<Produto>) {
     super.updateGrid(itens)

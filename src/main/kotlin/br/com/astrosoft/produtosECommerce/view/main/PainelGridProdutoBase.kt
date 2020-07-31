@@ -23,7 +23,7 @@ import com.vaadin.flow.component.textfield.TextField
 
 class PainelGridProdutoBase(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGridProdutoAbstract(view, blockUpdate) {
-  override fun statusDefault(): Int = BASE.value
+  override fun statusDefault() = BASE
   
   override fun filterBar() = FilterBarBase()
   
