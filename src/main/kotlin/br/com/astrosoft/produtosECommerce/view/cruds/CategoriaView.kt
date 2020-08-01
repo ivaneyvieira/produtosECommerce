@@ -55,8 +55,7 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
   private val crud: GridCrud<Categoria>
   override val viewModel = CategoriaViewModel(this)
   
-  override fun isAccept() = AppConfig.userSaci?.roles()
-    ?.contains("ADMIN") == true
+  override fun isAccept() = true
   
   init {
     form("Editor de categorias")

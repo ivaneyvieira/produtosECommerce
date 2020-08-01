@@ -51,8 +51,7 @@ import java.util.function.*
 class BitolaView: ViewLayout<BitolaViewModel>(), IBitolaView {
   override val viewModel = BitolaViewModel(this)
   
-  override fun isAccept() = AppConfig.userSaci?.roles()
-    ?.contains("ADMIN") == true
+  override fun isAccept() =  true
   
   init {
     form("Editor de bitolas")

@@ -51,8 +51,7 @@ import java.util.function.*
 class MarcaView: ViewLayout<MarcaViewModel>(), IMarcaView {
   override val viewModel = MarcaViewModel(this)
   
-  override fun isAccept() = AppConfig.userSaci?.roles()
-    ?.contains("ADMIN") == true
+  override fun isAccept() =  true
   
   init {
     form("Editor de marcas")
