@@ -17,6 +17,7 @@ import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.getAll
 import com.github.mvysny.karibudsl.v10.grid
 import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
@@ -40,22 +41,22 @@ class PainelGridProdutoEditar(view: IProdutosEComerceView, blockUpdate: () -> Un
     
     override fun FilterBar.contentBlock() {
       button {
-        isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
         icon = VaadinIcon.COPY.create()
         addThemeVariants(LUMO_SMALL)
-        
         onLeftClick {view.replicarProdutos(multiSelect(), EDITAR)}
+        this.tooltip = "Copiar os dados da primeira linha para as outras linhas"
       }
       button {
-        isVisible = (AppConfig.userSaci as? UserSaci)?.admin ?: false
         icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.marcaProdutos(multiSelect(), BASE)}
+        this.tooltip = "Voltar para o painel base"
       }
       button {
         icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.marcaProdutos(multiSelect(), EDITADO)}
+        this.tooltip = "Enviar para o painel editado"
       }
       
       edtCodigo = codigoField {

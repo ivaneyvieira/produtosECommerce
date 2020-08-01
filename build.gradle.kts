@@ -73,6 +73,7 @@ dependencies {
   implementation("org.vaadin.olli:clipboardhelper:1.1.2")
   implementation("com.flowingcode.addons:font-awesome-iron-iconset:2.1.2")
   implementation("com.vaadin.componentfactory:autocomplete:2.2.0")
+  implementation("com.vaadin.componentfactory:tooltip:1.2.2")
   //  compile("org.webjars.bowergithub.vaadin:vaadin-combo-box:4.2.7")
   //compile("com.github.appreciated:app-layout-addon:4.0.0.rc4")
   implementation("org.vaadin.crudui:crudui:4.3.1")
