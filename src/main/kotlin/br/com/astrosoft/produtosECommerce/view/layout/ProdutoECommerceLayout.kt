@@ -58,17 +58,14 @@ class ProdutoECommerceLayout: AppLayout() {
           routerLink(text = "Produtos", viewType = ProdutosEComerceView::class)
         }
         tab {
-          this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
           this.icon(VaadinIcon.CUBES)
           routerLink(text = "Categoria", viewType = CategoriaView::class)
         }
         tab {
-          this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
           this.icon(VaadinIcon.CUBE)
           routerLink(text = "Marca", viewType = MarcaView::class)
         }
         tab {
-          this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
           this.icon(VaadinIcon.CIRCLE_THIN)
           routerLink(text = "Bitola", viewType = BitolaView::class)
         }
