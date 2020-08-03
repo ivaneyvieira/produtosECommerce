@@ -1,5 +1,6 @@
 package br.com.astrosoft.produtosECommerce.viewmodel
 
+import br.com.astrosoft.framework.util.normalize
 import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail

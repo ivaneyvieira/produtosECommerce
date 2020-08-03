@@ -12,6 +12,7 @@ import com.vaadin.flow.component.Focusable
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
+import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.data.provider.SortDirection
 
 abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockUpdate: () -> Unit):
@@ -47,6 +48,9 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     //
     colImagem().textAreaEditor()
     colTexLink().textAreaEditor()
+      .apply {
+        (this.editorComponent as? TextArea)?.isReadOnly = true
+      }
     colEspecificacoes().textAreaEditor()
     //
     colPeso().decimalFieldEditor()
