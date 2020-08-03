@@ -21,10 +21,29 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("descricaoF", descricaoF)
       addOptionalParameter("vendno", vendno)
       addOptionalParameter("typeno", typeno)
-      addOptionalParameter("clno", clno)
+      addOptionalParameter("clno1", clno)
+      addOptionalParameter("clno2", clno.max())
       addOptionalParameter("editado", editado)
-      addOptionalParameter("categoria", categoria)
+      addOptionalParameter("categoria1", categoria)
+      addOptionalParameter("categoria2", categoria.max())
     }
+  }
+  
+  fun String.max() : String {
+  val str = this.toString().lpad(6, "0")
+    var gru = str.substring(0, 2)
+    var dep = str.substring(2, 4)
+    var sec = str.substring(4, 6)
+    if(sec == "00") {
+      sec = "99"
+      if(dep == "00")
+        dep = "99"
+    }
+    return "$gru$dep$sec"
+  }
+  
+  fun Int.max() : Int {
+    return this.toString().max().toIntOrNull() ?: 0
   }
   
   fun salvaProduto(bean: Produto) {
