@@ -212,7 +212,7 @@ fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>
     "${it.categoriaNo} ${it.descricao}"
   }
   setRenderer(TemplateRenderer.of<Categoria>(
-    "<div>[[item.categoriaNo]]<br><small>[[item.clname]]</small></div>")
+    "<div>[[item.categoriaNo]]<br><small>[[item.descricao]]</small></div>")
                 .withProperty("categoriaNo", Categoria::categoriaNo)
                 .withProperty("descricao", Categoria::descricao))
   element.setAttribute("theme", "small")

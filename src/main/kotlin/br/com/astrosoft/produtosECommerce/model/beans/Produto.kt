@@ -2,6 +2,7 @@ package br.com.astrosoft.produtosECommerce.model.beans
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.model.ILookup
+import br.com.astrosoft.framework.util.normalize
 import br.com.astrosoft.produtosECommerce.model.local
 
 class Produto(
@@ -62,10 +63,14 @@ class Produto(
                                  typeno = type?.typeno ?: 0,
                                  clno = cl?.clno ?: "",
                                  editado = editado?.value ?: 0,
-                                 categoria = categoria?.categoriaNo ?: 0)
+                                 categoria = categoria?.categoriaNo ?: 0).map{
+        it.textLink = it.descricaoCompleta.normalize()
+        it
+      }
     }
     
     fun save(bean: Produto) {
+      bean.textLink = bean.descricaoCompleta.normalize()
       local.salvaProduto(bean)
     }
   }
