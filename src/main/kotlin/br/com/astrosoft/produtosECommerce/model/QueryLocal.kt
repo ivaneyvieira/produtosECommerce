@@ -68,7 +68,9 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
   
   fun findAllCategoria(): List<Categoria> {
     return query("""select categoriaNo, grupo, departamento, secao
-      |             from produtoEcomerce.categoria""".trimMargin(),
+      |             from produtoEcomerce.categoria
+      |             order by categoriaNo
+      |             """.trimMargin(),
                  Categoria::class)
   }
   
