@@ -79,7 +79,7 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
       this.setDataProvider({filter: String, offset: Int, limit: Int ->
                              itens().filter {
                                it.lookupValue.contains(filter)
-                             }
+                             }.subList(offset, offset + limit)
                                .stream()
                            }, {filter ->
                              itens().filter {
