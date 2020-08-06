@@ -27,7 +27,9 @@ class Produto(
   var largura: Double,
   var textLink: String,
   var especificacoes: String,
-  var editado: Int
+  var editado: Int,
+  val precoCheio : Double,
+  val ncm : String
              ) : ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
@@ -94,6 +96,33 @@ class Produto(
     var result = codigo.hashCode()
     result = 31 * result + grade.hashCode()
     return result
+  }
+  
+  fun descricaoCompletaPlanilha(): String {
+    return if(bitolaBean == null)
+      "$descricaoCompleta - $marcaDesc"
+    else
+      "$descricaoCompleta ${bitolaBean?.name}- $marcaDesc"
+  }
+  
+  fun imagem1(): String {
+    return imagem.split(" +".toRegex()).toList().getOrNull(0) ?: ""
+  }
+  
+  fun imagem2(): String {
+    return imagem.split(" +".toRegex()).toList().getOrNull(1) ?: ""
+  }
+  
+  fun imagem3(): String {
+    return imagem.split(" +".toRegex()).toList().getOrNull(2) ?: ""
+  }
+  
+  fun imagem4(): String {
+    return imagem.split(" +".toRegex()).toList().getOrNull(3) ?: ""
+  }
+  
+  fun imagem5(): String {
+    return imagem.split(" +".toRegex()).toList().getOrNull(4) ?: ""
   }
 }
 

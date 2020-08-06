@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
-import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
@@ -8,17 +7,28 @@ import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITAR
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
-import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
+import br.com.astrosoft.produtosECommerce.model.planilha.Planilha
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.github.mvysny.karibudsl.v10.tooltip
+import com.vaadin.flow.component.HasComponents
+import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.icon.VaadinIcon.TABLE
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.server.InputStreamFactory
+import com.vaadin.flow.server.StreamResource
+import org.vaadin.olli.FileDownloadWrapper
+import org.vaadin.stefan.LazyDownloadButton
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit):
   PainelGridProdutoAbstract(view, blockUpdate) {
@@ -42,6 +52,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
         onLeftClick {view.marcaProdutos(multiSelect(), EDITAR)}
         this.tooltip = "Voltar para o painel editar"
       }
+      this.buttonDownloadLazy()
       
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
@@ -81,5 +92,48 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     override val categoria: Categoria?
       get() = edtCategoria.value
   }
+  
+  private fun filename(): String {
+    val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
+    val textTime =
+      LocalDateTime.now()
+        .format(sdf)
+    val filename = "planilha$textTime.xlsx"
+    return filename
+  }
+  
+  private fun HasComponents.buttonDownloadLazy() {
+    val button = LazyDownloadButton(TABLE.create(),
+                                    {filename()},
+                                    {
+                                      val planilha = Planilha()
+                                      val bytes = planilha.grava(allItens())
+                                      ByteArrayInputStream(bytes)
+                                    }
+                                   )
+    button.addThemeVariants(LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    add(button)
+  }
+  
+  private fun HasComponents.buttonDownload() {
+    val button = Button().apply {
+      icon = TABLE.create()
+      addThemeVariants(LUMO_SMALL)
+      this.tooltip = "Salva a planilha"
+    }
+    val stream = StreamResource(filename(), ConverteByte {
+      val planilha = Planilha()
+      planilha.grava(allItens())
+    })
+    val buttonWrapper = FileDownloadWrapper(stream)
+    buttonWrapper.wrapComponent(button)
+    this.add(buttonWrapper)
+  }
 }
 
+class ConverteByte(val bytesBoletos: () -> ByteArray): InputStreamFactory {
+  override fun createInputStream(): InputStream {
+    return ByteArrayInputStream(bytesBoletos())
+  }
+}
