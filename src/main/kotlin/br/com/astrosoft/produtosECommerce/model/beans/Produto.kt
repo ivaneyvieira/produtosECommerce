@@ -4,6 +4,7 @@ import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.model.ILookup
 import br.com.astrosoft.framework.util.normalize
 import br.com.astrosoft.produtosECommerce.model.local
+import br.com.astrosoft.produtosECommerce.model.saci
 
 class Produto(
   val codigo: String,
@@ -28,9 +29,9 @@ class Produto(
   var textLink: String,
   var especificacoes: String,
   var editado: Int,
-  val precoCheio : Double,
-  val ncm : String
-             ) : ILookup {
+  val precoCheio: Double,
+  val ncm: String
+             ): ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean
@@ -48,7 +49,6 @@ class Produto(
     set(value) {
       bitola = value?.bitolaNo ?: 0
     }
-  
   val categoriaDesc
     get() = categoriaBean?.descricao ?: ""
   
@@ -65,10 +65,11 @@ class Produto(
                                  typeno = type?.typeno ?: 0,
                                  clno = cl?.clno ?: "",
                                  editado = editado?.value ?: 0,
-                                 categoria = categoria?.categoriaNo ?: 0).map{
-        it.textLink = it.descricaoCompleta.normalize()
-        it
-      }
+                                 categoria = categoria?.categoriaNo ?: 0)
+        .map {
+          it.textLink = it.descricaoCompleta.normalize()
+          it
+        }
     }
     
     fun save(bean: Produto) {
@@ -106,23 +107,58 @@ class Produto(
   }
   
   fun imagem1(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(0) ?: ""
+    return imagem.split(" +".toRegex())
+             .toList()
+             .getOrNull(0) ?: ""
   }
   
   fun imagem2(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(1) ?: ""
+    return imagem.split(" +".toRegex())
+             .toList()
+             .getOrNull(1) ?: ""
   }
   
   fun imagem3(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(2) ?: ""
+    return imagem.split(" +".toRegex())
+             .toList()
+             .getOrNull(2) ?: ""
   }
   
   fun imagem4(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(3) ?: ""
+    return imagem.split(" +".toRegex())
+             .toList()
+             .getOrNull(3) ?: ""
   }
   
   fun imagem5(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(4) ?: ""
+    return imagem.split(" +".toRegex())
+             .toList()
+             .getOrNull(4) ?: ""
+  }
+  
+  fun saldoLoja4(): Double {
+    val saldo = saci.saldoLoja4(codigo, grade)
+    return saldo.firstOrNull()?.saldo ?: 0.00
+  }
+  
+  fun grupo(): String {
+    return categoriaBean?.grupo ?: ""
+  }
+  
+  fun departamento(): String {
+    val departamento = categoriaBean?.departamento ?: ""
+    return if(departamento == "")
+      grupo()
+    else
+      "${grupo()}/$departamento"
+  }
+  
+  fun secao(): String {
+    val secao = categoriaBean?.secao ?: ""
+    return if(secao == "")
+      departamento()
+    else
+      "${departamento()}/$secao"
   }
 }
 
