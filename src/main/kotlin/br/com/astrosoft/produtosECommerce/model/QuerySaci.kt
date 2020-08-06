@@ -2,8 +2,10 @@ package br.com.astrosoft.produtosECommerce.model
 
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.util.DB
+import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
+import br.com.astrosoft.produtosECommerce.model.beans.SaldoLoja4
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 
@@ -29,6 +31,14 @@ class QuerySaci: QueryDB("saci", driver, url, username, password) {
       addOptionalParameter("no", user.no)
       addOptionalParameter("bitAcesso", user.bitAcesso)
       addOptionalParameter("storeno", user.storeno)
+    }
+  }
+  
+  fun saldoLoja4(codigo : String, grade : String) : List<SaldoLoja4>{
+    val sql = "/sqlSaci/saldoLoja4.sql"
+    return query(sql, SaldoLoja4::class) {
+      addOptionalParameter("prdno", codigo.toIntOrNull().toString().lpad(16, " "))
+      addOptionalParameter("grade", grade)
     }
   }
   
