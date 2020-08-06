@@ -1,6 +1,7 @@
 package br.com.astrosoft.framework.view
 
 import br.com.astrosoft.framework.model.ILookup
+import com.github.mvysny.karibudsl.v10.getAll
 import com.github.mvysny.karibudsl.v10.grid
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
@@ -46,6 +47,8 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
   
   fun singleSelect(): T? = grid.asSingleSelect().value
   fun multiSelect() = grid.asMultiSelect().value.toList()
+  fun allItens() = dataProvider.getAll()
+  
   
   protected abstract fun filterBar(): FilterBar
   
