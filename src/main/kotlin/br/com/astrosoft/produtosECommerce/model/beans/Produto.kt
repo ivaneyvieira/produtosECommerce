@@ -141,6 +141,11 @@ class Produto(
     return saldo.firstOrNull()?.saldo ?: 0.00
   }
   
+  fun price(): Double {
+    val price = saci.price(codigo)
+    return price.firstOrNull()?.price ?: 0.00
+  }
+  
   fun grupo(): String {
     return categoriaBean?.grupo ?: ""
   }
