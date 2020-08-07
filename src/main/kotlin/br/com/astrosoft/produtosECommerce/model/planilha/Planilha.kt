@@ -26,7 +26,7 @@ class Planilha {
     CampoString("estoque-situacao-sem-estoque") {prd -> "indisponivel"},
     CampoString("preco-sob-consulta") {prd -> "N"},
     CampoString("preco-custo"),
-    CampoNumber("preco-cheio") {prd -> prd.precoCheio},
+    CampoNumber("preco-cheio") {prd -> prd.price()},
     CampoString("preco-promocional"),
     CampoString("marca") {prd -> prd.marcaDesc},
     CampoNumber("peso-em-kg") {prd -> prd.peso},

@@ -5,6 +5,7 @@ import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
+import br.com.astrosoft.produtosECommerce.model.beans.Price
 import br.com.astrosoft.produtosECommerce.model.beans.SaldoLoja4
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
@@ -39,6 +40,13 @@ class QuerySaci: QueryDB("saci", driver, url, username, password) {
     return query(sql, SaldoLoja4::class) {
       addOptionalParameter("prdno", codigo.toIntOrNull().toString().lpad(16, " "))
       addOptionalParameter("grade", grade)
+    }
+  }
+  
+  fun price(codigo : String) : List<Price>{
+    val sql = "/sqlSaci/price.sql"
+    return query(sql, Price::class) {
+      addOptionalParameter("prdno", codigo.toIntOrNull().toString().lpad(16, " "))
     }
   }
   
