@@ -62,6 +62,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("altura", bean.altura)
       addOptionalParameter("textLink", bean.textLink)
       addOptionalParameter("especificacoes", bean.especificacoes)
+      addOptionalParameter("gradeCompleta", bean.gradeCompleta)
       addOptionalParameter("editado", bean.editado)
     }
   }

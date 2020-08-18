@@ -1,5 +1,6 @@
 SELECT codigo,
        grade,
+       gradeCompleta,
        barcode,
        descricao,
        vendno,
