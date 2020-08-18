@@ -74,6 +74,12 @@ fun Grid<Produto>.colDescricaoCompleta() = addColumnString(Produto::descricaoCom
   width = "20em"
 }
 
+fun Grid<Produto>.colGradeCompleta() = addColumnString(Produto::gradeCompleta) {
+  setHeader("Grade Completa")
+  isAutoWidth = false
+  width = "20em"
+}
+
 fun Grid<Produto>.colTexLink() = addColumnString(Produto::textLink) {
   setHeader("Nome TextLink")
   isAutoWidth = false

@@ -36,6 +36,7 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
         .sortedBy {it.lookupValue}
     }
     colGrade()
+    colGradeCompleta().textAreaEditor()
     colMarca().comboFieldEditor {
       Marca.findAll()
         .sortedBy {it.lookupValue}

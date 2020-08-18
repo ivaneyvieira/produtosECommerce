@@ -9,6 +9,7 @@ import br.com.astrosoft.produtosECommerce.model.saci
 class Produto(
   val codigo: String,
   val grade: String,
+  var gradeCompleta: String?,
   val barcode: String,
   val descricao: String,
   val vendno: Int,
