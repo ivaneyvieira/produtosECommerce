@@ -101,10 +101,14 @@ class Produto(
   }
   
   fun descricaoCompletaPlanilha(): String {
-    return if(bitolaBean == null)
-      "$descricaoCompleta - $marcaDesc"
+    val parteBitola = if(bitolaBean == null)
+      ""
     else
-      "$descricaoCompleta ${bitolaBean?.name}- $marcaDesc"
+      "${bitolaBean?.name} - "
+    val parteGrade = if(gradeCompleta.isNullOrBlank())
+      ""
+    else "$gradeCompleta - "
+    return "$descricaoCompleta - $parteBitola $parteGrade $marcaDesc"
   }
   
   fun imagem1(): String {
