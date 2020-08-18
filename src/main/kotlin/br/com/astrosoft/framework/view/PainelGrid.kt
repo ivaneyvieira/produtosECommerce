@@ -49,7 +49,6 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
   fun multiSelect() = grid.asMultiSelect().value.toList()
   fun allItens() = dataProvider.getAll()
   
-  
   protected abstract fun filterBar(): FilterBar
   
   open fun updateGrid(itens: List<T>) {
@@ -59,7 +58,7 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
   
   protected abstract fun Grid<T>.gridConfig()
   
-  fun Grid<T>.withEditor(classBean : KClass<T>, openEditor: (T) -> Unit, closeEditor: (T) -> Unit)  {
+  fun Grid<T>.withEditor(classBean: KClass<T>, openEditor: (T) -> Unit, closeEditor: (T) -> Unit) {
     val binder = Binder(classBean.java)
     editor.binder = binder
     addItemDoubleClickListener {event ->
@@ -79,16 +78,22 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
   private fun <T: ILookup> comboFieldComponente(itens: () -> List<T>): ComboBox<T> {
     return ComboBox<T>().apply {
       this.setSizeFull()
+      /*
       this.setDataProvider({filter: String, offset: Int, limit: Int ->
                              itens().filter {
-                               it.lookupValue.contains(filter)
-                             }.subList(offset, offset + limit)
+                               it.lookupValue.contains(filter, ignoreCase = true)
+                             }
+                               .subList(offset, offset + limit)
                                .stream()
                            }, {filter ->
                              itens().filter {
                                it.lookupValue.contains(filter)
                              }.size
                            })
+       */
+      this.setDataProvider({ item : T,  filterText: String ->
+        item.lookupValue.contains(filterText, ignoreCase = true)
+                           }, ListDataProvider(itens()))
       this.setItemLabelGenerator {bean ->
         bean.lookupValue
       }
@@ -98,9 +103,10 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
   
   private fun textAreaComponente() = TextArea().apply {
     this.valueChangeMode = ON_CHANGE
-    style.set("maxHeight", "50em");
-    style.set("minHeight", "2em");
+    style.set("maxHeight", "50em")
+    style.set("minHeight", "2em")
     addThemeVariants(TextAreaVariant.LUMO_SMALL)
+    this.isAutoselect = true
     setSizeFull()
   }
   
@@ -110,16 +116,20 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
       this.setSizeFull()
       addThemeVariants(TextFieldVariant.LUMO_SMALL)
       this.valueChangeMode = ON_CHANGE
+      this.isAutoselect = true
       this.locale = Locale.forLanguageTag("pt-BR")
     }
   }
   
   private fun textFieldComponente() = TextField().apply {
     addThemeVariants(LUMO_SMALL)
+    this.isAutoselect = true
     setSizeFull()
   }
   
+  //***********************************************************************************************
   //Editores de colunas
+  //***********************************************************************************************
   protected fun Column<T>.decimalFieldEditor(): Column<T> {
     val component = decimalFieldComponent()
     grid.editor.binder.forField(component)
