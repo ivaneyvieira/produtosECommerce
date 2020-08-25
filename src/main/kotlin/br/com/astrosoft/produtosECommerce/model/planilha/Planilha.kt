@@ -65,20 +65,27 @@ class Planilha {
         this.verticalAlignment = VerticalAlignment.TOP
       }
       val rowStyle = cellStyle("Row") {
-       // fillForegroundColor = IndexedColors.WHITE1.index
-        //fillPattern = FillPatternType.SOLID_FOREGROUND
         this.verticalAlignment = VerticalAlignment.TOP
       }
-      val st = sheet ("Produtos") {
+      val stSemGrade = sheet ("Produtos Sem Grade") {
         val headers = campos.map {it.header}
         row(headers, headerStyle)
-        listaProdutos.forEach {produto ->
+        listaProdutos.filter{it.grade == ""}.sortedBy {it.codigo + it.grade}.forEach {produto ->
+          val valores = campos.map {it.produceVakue(produto)}
+          row(valores, rowStyle)
+        }
+      }
+      val stComGrade = sheet ("Produtos Com Grade") {
+        val headers = campos.map {it.header}
+        row(headers, headerStyle)
+        listaProdutos.filter{it.grade != ""}.sortedBy {it.codigo + it.grade}.forEach {produto ->
           val valores = campos.map {it.produceVakue(produto)}
           row(valores, rowStyle)
         }
       }
       campos.forEachIndexed { index, campo ->
-        st.autoSizeColumn(index)
+        stSemGrade.autoSizeColumn(index)
+        stComGrade.autoSizeColumn(index)
       }
     }
     val outBytes = ByteArrayOutputStream()
