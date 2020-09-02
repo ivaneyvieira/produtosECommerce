@@ -27,7 +27,7 @@ class Planilha {
     CampoString("preco-sob-consulta") {prd -> "N"},
     CampoString("preco-custo"),
     CampoNumber("preco-cheio") {prd -> prd.price()},
-    CampoString("preco-promocional"),
+    CampoNumber("preco-promocional") {prd -> prd.price()},
     CampoString("marca") {prd -> prd.marcaDesc},
     CampoNumber("peso-em-kg") {prd -> prd.peso},
     CampoNumber("altura-em-cm") {prd -> prd.altura},
@@ -67,23 +67,27 @@ class Planilha {
       val rowStyle = cellStyle("Row") {
         this.verticalAlignment = VerticalAlignment.TOP
       }
-      val stSemGrade = sheet ("Produtos Sem Grade") {
+      val stSemGrade = sheet("Produtos Sem Grade") {
         val headers = campos.map {it.header}
         row(headers, headerStyle)
-        listaProdutos.filter{it.grade == ""}.sortedBy {it.codigo + it.grade}.forEach {produto ->
-          val valores = campos.map {it.produceVakue(produto)}
-          row(valores, rowStyle)
-        }
+        listaProdutos.filter {it.grade == ""}
+          .sortedBy {it.codigo + it.grade}
+          .forEach {produto ->
+            val valores = campos.map {it.produceVakue(produto)}
+            row(valores, rowStyle)
+          }
       }
-      val stComGrade = sheet ("Produtos Com Grade") {
+      val stComGrade = sheet("Produtos Com Grade") {
         val headers = campos.map {it.header}
         row(headers, headerStyle)
-        listaProdutos.filter{it.grade != ""}.sortedBy {it.codigo + it.grade}.forEach {produto ->
-          val valores = campos.map {it.produceVakue(produto)}
-          row(valores, rowStyle)
-        }
+        listaProdutos.filter {it.grade != ""}
+          .sortedBy {it.codigo + it.grade}
+          .forEach {produto ->
+            val valores = campos.map {it.produceVakue(produto)}
+            row(valores, rowStyle)
+          }
       }
-      campos.forEachIndexed { index, campo ->
+      campos.forEachIndexed {index, campo ->
         stSemGrade.autoSizeColumn(index)
         stComGrade.autoSizeColumn(index)
       }
