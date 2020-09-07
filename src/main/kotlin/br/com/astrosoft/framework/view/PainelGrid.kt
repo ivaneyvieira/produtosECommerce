@@ -78,19 +78,6 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
   private fun <T: ILookup> comboFieldComponente(itens: () -> List<T>): ComboBox<T> {
     return ComboBox<T>().apply {
       this.setSizeFull()
-      /*
-      this.setDataProvider({filter: String, offset: Int, limit: Int ->
-                             itens().filter {
-                               it.lookupValue.contains(filter, ignoreCase = true)
-                             }
-                               .subList(offset, offset + limit)
-                               .stream()
-                           }, {filter ->
-                             itens().filter {
-                               it.lookupValue.contains(filter)
-                             }.size
-                           })
-       */
       this.setDataProvider({ item : T,  filterText: String ->
         item.lookupValue.contains(filterText, ignoreCase = true)
                            }, ListDataProvider(itens()))

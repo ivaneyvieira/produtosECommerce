@@ -7,7 +7,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITAR
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
-import br.com.astrosoft.produtosECommerce.model.planilha.Planilha
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerce
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
@@ -106,7 +106,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     val button = LazyDownloadButton(TABLE.create(),
                                     {filename()},
                                     {
-                                      val planilha = Planilha()
+                                      val planilha = PlanilhaEcommerce()
                                       val bytes = planilha.grava(allItens())
                                       ByteArrayInputStream(bytes)
                                     }
@@ -123,7 +123,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
       this.tooltip = "Salva a planilha"
     }
     val stream = StreamResource(filename(), ConverteByte {
-      val planilha = Planilha()
+      val planilha = PlanilhaEcommerce()
       planilha.grava(allItens())
     })
     val buttonWrapper = FileDownloadWrapper(stream)

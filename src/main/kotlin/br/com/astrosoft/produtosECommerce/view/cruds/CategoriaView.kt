@@ -1,12 +1,15 @@
 package br.com.astrosoft.produtosECommerce.view.cruds
 
-import br.com.astrosoft.AppConfig
+
 import br.com.astrosoft.framework.view.ViewLayout
+import br.com.astrosoft.framework.view.listOrder
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaCategoria
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
 import br.com.astrosoft.produtosECommerce.viewmodel.CategoriaViewModel
 import br.com.astrosoft.produtosECommerce.viewmodel.ICategoriaView
+import com.flowingcode.vaadin.addons.fontawesome.FontAwesome
 import com.github.mvysny.karibudsl.v10.alignSelf
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.formLayout
@@ -17,6 +20,7 @@ import com.github.mvysny.karibudsl.v10.hr
 import com.github.mvysny.karibudsl.v10.integerField
 import com.github.mvysny.karibudsl.v10.responsiveSteps
 import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.ComponentEventListener
@@ -47,6 +51,10 @@ import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
 import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
+import org.vaadin.stefan.LazyDownloadButton
+import java.io.ByteArrayInputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.function.*
 
 @Route(layout = ProdutoECommerceLayout::class, value = "categoria")
@@ -93,6 +101,7 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
     crud.crudFormFactory = CategoriaCrudFormFactory()
     crud.setSizeFull()
     (crud.crudLayout as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
+    crud.crudLayout.addToolbarComponent(buttonDownloadLazy())
     return crud
   }
   
@@ -188,8 +197,8 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
     fun createCaption(operation: CrudOperation?): String {
       return operation?.let {crudOperation ->
         when(crudOperation) {
-          READ   -> "Consulta"
-          ADD    -> "Adiciona"
+          READ -> "Consulta"
+          ADD -> "Adiciona"
           UPDATE -> "Atualiza"
           DELETE -> "Remove"
         }
@@ -236,6 +245,29 @@ class CategoriaView: ViewLayout<CategoriaViewModel>(), ICategoriaView {
   
   companion object {
     const val TITLE = "Categoria"
+  }
+  
+  private fun filename(): String {
+    val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
+    val textTime =
+      LocalDateTime.now()
+        .format(sdf)
+    val filename = "categoria$textTime.xlsx"
+    return filename
+  }
+  
+  private fun buttonDownloadLazy(): LazyDownloadButton {
+    val button = LazyDownloadButton(FontAwesome.Solid.FILE_EXCEL.create(),
+                                    {filename()},
+                                    {
+                                      val planilha = PlanilhaCategoria()
+                                      val bytes = planilha.grava(crud.grid.listOrder())
+                                      ByteArrayInputStream(bytes)
+                                    }
+                                   )
+   // button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    return button
   }
 }
 
