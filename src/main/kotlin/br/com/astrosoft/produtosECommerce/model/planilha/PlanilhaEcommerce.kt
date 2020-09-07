@@ -7,8 +7,8 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 import java.io.ByteArrayOutputStream
 
-class Planilha {
-  private val campos: List<Campo<*>> = listOf(
+class PlanilhaEcommerce {
+  private val campos: List<Campo< *, Produto>> = listOf(
     CampoString("id"),
     CampoString("tipo") {prd -> "sem-variacao\n"},
     CampoString("sku-pai"),
@@ -98,7 +98,8 @@ class Planilha {
   }
 }
 
-open class Campo<T: Any>(val header: String, val produceVakue: (Produto) -> T)
+open class Campo<T: Any, B>(val header: String, val produceVakue: (B) -> T)
 
-class CampoString(header: String, produceVakue: (Produto) -> String = {""}): Campo<String>(header, produceVakue)
-class CampoNumber(header: String, produceVakue: (Produto) -> Double = {0.00}): Campo<Double>(header, produceVakue)
+class CampoString<B>(header: String, produceVakue: (B) -> String = {""}): Campo<String, B>(header, produceVakue)
+class CampoNumber<B>(header: String, produceVakue: (B) -> Double = {0.00}): Campo<Double, B>(header, produceVakue)
+class CampoInt<B>(header: String, produceVakue: (B) -> Int = {0}): Campo<Int, B>(header, produceVakue)

@@ -23,7 +23,7 @@ inline fun <reified T> @VaadinDsl Grid<T>.shiftSelect() {
       }
       else {
         if(pedidoFinal == null) {
-          val itens = list(grade)
+          val itens = grade.listOrder()
           pedidoFinal = pedido
           val p1 = itens.indexOf(pedidoInicial!!)
           val p2 = itens.indexOf(pedidoFinal!!) + 1
@@ -47,10 +47,10 @@ inline fun <reified T> @VaadinDsl Grid<T>.shiftSelect() {
   }
 }
 
-inline fun <reified T> list(grade: Grid<T>): List<T> {
-  val dataProvider = grade.dataProvider as ListDataProvider
+inline fun <reified T> Grid<T>.listOrder(): List<T> {
+  val dataProvider = this.dataProvider as ListDataProvider
   val filter = dataProvider.filter
-  val queryOrdem = comparator(grade)
+  val queryOrdem = comparator(this)
   return dataProvider.items.toList()
     .filter {
       filter?.test(it) ?: true
@@ -63,7 +63,7 @@ inline fun <reified T> list(grade: Grid<T>): List<T> {
 
 inline fun <reified T> (@VaadinDsl Grid<T>).addColumnSeq(label: String) {
   addColumn {
-    val lista = list(this)
+    val lista = this.listOrder()
     lista.indexOf(it) + 1
   }.apply {
     this.textAlign = END

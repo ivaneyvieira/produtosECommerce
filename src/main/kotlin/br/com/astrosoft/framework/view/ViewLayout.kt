@@ -82,7 +82,7 @@ abstract class ViewLayout<VM: ViewModel<*>>: VerticalLayout(), IView, BeforeLeav
       .withMessage(msg)
       .open()
   }
-  
+  //
   override fun showInformation(msg: String) {
     ConfirmDialog.createInfo()
       .withCaption("Informação")
@@ -402,9 +402,9 @@ fun DatePicker.localePtBr() {
       .setWeekdaysShort(Arrays.asList("dom", "seg", "ter", "qua", "qui", "sex", "sab"))
 }
 
-fun <T> ListDataProvider<T>.updateItens(itens: List<T>) {
+fun <T> ListDataProvider<T>.updateItens(itensGrid: List<T>) {
   this.items.clear()
-  this.items.addAll(itens.sortedBy {it.hashCode()})
+  this.items.addAll(itensGrid)
   this.refreshAll()
 }
 
