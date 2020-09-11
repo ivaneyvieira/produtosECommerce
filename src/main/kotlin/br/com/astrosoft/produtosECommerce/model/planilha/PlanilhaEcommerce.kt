@@ -2,10 +2,10 @@ package br.com.astrosoft.produtosECommerce.model.planilha
 
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import com.github.nwillc.poink.workbook
+import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
-import java.io.ByteArrayOutputStream
 
 class PlanilhaEcommerce {
   private val campos: List<Campo< *, Produto>> = listOf(
