@@ -156,19 +156,21 @@ class Produto(
   }
   
   fun departamento(): String {
-    val departamento = categoriaBean?.departamento ?: ""
-    return if(departamento == "")
-      grupo()
-    else
-      "${grupo()}/$departamento"
+    return categoriaBean?.departamento ?: ""
+    //val departamento = categoriaBean?.departamento ?: ""
+  //  return if(departamento == "")
+  //    grupo()
+  //  else
+    //  "${grupo()}/$departamento"
   }
   
   fun secao(): String {
-    val secao = categoriaBean?.secao ?: ""
-    return if(secao == "")
-      departamento()
-    else
-      "${departamento()}/$secao"
+    return categoriaBean?.secao ?: ""
+    //val secao = categoriaBean?.secao ?: ""
+   // return if(secao == "")
+   //   departamento()
+   // else
+   //   "${departamento()}/$secao"
   }
 }
 
