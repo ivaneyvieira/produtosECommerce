@@ -12,7 +12,7 @@ class PlanilhaCategoria {
   private val campos: List<Campo<*, Categoria>> = listOf(
     CampoInt("Número") {cat -> cat.categoriaNo},
     CampoString("Grupo") {cat -> cat.grupo},
-    CampoString("Departamento") {cat -> cat.descricao},
+    CampoString("Departamento") {cat -> cat.departamento},
     CampoString("Seção") {cat -> cat.secao}
                                                         )
 
