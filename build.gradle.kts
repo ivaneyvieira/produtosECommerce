@@ -2,17 +2,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val vaadinonkotlin_version = "1.0.1"
 val vaadin10_version = "14.3.0"
-val kotlin_version = "1.3.72"
+val kotlin_version = "1.4.10"
 val spring_boot_version = "2.3.1.RELEASE"
 
 plugins {
   id("org.springframework.boot") version "2.3.1.RELEASE"
   id("io.spring.dependency-management") version "1.0.9.RELEASE"
-  kotlin("jvm") version "1.3.72"
+  kotlin("jvm") version "1.4.10"
   id("org.gretty") version "3.0.1"
   war
   id("com.vaadin") version "0.7.0"
-  kotlin("plugin.spring") version "1.3.72"
+  kotlin("plugin.spring") version "1.4.10"
 }
 
 defaultTasks("clean", "vaadinBuildFrontend", "build")

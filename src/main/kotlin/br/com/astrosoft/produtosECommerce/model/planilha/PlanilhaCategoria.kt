@@ -10,10 +10,10 @@ import java.io.ByteArrayOutputStream
 
 class PlanilhaCategoria {
   private val campos: List<Campo<*, Categoria>> = listOf(
-    CampoInt("Número") {cat -> cat.categoriaNo},
-    CampoString("Grupo") {cat -> cat.grupo},
-    CampoString("Departamento") {cat -> cat.departamento},
-    CampoString("Seção") {cat -> cat.secao}
+    CampoInt("Número") {categoriaNo},
+    CampoString("Grupo") {grupo},
+    CampoString("Departamento") {departamento},
+    CampoString("Seção") {secao}
                                                         )
 
     fun grava(listaBean: List<Categoria>): ByteArray {

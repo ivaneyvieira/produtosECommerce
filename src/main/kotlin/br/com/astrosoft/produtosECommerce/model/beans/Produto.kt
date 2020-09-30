@@ -68,13 +68,13 @@ class Produto(
                                  editado = editado?.value ?: 0,
                                  categoria = categoria?.categoriaNo ?: 0)
         .map {
-          it.textLink = it.descricaoCompleta.normalize()
+          it.textLink = it.descricaoCompleta.normalize("-")
           it
         }
     }
     
     fun save(bean: Produto) {
-      bean.textLink = bean.descricaoCompleta.normalize()
+      bean.textLink = bean.descricaoCompleta.normalize("-")
       local.salvaProduto(bean)
     }
   }
@@ -158,20 +158,30 @@ class Produto(
   fun departamento(): String {
     return categoriaBean?.departamento ?: ""
     //val departamento = categoriaBean?.departamento ?: ""
-  //  return if(departamento == "")
-  //    grupo()
-  //  else
+    //  return if(departamento == "")
+    //    grupo()
+    //  else
     //  "${grupo()}/$departamento"
   }
   
   fun secao(): String {
     return categoriaBean?.secao ?: ""
     //val secao = categoriaBean?.secao ?: ""
-   // return if(secao == "")
-   //   departamento()
-   // else
-   //   "${departamento()}/$secao"
+    // return if(secao == "")
+    //   departamento()
+    // else
+    //   "${departamento()}/$secao"
   }
+  
+  fun tipoVariacao() = if(grade == "") "simples" else "com-variacao"
+  
+  fun ean(): String {
+    val price = saci.price(codigo)
+    return price.firstOrNull()?.gtin ?: ""
+  }
+  
+  fun palavrasChave() = listOf(grupo(), departamento(), secao(), marcaDesc).filter {it.trim() != ""}
+    .joinToString(",")
 }
 
 enum class EEditor(val value: Int) {
