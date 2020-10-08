@@ -164,7 +164,7 @@ class Produto(
   fun descricao() = if(variacao == VARIACAO) "" else especificacoes
   
   fun skuPai() = if(variacao == VARIACAO) "" else codigo
-  fun sku() = if(variacao == COM_VARIACAO) "" else barcode
+  fun sku() = if(variacao == COM_VARIACAO) "" else if(variacao == SIMPLES) codigo else barcode
   fun slugProduto() = if(variacao == VARIACAO) "" else descricaoCompleta.normalize(" ")
   fun marca() = if(variacao == VARIACAO) "" else marcaDesc
   fun tituloMarca() = if(variacao == VARIACAO) "" else textLink
