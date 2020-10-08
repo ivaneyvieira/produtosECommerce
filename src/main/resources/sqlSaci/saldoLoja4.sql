@@ -4,4 +4,4 @@ SELECT storeno,
 FROM sqldados.stk
 WHERE storeno = 4
   AND prdno = :prdno
-  AND grade = :grade
+  AND (grade = :grade OR :grade = '')

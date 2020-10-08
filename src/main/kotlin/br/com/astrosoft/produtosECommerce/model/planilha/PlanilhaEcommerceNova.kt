@@ -1,7 +1,8 @@
 package br.com.astrosoft.produtosECommerce.model.planilha
 
-import br.com.astrosoft.framework.util.normalize
+import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.SIMPLES
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
+import br.com.astrosoft.produtosECommerce.model.beans.explodeGrade
 import com.github.nwillc.poink.workbook
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.poi.ss.usermodel.FillPatternType
@@ -10,41 +11,44 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceNova {
   private val campos: List<Campo<*, Produto>> = listOf(
-    CampoString("nome_produto") {"${descricaoCompleta}-${marcaDesc}"},
+   // CampoString("codigo") {codigo},
+   // CampoString("grade") {grade},
+    
+    CampoString("nome_produto") {nomeProduto()},
     CampoString("tipo") {tipoVariacao()},
-    CampoString("sku_pai") {codigo},
-    CampoString("sku") {barcode},
-    CampoString("slug_produto") {descricaoCompleta.normalize(" ")},
-    CampoString("descricao_detalhada") {"${descricaoCompleta} ${marcaDesc}"},
-    CampoString("descricao") {especificacoes},
+    CampoString("sku_pai") {skuPai()},
+    CampoString("sku") {sku()},
+    CampoString("slug_produto") {slugProduto()},
+    CampoString("descricao_detalhada") {descricaoDetalhada()},
+    CampoString("descricao") {descricao()},
     CampoNumber("estoque") {saldoLoja4()},
     CampoString("ean") {ean()},
-    CampoString("marca") {marcaDesc},
+    CampoString("marca") {marca()},
     CampoNumber("preco_de") {price()},
     CampoNumber("preco_por") {price()},
     CampoNumber("peso_kg") {peso},
     CampoNumber("comprimento_metros") {comprimento / 100},
     CampoNumber("largura_metros") {largura / 100},
     CampoNumber("altura_metros") {altura / 100},
-    CampoString("titulo_meta"){textLink},
-    CampoString("palavras_chave"){palavrasChave()},
-    CampoString("descricao_pagina"){descricaoCompleta},
-    CampoString("categoria-nivel-1"){grupo()},
-    CampoString("categoria-nivel-2"){departamento()},
-    CampoString("categoria-nivel-3"){secao()},
+    CampoString("titulo_meta") {tituloMarca()},
+    CampoString("palavras_chave") {palavrasChave()},
+    CampoString("descricao_pagina") {descricaoPagina()},
+    CampoString("categoria-nivel-1") {grupo()},
+    CampoString("categoria-nivel-2") {departamento()},
+    CampoString("categoria-nivel-3") {secao()},
     CampoString("categoria-nivel-4"),
-    CampoString("url_imagem_1"){imagem1()},
-    CampoString("url_imagem_2"){imagem2()},
-    CampoString("url_imagem_3"){imagem3()},
-    CampoString("url_imagem_4"){imagem4()},
-    CampoString("url_imagem_5"){imagem5()},
+    CampoString("url_imagem_1") {imagem1()},
+    CampoString("url_imagem_2") {imagem2()},
+    CampoString("url_imagem_3") {imagem3()},
+    CampoString("url_imagem_4") {imagem4()},
+    CampoString("url_imagem_5") {imagem5()},
     CampoString("url_imagem_6"),
     CampoString("url_imagem_7"),
     CampoString("url_imagem_8"),
     CampoString("url_imagem_9"),
     CampoString("url_imagem_10"),
     CampoString("id_variacao_1"),
-    CampoString("variacao_1"),
+    CampoString("variacao_1") {gradeCor()},
     CampoString("id_variacao2"),
     CampoString("variacao_2")
                                                       )
@@ -73,7 +77,8 @@ class PlanilhaEcommerceNova {
         val headers = campos.map {it.header}
         row(headers, headerStyle)
         listaProdutos.filter {it.grade != ""}
-          .sortedBy {it.codigo + it.grade}
+          .explodeGrade()
+          .sortedWith(compareBy({it.codigo}, {it.variacao?.descricao ?: SIMPLES.descricao}, {it.grade}))
           .forEach {produto ->
             val valores = campos.map {it.produceVakue(produto)}
             row(valores, rowStyle)
