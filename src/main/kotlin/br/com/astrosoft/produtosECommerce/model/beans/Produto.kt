@@ -3,6 +3,9 @@ package br.com.astrosoft.produtosECommerce.model.beans
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.model.ILookup
 import br.com.astrosoft.framework.util.normalize
+import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.COM_VARIACAO
+import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.SIMPLES
+import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.VARIACAO
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 
@@ -31,7 +34,8 @@ class Produto(
   var especificacoes: String,
   var editado: Int,
   val precoCheio: Double,
-  val ncm: String
+  val ncm: String,
+  val variacao: EVariacao? = SIMPLES
              ): ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
@@ -82,32 +86,15 @@ class Produto(
   override val lookupValue: String
     get() = "$codigo $descricao"
   
-  override fun equals(other: Any?): Boolean {
-    if(this === other) return true
-    if(javaClass != other?.javaClass) return false
-    
-    other as Produto
-    
-    if(codigo != other.codigo) return false
-    if(grade != other.grade) return false
-    
-    return true
-  }
-  
-  override fun hashCode(): Int {
-    var result = codigo.hashCode()
-    result = 31 * result + grade.hashCode()
-    return result
-  }
-  
   fun descricaoCompletaPlanilha(): String {
-    val parteBitola = if(bitolaBean == null)
-      ""
-    else
-      "${bitolaBean?.name} - "
-    val parteGrade = if(gradeCompleta.isNullOrBlank())
-      ""
-    else "$gradeCompleta - "
+    val parteBitola = when(bitolaBean) {
+      null -> ""
+      else -> "${bitolaBean?.name} - "
+    }
+    val parteGrade = when {
+      !gradeCompleta.isNullOrBlank() -> "$gradeCompleta - "
+      else                           -> ""
+    }
     return "$descricaoCompleta - $parteBitola $parteGrade $marcaDesc"
   }
   
@@ -142,7 +129,7 @@ class Produto(
   }
   
   fun saldoLoja4(): Double {
-    val saldo = saci.saldoLoja4(codigo, grade)
+    val saldo = if(variacao == COM_VARIACAO) saci.saldoLoja4(codigo, "") else saci.saldoLoja4(codigo, grade)
     return saldo.firstOrNull()?.saldo ?: 0.00
   }
   
@@ -151,43 +138,117 @@ class Produto(
     return price.firstOrNull()?.price ?: 0.00
   }
   
-  fun grupo(): String {
-    return categoriaBean?.grupo ?: ""
-  }
+  fun grupo() = if(variacao == VARIACAO) ""
+  else categoriaBean?.grupo ?: ""
   
-  fun departamento(): String {
-    return categoriaBean?.departamento ?: ""
-    //val departamento = categoriaBean?.departamento ?: ""
-    //  return if(departamento == "")
-    //    grupo()
-    //  else
-    //  "${grupo()}/$departamento"
-  }
+  fun departamento() = if(variacao == VARIACAO) ""
+  else categoriaBean?.departamento ?: ""
   
-  fun secao(): String {
-    return categoriaBean?.secao ?: ""
-    //val secao = categoriaBean?.secao ?: ""
-    // return if(secao == "")
-    //   departamento()
-    // else
-    //   "${departamento()}/$secao"
-  }
+  fun secao() = if(variacao == VARIACAO) ""
+  else categoriaBean?.secao ?: ""
   
-  fun tipoVariacao() = if(grade == "") "simples" else "com-variacao"
+  fun tipoVariacao() = variacao?.descricao ?: SIMPLES.descricao
   
   fun ean(): String {
     val price = saci.price(codigo)
     return price.firstOrNull()?.gtin ?: ""
   }
   
-  fun palavrasChave() = listOf(grupo(), departamento(), secao(), marcaDesc).filter {it.trim() != ""}
+  fun palavrasChave() = if(variacao == VARIACAO) ""
+  else listOf(grupo(), departamento(), secao(), marcaDesc).filter {it.trim() != ""}
     .joinToString(",")
+  
+  fun nomeProduto() = if(variacao == VARIACAO) "" else "${descricaoCompleta} - ${marcaDesc}"
+  
+  fun descricaoDetalhada() = if(variacao == VARIACAO) "" else "${descricaoCompleta} ${marcaDesc}"
+  fun descricao() = if(variacao == VARIACAO) "" else especificacoes
+  
+  fun skuPai() = if(variacao == VARIACAO) "" else codigo
+  fun sku() = if(variacao == COM_VARIACAO) "" else barcode
+  fun slugProduto() = if(variacao == VARIACAO) "" else descricaoCompleta.normalize(" ")
+  fun marca() = if(variacao == VARIACAO) "" else marcaDesc
+  fun tituloMarca() = if(variacao == VARIACAO) "" else textLink
+  fun descricaoPagina() = if(variacao == VARIACAO) "" else descricaoCompleta
+  fun gradeCor() = if(variacao == VARIACAO) gradeCompleta ?: "" else ""
+  
+  fun chave() = ChaveProduto(codigo, grade)
+  fun copy(variacaoNova: EVariacao) = Produto(codigo,
+                                              grade,
+                                              gradeCompleta,
+                                              barcode,
+                                              descricao,
+                                              vendno,
+                                              fornecedor,
+                                              typeno,
+                                              typeName,
+                                              clno,
+                                              clname,
+                                              marca,
+                                              categoria,
+                                              descricaoCompleta,
+                                              bitola,
+                                              imagem,
+                                              peso,
+                                              altura,
+                                              comprimento,
+                                              largura,
+                                              textLink,
+                                              especificacoes,
+                                              editado,
+                                              precoCheio,
+                                              ncm, variacaoNova)
+  
+  override fun equals(other: Any?): Boolean {
+    if(this === other) return true
+    if(javaClass != other?.javaClass) return false
+    
+    other as Produto
+    
+    if(codigo != other.codigo) return false
+    if(grade != other.grade) return false
+    if(variacao != other.variacao) return false
+    
+    return true
+  }
+  
+  override fun hashCode(): Int {
+    var result = codigo.hashCode()
+    result = 31 * result + grade.hashCode()
+    result = 31 * result + variacao.hashCode()
+    return result
+  }
 }
+
+data class ChaveProduto(val codigo: String, val grade: String)
 
 enum class EEditor(val value: Int) {
   BASE(0),
   EDITAR(1),
   EDITADO(2),
   IMPORTADO(3)
+}
+
+enum class EVariacao(val descricao: String) {
+  SIMPLES("simples"),
+  VARIACAO("variacao"),
+  COM_VARIACAO("com-variacao")
+}
+
+fun List<Produto>.explodeGrade(): List<Produto> {
+  this.distinctBy {}
+  val comVariacao = this.distinctBy {it.codigo}.map {it.copy(COM_VARIACAO)}
+  val variacao = this.map {it.copy(VARIACAO)}
+  return comVariacao +  variacao
+  
+  /*
+  return this.groupBy {it.chave()}
+    .flatMap {entry ->
+      val list = entry.value
+      val comVariacao = list.firstOrNull()?.copy(COM_VARIACAO)
+      val variacao = list.map {it.copy(VARIACAO)}
+      listOfNotNull(comVariacao) +  variacao
+    }
+    
+   */
 }
 
