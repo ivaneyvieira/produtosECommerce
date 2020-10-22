@@ -30,7 +30,7 @@ class CategoriaViewModel(view: ICategoriaView): ViewModel<ICategoriaView>(view) 
       val catList = listSecao
         .firstOrNull {it.secao == categoria.secao}
       catList?.codigoSecao ?: (listSecao.map {it.codigoSecao}
-                                 .max() ?: 0) + 1
+                                 .maxOrNull() ?: 0) + 1
     }
   }
   
@@ -41,7 +41,7 @@ class CategoriaViewModel(view: ICategoriaView): ViewModel<ICategoriaView>(view) 
       val catList = listDepartamento
         .firstOrNull {it.departamento == categoria.departamento}
       catList?.codigoDepartamento ?: (listDepartamento.map {it.codigoDepartamento}
-                                        .max() ?: 0) + 1
+                                        .maxOrNull() ?: 0) + 1
     }
   }
   
@@ -52,7 +52,7 @@ class CategoriaViewModel(view: ICategoriaView): ViewModel<ICategoriaView>(view) 
       val catList = listGrupo
         .firstOrNull {it.grupo == categoria.grupo}
       catList?.codigoGrupo ?: (listGrupo.map {it.codigoGrupo}
-                                 .max() ?: 0) + 1
+                                 .maxOrNull() ?: 0) + 1
     }
   }
   
