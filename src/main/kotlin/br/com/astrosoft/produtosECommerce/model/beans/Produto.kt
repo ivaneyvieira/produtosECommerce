@@ -170,6 +170,7 @@ class Produto(
   fun tituloMarca() = if(variacao == VARIACAO) "" else textLink
   fun descricaoPagina() = if(variacao == VARIACAO) "" else descricaoCompleta
   fun gradeCor() = if(variacao == VARIACAO) gradeCompleta ?: "" else ""
+  fun cor() = if(variacao == VARIACAO) "Cor" else ""
   
   fun chave() = ChaveProduto(codigo, grade)
   fun copy(variacaoNova: EVariacao) = Produto(codigo,
