@@ -12,8 +12,8 @@ services:
       LANGUAGE: 'pt_BR:pt'
       LC_ALL: 'pt_BR.UTF-8'
     volumes:
-      - ./build/libs/producao.war:/usr/local/tomcat/webapps/produtosECommerce.war
-      - ./ebean.properties:/etc/ebean.properties
+      - ./build/libs/producao.war:/usr/local/tomcat/webapps/produtosECommerce.war:z
+      - ./ebean.properties:/etc/ebean.properties:z
     restart: always
     networks:
       rede_pedido_prdecomerce:
