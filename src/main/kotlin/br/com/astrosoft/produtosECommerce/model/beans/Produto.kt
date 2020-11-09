@@ -164,7 +164,13 @@ class Produto(
   fun descricao() = if(variacao == VARIACAO) "" else especificacoes
   
   fun skuPai() = if(variacao == COM_VARIACAO) codigo else ""
-  fun sku() = if(variacao == COM_VARIACAO) "" else if(variacao == SIMPLES) codigo else barcode
+  fun sku() = when(variacao) {
+    COM_VARIACAO -> ""
+    SIMPLES -> codigo
+    VARIACAO -> barcode
+    else         -> codigo
+  }
+  
   fun slugProduto() = if(variacao == VARIACAO) "" else descricaoCompleta.normalize(" ")
   fun marca() = if(variacao == VARIACAO) "" else marcaDesc
   fun tituloMarca() = if(variacao == VARIACAO) "" else textLink
@@ -237,10 +243,11 @@ enum class EVariacao(val descricao: String) {
 
 fun List<Produto>.explodeGrade(): List<Produto> {
   this.distinctBy {}
-  val comVariacao = this.distinctBy {it.codigo}.map {it.copy(COM_VARIACAO)}
+  val comVariacao =
+    this.distinctBy {it.codigo}
+      .map {it.copy(COM_VARIACAO)}
   val variacao = this.map {it.copy(VARIACAO)}
-  return comVariacao +  variacao
-  
+  return comVariacao + variacao
   /*
   return this.groupBy {it.chave()}
     .flatMap {entry ->
