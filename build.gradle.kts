@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val vaadinonkotlin_version = "1.0.1"
-val vaadin10_version = "14.3.0"
+val vaadinonkotlin_version = "1.0.2"
+val vaadin10_version = "14.3.4"
 val kotlin_version = "1.4.10"
 val spring_boot_version = "2.3.1.RELEASE"
 
@@ -90,7 +90,7 @@ dependencies {
 }
 
 vaadin {
-  productionMode = false
+  productionMode = true
 }
 
 dependencyManagement {
