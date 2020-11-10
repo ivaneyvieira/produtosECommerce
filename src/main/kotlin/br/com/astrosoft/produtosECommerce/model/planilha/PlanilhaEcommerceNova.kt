@@ -11,9 +11,8 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceNova {
   private val campos: List<Campo<*, Produto>> = listOf(
-   // CampoString("codigo") {codigo},
-   // CampoString("grade") {grade},
-    
+    // CampoString("codigo") {codigo},
+    // CampoString("grade") {grade},
     CampoString("nome_produto") {nomeProduto()},
     CampoString("tipo") {tipoVariacao()},
     CampoString("sku_pai") {skuPai()},
@@ -27,9 +26,9 @@ class PlanilhaEcommerceNova {
     CampoNumber("preco_de") {price()},
     CampoNumber("preco_por") {price()},
     CampoNumber("peso_kg") {peso},
-    CampoNumber("comprimento_metros") {comprimento },
-    CampoNumber("largura_metros") {largura },
-    CampoNumber("altura_metros") {altura },
+    CampoNumber("comprimento_metros") {comprimento / 100},
+    CampoNumber("largura_metros") {largura / 100},
+    CampoNumber("altura_metros") {altura / 100},
     CampoString("titulo_meta") {tituloMarca()},
     CampoString("palavras_chave") {palavrasChave()},
     CampoString("descricao_pagina") {descricaoPagina()},
@@ -47,7 +46,7 @@ class PlanilhaEcommerceNova {
     CampoString("url_imagem_8"),
     CampoString("url_imagem_9"),
     CampoString("url_imagem_10"),
-    CampoString("nome_variacao_1"){cor()},
+    CampoString("nome_variacao_1") {cor()},
     CampoString("variacao_1") {gradeCor()},
     CampoString("nome_variacao2"),
     CampoString("variacao_2")
