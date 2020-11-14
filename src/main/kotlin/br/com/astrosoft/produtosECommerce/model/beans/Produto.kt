@@ -58,6 +58,9 @@ class Produto(
   val categoriaDesc
     get() = categoriaBean?.descricao ?: ""
   
+  val corStr get() = GradeCor.findAll()
+    .firstOrNull {it.descricao == grade && grade != ""}?.codigoCor
+  
   companion object {
     private val userSaci: UserSaci
       get() = AppConfig.userSaci as UserSaci

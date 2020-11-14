@@ -5,6 +5,7 @@ import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.Bitola
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
+import br.com.astrosoft.produtosECommerce.model.beans.GradeCor
 import br.com.astrosoft.produtosECommerce.model.beans.Marca
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 
@@ -171,7 +172,38 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("bitolaNo", bitola.bitolaNo)
     }
   }
+  /*Cores*/
+  fun findAllCor(): List<GradeCor> {
+    return query("""select descricao, codigoCor
+      |             from produtoEcomerce.gradeCor""".trimMargin(),
+                 GradeCor::class)
+  }
   
+  fun addCor(cor: GradeCor) {
+    val sql = """INSERT INTO produtoEcomerce.gradeCor(descricao, codigoCor)
+           |  VALUES(:descricao, :codigoCor)""".trimMargin()
+    script(sql) {
+      addOptionalParameter("descricao", cor.descricao)
+      addOptionalParameter("codigoCor", cor.codigoCor)
+    }
+  }
+  
+  fun updateCor(cor: GradeCor) {
+    val sql = """UPDATE produtoEcomerce.gradeCor
+                        |  SET codigoCor   = :codigoCor
+                        |WHERE descricao   = :descricao""".trimMargin()
+    script(sql) {
+      addOptionalParameter("codigoCor", cor.codigoCor)
+      addOptionalParameter("descricao", cor.descricao)
+    }
+  }
+  
+  fun deleteCor(cor: GradeCor) {
+    val sql = "DELETE FROM  produtoEcomerce.gradeCor WHERE descricao = :descricao"
+    script(sql) {
+      addOptionalParameter("descricao", cor.descricao)
+    }
+  }
   companion object {
     private val db = DB("local")
     internal val driver = db.driver

@@ -100,8 +100,6 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
   
   private fun colorComponente() = ColorPickerFieldRaw().apply {
 
-   // style.set("maxHeight", "50em")
-   // style.set("minHeight", "2em")
     setPinnedPalettes(true)
     isHexEnabled = true
     isAlphaEnabled = false

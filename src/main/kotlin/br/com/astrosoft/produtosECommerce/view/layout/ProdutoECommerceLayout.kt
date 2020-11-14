@@ -3,6 +3,7 @@ package br.com.astrosoft.produtosECommerce.view.layout
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.produtosECommerce.view.cruds.BitolaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CategoriaView
+import br.com.astrosoft.produtosECommerce.view.cruds.CorView
 import br.com.astrosoft.produtosECommerce.view.main.ProdutosEComerceView
 import br.com.astrosoft.produtosECommerce.view.cruds.MarcaView
 import br.com.astrosoft.produtosECommerce.view.user.UsuarioView
@@ -68,6 +69,10 @@ class ProdutoECommerceLayout: AppLayout() {
         tab {
           this.icon(VaadinIcon.CIRCLE_THIN)
           routerLink(text = "Bitola", viewType = BitolaView::class)
+        }
+        tab {
+          this.icon(VaadinIcon.PALETE)
+          routerLink(text = "Cor", viewType = CorView::class)
         }
         tab {
           this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
