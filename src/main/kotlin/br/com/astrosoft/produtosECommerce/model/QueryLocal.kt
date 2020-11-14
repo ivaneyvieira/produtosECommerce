@@ -30,8 +30,10 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
     }
   }
   
-  fun String.max() : String {
-  val str = this.toString().lpad(6, "0")
+  fun String.max(): String {
+    val str =
+      this.toString()
+        .lpad(6, "0")
     var gru = str.substring(0, 2)
     var dep = str.substring(2, 4)
     var sec = str.substring(4, 6)
@@ -43,8 +45,10 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
     return "$gru$dep$sec"
   }
   
-  fun Int.max() : Int {
-    return this.toString().max().toIntOrNull() ?: 0
+  fun Int.max(): Int {
+    return this.toString()
+             .max()
+             .toIntOrNull() ?: 0
   }
   
   fun salvaProduto(bean: Produto) {
@@ -172,6 +176,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("bitolaNo", bitola.bitolaNo)
     }
   }
+  
   /*Cores*/
   fun findAllCor(): List<GradeCor> {
     return query("""select descricao, codigoCor
@@ -190,20 +195,23 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
   
   fun updateCor(cor: GradeCor) {
     val sql = """UPDATE produtoEcomerce.gradeCor
-                        |  SET codigoCor   = :codigoCor
-                        |WHERE descricao   = :descricao""".trimMargin()
+                        |  SET codigoCor   = :codigoCor,
+                        |  descricao       = :descricao
+                        | WHERE descricao   = :descricaoOriginal""".trimMargin()
     script(sql) {
       addOptionalParameter("codigoCor", cor.codigoCor)
       addOptionalParameter("descricao", cor.descricao)
+      addOptionalParameter("descricaoOriginal", cor.descricaoOriginal)
     }
   }
   
   fun deleteCor(cor: GradeCor) {
-    val sql = "DELETE FROM  produtoEcomerce.gradeCor WHERE descricao = :descricao"
+    val sql = "DELETE FROM  produtoEcomerce.gradeCor WHERE descricao = :descricaoOriginal"
     script(sql) {
-      addOptionalParameter("descricao", cor.descricao)
+      addOptionalParameter("descricaoOriginal", cor.descricaoOriginal)
     }
   }
+  
   companion object {
     private val db = DB("local")
     internal val driver = db.driver

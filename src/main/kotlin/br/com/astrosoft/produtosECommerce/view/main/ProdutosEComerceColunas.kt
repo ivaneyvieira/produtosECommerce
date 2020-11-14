@@ -2,9 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.addColumnBean
 import br.com.astrosoft.framework.view.addColumnDouble
-import br.com.astrosoft.framework.view.addColumnInt
 import br.com.astrosoft.framework.view.addColumnString
-import br.com.astrosoft.produtosECommerce.model.beans.Bitola
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
@@ -21,11 +19,12 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.combobox.ComboBox.ItemFilter
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.textfield.TextFieldVariant
+import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.data.renderer.TemplateRenderer
-import com.vaadin.flow.data.renderer.TextRenderer
 import com.vaadin.flow.data.value.ValueChangeMode.TIMEOUT
 
 fun Grid<Produto>.colCodigo() = addColumnString(Produto::codigo) {
@@ -57,7 +56,24 @@ fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
 fun Grid<Produto>.colCor() = addColumnString(Produto::corStr) {
   setHeader("Codigo Cor")
   isAutoWidth = false
-  width = "20em"
+  width = "8em"
+}
+
+fun Grid<Produto>.colCorPainel(){
+  this.addColumn(ComponentRenderer{produto->
+   VerticalLayout().apply {
+     if(produto.corStr.isNullOrBlank()) {
+       this.element.style.remove("backgroundColor")
+     }
+     else {
+       this.element.style.set("backgroundColor", produto.corStr)
+     }
+   }
+  }).apply {
+    setHeader("Cor")
+    isAutoWidth = false
+    width = "3em"
+  }
 }
 
 fun Grid<Produto>.colTipo() = addColumnString(Produto::typeName) {
