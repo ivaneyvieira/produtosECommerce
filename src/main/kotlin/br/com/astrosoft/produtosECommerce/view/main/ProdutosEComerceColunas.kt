@@ -54,6 +54,12 @@ fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
   setHeader("Fornecedor")
 }
 
+fun Grid<Produto>.colCor() = addColumnString(Produto::cor) {
+  setHeader("Codigo Cor")
+  isAutoWidth = false
+  width = "20em"
+}
+
 fun Grid<Produto>.colTipo() = addColumnString(Produto::typeName) {
   setHeader("Tipo")
 }
