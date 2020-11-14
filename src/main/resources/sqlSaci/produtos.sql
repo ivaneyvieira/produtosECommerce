@@ -21,7 +21,8 @@ SELECT codigo,
        textLink,
        especificacoes,
        precoCheio,
-       ncm
+       ncm,
+       cor
 FROM produtoEcomerce.produto
 WHERE (codigo = :codigo OR :codigo = 0)
   AND descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')

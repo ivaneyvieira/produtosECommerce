@@ -35,6 +35,7 @@ class Produto(
   var editado: Int,
   val precoCheio: Double,
   val ncm: String,
+  var cor: String,
   val variacao: EVariacao? = SIMPLES
              ): ILookup {
   val marcaDesc
@@ -203,7 +204,7 @@ class Produto(
                                               especificacoes,
                                               editado,
                                               precoCheio,
-                                              ncm, variacaoNova)
+                                              ncm, cor, variacaoNova)
   
   override fun equals(other: Any?): Boolean {
     if(this === other) return true

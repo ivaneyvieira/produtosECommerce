@@ -51,7 +51,7 @@ dependencies {
   providedCompile("javax.servlet:javax.servlet-api:3.1.0")
   
   implementation("com.zaxxer:HikariCP:3.4.1")
-  // logging
+
   // currently we are logging through the SLF4J API to LogBack. See src/main/resources/logback.xml file for the logger configuration
   implementation("ch.qos.logback:logback-classic:1.2.3")
   implementation("org.slf4j:slf4j-api:1.7.30")
@@ -77,6 +77,14 @@ dependencies {
   implementation("com.vaadin.componentfactory:tooltip:1.2.2")
   implementation("com.github.nwillc:poink:0.4.6")
   implementation("org.vaadin.stefan:lazy-download-button:1.0.0")
+  /*
+  <dependency>
+    <groupId>com.github.appreciated</groupId>
+    <artifactId>color-picker-field-flow</artifactId>
+    <version>2.0.0.beta6</version>
+</dependency>
+   */
+  implementation("com.github.appreciated:color-picker-field-flow:2.0.0.beta6")
   //  compile("org.webjars.bowergithub.vaadin:vaadin-combo-box:4.2.7")
   //compile("com.github.appreciated:app-layout-addon:4.0.0.rc4")
   implementation("org.vaadin.crudui:crudui:4.3.1")
