@@ -35,6 +35,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
+import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import org.claspina.confirmdialog.ConfirmDialog
@@ -76,6 +77,20 @@ class CorView: ViewLayout<CorViewModel>(), ICorView {
       .setHeader("Descrição")
     crud.grid.getColumnBy(GradeCor::codigoCor)
       .setHeader("Código Cor")
+    crud.grid.addColumn(ComponentRenderer{produto->
+      VerticalLayout().apply {
+        if(produto.codigoCor.isBlank()) {
+          this.element.style.remove("backgroundColor")
+        }
+        else {
+          this.element.style.set("backgroundColor", produto.codigoCor)
+        }
+      }
+    }).apply {
+      setHeader("Cor")
+      isAutoWidth = false
+      width = "3em"
+    }
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
@@ -103,7 +118,7 @@ class CorCrudFormFactory: AbstractCrudFormFactory<GradeCor>() {
                             readOnly: Boolean,
                             cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
                             operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
-    val binder = Binder<GradeCor>(GradeCor::class.java)
+    val binder = Binder(GradeCor::class.java)
     
     return VerticalLayout().apply {
       isSpacing = false
@@ -126,6 +141,7 @@ class CorCrudFormFactory: AbstractCrudFormFactory<GradeCor>() {
         }
         colorPick("Código Cor") {
           binder.bind(this, GradeCor::codigoCor.name)
+          this.isReadOnly = readOnly
           colspan = 4
         }
       }
