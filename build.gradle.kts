@@ -71,7 +71,7 @@ dependencies {
   implementation("org.vaadin.tabs:paged-tabs:2.0.1")
   implementation("org.claspina:confirm-dialog:2.0.0")
   implementation("org.vaadin.olli:clipboardhelper:1.1.2")
-  implementation("org.vaadin.olli:file-download-wrapper:3.0.1")
+  //implementation("org.vaadin.olli:file-download-wrapper:3.0.1")
   implementation("com.flowingcode.addons:font-awesome-iron-iconset:2.1.2")
   implementation("com.vaadin.componentfactory:autocomplete:2.2.0")
   implementation("com.vaadin.componentfactory:tooltip:1.2.2")

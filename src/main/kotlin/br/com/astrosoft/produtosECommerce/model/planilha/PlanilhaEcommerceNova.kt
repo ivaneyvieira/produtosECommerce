@@ -83,7 +83,7 @@ class PlanilhaEcommerceNova {
             row(valores, rowStyle)
           }
       }
-      campos.forEachIndexed {index, campo ->
+      campos.forEachIndexed {index, _ ->
         stSemGrade.autoSizeColumn(index)
         stComGrade.autoSizeColumn(index)
       }
