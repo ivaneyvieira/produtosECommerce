@@ -37,7 +37,7 @@ data class Marca(var marcaNo: Int = 0, var name: String = "") :
     fun nextNo(): Int {
       val maxNo =
         findAll().map {it.marcaNo}
-          .max() ?: 0
+          .maxOrNull() ?: 0
       return maxNo + 1
     }
   }

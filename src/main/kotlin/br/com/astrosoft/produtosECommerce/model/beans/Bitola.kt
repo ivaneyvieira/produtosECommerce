@@ -38,7 +38,7 @@ data class Bitola(var bitolaNo: Int = 0, var name: String = ""):
       val maxNo =
         findAll()
           .map {it.bitolaNo}
-          .max() ?: 0
+          .maxOrNull() ?: 0
       return maxNo + 1
     }
   }

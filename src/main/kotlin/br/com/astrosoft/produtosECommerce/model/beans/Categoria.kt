@@ -50,12 +50,12 @@ data class Categoria(var categoriaNo: Int = 0,
     fun findByDescricao(grupo: String?, departamento: String?, secao: String?) = listCategoria.firstOrNull {categoria ->
       when {
         grupo.isNullOrBlank()        -> false
-        departamento.isNullOrBlank() -> categoria.grupo.toUpperCase() == grupo.toUpperCase()
-        secao.isNullOrBlank()        -> categoria.grupo.toUpperCase() == grupo.toUpperCase()
-                                        && categoria.departamento.toUpperCase() == departamento.toUpperCase()
-        else                         -> categoria.grupo.toUpperCase() == grupo.toUpperCase()
-                                        && categoria.departamento.toUpperCase() == departamento.toUpperCase()
-                                        && categoria.secao.toUpperCase() == secao.toUpperCase()
+        departamento.isNullOrBlank() -> categoria.grupo.equals(grupo, ignoreCase = true)
+        secao.isNullOrBlank()        -> categoria.grupo.equals(grupo, ignoreCase = true)
+                                        && categoria.departamento.equals(departamento, ignoreCase = true)
+        else                         -> categoria.grupo.equals(grupo, ignoreCase = true)
+                                        && categoria.departamento.equals(departamento, ignoreCase = true)
+                                        && categoria.secao.equals(secao, ignoreCase = true)
       }
     }
     

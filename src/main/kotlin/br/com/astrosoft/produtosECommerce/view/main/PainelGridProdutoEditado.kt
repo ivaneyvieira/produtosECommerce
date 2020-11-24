@@ -14,7 +14,6 @@ import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
-import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
@@ -22,8 +21,6 @@ import com.vaadin.flow.component.icon.VaadinIcon.TABLE
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.server.InputStreamFactory
-import com.vaadin.flow.server.StreamResource
-import org.vaadin.olli.FileDownloadWrapper
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
 import java.io.InputStream
@@ -115,7 +112,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     button.tooltip = "Salva a planilha"
     add(button)
   }
-  
+  /*
   private fun HasComponents.buttonDownload() {
     val button = Button().apply {
       icon = TABLE.create()
@@ -129,7 +126,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     val buttonWrapper = FileDownloadWrapper(stream)
     buttonWrapper.wrapComponent(button)
     this.add(buttonWrapper)
-  }
+  }*/
 }
 
 class ConverteByte(val bytesBoletos: () -> ByteArray): InputStreamFactory {

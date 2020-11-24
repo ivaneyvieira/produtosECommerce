@@ -136,13 +136,13 @@ abstract class PrintText<T> {
       .append(0x1b.toChar())
       .append(0x45.toChar())
       .append(0x00.toChar())
-      .appendln()
+      .append("\n")
     return stringBuffer.toString()
   }
   
   private fun StringBuilder.line(line: String): StringBuilder {
     this.append(line)
-      .appendln()
+      .append("\n")
     return this
   }
   

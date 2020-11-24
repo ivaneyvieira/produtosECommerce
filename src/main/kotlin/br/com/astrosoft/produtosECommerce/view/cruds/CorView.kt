@@ -2,14 +2,16 @@ package br.com.astrosoft.produtosECommerce.view.cruds
 
 import br.com.astrosoft.framework.view.ViewLayout
 import br.com.astrosoft.framework.view.colorPick
+import br.com.astrosoft.framework.view.listOrder
+import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.GradeCor
-import br.com.astrosoft.produtosECommerce.model.beans.Marca
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaCategoria
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaGradeCor
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
 import br.com.astrosoft.produtosECommerce.viewmodel.CorViewModel
 import br.com.astrosoft.produtosECommerce.viewmodel.ICorView
-import br.com.astrosoft.produtosECommerce.viewmodel.IMarcaView
-import br.com.astrosoft.produtosECommerce.viewmodel.MarcaViewModel
+import com.flowingcode.vaadin.addons.fontawesome.FontAwesome.Solid.FILE_EXCEL
 import com.github.mvysny.karibudsl.v10.alignSelf
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.formLayout
@@ -17,9 +19,9 @@ import com.github.mvysny.karibudsl.v10.getColumnBy
 import com.github.mvysny.karibudsl.v10.h3
 import com.github.mvysny.karibudsl.v10.horizontalLayout
 import com.github.mvysny.karibudsl.v10.hr
-import com.github.mvysny.karibudsl.v10.integerField
 import com.github.mvysny.karibudsl.v10.responsiveSteps
 import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.ComponentEventListener
@@ -32,8 +34,6 @@ import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
-import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
-import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.PageTitle
@@ -48,11 +48,16 @@ import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
 import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout
+import org.vaadin.stefan.LazyDownloadButton
+import java.io.ByteArrayInputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.function.*
 
 @Route(layout = ProdutoECommerceLayout::class, value = "cor")
 @PageTitle(TITLE)
 class CorView: ViewLayout<CorViewModel>(), ICorView {
+  private val crud: GridCrud<GradeCor>
   override val viewModel = CorViewModel(this)
   
   override fun isAccept() = true
@@ -60,7 +65,7 @@ class CorView: ViewLayout<CorViewModel>(), ICorView {
   init {
     form("Editor de cores")
     setSizeFull()
-    val crud: GridCrud<GradeCor> = gridCrud()
+    crud = gridCrud()
     // layout configuration
     setSizeFull()
     this.add(crud)
@@ -77,7 +82,7 @@ class CorView: ViewLayout<CorViewModel>(), ICorView {
       .setHeader("Descrição")
     crud.grid.getColumnBy(GradeCor::codigoCor)
       .setHeader("Código Cor")
-    crud.grid.addColumn(ComponentRenderer{produto->
+    crud.grid.addColumn(ComponentRenderer {produto ->
       VerticalLayout().apply {
         if(produto.codigoCor.isBlank()) {
           this.element.style.remove("backgroundColor")
@@ -86,11 +91,12 @@ class CorView: ViewLayout<CorViewModel>(), ICorView {
           this.element.style.set("backgroundColor", produto.codigoCor)
         }
       }
-    }).apply {
-      setHeader("Cor")
-      isAutoWidth = false
-      width = "3em"
-    }
+    })
+      .apply {
+        setHeader("Cor")
+        isAutoWidth = false
+        width = "3em"
+      }
     
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
     
@@ -98,6 +104,7 @@ class CorView: ViewLayout<CorViewModel>(), ICorView {
     
     crud.setSizeFull()
     (crud.crudLayout as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
+    crud.crudLayout.addToolbarComponent(buttonDownloadLazy())
     return crud
   }
   
@@ -107,6 +114,28 @@ class CorView: ViewLayout<CorViewModel>(), ICorView {
       {user: GradeCor -> viewModel.add(user)},
       {user: GradeCor? -> viewModel.update(user)},
       {user: GradeCor? -> viewModel.delete(user)})
+  }
+  
+  private fun filename(): String {
+    val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
+    val textTime =
+      LocalDateTime.now()
+        .format(sdf)
+    return "cores$textTime.xlsx"
+  }
+  
+  private fun buttonDownloadLazy(): LazyDownloadButton {
+    val button = LazyDownloadButton(FILE_EXCEL.create(),
+                                    {filename()},
+                                    {
+                                      val planilha = PlanilhaGradeCor()
+                                      val bytes = planilha.grava(crud.grid.listOrder())
+                                      ByteArrayInputStream(bytes)
+                                    }
+                                   )
+    // button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    return button
   }
 }
 
@@ -213,4 +242,6 @@ class CorCrudFormFactory: AbstractCrudFormFactory<GradeCor>() {
   companion object {
     const val TITLE = "Cor"
   }
+  
+
 }

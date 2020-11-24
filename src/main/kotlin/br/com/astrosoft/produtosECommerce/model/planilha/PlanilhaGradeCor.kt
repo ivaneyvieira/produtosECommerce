@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.model.planilha
 
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
+import br.com.astrosoft.produtosECommerce.model.beans.GradeCor
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import com.github.nwillc.poink.workbook
 import org.apache.poi.ss.usermodel.FillPatternType
@@ -8,15 +9,13 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 import java.io.ByteArrayOutputStream
 
-class PlanilhaCategoria {
-  private val campos: List<Campo<*, Categoria>> = listOf(
-    CampoInt("Número") {categoriaNo},
-    CampoString("Grupo") {grupo},
-    CampoString("Departamento") {departamento},
-    CampoString("Seção") {secao}
-                                                        )
+class PlanilhaGradeCor {
+  private val campos: List<Campo<*, GradeCor>> = listOf(
+    CampoString("Descrição") {descricao},
+    CampoString("Código") {codigoCor.toUpperCase()}
+                                                       )
 
-    fun grava(listaBean: List<Categoria>): ByteArray {
+    fun grava(listaBean: List<GradeCor>): ByteArray {
       val wb = workbook {
         val headerStyle = cellStyle("Header") {
           fillForegroundColor = IndexedColors.GREY_25_PERCENT.index
@@ -26,7 +25,7 @@ class PlanilhaCategoria {
         val rowStyle = cellStyle("Row") {
           this.verticalAlignment = VerticalAlignment.TOP
         }
-        val sheet = sheet("Categorias") {
+        val sheet = sheet("Grade Cor") {
           val headers = campos.map {it.header}
           row(headers, headerStyle)
           listaBean.forEach {bean ->
