@@ -57,9 +57,9 @@ class Produto(
     }
   val categoriaDesc
     get() = categoriaBean?.descricao ?: ""
-  
-  val corStr get() = GradeCor.findAll()
-    .firstOrNull {it.descricao == grade && grade != ""}?.codigoCor
+  val corStr
+    get() = GradeCor.findAll()
+      .firstOrNull {it.descricao == grade && grade != ""}?.codigoCor
   
   companion object {
     private val userSaci: UserSaci
@@ -142,6 +142,12 @@ class Produto(
     return price.firstOrNull()?.price ?: 0.00
   }
   
+  val prdRef: String
+    get() {
+      val price = saci.price(codigo)
+      return price.firstOrNull()?.prdRef ?: ""
+    }
+  
   fun grupo() = if(variacao == VARIACAO) ""
   else categoriaBean?.grupo ?: ""
   
@@ -170,8 +176,8 @@ class Produto(
   fun skuPai() = if(variacao == COM_VARIACAO) codigo else ""
   fun sku() = when(variacao) {
     COM_VARIACAO -> ""
-    SIMPLES -> codigo
-    VARIACAO -> barcode
+    SIMPLES      -> codigo
+    VARIACAO     -> barcode
     else         -> codigo
   }
   

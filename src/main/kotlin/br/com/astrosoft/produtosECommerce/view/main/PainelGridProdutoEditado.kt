@@ -49,7 +49,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
         onLeftClick {view.marcaProdutos(multiSelect(), EDITAR)}
         this.tooltip = "Voltar para o painel editar"
       }
-      this.buttonDownloadLazy()
+      this.downloadExcel()
       
       edtCodigo = codigoField {
         addValueChangeListener {blockUpdate()}
@@ -99,7 +99,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     return filename
   }
   
-  private fun HasComponents.buttonDownloadLazy() {
+  private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(TABLE.create(),
                                     {filename()},
                                     {
@@ -112,21 +112,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     button.tooltip = "Salva a planilha"
     add(button)
   }
-  /*
-  private fun HasComponents.buttonDownload() {
-    val button = Button().apply {
-      icon = TABLE.create()
-      addThemeVariants(LUMO_SMALL)
-      this.tooltip = "Salva a planilha"
-    }
-    val stream = StreamResource(filename(), ConverteByte {
-      val planilha = PlanilhaEcommerceNova()
-      planilha.grava(allItens())
-    })
-    val buttonWrapper = FileDownloadWrapper(stream)
-    buttonWrapper.wrapComponent(button)
-    this.add(buttonWrapper)
-  }*/
+
 }
 
 class ConverteByte(val bytesBoletos: () -> ByteArray): InputStreamFactory {
