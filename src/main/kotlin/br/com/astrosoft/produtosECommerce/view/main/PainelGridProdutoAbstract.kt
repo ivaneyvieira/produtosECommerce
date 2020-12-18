@@ -13,6 +13,7 @@ import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
 import com.vaadin.flow.component.textfield.TextArea
+import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.provider.SortDirection
 
 abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockUpdate: () -> Unit):
@@ -64,6 +65,12 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     
     
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))
+  }
+  
+  override fun gridPanel(dataProvider : ListDataProvider<Produto>): Grid<Produto>{
+    val grid = Grid<Produto>(Produto::class.java, false)
+    grid.dataProvider = dataProvider
+    return grid
   }
   
   abstract fun statusDefault(): EEditor

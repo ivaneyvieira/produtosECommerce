@@ -31,19 +31,23 @@ import kotlin.reflect.KClass
 abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout() {
   protected var grid: Grid<T>
   private val dataProvider = ListDataProvider<T>(mutableListOf())
+  
   val filterBar: FilterBar by lazy {
     filterBar()
   }
+  
+  abstract fun gridPanel(dataProvider : ListDataProvider<T>): Grid<T>
   
   init {
     this.setSizeFull()
     isMargin = false
     isPadding = false
     filterBar.also {add(it)}
-    grid = this.grid(dataProvider = dataProvider) {
+    grid = this.gridPanel(dataProvider = dataProvider).apply {
       addThemeVariants(LUMO_COMPACT, LUMO_COLUMN_BORDERS, LUMO_ROW_STRIPES)
       this.gridConfig()
     }
+    addAndExpand(grid)
   }
   
   fun singleSelect(): T? = grid.asSingleSelect().value
