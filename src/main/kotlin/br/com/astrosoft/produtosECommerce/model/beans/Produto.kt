@@ -9,35 +9,12 @@ import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.VARIACAO
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 
-class Produto(
-  val codigo: String,
-  val grade: String,
-  var gradeCompleta: String?,
-  val barcode: String,
-  val descricao: String,
-  val vendno: Int,
-  val fornecedor: String,
-  val typeno: Int,
-  val typeName: String,
-  val clno: Int,
-  val clname: String,
-  var marca: Int,
-  var categoria: Int,
-  var descricaoCompleta: String,
-  var bitola: Int,
-  var imagem: String,
-  var peso: Double,
-  var altura: Double,
-  var comprimento: Double,
-  var largura: Double,
-  var textLink: String,
-  var especificacoes: String,
-  var editado: Int,
-  val precoCheio: Double,
-  val ncm: String,
-  var cor: String,
-  val variacao: EVariacao? = SIMPLES
-             ): ILookup {
+class Produto(val codigo: String, val grade: String, var gradeCompleta: String?, val barcode: String?,
+              val descricao: String, val vendno: Int, val fornecedor: String, val typeno: Int, val typeName: String,
+              val clno: Int, val clname: String, var marca: Int, var categoria: Int, var descricaoCompleta: String,
+              var bitola: Int, var imagem: String, var peso: Double, var altura: Double, var comprimento: Double,
+              var largura: Double, var textLink: String, var especificacoes: String, var editado: Int,
+              val precoCheio: Double, val ncm: String, var cor: String, val variacao: String): ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean
@@ -58,15 +35,14 @@ class Produto(
   val categoriaDesc
     get() = categoriaBean?.descricao ?: ""
   val corStr
-    get() = GradeCor.findAll()
-      .firstOrNull {it.descricao == grade && grade != ""}?.codigoCor
+    get() = GradeCor.findAll().firstOrNull {it.descricao == grade && grade != ""}?.codigoCor
   
   companion object {
     private val userSaci: UserSaci
       get() = AppConfig.userSaci as UserSaci
     
-    fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, fornecedor: Fornecedor?,
-                      type: TypePrd?, cl: Cl?, editado: EEditor?, categoria: Categoria?): List<Produto> {
+    fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, fornecedor: Fornecedor?, type: TypePrd?,
+                      cl: Cl?, editado: EEditor?, categoria: Categoria?): List<Produto> {
       return local.listaProdutos(codigo = codigo,
                                  descricaoI = descricaoI,
                                  descricaoF = descricaoF,
@@ -74,11 +50,10 @@ class Produto(
                                  typeno = type?.typeno ?: 0,
                                  clno = cl?.clno ?: "",
                                  editado = editado?.value ?: 0,
-                                 categoria = categoria?.categoriaNo ?: 0)
-        .map {
-          it.textLink = it.descricaoCompleta.normalize("-")
-          it
-        }
+                                 categoria = categoria?.categoriaNo ?: 0).map {
+        it.textLink = it.descricaoCompleta.normalize("-")
+        it
+      }
     }
     
     fun save(bean: Produto) {
@@ -103,37 +78,27 @@ class Produto(
   }
   
   fun imagem1(): String {
-    return imagem.split(" +".toRegex())
-             .toList()
-             .getOrNull(0) ?: ""
+    return imagem.split(" +".toRegex()).toList().getOrNull(0) ?: ""
   }
   
   fun imagem2(): String {
-    return imagem.split(" +".toRegex())
-             .toList()
-             .getOrNull(1) ?: ""
+    return imagem.split(" +".toRegex()).toList().getOrNull(1) ?: ""
   }
   
   fun imagem3(): String {
-    return imagem.split(" +".toRegex())
-             .toList()
-             .getOrNull(2) ?: ""
+    return imagem.split(" +".toRegex()).toList().getOrNull(2) ?: ""
   }
   
   fun imagem4(): String {
-    return imagem.split(" +".toRegex())
-             .toList()
-             .getOrNull(3) ?: ""
+    return imagem.split(" +".toRegex()).toList().getOrNull(3) ?: ""
   }
   
   fun imagem5(): String {
-    return imagem.split(" +".toRegex())
-             .toList()
-             .getOrNull(4) ?: ""
+    return imagem.split(" +".toRegex()).toList().getOrNull(4) ?: ""
   }
   
   fun saldoLoja4(): Double {
-    val saldo = if(variacao == COM_VARIACAO) saci.saldoLoja4(codigo, "") else saci.saldoLoja4(codigo, grade)
+    val saldo = if(variacao == COM_VARIACAO.descricao) saci.saldoLoja4(codigo, "") else saci.saldoLoja4(codigo, grade)
     return saldo.firstOrNull()?.saldo ?: 0.00
   }
   
@@ -148,45 +113,48 @@ class Produto(
       return price.firstOrNull()?.prdRef ?: ""
     }
   
-  fun grupo() = if(variacao == VARIACAO) ""
+  fun grupo() = if(variacao == VARIACAO.descricao) ""
   else categoriaBean?.grupo ?: ""
   
-  fun departamento() = if(variacao == VARIACAO) ""
+  fun departamento() = if(variacao == VARIACAO.descricao) ""
   else categoriaBean?.departamento ?: ""
   
-  fun secao() = if(variacao == VARIACAO) ""
+  fun secao() = if(variacao == VARIACAO.descricao) ""
   else categoriaBean?.secao ?: ""
   
-  fun tipoVariacao() = variacao?.descricao ?: SIMPLES.descricao
+  fun tipoVariacao() = variacao
   
   fun ean(): String {
     val price = saci.price(codigo)
     return price.firstOrNull()?.gtin ?: ""
   }
   
-  fun palavrasChave() = if(variacao == VARIACAO) ""
-  else listOf(grupo(), departamento(), secao(), marcaDesc).filter {it.trim() != ""}
-    .joinToString(",")
+  fun palavrasChave() = if(variacao == VARIACAO.descricao) ""
+  else listOf(grupo(), departamento(), secao(), marcaDesc).filter {it.trim() != ""}.joinToString(",")
   
-  fun nomeProduto() = if(variacao == VARIACAO) "" else "${descricaoCompleta} - ${marcaDesc}"
+  fun nomeProduto() = if(variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
   
-  fun descricaoDetalhada() = if(variacao == VARIACAO) "" else "${descricaoCompleta} ${marcaDesc}"
-  fun descricao() = if(variacao == VARIACAO) "" else especificacoes
+  fun descricaoDetalhada() = if(variacao == VARIACAO.descricao) "" else "${descricaoCompleta} ${marcaDesc}"
+  fun descricao() = if(variacao == VARIACAO.descricao) "" else especificacoes
   
-  fun skuPai() = if(variacao == COM_VARIACAO) codigo else ""
-  fun sku() = when(variacao) {
-    COM_VARIACAO -> ""
-    SIMPLES      -> codigo
-    VARIACAO     -> barcode
-    else         -> codigo
+  fun skuPai() = when(variacao) {
+    VARIACAO.descricao -> codigo
+    else               -> ""
   }
   
-  fun slugProduto() = if(variacao == VARIACAO) "" else descricaoCompleta.normalize(" ")
-  fun marca() = if(variacao == VARIACAO) "" else marcaDesc
-  fun tituloMarca() = if(variacao == VARIACAO) "" else textLink
-  fun descricaoPagina() = if(variacao == VARIACAO) "" else descricaoCompleta
-  fun gradeCor() = if(variacao == VARIACAO) gradeCompleta ?: "" else ""
-  fun cor() = if(variacao == VARIACAO) "Cor" else ""
+  fun sku() = when(variacao) {
+    COM_VARIACAO.descricao -> codigo
+    SIMPLES.descricao      -> codigo
+    VARIACAO.descricao     -> barcode ?: ""
+    else                   -> ""
+  }
+  
+  fun slugProduto() = if(variacao == VARIACAO.descricao) "" else descricaoCompleta.normalize(" ")
+  fun marca() = if(variacao == VARIACAO.descricao) "" else marcaDesc
+  fun tituloMarca() = if(variacao == VARIACAO.descricao) "" else textLink
+  fun descricaoPagina() = if(variacao == VARIACAO.descricao) "" else descricaoCompleta
+  fun gradeCor() = if(variacao == VARIACAO.descricao) gradeCompleta ?: "" else ""
+  fun cor() = if(variacao == VARIACAO.descricao) "Cor" else ""
   
   fun chave() = ChaveProduto(codigo, grade)
   fun copy(variacaoNova: EVariacao) = Produto(codigo,
@@ -213,7 +181,9 @@ class Produto(
                                               especificacoes,
                                               editado,
                                               precoCheio,
-                                              ncm, cor, variacaoNova)
+                                              ncm,
+                                              cor,
+                                              variacaoNova.descricao)
   
   override fun equals(other: Any?): Boolean {
     if(this === other) return true
@@ -253,20 +223,8 @@ enum class EVariacao(val descricao: String) {
 
 fun List<Produto>.explodeGrade(): List<Produto> {
   this.distinctBy {}
-  val comVariacao =
-    this.distinctBy {it.codigo}
-      .map {it.copy(COM_VARIACAO)}
+  val comVariacao = this.distinctBy {it.codigo}.map {it.copy(COM_VARIACAO)}
   val variacao = this.map {it.copy(VARIACAO)}
   return comVariacao + variacao
-  /*
-  return this.groupBy {it.chave()}
-    .flatMap {entry ->
-      val list = entry.value
-      val comVariacao = list.firstOrNull()?.copy(COM_VARIACAO)
-      val variacao = list.map {it.copy(VARIACAO)}
-      listOfNotNull(comVariacao) +  variacao
-    }
-    
-   */
 }
 

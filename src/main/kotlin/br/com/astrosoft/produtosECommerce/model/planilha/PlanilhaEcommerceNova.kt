@@ -10,13 +10,12 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceNova {
-  private val campos: List<Campo<*, Produto>> = listOf(
-    // CampoString("codigo") {codigo},
+  private val campos: List<Campo<*, Produto>> = listOf( // CampoString("codigo") {codigo},
     // CampoString("grade") {grade},
     CampoString("nome_produto") {nomeProduto()},
     CampoString("tipo") {tipoVariacao()},
-    CampoString("sku_pai") {skuPai()},
-    CampoString("sku") {sku()},
+    CampoString("sku_pai") {skuPai().replace("^0+".toRegex(), "")},
+    CampoString("sku") {sku().replace("^0+".toRegex(), "")},
     CampoString("slug_produto") {slugProduto()},
     CampoString("descricao_detalhada") {descricaoDetalhada()},
     CampoString("descricao") {descricao()},
@@ -49,8 +48,7 @@ class PlanilhaEcommerceNova {
     CampoString("nome_variacao_1") {cor()},
     CampoString("variacao_1") {gradeCor()},
     CampoString("nome_variacao2"),
-    CampoString("variacao_2")
-                                                      )
+    CampoString("variacao_2"))
   
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {
@@ -65,19 +63,18 @@ class PlanilhaEcommerceNova {
       val stSemGrade = sheet("Produtos Sem Grade") {
         val headers = campos.map {it.header}
         row(headers, headerStyle)
-        listaProdutos.filter {it.grade == ""}
-          .sortedBy {it.codigo + it.grade}
-          .forEach {produto ->
-            val valores = campos.map {it.produceVakue(produto)}
-            row(valores, rowStyle)
-          }
+        listaProdutos.filter {it.grade == ""}.map {
+          it.copy(SIMPLES)
+        }.sortedBy {it.codigo + it.grade}.forEach {produto ->
+          val valores = campos.map {it.produceVakue(produto)}
+          row(valores, rowStyle)
+        }
       }
       val stComGrade = sheet("Produtos Com Grade") {
         val headers = campos.map {it.header}
         row(headers, headerStyle)
-        listaProdutos.filter {it.grade != ""}
-          .explodeGrade()
-          .sortedWith(compareBy({it.codigo}, {it.variacao?.descricao ?: SIMPLES.descricao}, {it.grade}))
+        listaProdutos.filter {it.grade != ""}.explodeGrade()
+          .sortedWith(compareBy({it.codigo}, {it.variacao}, {it.grade}))
           .forEach {produto ->
             val valores = campos.map {it.produceVakue(produto)}
             row(valores, rowStyle)
