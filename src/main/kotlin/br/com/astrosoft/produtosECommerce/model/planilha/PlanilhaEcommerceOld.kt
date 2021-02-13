@@ -16,7 +16,7 @@ class PlanilhaEcommerceOld {
     CampoString("ativo") {"S"},
     CampoString("usado") { "N"},
     CampoString("ncm") {ncm},
-    CampoString("gtin") {barcode},
+    CampoString("gtin") {barcode?:""},
     CampoString("nome") {descricaoCompletaPlanilha()},
     CampoString("descricao-completa") {especificacoes},
     CampoString("url-video-youtube"),

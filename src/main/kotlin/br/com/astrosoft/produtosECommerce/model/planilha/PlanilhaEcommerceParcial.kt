@@ -9,8 +9,8 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceParcial {
   private val campos: List<Campo<*, Produto>> = listOf(
-    CampoString("codigo") {codigo},
-    CampoString("codigo de barras") {barcode},
+    CampoString("codigo") {codigo.replace("^0+".toRegex(), "")},
+    CampoString("codigo de barras") {barcode?: ""},
     CampoString("descricao") {descricao},
     CampoString("grade") {grade},
     CampoString("referencia do fornecedor") {prdRef},
