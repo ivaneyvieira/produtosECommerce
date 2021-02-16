@@ -2,6 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.addColumnBean
 import br.com.astrosoft.framework.view.addColumnDouble
+import br.com.astrosoft.framework.view.addColumnLocalDateTime
 import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.Cl
@@ -140,6 +141,10 @@ fun Grid<Produto>.colComprimento() = addColumnDouble(Produto::comprimento) {
 
 fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
   setHeader("Largura (cm)")
+}
+
+fun Grid<Produto>.colDataHoraMudanca() = addColumnLocalDateTime(Produto::dataHoraMudanca) {
+  setHeader("Data Hora")
 }
 
 //

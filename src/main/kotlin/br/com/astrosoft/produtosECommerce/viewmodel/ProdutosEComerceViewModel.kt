@@ -15,6 +15,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.Marca
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
+import java.time.LocalDateTime
 
 class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProdutosEComerceView>(view) {
   fun updateGridEditar() {
@@ -92,6 +93,7 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView): ViewModel<IProduto
   fun marcaProdutos(itens: List<Produto>, marca: EEditor) {
     itens.forEach {produto ->
       produto.editado = marca.value
+      produto.dataHoraMudanca = LocalDateTime.now()
       Produto.save(produto)
     }
     updateGrid()
