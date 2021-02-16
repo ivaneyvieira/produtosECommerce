@@ -75,11 +75,11 @@ class ProdutosEComerceView: ViewLayout<ProdutosEComerceViewModel>(), IProdutosEC
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet {""} ?: ""
     return when(id) {
-      TAB_BASE    -> BASE
-      TAB_EDITAR  -> EDITAR
-      TAB_EDITADO -> EDITADO
+      TAB_BASE      -> BASE
+      TAB_EDITAR    -> EDITAR
+      TAB_EDITADO   -> EDITADO
       TAB_IMPORTADO -> IMPORTADO
-      else        -> BASE
+      else          -> BASE
     }
   }
   
@@ -120,33 +120,27 @@ class FormProcessamento: VerticalLayout() {
     horizontalLayout {
       width = "100%"
       checkBox {
-        this.bind(binder)
-          .bind(ProcessaBean::marcaCheck)
+        this.bind(binder).bind(ProcessaBean::marcaCheck)
       }
       marcaField {
-        this.bind(binder)
-          .bind(ProcessaBean::marca)
+        this.bind(binder).bind(ProcessaBean::marca)
       }
       checkBox {
-        this.bind(binder)
-          .bind(ProcessaBean::categoriaCheck)
+        this.bind(binder).bind(ProcessaBean::categoriaCheck)
       }
       categoriaField {
-        this.bind(binder)
-          .bind(ProcessaBean::categoria)
+        this.bind(binder).bind(ProcessaBean::categoria)
         isExpand = true
       }
     }
     horizontalLayout {
       width = "100%"
       checkBox {
-        this.bind(binder)
-          .bind(ProcessaBean::descricaoCompletaCheck)
+        this.bind(binder).bind(ProcessaBean::descricaoCompletaCheck)
       }
       textField("Descricação Completa") {
         width = "100%"
-        this.bind(binder)
-          .bind(ProcessaBean::descricaoCompleta)
+        this.bind(binder).bind(ProcessaBean::descricaoCompleta)
         addThemeVariants(LUMO_SMALL)
         isExpand = true
       }
@@ -154,21 +148,17 @@ class FormProcessamento: VerticalLayout() {
     horizontalLayout {
       width = "100%"
       checkBox {
-        this.bind(binder)
-          .bind(ProcessaBean::bitolaCheck)
+        this.bind(binder).bind(ProcessaBean::bitolaCheck)
       }
       integerField("Bitola") {
-        this.bind(binder)
-          .bind(ProcessaBean::bitola)
+        this.bind(binder).bind(ProcessaBean::bitola)
         addThemeVariants(LUMO_SMALL)
       }
       checkBox {
-        this.bind(binder)
-          .bind(ProcessaBean::imagemCheck)
+        this.bind(binder).bind(ProcessaBean::imagemCheck)
       }
       textField("Imagem") {
-        this.bind(binder)
-          .bind(ProcessaBean::imagem)
+        this.bind(binder).bind(ProcessaBean::imagem)
         addThemeVariants(LUMO_SMALL)
         isExpand = true
       }

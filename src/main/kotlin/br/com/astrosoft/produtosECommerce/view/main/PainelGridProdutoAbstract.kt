@@ -28,6 +28,7 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
       view.salvaProduto(produto)
     })
     //
+    colDataHoraMudanca()
     colCodigo()
     colBarcode()
     colDescricao()

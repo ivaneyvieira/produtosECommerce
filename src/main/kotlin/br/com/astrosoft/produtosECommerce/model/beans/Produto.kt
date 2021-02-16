@@ -8,13 +8,15 @@ import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.SIMPLES
 import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.VARIACAO
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
+import java.time.LocalDateTime
 
 class Produto(val codigo: String, val grade: String, var gradeCompleta: String?, val barcode: String?,
               val descricao: String, val vendno: Int, val fornecedor: String, val typeno: Int, val typeName: String,
               val clno: Int, val clname: String, var marca: Int, var categoria: Int, var descricaoCompleta: String,
               var bitola: Int, var imagem: String, var peso: Double, var altura: Double, var comprimento: Double,
               var largura: Double, var textLink: String, var especificacoes: String, var editado: Int,
-              val precoCheio: Double, val ncm: String, var cor: String, val variacao: String): ILookup {
+              val precoCheio: Double, val ncm: String, var cor: String, val variacao: String,
+              var dataHoraMudanca: LocalDateTime): ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean
@@ -183,7 +185,8 @@ class Produto(val codigo: String, val grade: String, var gradeCompleta: String?,
                                               precoCheio,
                                               ncm,
                                               cor,
-                                              variacaoNova.descricao)
+                                              variacaoNova.descricao,
+                                              dataHoraMudanca)
   
   override fun equals(other: Any?): Boolean {
     if(this === other) return true

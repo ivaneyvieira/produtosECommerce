@@ -1,6 +1,9 @@
 package br.com.astrosoft.framework.model
 
 import br.com.astrosoft.framework.util.SystemUtils.readFile
+import br.com.astrosoft.framework.util.toDate
+import br.com.astrosoft.framework.util.toLocalDateTime
+import br.com.astrosoft.framework.util.toTimeStamp
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.sql2o.Connection
@@ -11,14 +14,16 @@ import org.sql2o.converters.ConverterException
 import org.sql2o.quirks.NoQuirks
 import java.sql.Date
 import java.sql.Time
+import java.sql.Timestamp
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 import kotlin.reflect.KClass
 
 typealias QueryHandle = Query.() -> Unit
 
-open class QueryDB(val name : String, driver: String, url: String, username: String, password: String) {
+open class QueryDB(val name: String, driver: String, url: String, username: String, password: String) {
   protected val sql2o: Sql2o
   
   init {
@@ -37,14 +42,14 @@ open class QueryDB(val name : String, driver: String, url: String, username: Str
     val maps = HashMap<Class<*>, Converter<*>>()
     maps[LocalDate::class.java] = LocalDateConverter()
     maps[LocalTime::class.java] = LocalSqlTimeConverter()
+    maps[LocalDateTime::class.java] = LocalSqlDateTimeConverter()
     this.sql2o = Sql2o(url, username, password, NoQuirks(maps))
   }
   
   private fun registerDriver(driver: String) {
     try {
       Class.forName(driver)
-    } catch(e: ClassNotFoundException) {
-      //throw RuntimeException(e)
+    } catch(e: ClassNotFoundException) { //throw RuntimeException(e)
     }
   }
   
@@ -65,8 +70,7 @@ open class QueryDB(val name : String, driver: String, url: String, username: Str
     }
   }
   
-  private fun <T: Any> querySQL(con: Connection, sql: String?, classes: KClass<T>,
-                                lambda: QueryHandle = {}): List<T> {
+  private fun <T: Any> querySQL(con: Connection, sql: String?, classes: KClass<T>, lambda: QueryHandle = {}): List<T> {
     val query = con.createQuery(sql)
     query.lambda()
     println(sql)
@@ -81,10 +85,7 @@ open class QueryDB(val name : String, driver: String, url: String, username: Str
   }
   
   fun toStratments(file: String): List<String> {
-    return if(file.startsWith("/"))
-      readFile(file)?.split(";")
-        .orEmpty()
-        .filter {it.isNotBlank() || it.isNotEmpty()}
+    return if(file.startsWith("/")) readFile(file)?.split(";").orEmpty().filter {it.isNotBlank() || it.isNotEmpty()}
     else listOf(file)
   }
   
@@ -103,6 +104,11 @@ open class QueryDB(val name : String, driver: String, url: String, username: Str
   }
   
   fun Query.addOptionalParameter(name: String, value: Int): Query {
+    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    return this
+  }
+  
+  fun Query.addOptionalParameter(name: String, value: LocalDateTime): Query {
     if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
@@ -128,8 +134,7 @@ open class QueryDB(val name : String, driver: String, url: String, username: Str
   }
   
   private fun <T> transaction(block: (Connection) -> T): T {
-    return sql2o.beginTransaction()
-      .use {con ->
+    return sql2o.beginTransaction().use {con ->
         val ret = block(con)
         con.commit()
         ret
@@ -146,9 +151,7 @@ class LocalDateConverter: Converter<LocalDate?> {
   
   override fun toDatabaseParam(value: LocalDate?): Any? {
     value ?: return null
-    return Date(value.atStartOfDay()
-                  .toInstant(ZoneOffset.UTC)
-                  .toEpochMilli())
+    return Date(value.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli())
   }
 }
 
@@ -162,5 +165,21 @@ class LocalSqlTimeConverter: Converter<LocalTime?> {
   override fun toDatabaseParam(value: LocalTime?): Any? {
     value ?: return null
     return Time.valueOf(value)
+  }
+}
+
+class LocalSqlDateTimeConverter: Converter<LocalDateTime?> {
+  @Throws(ConverterException::class)
+  override fun convert(value: Any?): LocalDateTime? {
+    return when(value) {
+      is Date      -> value.toLocalDateTime()
+      is Timestamp -> value.toLocalDateTime()
+      else         -> null
+    }
+  }
+  
+  override fun toDatabaseParam(value: LocalDateTime?): Any? {
+    value ?: return null
+    return value.toTimeStamp()
   }
 }

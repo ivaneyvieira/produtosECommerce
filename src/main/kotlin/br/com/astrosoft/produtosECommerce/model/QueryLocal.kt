@@ -69,6 +69,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("especificacoes", bean.especificacoes)
       addOptionalParameter("gradeCompleta", bean.gradeCompleta)
       addOptionalParameter("editado", bean.editado)
+      addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
     }
   }
   
