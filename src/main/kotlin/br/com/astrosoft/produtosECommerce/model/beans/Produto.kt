@@ -136,8 +136,8 @@ class Produto(val codigo: String, val grade: String, var gradeCompleta: String?,
   
   fun nomeProduto() = if(variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
   
-  fun descricaoDetalhada() = if(variacao == VARIACAO.descricao) "" else "${descricaoCompleta} ${marcaDesc}"
-  fun descricao() = if(variacao == VARIACAO.descricao) "" else especificacoes
+  fun descricaoDetalhada() =if(variacao == VARIACAO.descricao) "" else especificacoes
+  fun descricao() =  if(variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc"
   
   fun skuPai() = when(variacao) {
     VARIACAO.descricao -> codigo
