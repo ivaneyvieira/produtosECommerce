@@ -17,7 +17,6 @@ object AppConfig {
     get() = SecurityUtils.userDetails
   val userSaci
     get() = userDetails?.user
-  
-  fun findUser(username: String?): IUser? = saci.findUser(username)
-    .firstOrNull {it.ativo}
+
+  fun findUser(username: String?): IUser? = saci.findUser(username).firstOrNull { it.ativo }
 }

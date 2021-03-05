@@ -8,7 +8,7 @@ import javax.servlet.ServletContextListener
 import javax.servlet.annotation.WebListener
 
 @WebListener
-class Bootstrap: ServletContextListener {
+class Bootstrap : ServletContextListener {
   override fun contextDestroyed(sce: ServletContextEvent?) {
     log?.info("Shutting down")
     log?.info("Destroying VaadinOnKotlin")
@@ -16,7 +16,7 @@ class Bootstrap: ServletContextListener {
   }
 
   override fun contextInitialized(sce: ServletContextEvent?) {
-    Locale.setDefault( Locale ("pt", "BR"))
+    Locale.setDefault(Locale("pt", "BR"))
     log?.info("Starting up")
     val home = System.getenv("HOME")
     val fileName = System.getenv("EBEAN_PROPS") ?: "$home/ebean.properties"

@@ -1,15 +1,15 @@
 package br.com.astrosoft.produtosECommerce.viewmodel
 
-import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
+import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 
-class UsuarioViewModel(view: IUserView): ViewModel<IUserView>(view) {
+class UsuarioViewModel(view: IUserView) : ViewModel<IUserView>(view) {
   fun findAll(): List<UserSaci>? {
     return UserSaci.findAllAtivos()
   }
-  
+
   fun add(user: UserSaci): UserSaci? {
     exec {
       user.ativo = true
@@ -18,19 +18,19 @@ class UsuarioViewModel(view: IUserView): ViewModel<IUserView>(view) {
     }
     return user
   }
-  
+
   private fun validaUser(user: UserSaci?): UserSaci {
     UserSaci.findUser(user?.login) ?: fail("Usuário não encontrado no saci")
     return user ?: fail("Usuário não selecionado")
   }
-  
+
   fun update(user: UserSaci?): UserSaci? {
     exec {
       UserSaci.updateUser(validaUser(user))
     }
     return user
   }
-  
+
   fun delete(user: UserSaci?) {
     exec {
       val userValid = validaUser(user)
@@ -38,14 +38,14 @@ class UsuarioViewModel(view: IUserView): ViewModel<IUserView>(view) {
       UserSaci.updateUser(userValid)
     }
   }
-  
- // fun findLogins() : List<String>{
- //   return UserSaci.findAllUser().map{it.login}.distinct().sorted()
- // }
-  
+
+  // fun findLogins() : List<String>{
+  //   return UserSaci.findAllUser().map{it.login}.distinct().sorted()
+  // }
+
   fun findAllUser(): List<UserSaci> {
     return UserSaci.findAllUser()
   }
 }
 
-interface IUserView: IView
+interface IUserView : IView

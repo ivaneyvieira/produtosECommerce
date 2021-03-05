@@ -4,12 +4,7 @@ import br.com.astrosoft.framework.view.addColumnBean
 import br.com.astrosoft.framework.view.addColumnDouble
 import br.com.astrosoft.framework.view.addColumnLocalDateTime
 import br.com.astrosoft.framework.view.addColumnString
-import br.com.astrosoft.produtosECommerce.model.beans.Categoria
-import br.com.astrosoft.produtosECommerce.model.beans.Cl
-import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
-import br.com.astrosoft.produtosECommerce.model.beans.Marca
-import br.com.astrosoft.produtosECommerce.model.beans.Produto
-import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
+import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 import com.github.mvysny.karibudsl.v10.VaadinDsl
@@ -60,16 +55,16 @@ fun Grid<Produto>.colCor() = addColumnString(Produto::corStr) {
   width = "8em"
 }
 
-fun Grid<Produto>.colCorPainel(){
-  this.addColumn(ComponentRenderer{produto->
-   VerticalLayout().apply {
-     if(produto.corStr.isNullOrBlank()) {
-       this.element.style.remove("backgroundColor")
-     }
-     else {
-       this.element.style.set("backgroundColor", produto.corStr)
-     }
-   }
+fun Grid<Produto>.colCorPainel() {
+  this.addColumn(ComponentRenderer { produto ->
+    VerticalLayout().apply {
+      if (produto.corStr.isNullOrBlank()) {
+        this.element.style.remove("backgroundColor")
+      }
+      else {
+        this.element.style.set("backgroundColor", produto.corStr)
+      }
+    }
   }).apply {
     setHeader("Cor")
     isAutoWidth = false
@@ -155,12 +150,13 @@ fun HasComponents.codigoField(block: IntegerField.() -> Unit = {}) = integerFiel
   block()
 }
 
-fun HasComponents.descricaoIField(block: TextField.() -> Unit = {}) = textField("Descrição Inicial") {
-  addThemeVariants(TextFieldVariant.LUMO_SMALL)
-  this.valueChangeMode = TIMEOUT
-  this.valueChangeTimeout = 1000
-  block()
-}
+fun HasComponents.descricaoIField(block: TextField.() -> Unit = {}) =
+  textField("Descrição Inicial") {
+    addThemeVariants(TextFieldVariant.LUMO_SMALL)
+    this.valueChangeMode = TIMEOUT
+    this.valueChangeTimeout = 1000
+    block()
+  }
 
 fun HasComponents.descricaoFField(block: TextField.() -> Unit = {}) = textField("Descrição Final") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
@@ -169,85 +165,105 @@ fun HasComponents.descricaoFField(block: TextField.() -> Unit = {}) = textField(
   block()
 }
 
-fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) = comboBox<Fornecedor>("Fornecedor") {
-  val filter = ItemFilter {element: Fornecedor, filterString: String? ->
-    filterString ?: return@ItemFilter true
-    element.fornecedor.contains(filterString, ignoreCase = true) ||
-    element.vendno.toString() == filterString
+fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
+  comboBox<Fornecedor>("Fornecedor") {
+    val filter = ItemFilter { element: Fornecedor, filterString: String? ->
+      filterString ?: return@ItemFilter true
+      element.fornecedor.contains(
+        filterString,
+        ignoreCase = true
+                                 ) || element.vendno.toString() == filterString
+    }
+    isClearButtonVisible = true
+    this.setItems(filter, saci.listaFornecedores())
+    setItemLabelGenerator {
+      "${it.vendno} ${it.fornecedor}"
+    }
+    setRenderer(
+      TemplateRenderer.of<Fornecedor>(
+        "<div>[[item.vendno]]<br><small>[[item.fornecedor]]</small></div>"
+                                     )
+        .withProperty("vendno", Fornecedor::vendno)
+        .withProperty("fornecedor", Fornecedor::fornecedor)
+               )
+    width = "15em"
+    element.setAttribute("theme", "small")
+    block()
   }
-  isClearButtonVisible = true
-  this.setItems(filter, saci.listaFornecedores())
-  setItemLabelGenerator {
-    "${it.vendno} ${it.fornecedor}"
-  }
-  setRenderer(TemplateRenderer.of<Fornecedor>(
-    "<div>[[item.vendno]]<br><small>[[item.fornecedor]]</small></div>")
-                .withProperty("vendno", Fornecedor::vendno)
-                .withProperty("fornecedor", Fornecedor::fornecedor))
-  width = "15em"
-  element.setAttribute("theme", "small")
-  block()
-}
 
 fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox<TypePrd>("Tipo") {
-  val filter = ItemFilter {element: TypePrd, filterString: String? ->
+  val filter = ItemFilter { element: TypePrd, filterString: String? ->
     filterString ?: return@ItemFilter true
-    element.typeName.contains(filterString, ignoreCase = true) ||
-    element.typeno.toString() == filterString
+    element.typeName.contains(
+      filterString,
+      ignoreCase = true
+                             ) || element.typeno.toString() == filterString
   }
   isClearButtonVisible = true
   this.setItems(filter, saci.listaType())
   setItemLabelGenerator {
     "${it.typeno} ${it.typeName}"
   }
-  setRenderer(TemplateRenderer.of<TypePrd>(
-    "<div>[[item.typeno]]<br><small>[[item.typeName]]</small></div>")
-                .withProperty("typeno", TypePrd::typeno)
-                .withProperty("typeName", TypePrd::typeName))
+  setRenderer(
+    TemplateRenderer.of<TypePrd>(
+      "<div>[[item.typeno]]<br><small>[[item.typeName]]</small></div>"
+                                )
+      .withProperty("typeno", TypePrd::typeno)
+      .withProperty("typeName", TypePrd::typeName)
+             )
   width = "15em"
   element.setAttribute("theme", "small")
   block()
 }
 
 fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("Cl") {
-  val filter = ItemFilter {element: Cl, filterString: String? ->
+  val filter = ItemFilter { element: Cl, filterString: String? ->
     filterString ?: return@ItemFilter true
-    element.clname.contains(filterString, ignoreCase = true) ||
-    element.clno.startsWith(filterString)
+    element.clname.contains(
+      filterString,
+      ignoreCase = true
+                           ) || element.clno.startsWith(filterString)
   }
   isClearButtonVisible = true
   this.setItems(filter, saci.listaCl())
   setItemLabelGenerator {
     "${it.clno} ${it.clname}"
   }
-  setRenderer(TemplateRenderer.of<Cl>(
-    "<div>[[item.clno]]<br><small>[[item.clname]]</small></div>")
-                .withProperty("clno", Cl::clno)
-                .withProperty("clname", Cl::clname))
+  setRenderer(
+    TemplateRenderer.of<Cl>(
+      "<div>[[item.clno]]<br><small>[[item.clname]]</small></div>"
+                           ).withProperty("clno", Cl::clno).withProperty("clname", Cl::clname)
+             )
   width = "18em"
   element.setAttribute("theme", "small")
   block()
 }
 
-fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) = comboBox<Categoria>("Categoria") {
-  extensionCategoria(block)
-}
+fun HasComponents.categoriaField(block: ComboBox<Categoria>.() -> Unit = {}) =
+  comboBox<Categoria>("Categoria") {
+    extensionCategoria(block)
+  }
 
 fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>.() -> Unit = {}): ComboBox<Categoria> {
-  val filter = ItemFilter {element: Categoria, filterString: String? ->
+  val filter = ItemFilter { element: Categoria, filterString: String? ->
     filterString ?: return@ItemFilter true
-    element.descricao.contains(filterString, ignoreCase = true) ||
-    element.categoriaNo.toString() == filterString
+    element.descricao.contains(
+      filterString,
+      ignoreCase = true
+                              ) || element.categoriaNo.toString() == filterString
   }
   isClearButtonVisible = true
   this.setItems(filter, local.findAllCategoria())
   setItemLabelGenerator {
     "${it.categoriaNo} ${it.descricao}"
   }
-  setRenderer(TemplateRenderer.of<Categoria>(
-    "<div>[[item.categoriaNo]]<br><small>[[item.descricao]]</small></div>")
-                .withProperty("categoriaNo", Categoria::categoriaNo)
-                .withProperty("descricao", Categoria::descricao))
+  setRenderer(
+    TemplateRenderer.of<Categoria>(
+      "<div>[[item.categoriaNo]]<br><small>[[item.descricao]]</small></div>"
+                                  )
+      .withProperty("categoriaNo", Categoria::categoriaNo)
+      .withProperty("descricao", Categoria::descricao)
+             )
   element.setAttribute("theme", "small")
   width = "20em"
   block()
@@ -259,10 +275,12 @@ fun HasComponents.marcaField(block: ComboBox<Marca>.() -> Unit = {}) = comboBox<
 }
 
 fun @VaadinDsl ComboBox<Marca>.extensionMarca(block: ComboBox<Marca>.() -> Unit = {}): ComboBox<Marca> {
-  val filter = ItemFilter {element: Marca, filterString: String? ->
+  val filter = ItemFilter { element: Marca, filterString: String? ->
     filterString ?: return@ItemFilter true
-    element.name.contains(filterString, ignoreCase = true) ||
-    element.marcaNo.toString() == filterString
+    element.name.contains(
+      filterString,
+      ignoreCase = true
+                         ) || element.marcaNo.toString() == filterString
   }
   isClearButtonVisible = true
   this.setItems(filter, local.findAllMarca())

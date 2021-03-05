@@ -1,7 +1,6 @@
 package br.com.astrosoft.framework.model
 
 import br.com.astrosoft.framework.util.SystemUtils.readFile
-import br.com.astrosoft.framework.util.toDate
 import br.com.astrosoft.framework.util.toLocalDateTime
 import br.com.astrosoft.framework.util.toTimeStamp
 import com.zaxxer.hikari.HikariConfig
@@ -23,9 +22,15 @@ import kotlin.reflect.KClass
 
 typealias QueryHandle = Query.() -> Unit
 
-open class QueryDB(val name: String, driver: String, url: String, username: String, password: String) {
+open class QueryDB(
+  val name: String,
+  driver: String,
+  url: String,
+  username: String,
+  password: String
+                  ) {
   protected val sql2o: Sql2o
-  
+
   init {
     registerDriver(driver)
     val config = HikariConfig()
@@ -45,139 +50,150 @@ open class QueryDB(val name: String, driver: String, url: String, username: Stri
     maps[LocalDateTime::class.java] = LocalSqlDateTimeConverter()
     this.sql2o = Sql2o(url, username, password, NoQuirks(maps))
   }
-  
+
   private fun registerDriver(driver: String) {
     try {
       Class.forName(driver)
-    } catch(e: ClassNotFoundException) { //throw RuntimeException(e)
+    } catch (e: ClassNotFoundException) { //throw RuntimeException(e)
     }
   }
-  
+
   fun dataBaseTest() {
     query("select 1 from dual", Int::class)
   }
-  
-  protected fun <T: Any> query(file: String, classes: KClass<T>, lambda: QueryHandle = {}): List<T> {
+
+  protected fun <T : Any> query(
+    file: String,
+    classes: KClass<T>,
+    lambda: QueryHandle = {}
+                               ): List<T> {
     val statements = toStratments(file)
-    if(statements.isEmpty()) return emptyList()
+    if (statements.isEmpty()) return emptyList()
     val lastIndex = statements.lastIndex
     val query = statements[lastIndex]
-    val updates = if(statements.size > 1) statements.subList(0, lastIndex) else emptyList()
-    return transaction {con ->
+    val updates = if (statements.size > 1) statements.subList(0, lastIndex) else emptyList()
+    return transaction { con ->
       scriptSQL(con, updates, lambda)
       val ret: List<T> = querySQL(con, query, classes, lambda)
       ret
     }
   }
-  
-  private fun <T: Any> querySQL(con: Connection, sql: String?, classes: KClass<T>, lambda: QueryHandle = {}): List<T> {
+
+  private fun <T : Any> querySQL(
+    con: Connection,
+    sql: String?,
+    classes: KClass<T>,
+    lambda: QueryHandle = {}
+                                ): List<T> {
     val query = con.createQuery(sql)
     query.lambda()
     println(sql)
     return query.executeAndFetch(classes.java)
   }
-  
+
   protected fun script(file: String, lambda: QueryHandle = {}) {
     val stratments = toStratments(file)
-    transaction {con ->
+    transaction { con ->
       scriptSQL(con, stratments, lambda)
     }
   }
-  
+
   fun toStratments(file: String): List<String> {
-    return if(file.startsWith("/")) readFile(file)?.split(";").orEmpty().filter {it.isNotBlank() || it.isNotEmpty()}
+    return if (file.startsWith("/")) readFile(file)?.split(";")
+      .orEmpty()
+      .filter { it.isNotBlank() || it.isNotEmpty() }
     else listOf(file)
   }
-  
+
   private fun scriptSQL(con: Connection, stratments: List<String>, lambda: QueryHandle = {}) {
-    stratments.forEach {sql ->
+    stratments.forEach { sql ->
       val query = con.createQuery(sql)
       query.lambda()
       query.executeUpdate()
       println(sql)
     }
   }
-  
+
   fun Query.addOptionalParameter(name: String, value: String?): Query {
-    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
-  
+
   fun Query.addOptionalParameter(name: String, value: Int): Query {
-    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
-  
+
   fun Query.addOptionalParameter(name: String, value: LocalDateTime): Query {
-    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
-  
+
   fun Query.addOptionalParameter(name: String, value: List<Int>): Query {
-    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
-  
+
   fun Query.addOptionalParameter(name: String, value: Double): Query {
-    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
-  
+
   fun Query.addOptionalParameter(name: String, value: LocalDate?): Query {
-    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
-  
+
   fun Query.addOptionalParameter(name: String, value: LocalTime?): Query {
-    if(this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
+    if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
-  
+
   private fun <T> transaction(block: (Connection) -> T): T {
-    return sql2o.beginTransaction().use {con ->
-        val ret = block(con)
-        con.commit()
-        ret
-      }
+    return sql2o.beginTransaction().use { con ->
+      val ret = block(con)
+      con.commit()
+      ret
+    }
   }
 }
 
-class LocalDateConverter: Converter<LocalDate?> {
+class LocalDateConverter : Converter<LocalDate?> {
   @Throws(ConverterException::class)
   override fun convert(value: Any?): LocalDate? {
-    if(value !is Date) return null
+    if (value !is Date) return null
     return value.toLocalDate()
   }
-  
+
   override fun toDatabaseParam(value: LocalDate?): Any? {
     value ?: return null
     return Date(value.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli())
   }
 }
 
-class LocalSqlTimeConverter: Converter<LocalTime?> {
+class LocalSqlTimeConverter : Converter<LocalTime?> {
   @Throws(ConverterException::class)
   override fun convert(value: Any?): LocalTime? {
-    if(value !is Time) return null
+    if (value !is Time) return null
     return value.toLocalTime()
   }
-  
+
   override fun toDatabaseParam(value: LocalTime?): Any? {
     value ?: return null
     return Time.valueOf(value)
   }
 }
 
-class LocalSqlDateTimeConverter: Converter<LocalDateTime?> {
+class LocalSqlDateTimeConverter : Converter<LocalDateTime?> {
   @Throws(ConverterException::class)
   override fun convert(value: Any?): LocalDateTime? {
-    return when(value) {
-      is Date      -> value.toLocalDateTime()
+    return when (value) {
+      is Date -> value.toLocalDateTime()
       is Timestamp -> value.toLocalDateTime()
-      else         -> null
+      else -> null
     }
   }
-  
+
   override fun toDatabaseParam(value: LocalDateTime?): Any? {
     value ?: return null
     return value.toTimeStamp()
