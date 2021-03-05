@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
+import br.com.astrosoft.framework.view.addColumnSeq
 import br.com.astrosoft.produtosECommerce.model.beans.Bitola
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor
@@ -28,6 +29,7 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
       view.salvaProduto(produto)
     })
     //
+    addColumnSeq("Seq")
     colDataHoraMudanca()
     colCodigo()
     colBarcode()
