@@ -3,19 +3,12 @@ package br.com.astrosoft.framework.view
 import br.com.astrosoft.framework.model.ILookup
 import com.github.juchar.colorpicker.ColorPickerFieldRaw
 import com.github.mvysny.karibudsl.v10.getAll
-import com.github.mvysny.karibudsl.v10.grid
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.Column
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
-import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
+import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
-import com.vaadin.flow.component.textfield.BigDecimalField
-import com.vaadin.flow.component.textfield.TextArea
-import com.vaadin.flow.component.textfield.TextAreaVariant
-import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.component.textfield.TextFieldVariant
+import com.vaadin.flow.component.textfield.*
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
@@ -28,71 +21,71 @@ import java.math.BigDecimal
 import java.util.*
 import kotlin.reflect.KClass
 
-abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout() {
+abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout() {
   protected var grid: Grid<T>
   private val dataProvider = ListDataProvider<T>(mutableListOf())
-  
+
   val filterBar: FilterBar by lazy {
     filterBar()
   }
-  
-  abstract fun gridPanel(dataProvider : ListDataProvider<T>): Grid<T>
-  
+
+  abstract fun gridPanel(dataProvider: ListDataProvider<T>): Grid<T>
+
   init {
     this.setSizeFull()
     isMargin = false
     isPadding = false
-    filterBar.also {add(it)}
+    filterBar.also { add(it) }
     grid = this.gridPanel(dataProvider = dataProvider).apply {
       addThemeVariants(LUMO_COMPACT, LUMO_COLUMN_BORDERS, LUMO_ROW_STRIPES)
       this.gridConfig()
     }
     addAndExpand(grid)
   }
-  
+
   fun singleSelect(): T? = grid.asSingleSelect().value
   fun multiSelect() = grid.asMultiSelect().value.toList()
   fun allItens() = dataProvider.getAll()
-  
+
   protected abstract fun filterBar(): FilterBar
-  
+
   open fun updateGrid(itens: List<T>) {
     grid.deselectAll()
     dataProvider.updateItens(itens)
   }
-  
+
   protected abstract fun Grid<T>.gridConfig()
-  
+
   fun Grid<T>.withEditor(classBean: KClass<T>, openEditor: (T) -> Unit, closeEditor: (T) -> Unit) {
     val binder = Binder(classBean.java)
     editor.binder = binder
-    addItemDoubleClickListener {event ->
+    addItemDoubleClickListener { event ->
       editor.editItem(event.item)
     }
-    editor.addCloseListener {event ->
+    editor.addCloseListener { event ->
       editor.refresh()
       openEditor(event.item)
     }
-    editor.addCloseListener {_ ->
+    editor.addCloseListener { _ ->
       closeEditor(binder.bean)
     }
-    element.addEventListener("keyup") {editor.cancel()}.filter =
+    element.addEventListener("keyup") { editor.cancel() }.filter =
       "event.key === 'Escape' || event.key === 'Esc'"
   }
-  
-  private fun <T: ILookup> comboFieldComponente(itens: () -> List<T>): ComboBox<T> {
+
+  private fun <T : ILookup> comboFieldComponente(itens: () -> List<T>): ComboBox<T> {
     return ComboBox<T>().apply {
       this.setSizeFull()
-      this.setDataProvider({item: T, filterText: String ->
-                             item.lookupValue.contains(filterText, ignoreCase = true)
-                           }, ListDataProvider(itens()))
-      this.setItemLabelGenerator {bean ->
+      this.setDataProvider({ item: T, filterText: String ->
+        item.lookupValue.contains(filterText, ignoreCase = true)
+      }, ListDataProvider(itens()))
+      this.setItemLabelGenerator { bean ->
         bean.lookupValue
       }
       this.element.setAttribute("theme", "small")
     }
   }
-  
+
   private fun textAreaComponente() = TextArea().apply {
     this.valueChangeMode = ON_CHANGE
     style.set("maxHeight", "50em")
@@ -101,7 +94,7 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
     this.isAutoselect = true
     setSizeFull()
   }
-  
+
   private fun colorComponente() = ColorPickerFieldRaw().apply {
 
     setPinnedPalettes(true)
@@ -109,14 +102,36 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
     isAlphaEnabled = false
     isRgbEnabled = false
     isHslEnabled = false
-    setPalette("#ff0000", "#aa0000", "#880000", "#440000",
-               "#00ff00","#00aa00","#008800","#004400",
-               "#0000ff","#0000aa","#000088","#000044",
-               "#ffff00","#aaaa00","#888800","#444400",
-               "#ff00ff","#aa00aa","#880088","#440044",
-               "#00ffff","#00aaaa","#008888","#004444",
-               "#ffffff","#aaaaaa","#888888","#444444",
-               "#000000"
+    setPalette(
+      "#ff0000",
+      "#aa0000",
+      "#880000",
+      "#440000",
+      "#00ff00",
+      "#00aa00",
+      "#008800",
+      "#004400",
+      "#0000ff",
+      "#0000aa",
+      "#000088",
+      "#000044",
+      "#ffff00",
+      "#aaaa00",
+      "#888800",
+      "#444400",
+      "#ff00ff",
+      "#aa00aa",
+      "#880088",
+      "#440044",
+      "#00ffff",
+      "#00aaaa",
+      "#008888",
+      "#004444",
+      "#ffffff",
+      "#aaaaaa",
+      "#888888",
+      "#444444",
+      "#000000"
               )
     this.textField.setSizeFull()
     this.setSizeFull()
@@ -124,7 +139,7 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
     setCssCustomPropertiesEnabled(true)
     setSizeFull()
   }
-  
+
   private fun decimalFieldComponent(): BigDecimalField {
     return BigDecimalField().apply {
       this.addThemeVariants(LUMO_ALIGN_RIGHT)
@@ -135,13 +150,13 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
       this.locale = Locale.forLanguageTag("pt-BR")
     }
   }
-  
+
   private fun textFieldComponente() = TextField().apply {
     addThemeVariants(LUMO_SMALL)
     this.isAutoselect = true
     setSizeFull()
   }
-  
+
   //***********************************************************************************************
   //Editores de colunas
   //***********************************************************************************************
@@ -153,46 +168,42 @@ abstract class PainelGrid<T: Any>(val blockUpdate: () -> Unit): VerticalLayout()
     this.editorComponent = component
     return this
   }
-  
+
   protected fun Column<T>.textAreaEditor(): Column<T> {
     val component = textAreaComponente()
-    grid.editor.binder.forField(component)
-      .bind(this.key)
+    grid.editor.binder.forField(component).bind(this.key)
     this.editorComponent = component
     return this
   }
-  
+
   protected fun Column<T>.colorEditor(): Column<T> {
     val component = colorComponente()
-    grid.editor.binder.forField(component)
-      .bind(this.key)
+    grid.editor.binder.forField(component).bind(this.key)
     this.editorComponent = component
     return this
   }
-  
+
   protected fun Column<T>.textFieldEditor(): Column<T> {
     val component = textFieldComponente()
-    grid.editor.binder.forField(component)
-      .bind(this.key)
+    grid.editor.binder.forField(component).bind(this.key)
     this.editorComponent = component
     return this
   }
-  
-  protected fun <B: ILookup> Column<T>.comboFieldEditor(itensSupplier: () -> List<B>): Column<T> {
+
+  protected fun <B : ILookup> Column<T>.comboFieldEditor(itensSupplier: () -> List<B>): Column<T> {
     val component = comboFieldComponente(itensSupplier)
-    grid.editor.binder.forField(component)
-      .bind(this.key)
+    grid.editor.binder.forField(component).bind(this.key)
     this.editorComponent = component
     return this
   }
 }
 
-class BigDecimalToDoubleConverter: Converter<BigDecimal, Double> {
+class BigDecimalToDoubleConverter : Converter<BigDecimal, Double> {
   override fun convertToPresentation(value: Double?, context: ValueContext?): BigDecimal {
     value ?: return BigDecimal.valueOf(0.00)
     return BigDecimal.valueOf(value)
   }
-  
+
   override fun convertToModel(value: BigDecimal?, context: ValueContext?): Result<Double> {
     return Result.ok(value?.toDouble() ?: 0.00)
   }

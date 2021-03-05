@@ -2,17 +2,17 @@ package br.com.astrosoft.framework.viewmodel
 
 import br.com.astrosoft.framework.view.log
 
-open class ViewModel<V: IView>(val view: V) {
+open class ViewModel<V : IView>(val view: V) {
   fun exec(block: () -> Unit) {
     try {
       block()
-    } catch(e: EViewModelFail) {
+    } catch (e: EViewModelFail) {
       view.showError(e.message ?: "Erro generico")
       log?.error(e.toString())
       throw e
     }
   }
-  
+
   open fun init() {
   }
 }

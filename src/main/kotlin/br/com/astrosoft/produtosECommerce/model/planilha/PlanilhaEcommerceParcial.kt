@@ -9,14 +9,14 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceParcial {
   private val campos: List<Campo<*, Produto>> = listOf(
-    CampoString("codigo") {codigo.replace("^0+".toRegex(), "")},
-    CampoString("codigo de barras") {barcode?: ""},
-    CampoString("descricao") {descricao},
-    CampoString("grade") {grade},
-    CampoString("referencia do fornecedor") {prdRef},
-    CampoInt("codigo do fornecedor") {vendno},
+    CampoString("codigo") { codigo.replace("^0+".toRegex(), "") },
+    CampoString("codigo de barras") { barcode ?: "" },
+    CampoString("descricao") { descricao },
+    CampoString("grade") { grade },
+    CampoString("referencia do fornecedor") { prdRef },
+    CampoInt("codigo do fornecedor") { vendno },
                                                       )
-  
+
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {
       val headerStyle = cellStyle("Header") {
@@ -28,17 +28,15 @@ class PlanilhaEcommerceParcial {
         this.verticalAlignment = VerticalAlignment.TOP
       }
       val stSemGrade = sheet("Produtos") {
-        val headers = campos.map {it.header}
+        val headers = campos.map { it.header }
         row(headers, headerStyle)
-        listaProdutos
-          .sortedBy {it.codigo + it.grade}
-          .forEach {produto ->
-            val valores = campos.map {it.produceVakue(produto)}
+        listaProdutos.sortedBy { it.codigo + it.grade }.forEach { produto ->
+            val valores = campos.map { it.produceVakue(produto) }
             row(valores, rowStyle)
           }
       }
-      
-      campos.forEachIndexed {index, _ ->
+
+      campos.forEachIndexed { index, _ ->
         stSemGrade.autoSizeColumn(index)
       }
     }

@@ -4,8 +4,8 @@ import br.com.astrosoft.AppConfig
 import br.com.astrosoft.produtosECommerce.view.cruds.BitolaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CategoriaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CorView
-import br.com.astrosoft.produtosECommerce.view.main.ProdutosEComerceView
 import br.com.astrosoft.produtosECommerce.view.cruds.MarcaView
+import br.com.astrosoft.produtosECommerce.view.main.ProdutosEComerceView
 import br.com.astrosoft.produtosECommerce.view.user.UsuarioView
 import com.github.mvysny.karibudsl.v10.anchor
 import com.github.mvysny.karibudsl.v10.drawer
@@ -29,13 +29,15 @@ import com.vaadin.flow.server.PWA
 import com.vaadin.flow.theme.Theme
 import com.vaadin.flow.theme.lumo.Lumo
 
-@Theme(value = Lumo::class, variant=Lumo.DARK)
+@Theme(value = Lumo::class, variant = Lumo.DARK)
 @Push
-@PWA(name = AppConfig.title,
-     shortName = AppConfig.shortName,
-     iconPath = AppConfig.iconPath,
-     enableInstallPrompt = false)
-class ProdutoECommerceLayout: AppLayout() {
+@PWA(
+  name = AppConfig.title,
+  shortName = AppConfig.shortName,
+  iconPath = AppConfig.iconPath,
+  enableInstallPrompt = false
+    )
+class ProdutoECommerceLayout : AppLayout() {
   init {
     isDrawerOpened = false
     navbar {

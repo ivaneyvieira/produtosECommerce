@@ -12,15 +12,15 @@ fun <T> (@VaadinDsl HasComponents).multiselectComboBox(block: (@VaadinDsl Multis
   init(MultiselectComboBox(), block)
 
 @VaadinDsl
-fun (@VaadinDsl HasComponents).colorPick(label: String? = null,
-                                         block: (@VaadinDsl ColorPickerFieldRaw).() -> Unit = {}): @VaadinDsl ColorPickerFieldRaw {
+fun (@VaadinDsl HasComponents).colorPick(
+  label: String? = null, block: (@VaadinDsl ColorPickerFieldRaw).() -> Unit = {}
+                                        ): @VaadinDsl ColorPickerFieldRaw {
   val compnent = ColorPickerFieldRaw(label).apply {
     setPinnedPalettes(true)
     isHexEnabled = true
     isAlphaEnabled = false
     isRgbEnabled = false
-    isHslEnabled = false
-    /*
+    isHslEnabled = false/*
     setPalette("#ff0000", "#bb0000", "#770000", "#330000",
                "#00ff00", "#00bb00", "#007700", "#003300",
                "#0000ff", "#0000bb", "#000077", "#000033",
@@ -36,12 +36,10 @@ fun (@VaadinDsl HasComponents).colorPick(label: String? = null,
       select = "Seleciona"
       cancel = "Cancela"
     }
-    this.textField.setSizeFull()
-    //this.setSizeFull()
+    this.textField.setSizeFull() //this.setSizeFull()
     isChangeFormatButtonVisible = false
     setCssCustomPropertiesEnabled(true)
-    this.setPinnedPalettes(true)
-    //setSizeFull()
+    this.setPinnedPalettes(true) //setSizeFull()
   }
   return init(compnent, block)
 }

@@ -7,9 +7,8 @@ import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.Route
 
 @Route("")
-class ViewEmpty: VerticalLayout(), BeforeEnterObserver {
+class ViewEmpty : VerticalLayout(), BeforeEnterObserver {
   override fun beforeEnter(event: BeforeEnterEvent?) {
-    if(event?.navigationTarget == ViewEmpty::class.java)
-      event.forwardTo(ProdutosEComerceView::class.java)
+    if (event?.navigationTarget == ViewEmpty::class.java) event.forwardTo(ProdutosEComerceView::class.java)
   }
 }

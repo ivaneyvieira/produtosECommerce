@@ -25,13 +25,13 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoBase(view: IProdutosEComerceView, blockUpdate: () -> Unit):
+class PainelGridProdutoBase(view: IProdutosEComerceView, blockUpdate: () -> Unit) :
   PainelGridProdutoAbstract(view, blockUpdate) {
   override fun statusDefault() = BASE
-  
+
   override fun filterBar() = FilterBarBase()
-  
-  inner class FilterBarBase: FilterBar(), IFiltroBase {
+
+  inner class FilterBarBase : FilterBar(), IFiltroBase {
     private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
@@ -39,38 +39,38 @@ class PainelGridProdutoBase(view: IProdutosEComerceView, blockUpdate: () -> Unit
     private lateinit var edtDescricaoF: TextField
     private lateinit var edtDescricaoI: TextField
     private lateinit var edtCodigo: IntegerField
-    
+
     override fun FilterBar.contentBlock() {
       button {
         icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick {view.marcaProdutos(multiSelect(), EDITAR)}
+        onLeftClick { view.marcaProdutos(multiSelect(), EDITAR) }
         this.tooltip = "Enviar para o painel editar"
       }
       this.downloadExcel()
       edtCodigo = codigoField {
-        addValueChangeListener {blockUpdate()}
+        addValueChangeListener { blockUpdate() }
       }
       edtDescricaoI = descricaoIField {
-        addValueChangeListener {blockUpdate()}
+        addValueChangeListener { blockUpdate() }
       }
       edtDescricaoF = descricaoFField {
-        addValueChangeListener {blockUpdate()}
+        addValueChangeListener { blockUpdate() }
       }
       edtFornecedor = fornecedorField {
-        addValueChangeListener {blockUpdate()}
+        addValueChangeListener { blockUpdate() }
       }
       edtTipo = tipoField {
-        addValueChangeListener {blockUpdate()}
+        addValueChangeListener { blockUpdate() }
       }
       edtCl = clField {
-        addValueChangeListener {blockUpdate()}
+        addValueChangeListener { blockUpdate() }
       }
       edtCategoria = categoriaField {
-        addValueChangeListener {blockUpdate()}
+        addValueChangeListener { blockUpdate() }
       }
     }
-    
+
     override val codigo: Int
       get() = edtCodigo.value ?: 0
     override val descricaoI: String
@@ -86,25 +86,20 @@ class PainelGridProdutoBase(view: IProdutosEComerceView, blockUpdate: () -> Unit
     override val categoria: Categoria?
       get() = edtCategoria.value
   }
-  
+
   private fun filename(): String {
     val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
-    val textTime =
-      LocalDateTime.now()
-        .format(sdf)
+    val textTime = LocalDateTime.now().format(sdf)
     val filename = "planilha$textTime.xlsx"
     return filename
   }
-  
+
   private fun HasComponents.downloadExcel() {
-    val button = LazyDownloadButton(TABLE.create(),
-                                    {filename()},
-                                    {
-                                      val planilha = PlanilhaEcommerceParcial()
-                                      val bytes = planilha.grava(allItens())
-                                      ByteArrayInputStream(bytes)
-                                    }
-                                   )
+    val button = LazyDownloadButton(TABLE.create(), { filename() }, {
+      val planilha = PlanilhaEcommerceParcial()
+      val bytes = planilha.grava(allItens())
+      ByteArrayInputStream(bytes)
+    })
     button.addThemeVariants(LUMO_SMALL)
     button.tooltip = "Salva a planilha"
     add(button)

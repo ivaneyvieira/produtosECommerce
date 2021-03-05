@@ -3,21 +3,24 @@ package br.com.astrosoft.produtosECommerce.model
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
-import br.com.astrosoft.produtosECommerce.model.beans.Bitola
-import br.com.astrosoft.produtosECommerce.model.beans.Categoria
-import br.com.astrosoft.produtosECommerce.model.beans.GradeCor
-import br.com.astrosoft.produtosECommerce.model.beans.Marca
-import br.com.astrosoft.produtosECommerce.model.beans.Produto
+import br.com.astrosoft.produtosECommerce.model.beans.*
 
-class QueryLocal: QueryDB("local", driver, url, username, password) {
-  fun listaProdutos(codigo: Int, descricaoI: String, descricaoF: String, vendno: Int, typeno: Int,
-                    clno: String, editado: Int, categoria: Int):
-    List<Produto> {
+class QueryLocal : QueryDB("local", driver, url, username, password) {
+  fun listaProdutos(
+    codigo: Int,
+    descricaoI: String,
+    descricaoF: String,
+    vendno: Int,
+    typeno: Int,
+    clno: String,
+    editado: Int,
+    categoria: Int
+                   ): List<Produto> {
     val sql = "/sqlSaci/produtos.sql"
     return query(sql, Produto::class) {
-      addOptionalParameter("codigo",
-                           codigo.toString()
-                             .lpad(6, "0"))
+      addOptionalParameter(
+        "codigo", codigo.toString().lpad(6, "0")
+                          )
       addOptionalParameter("descricaoI", descricaoI)
       addOptionalParameter("descricaoF", descricaoF)
       addOptionalParameter("vendno", vendno)
@@ -29,28 +32,23 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("categoria2", categoria.max())
     }
   }
-  
+
   fun String.max(): String {
-    val str =
-      this.toString()
-        .lpad(6, "0")
+    val str = this.toString().lpad(6, "0")
     var gru = str.substring(0, 2)
     var dep = str.substring(2, 4)
     var sec = str.substring(4, 6)
-    if(sec == "00") {
+    if (sec == "00") {
       sec = "99"
-      if(dep == "00")
-        dep = "99"
+      if (dep == "00") dep = "99"
     }
     return "$gru$dep$sec"
   }
-  
+
   fun Int.max(): Int {
-    return this.toString()
-             .max()
-             .toIntOrNull() ?: 0
+    return this.toString().max().toIntOrNull() ?: 0
   }
-  
+
   fun salvaProduto(bean: Produto) {
     val sql = "/sqlSaci/salvaProduto.sql"
     script(sql) {
@@ -72,15 +70,16 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
     }
   }
-  
+
   fun findAllCategoria(): List<Categoria> {
-    return query("""select categoriaNo, grupo, departamento, secao
+    return query(
+      """select categoriaNo, grupo, departamento, secao
       |             from produtoEcomerce.categoria
       |             order by categoriaNo
-      |             """.trimMargin(),
-                 Categoria::class)
+      |             """.trimMargin(), Categoria::class
+                )
   }
-  
+
   fun addCategoria(categoria: Categoria) {
     val sql = """INSERT INTO produtoEcomerce.categoria(categoriaNo, grupo, departamento, secao)
            |  VALUES(:categoriaNo, :grupo, :departamento, :secao)""".trimMargin()
@@ -91,7 +90,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("departamento", categoria.departamento)
     }
   }
-  
+
   fun updateCategoria(categoria: Categoria) {
     val sql = """UPDATE produtoEcomerce.categoria
                         |  SET grupo       = :grupo,
@@ -106,20 +105,21 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("departamento", categoria.departamento)
     }
   }
-  
+
   fun deleteCategoria(categoria: Categoria) {
     val sql = "DELETE FROM produtoEcomerce.categoria WHERE categoriaNo = :categoriaNo"
     script(sql) {
       addOptionalParameter("categoriaNo", categoria.categoriaNo)
     }
   }
-  
+
   fun findAllMarca(): List<Marca> {
-    return query("""select marcaNo, name
-      |             from produtoEcomerce.marca""".trimMargin(),
-                 Marca::class)
+    return query(
+      """select marcaNo, name
+      |             from produtoEcomerce.marca""".trimMargin(), Marca::class
+                )
   }
-  
+
   fun addMarca(marca: Marca) {
     val sql = """INSERT INTO produtoEcomerce.marca(marcaNo, name)
            |  VALUES(:marcaNo, :name)""".trimMargin()
@@ -128,7 +128,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("name", marca.name)
     }
   }
-  
+
   fun updateMarca(marca: Marca) {
     val sql = """UPDATE produtoEcomerce.marca
                         |  SET name       = :name
@@ -138,20 +138,21 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("name", marca.name)
     }
   }
-  
+
   fun deleteMarca(marca: Marca) {
     val sql = "DELETE FROM  produtoEcomerce.marca WHERE marcaNo = :marcaNo"
     script(sql) {
       addOptionalParameter("marcaNo", marca.marcaNo)
     }
   }
-  
+
   fun findAllBitola(): List<Bitola> {
-    return query("""select bitolaNo, name
-      |             from produtoEcomerce.bitola""".trimMargin(),
-                 Bitola::class)
+    return query(
+      """select bitolaNo, name
+      |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class
+                )
   }
-  
+
   fun addBitola(bitola: Bitola) {
     val sql = """INSERT INTO produtoEcomerce.bitola(bitolaNo, name)
            |  VALUES(:bitolaNo, :name)""".trimMargin()
@@ -160,7 +161,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("name", bitola.name)
     }
   }
-  
+
   fun updateBitola(bitola: Bitola) {
     val sql = """UPDATE produtoEcomerce.bitola
                         |  SET name       = :name
@@ -170,21 +171,22 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("name", bitola.name)
     }
   }
-  
+
   fun deleteBitola(bitola: Bitola) {
     val sql = "DELETE FROM  produtoEcomerce.bitola WHERE bitolaNo = :bitolaNo"
     script(sql) {
       addOptionalParameter("bitolaNo", bitola.bitolaNo)
     }
   }
-  
+
   /*Cores*/
   fun findAllCor(): List<GradeCor> {
-    return query("""select descricao, codigoCor
-      |             from produtoEcomerce.gradeCor""".trimMargin(),
-                 GradeCor::class)
+    return query(
+      """select descricao, codigoCor
+      |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class
+                )
   }
-  
+
   fun addCor(cor: GradeCor) {
     val sql = """INSERT INTO produtoEcomerce.gradeCor(descricao, codigoCor)
            |  VALUES(:descricao, :codigoCor)""".trimMargin()
@@ -193,7 +195,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("codigoCor", cor.codigoCor)
     }
   }
-  
+
   fun updateCor(cor: GradeCor) {
     val sql = """UPDATE produtoEcomerce.gradeCor
                         |  SET codigoCor   = :codigoCor,
@@ -205,14 +207,14 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
       addOptionalParameter("descricaoOriginal", cor.descricaoOriginal)
     }
   }
-  
+
   fun deleteCor(cor: GradeCor) {
     val sql = "DELETE FROM  produtoEcomerce.gradeCor WHERE descricao = :descricaoOriginal"
     script(sql) {
       addOptionalParameter("descricaoOriginal", cor.descricaoOriginal)
     }
   }
-  
+
   companion object {
     private val db = DB("local")
     internal val driver = db.driver
@@ -220,9 +222,7 @@ class QueryLocal: QueryDB("local", driver, url, username, password) {
     internal val username = db.username
     internal val password = db.password
     internal val test = db.test
-    val ipServer =
-      url.split("/")
-        .getOrNull(2)
+    val ipServer = url.split("/").getOrNull(2)
   }
 }
 
