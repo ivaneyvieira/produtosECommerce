@@ -9,7 +9,7 @@ data class Categoria(
   var grupo: String = "",
   var departamento: String = "",
   var secao: String = ""
-                    ) : ILookup {
+                    ) : Comparable<Categoria?>, ILookup {
   override val lookupValue: String
     get() = descricao
   val codigo
@@ -54,21 +54,16 @@ data class Categoria(
           grupo.isNullOrBlank()        -> false
           departamento.isNullOrBlank() -> categoria.grupo.equals(grupo, ignoreCase = true)
           secao.isNullOrBlank()        -> categoria.grupo.equals(
-            grupo,
-            ignoreCase = true
+            grupo, ignoreCase = true
                                                                 ) && categoria.departamento.equals(
-            departamento,
-            ignoreCase = true
+            departamento, ignoreCase = true
                                                                                                   )
           else                         -> categoria.grupo.equals(
-            grupo,
-            ignoreCase = true
+            grupo, ignoreCase = true
                                                                 ) && categoria.departamento.equals(
-            departamento,
-            ignoreCase = true
+            departamento, ignoreCase = true
                                                                                                   ) && categoria.secao.equals(
-            secao,
-            ignoreCase = true
+            secao, ignoreCase = true
                                                                                                                              )
         }
       }
@@ -97,4 +92,6 @@ data class Categoria(
       .distinctBy { it.secao }
       .sortedBy { it.categoriaNo }
   }
+
+  override fun compareTo(other: Categoria?): Int = descricao.compareTo(other?.descricao ?: "")
 }
