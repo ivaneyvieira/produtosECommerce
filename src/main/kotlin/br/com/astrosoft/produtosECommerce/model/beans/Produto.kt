@@ -133,8 +133,7 @@ class Produto(
   fun saldoLoja4(): Double {
     val saldo = if (variacao == COM_VARIACAO.descricao) saci.saldoLoja4(codigo, "")
     else saci.saldoLoja4(
-      codigo,
-      grade
+      codigo, grade
                         )
     return saldo.firstOrNull()?.saldo ?: 0.00
   }
@@ -163,7 +162,8 @@ class Produto(
 
   fun ean(): String {
     val price = saci.price(codigo)
-    return price.firstOrNull()?.gtin ?: ""
+
+    return if (barcode?.trim().isNullOrBlank()) price.firstOrNull()?.gtin ?: "" else barcode ?: ""
   }
 
   fun palavrasChave() = if (variacao == VARIACAO.descricao) ""
