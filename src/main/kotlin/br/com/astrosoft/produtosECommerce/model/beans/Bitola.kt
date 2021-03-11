@@ -3,7 +3,7 @@ package br.com.astrosoft.produtosECommerce.model.beans
 import br.com.astrosoft.framework.model.ILookup
 import br.com.astrosoft.produtosECommerce.model.local
 
-data class Bitola(var bitolaNo: Int = 0, var name: String = "") : ILookup {
+data class Bitola(var bitolaNo: Int = 0, var name: String = "") : Comparable<Bitola?>, ILookup {
   override val lookupValue: String
     get() = name
 
@@ -37,4 +37,6 @@ data class Bitola(var bitolaNo: Int = 0, var name: String = "") : ILookup {
       return maxNo + 1
     }
   }
+
+  override fun compareTo(other: Bitola?): Int = name.compareTo(other?.name ?: "")
 }
