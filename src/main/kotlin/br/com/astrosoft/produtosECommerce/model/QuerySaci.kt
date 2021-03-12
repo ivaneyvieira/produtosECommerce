@@ -30,19 +30,14 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     }
   }
 
-  fun saldoLoja4(codigo: String, grade: String): List<SaldoLoja4> {
+  fun saldoLoja4(): List<SaldoLoja4> {
     val sql = "/sqlSaci/saldoLoja4.sql"
-    return query(sql, SaldoLoja4::class) {
-      addOptionalParameter("prdno", codigo.toIntOrNull().toString().lpad(16, " "))
-      addOptionalParameter("grade", grade)
-    }
+    return query(sql, SaldoLoja4::class)
   }
 
-  fun price(codigo: String): List<Price> {
+  fun price(): List<Price> {
     val sql = "/sqlSaci/price.sql"
-    return query(sql, Price::class) {
-      addOptionalParameter("prdno", codigo.toIntOrNull().toString().lpad(16, " "))
-    }
+    return query(sql, Price::class)
   }
 
   fun listaType(): List<TypePrd> {

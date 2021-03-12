@@ -29,6 +29,8 @@ fun Grid<Produto>.colCodigo() = addColumnString(Produto::codigo) {
 
 fun Grid<Produto>.colGrade() = addColumnString(Produto::grade) {
   setHeader("Grade")
+  isAutoWidth = false
+  width = "10em"
 }
 
 fun Grid<Produto>.colBarcode() = addColumnString(Produto::barcode) {

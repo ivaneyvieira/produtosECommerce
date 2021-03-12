@@ -65,9 +65,9 @@ inline fun <reified T> (@VaadinDsl Grid<T>).addColumnSeq(label: String) {
     lista.indexOf(it) + 1
   }.apply {
     this.textAlign = END
-    isAutoWidth = true
+    isAutoWidth = false
     setHeader(label)
-    width = "30px"
+    width = "90px"
   }
 }
 
