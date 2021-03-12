@@ -2,7 +2,7 @@ SELECT codigo,
        grade,
        gradeCompleta,
        barcode,
-       descricao,
+       P.descricao,
        vendno,
        fornecedor,
        typeno,
@@ -23,11 +23,14 @@ SELECT codigo,
        precoCheio,
        ncm,
        cor,
-       'simples' AS variacao,
+       'simples'             AS variacao,
+       IFNULL(codigoCor, '') AS corStr,
        dataHoraMudanca
-FROM produtoEcomerce.produto
+FROM produtoEcomerce.produto         AS P
+  LEFT JOIN produtoEcomerce.gradeCor AS G
+	      ON P.grade = G.descricao
 WHERE (codigo = :codigo OR :codigo = 0)
-  AND descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')
+  AND P.descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')
   AND (vendno = :vendno OR :vendno = 0)
   AND (typeno = :typeno OR :typeno = 0)
   AND (clno BETWEEN :clno1 AND :clno2 OR :clno1 = 0)

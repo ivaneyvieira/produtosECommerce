@@ -36,7 +36,8 @@ class Produto(
   val ncm: String,
   var cor: String,
   val variacao: String,
-  var dataHoraMudanca: LocalDateTime
+  val corStr: String,
+  var dataHoraMudanca: LocalDateTime,
              ) : ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
@@ -57,43 +58,8 @@ class Produto(
     }
   val categoriaDesc
     get() = categoriaBean?.descricao ?: ""
-  val corStr
+  val corStrOld
     get() = GradeCor.findAll().firstOrNull { it.descricao == grade && grade != "" }?.codigoCor
-
-  companion object {
-    private val userSaci: UserSaci
-      get() = AppConfig.userSaci as UserSaci
-
-    fun listaProdutos(
-      codigo: Int,
-      descricaoI: String,
-      descricaoF: String,
-      fornecedor: Fornecedor?,
-      type: TypePrd?,
-      cl: Cl?,
-      editado: EEditor?,
-      categoria: Categoria?
-                     ): List<Produto> {
-      return local.listaProdutos(
-        codigo = codigo,
-        descricaoI = descricaoI,
-        descricaoF = descricaoF,
-        vendno = fornecedor?.vendno ?: 0,
-        typeno = type?.typeno ?: 0,
-        clno = cl?.clno ?: "",
-        editado = editado?.value ?: 0,
-        categoria = categoria?.categoriaNo ?: 0
-                                ).map {
-        it.textLink = it.descricaoCompleta.normalize("-")
-        it
-      }
-    }
-
-    fun save(bean: Produto) {
-      bean.textLink = bean.descricaoCompleta.normalize("-")
-      local.salvaProduto(bean)
-    }
-  }
 
   override val lookupValue: String
     get() = "$codigo $descricao"
@@ -131,22 +97,20 @@ class Produto(
   }
 
   fun saldoLoja4(): Double {
-    val saldo = if (variacao == COM_VARIACAO.descricao) saci.saldoLoja4(codigo, "")
-    else saci.saldoLoja4(
-      codigo, grade
-                        )
-    return saldo.firstOrNull()?.saldo ?: 0.00
+    val saldo = if (variacao == COM_VARIACAO.descricao) Produto.saldoLoja4(codigo, "")
+    else Produto.saldoLoja4(codigo, grade)
+    return saldo?.saldo ?: 0.00
   }
 
   fun price(): Double {
-    val price = saci.price(codigo)
-    return price.firstOrNull()?.price ?: 0.00
+    val price = Produto.price(codigo)
+    return price?.price ?: 0.00
   }
 
   val prdRef: String
     get() {
-      val price = saci.price(codigo)
-      return price.firstOrNull()?.prdRef ?: ""
+      val price = Produto.price(codigo)
+      return price?.prdRef ?: ""
     }
 
   fun grupo() = if (variacao == VARIACAO.descricao) ""
@@ -161,9 +125,9 @@ class Produto(
   fun tipoVariacao() = variacao
 
   fun ean(): String {
-    val price = saci.price(codigo)
+    val price = Produto.price(codigo)
 
-    return if (barcode?.trim().isNullOrBlank()) price.firstOrNull()?.gtin ?: "" else barcode ?: ""
+    return if (barcode?.trim().isNullOrBlank()) price?.gtin ?: "" else barcode ?: ""
   }
 
   fun palavrasChave() = if (variacao == VARIACAO.descricao) ""
@@ -224,6 +188,7 @@ class Produto(
     ncm,
     cor,
     variacaoNova.descricao,
+    corStr,
     dataHoraMudanca
                                              )
 
@@ -245,6 +210,55 @@ class Produto(
     result = 31 * result + grade.hashCode()
     result = 31 * result + variacao.hashCode()
     return result
+  }
+
+  companion object {
+    private val listSaldos: List<SaldoLoja4> by lazy {
+      saci.saldoLoja4()
+    }
+
+    private val listPreco: List<Price> by lazy {
+      saci.price()
+    }
+
+    fun saldoLoja4(codigo: String, grade: String) = listSaldos.firstOrNull {
+      it.codigo == codigo && it.grade == grade
+    }
+
+    fun price(codigo: String) = listPreco.firstOrNull { it.codigo == codigo }
+
+    private val userSaci: UserSaci
+      get() = AppConfig.userSaci as UserSaci
+
+    fun listaProdutos(
+      codigo: Int,
+      descricaoI: String,
+      descricaoF: String,
+      fornecedor: Fornecedor?,
+      type: TypePrd?,
+      cl: Cl?,
+      editado: EEditor?,
+      categoria: Categoria?
+                     ): List<Produto> {
+      return local.listaProdutos(
+        codigo = codigo,
+        descricaoI = descricaoI,
+        descricaoF = descricaoF,
+        vendno = fornecedor?.vendno ?: 0,
+        typeno = type?.typeno ?: 0,
+        clno = cl?.clno ?: "",
+        editado = editado?.value ?: 0,
+        categoria = categoria?.categoriaNo ?: 0
+                                ).map {
+        it.textLink = it.descricaoCompleta.normalize("-")
+        it
+      }
+    }
+
+    fun save(bean: Produto) {
+      bean.textLink = bean.descricaoCompleta.normalize("-")
+      local.salvaProduto(bean)
+    }
   }
 }
 

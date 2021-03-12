@@ -38,10 +38,10 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     colGradeCompleta().textAreaEditor()
     colMarca().comboFieldEditor {
       Marca.findAll().sortedBy { it.lookupValue }
-    } //
+    }
     colCategoria().comboFieldEditor {
       Categoria.findAll().sortedBy { it.lookupValue }
-    } //
+    }
     colImagem().textAreaEditor()
     colTexLink().textAreaEditor().apply {
       (this.editorComponent as? TextArea)?.isReadOnly = true
