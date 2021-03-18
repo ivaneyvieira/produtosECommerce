@@ -15,26 +15,26 @@ class Produto(
   val barcode: String?,
   val descricao: String,
   val vendno: Int,
-  val fornecedor: String,
+  val fornecedor: String?,
   val typeno: Int,
-  val typeName: String,
-  val clno: Int,
-  val clname: String,
-  var marca: Int,
-  var categoria: Int,
-  var descricaoCompleta: String,
-  var bitola: Int,
-  var imagem: String,
-  var peso: Double,
-  var altura: Double,
-  var comprimento: Double,
-  var largura: Double,
-  var textLink: String,
-  var especificacoes: String,
-  var editado: Int,
-  val precoCheio: Double,
+  val typeName: String?,
+  val clno: String,
+  val clname: String?,
+  var marca: Int?,
+  var categoria: Int?,
+  var descricaoCompleta: String?,
+  var bitola: Int?,
+  var imagem: String?,
+  var peso: Double?,
+  var altura: Double?,
+  var comprimento: Double?,
+  var largura: Double?,
+  var textLink: String?,
+  var especificacoes: String?,
+  var editado: Int?,
+  val precoCheio: Double?,
   val ncm: String,
-  var cor: String,
+  var cor: String?,
   val variacao: String,
   val corStr: String,
   var dataHoraMudanca: LocalDateTime,
@@ -42,17 +42,17 @@ class Produto(
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean
-    get() = Categoria.findById(categoria)
+    get() = Categoria.findById(categoria ?: 0)
     set(value) {
       categoria = value?.categoriaNo ?: 0
     }
   var marcaBean
-    get() = Marca.findById(marca)
+    get() = Marca.findById(marca ?: 0)
     set(value) {
       marca = value?.marcaNo ?: 0
     }
   var bitolaBean
-    get() = Bitola.findById(bitola)
+    get() = Bitola.findById(bitola ?: 0)
     set(value) {
       bitola = value?.bitolaNo ?: 0
     }
@@ -77,23 +77,23 @@ class Produto(
   }
 
   fun imagem1(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(0) ?: ""
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(0) ?: ""
   }
 
   fun imagem2(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(1) ?: ""
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(1) ?: ""
   }
 
   fun imagem3(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(2) ?: ""
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(2) ?: ""
   }
 
   fun imagem4(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(3) ?: ""
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(3) ?: ""
   }
 
   fun imagem5(): String {
-    return imagem.split(" +".toRegex()).toList().getOrNull(4) ?: ""
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(4) ?: ""
   }
 
   fun saldoLoja4(): Double {
@@ -137,7 +137,7 @@ class Produto(
   fun nomeProduto() =
     if (variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
 
-  fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes
+  fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes ?: ""
   fun descricao() = if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc"
 
   fun skuPai() = when (variacao) {
@@ -152,10 +152,14 @@ class Produto(
     else                   -> ""
   }
 
-  fun slugProduto() = if (variacao == VARIACAO.descricao) "" else descricaoCompleta.normalize(" ")
+  fun slugProduto() = if (variacao == VARIACAO.descricao) ""
+  else descricaoCompleta?.normalize(
+    " " + ""
+                                   ) ?: ""
+
   fun marca() = if (variacao == VARIACAO.descricao) "" else marcaDesc
-  fun tituloMarca() = if (variacao == VARIACAO.descricao) "" else textLink
-  fun descricaoPagina() = if (variacao == VARIACAO.descricao) "" else descricaoCompleta
+  fun tituloMarca() = if (variacao == VARIACAO.descricao) "" else textLink ?: ""
+  fun descricaoPagina() = if (variacao == VARIACAO.descricao) "" else descricaoCompleta ?: ""
   fun gradeCor() = if (variacao == VARIACAO.descricao) gradeCompleta ?: "" else ""
   fun cor() = if (variacao == VARIACAO.descricao) "Cor" else ""
 
@@ -250,13 +254,13 @@ class Produto(
         editado = editado?.value ?: 0,
         categoria = categoria?.categoriaNo ?: 0
                                 ).map {
-        it.textLink = it.descricaoCompleta.normalize("-")
+        it.textLink = it.descricaoCompleta?.normalize("-")
         it
       }
     }
 
     fun save(bean: Produto) {
-      bean.textLink = bean.descricaoCompleta.normalize("-")
+      bean.textLink = bean.descricaoCompleta?.normalize("-")
       local.salvaProduto(bean)
     }
   }

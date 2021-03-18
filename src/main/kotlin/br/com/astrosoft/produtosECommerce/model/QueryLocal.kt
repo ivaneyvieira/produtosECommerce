@@ -52,21 +52,21 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   fun salvaProduto(bean: Produto) {
     val sql = "/sqlSaci/salvaProduto.sql"
     script(sql) {
-      addOptionalParameter("marca", bean.marca)
-      addOptionalParameter("categoria", bean.categoria)
+      addOptionalParameter("marca", bean.marca ?: 0)
+      addOptionalParameter("categoria", bean.categoria ?: 0)
       addOptionalParameter("descricaoCompleta", bean.descricaoCompleta)
-      addOptionalParameter("bitola", bean.bitola)
+      addOptionalParameter("bitola", bean.bitola ?: 0)
       addOptionalParameter("imagem", bean.imagem)
       addOptionalParameter("codigo", bean.codigo)
       addOptionalParameter("grade", bean.grade)
-      addOptionalParameter("peso", bean.peso)
-      addOptionalParameter("comprimento", bean.comprimento)
-      addOptionalParameter("largura", bean.largura)
-      addOptionalParameter("altura", bean.altura)
+      addOptionalParameter("peso", bean.peso ?: 0.00)
+      addOptionalParameter("comprimento", bean.comprimento ?: 0.00)
+      addOptionalParameter("largura", bean.largura ?: 0.00)
+      addOptionalParameter("altura", bean.altura ?: 0.00)
       addOptionalParameter("textLink", bean.textLink)
       addOptionalParameter("especificacoes", bean.especificacoes)
       addOptionalParameter("gradeCompleta", bean.gradeCompleta)
-      addOptionalParameter("editado", bean.editado)
+      addOptionalParameter("editado", bean.editado ?: 0)
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
     }
   }
