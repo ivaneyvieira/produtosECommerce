@@ -52,7 +52,7 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     colAltura().decimalFieldEditor()
     colLargura().decimalFieldEditor()
     colComprimento().decimalFieldEditor()
-    colUsuario()
+    if (statusDefault() == EEditor.EDITADO) colUsuario()
 
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))
   }
