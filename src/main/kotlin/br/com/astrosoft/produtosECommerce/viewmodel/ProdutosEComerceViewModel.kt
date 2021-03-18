@@ -108,7 +108,7 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
 
   fun replicarProdutos(itens: List<Produto>, marca: EEditor) = exec {
     val modelo =
-      itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNotBlank() } ?: fail(
+      itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() } ?: fail(
         "Nenhum produto " + "selecionado"
                                                                                                )
     itens.forEach { produto ->
