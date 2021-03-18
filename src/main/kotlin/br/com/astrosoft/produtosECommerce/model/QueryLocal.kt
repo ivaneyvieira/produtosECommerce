@@ -1,9 +1,11 @@
 package br.com.astrosoft.produtosECommerce.model
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import java.time.LocalDateTime
 
 class QueryLocal : QueryDB("local", driver, url, username, password) {
   fun listaProdutos(
@@ -67,7 +69,12 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("especificacoes", bean.especificacoes)
       addOptionalParameter("gradeCompleta", bean.gradeCompleta)
       addOptionalParameter("editado", bean.editado ?: 0)
+      bean.dataHoraMudanca= LocalDateTime.now()
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
+      val userSaci = AppConfig.userSaci as? UserSaci
+      bean.userName = userSaci?.name
+      bean.userno = userSaci?.no
+      addOptionalParameter("userno", bean.userno ?: 0)
     }
   }
 

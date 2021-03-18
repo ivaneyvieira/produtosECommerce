@@ -38,6 +38,8 @@ class Produto(
   val variacao: String,
   val corStr: String,
   var dataHoraMudanca: LocalDateTime,
+  var userno: Int?,
+  var userName: String?
              ) : ILookup {
   val marcaDesc
     get() = marcaBean?.name ?: ""
@@ -193,7 +195,9 @@ class Produto(
     cor,
     variacaoNova.descricao,
     corStr,
-    dataHoraMudanca
+    dataHoraMudanca,
+    userno,
+    userName
                                              )
 
   override fun equals(other: Any?): Boolean {

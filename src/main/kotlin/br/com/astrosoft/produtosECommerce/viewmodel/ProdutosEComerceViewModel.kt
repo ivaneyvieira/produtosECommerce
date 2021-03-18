@@ -91,7 +91,6 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
   fun marcaProdutos(itens: List<Produto>, marca: EEditor) {
     itens.forEach { produto ->
       produto.editado = marca.value
-      produto.dataHoraMudanca = LocalDateTime.now()
       Produto.save(produto)
     }
     updateGrid()
