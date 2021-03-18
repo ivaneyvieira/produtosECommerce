@@ -7,7 +7,7 @@ SELECT codigo,
        fornecedor,
        typeno,
        typeName,
-       IFNULL(clno, '')       AS clno,
+       IFNULL(clno, '')      AS clno,
        clname,
        marca,
        categoria,
@@ -25,10 +25,14 @@ SELECT codigo,
        cor,
        'simples'             AS variacao,
        IFNULL(codigoCor, '') AS corStr,
-       dataHoraMudanca
+       dataHoraMudanca,
+       userno,
+       U.name                AS userName
 FROM produtoEcomerce.produto         AS P
   LEFT JOIN produtoEcomerce.gradeCor AS G
 	      ON P.grade = G.descricao
+  LEFT JOIN sqldados.users           AS U
+	      ON U.no = P.userno
 WHERE (codigo = :codigo OR :codigo = 0)
   AND P.descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')
   AND (vendno = :vendno OR :vendno = 0)

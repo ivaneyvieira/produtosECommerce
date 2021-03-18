@@ -136,6 +136,10 @@ fun Grid<Produto>.colComprimento() = addColumnDouble(Produto::comprimento) {
   setHeader("Comprimento (cm)")
 }
 
+fun Grid<Produto>.colUsuario() = addColumnString(Produto::userName) {
+  setHeader("Usuario")
+}
+
 fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
   setHeader("Largura (cm)")
 }
