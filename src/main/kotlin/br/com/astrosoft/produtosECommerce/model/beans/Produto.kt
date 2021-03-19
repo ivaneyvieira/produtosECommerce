@@ -40,7 +40,10 @@ class Produto(
   var dataHoraMudanca: LocalDateTime,
   var userno: Int?,
              ) : ILookup {
-  val userName: String? = saci.findAllUser().firstOrNull { it.no == userno }?.name
+  val userName: String? = if (userno == null) null
+  else saci.findAllUser().firstOrNull {
+    it.no == userno
+  }?.name
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean
