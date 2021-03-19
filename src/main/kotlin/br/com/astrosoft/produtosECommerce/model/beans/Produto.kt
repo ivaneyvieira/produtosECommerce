@@ -39,8 +39,8 @@ class Produto(
   val corStr: String,
   var dataHoraMudanca: LocalDateTime,
   var userno: Int?,
-  var userName: String?
              ) : ILookup {
+  val userName: String? = saci.findAllUser().firstOrNull { it.no == userno }?.name
   val marcaDesc
     get() = marcaBean?.name ?: ""
   var categoriaBean
@@ -197,7 +197,6 @@ class Produto(
     corStr,
     dataHoraMudanca,
     userno,
-    userName
                                              )
 
   override fun equals(other: Any?): Boolean {
