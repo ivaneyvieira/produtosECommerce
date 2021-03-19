@@ -26,13 +26,10 @@ SELECT codigo,
        'simples'             AS variacao,
        IFNULL(codigoCor, '') AS corStr,
        dataHoraMudanca,
-       userno,
-       U.name                AS userName
+       userno
 FROM produtoEcomerce.produto         AS P
   LEFT JOIN produtoEcomerce.gradeCor AS G
 	      ON P.grade = G.descricao
-  LEFT JOIN sqldados.users           AS U
-	      ON U.no = P.userno
 WHERE (codigo = :codigo OR :codigo = 0)
   AND P.descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')
   AND (vendno = :vendno OR :vendno = 0)

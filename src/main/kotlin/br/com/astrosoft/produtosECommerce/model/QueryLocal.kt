@@ -72,7 +72,6 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       bean.dataHoraMudanca= LocalDateTime.now()
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
       val userSaci = AppConfig.userSaci as? UserSaci
-      bean.userName = userSaci?.name
       bean.userno = userSaci?.no
       addOptionalParameter("userno", bean.userno ?: 0)
     }
