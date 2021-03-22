@@ -224,13 +224,9 @@ class Produto(
   }
 
   companion object {
-    private val listSaldos: List<SaldoLoja4> by lazy {
-      saci.saldoLoja4()
-    }
+    private val listSaldos= saci.saldoLoja4()
 
-    private val listPreco: List<Price> by lazy {
-      saci.price()
-    }
+    private val listPreco = saci.price()
 
     fun saldoLoja4(codigo: String, grade: String) = listSaldos.firstOrNull {
       it.codigo == codigo && it.grade == grade
