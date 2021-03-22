@@ -5,6 +5,7 @@ import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import java.time.LocalDateTime
 
 class QueryLocal : QueryDB("local", driver, url, username, password) {
@@ -71,8 +72,10 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("editado", bean.editado ?: 0)
       bean.dataHoraMudanca= LocalDateTime.now()
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
-      val userSaci = AppConfig.userSaci as? UserSaci
-      bean.userno = userSaci?.no
+      if(bean.editado == EDITADO.value) {
+        val userSaci = AppConfig.userSaci as? UserSaci
+        bean.userno = userSaci?.no
+      }
       addOptionalParameter("userno", bean.userno ?: 0)
     }
   }
