@@ -100,7 +100,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
   private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(TABLE.create(), { filename() }, {
       val planilha = PlanilhaEcommerceNova()
-      val bytes = planilha.grava(allItens())
+      val bytes = planilha.grava(multiSelect().ifEmpty { allItens() })
       ByteArrayInputStream(bytes)
     })
     button.addThemeVariants(LUMO_SMALL)
