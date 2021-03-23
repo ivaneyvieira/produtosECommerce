@@ -70,6 +70,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("especificacoes", bean.especificacoes)
       addOptionalParameter("gradeCompleta", bean.gradeCompleta)
       addOptionalParameter("editado", bean.editado ?: 0)
+      addOptionalParameter("corStr", bean.corStr ?: "")
       bean.dataHoraMudanca = LocalDateTime.now()
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
       if (bean.editado == EDITADO.value) {

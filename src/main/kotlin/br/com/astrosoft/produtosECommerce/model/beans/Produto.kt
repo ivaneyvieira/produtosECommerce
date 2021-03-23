@@ -36,7 +36,7 @@ class Produto(
   val ncm: String,
   var cor: String?,
   val variacao: String,
-  val corStr: String,
+  var corStr: String,
   var dataHoraMudanca: LocalDateTime,
   var userno: Int?,
              ) : ILookup {

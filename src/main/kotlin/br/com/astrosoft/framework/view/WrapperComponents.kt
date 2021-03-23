@@ -20,18 +20,7 @@ fun (@VaadinDsl HasComponents).colorPick(
     isHexEnabled = true
     isAlphaEnabled = false
     isRgbEnabled = false
-    isHslEnabled = false/*
-    setPalette("#ff0000", "#bb0000", "#770000", "#330000",
-               "#00ff00", "#00bb00", "#007700", "#003300",
-               "#0000ff", "#0000bb", "#000077", "#000033",
-               "#ffff00", "#bbbb00", "#777700", "#333300",
-               "#ff00ff", "#bb00bb", "#770077", "#330033",
-               "#00ffff", "#00bbbb", "#007777", "#003333",
-               "#ffffff", "#bbbbbb", "#777777", "#333333",
-               "#000000"
-              )
-              
-     */
+    isHslEnabled = false
     this.i18n = ColorPickerFieldI18n().apply {
       select = "Seleciona"
       cancel = "Cancela"

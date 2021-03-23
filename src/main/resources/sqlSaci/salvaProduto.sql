@@ -13,6 +13,7 @@ SET marca             = :marca,
     editado           = :editado,
     gradeCompleta     = :gradeCompleta,
     dataHoraMudanca   = :dataHoraMudanca,
+    corStr            = :corStr,
     userno            = :userno
 WHERE codigo = :codigo
   AND grade = :grade
