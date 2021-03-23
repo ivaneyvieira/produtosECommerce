@@ -70,11 +70,14 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("especificacoes", bean.especificacoes)
       addOptionalParameter("gradeCompleta", bean.gradeCompleta)
       addOptionalParameter("editado", bean.editado ?: 0)
-      bean.dataHoraMudanca= LocalDateTime.now()
+      bean.dataHoraMudanca = LocalDateTime.now()
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
-      if(bean.editado == EDITADO.value) {
+      if (bean.editado == EDITADO.value) {
         val userSaci = AppConfig.userSaci as? UserSaci
-        bean.userno = userSaci?.no
+        if (bean.userno == null || bean.userno == 0) bean.userno = userSaci?.no
+      }
+      else {
+        bean.userno = 0
       }
       addOptionalParameter("userno", bean.userno ?: 0)
     }
