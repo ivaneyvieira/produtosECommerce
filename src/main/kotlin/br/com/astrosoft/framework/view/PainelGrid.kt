@@ -1,6 +1,7 @@
 package br.com.astrosoft.framework.view
 
 import br.com.astrosoft.framework.model.ILookup
+import com.github.juchar.colorpicker.ColorPickerFieldI18n
 import com.github.juchar.colorpicker.ColorPickerFieldRaw
 import com.github.mvysny.karibudsl.v10.getAll
 import com.vaadin.flow.component.combobox.ComboBox
@@ -96,48 +97,19 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
   }
 
   private fun colorComponente() = ColorPickerFieldRaw().apply {
-
     setPinnedPalettes(true)
     isHexEnabled = true
     isAlphaEnabled = false
     isRgbEnabled = false
     isHslEnabled = false
-    setPalette(
-      "#ff0000",
-      "#aa0000",
-      "#880000",
-      "#440000",
-      "#00ff00",
-      "#00aa00",
-      "#008800",
-      "#004400",
-      "#0000ff",
-      "#0000aa",
-      "#000088",
-      "#000044",
-      "#ffff00",
-      "#aaaa00",
-      "#888800",
-      "#444400",
-      "#ff00ff",
-      "#aa00aa",
-      "#880088",
-      "#440044",
-      "#00ffff",
-      "#00aaaa",
-      "#008888",
-      "#004444",
-      "#ffffff",
-      "#aaaaaa",
-      "#888888",
-      "#444444",
-      "#000000"
-              )
-    this.textField.setSizeFull()
-    this.setSizeFull()
+    this.i18n = ColorPickerFieldI18n().apply {
+      select = "Seleciona"
+      cancel = "Cancela"
+    }
+    this.textField.setSizeFull() //this.setSizeFull()
     isChangeFormatButtonVisible = false
     setCssCustomPropertiesEnabled(true)
-    setSizeFull()
+    this.setPinnedPalettes(true) //setSizeFull()
   }
 
   private fun decimalFieldComponent(): BigDecimalField {
