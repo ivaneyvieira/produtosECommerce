@@ -33,7 +33,7 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
       Bitola.findAll().sortedBy { it.lookupValue }
     }
     colGrade()
-    colCor().colorEditor()
+    colCor().colorPainelEditor()
     colCorPainel()
     colGradeCompleta().textAreaEditor()
     colMarca().comboFieldEditor {

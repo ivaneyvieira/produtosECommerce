@@ -1,6 +1,7 @@
 package br.com.astrosoft.framework.view
 
 import br.com.astrosoft.framework.model.ILookup
+import br.com.astrosoft.produtosECommerce.model.local
 import com.github.juchar.colorpicker.ColorPickerFieldI18n
 import com.github.juchar.colorpicker.ColorPickerFieldRaw
 import com.github.mvysny.karibudsl.v10.getAll
@@ -8,6 +9,8 @@ import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.Column
 import com.vaadin.flow.component.grid.GridVariant.*
+import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.orderedlayout.FlexLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.*
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
@@ -17,6 +20,7 @@ import com.vaadin.flow.data.binder.Result
 import com.vaadin.flow.data.binder.ValueContext
 import com.vaadin.flow.data.converter.Converter
 import com.vaadin.flow.data.provider.ListDataProvider
+import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.data.value.ValueChangeMode.ON_CHANGE
 import java.math.BigDecimal
 import java.util.*
@@ -96,6 +100,38 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     setSizeFull()
   }
 
+  private fun colorPainelComponente() = ComboBox<String>().apply {
+    this.setSizeFull()
+    val cores = local.findCores()
+    this.setItems(cores.map { it.codigoCor }.sorted())
+    this.isAllowCustomValue = false
+    this.isClearButtonVisible = true
+
+    setRenderer(ComponentRenderer() { information ->
+      val cor = local.findCores().firstOrNull { it.codigoCor == information }
+      val text = Div()
+      text.text = cor?.descricao ?: "Sem cor"
+
+      val box = VerticalLayout().apply {
+        if (cor == null) {
+          this.element.style.remove("backgroundColor")
+        }
+        else {
+          this.element.style.set("backgroundColor", cor.codigoCor)
+        }
+        width = "21px"
+        height = "21px"
+      }
+
+      val wrapper = FlexLayout()
+      text.style.set("margin-left", "0.5em")
+      wrapper.add(box, text)
+      wrapper
+    })
+
+    this.element.setAttribute("theme", "small")
+  }
+
   private fun colorComponente() = ColorPickerFieldRaw().apply {
     setPinnedPalettes(true)
     isHexEnabled = true
@@ -150,6 +186,13 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
 
   protected fun Column<T>.colorEditor(): Column<T> {
     val component = colorComponente()
+    grid.editor.binder.forField(component).bind(this.key)
+    this.editorComponent = component
+    return this
+  }
+
+  protected fun Column<T>.colorPainelEditor(): Column<T> {
+    val component = colorPainelComponente()
     grid.editor.binder.forField(component).bind(this.key)
     this.editorComponent = component
     return this
