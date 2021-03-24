@@ -7,14 +7,13 @@ import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
-import com.github.mvysny.karibudsl.v10.VaadinDsl
-import com.github.mvysny.karibudsl.v10.comboBox
-import com.github.mvysny.karibudsl.v10.integerField
-import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.combobox.ComboBox.ItemFilter
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.orderedlayout.FlexLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
@@ -54,23 +53,32 @@ fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
 fun Grid<Produto>.colCor() = addColumnString(Produto::corStr) {
   setHeader("Codigo Cor")
   isAutoWidth = false
-  width = "20em"
+  width = "8em"
 }
 
 fun Grid<Produto>.colCorPainel() {
   this.addColumn(ComponentRenderer { produto ->
-    VerticalLayout().apply {
-      if (produto.corStr.isNullOrBlank()) {
+    val text = Div()
+    text.text = produto.corStr ?: ""
+
+    val box = VerticalLayout().apply {
+      if (produto.corStr == null) {
         this.element.style.remove("backgroundColor")
       }
       else {
         this.element.style.set("backgroundColor", produto.corStr)
       }
+      width = "21px"
+      height = "21px"
     }
-  }).apply {
+
+    val wrapper = FlexLayout()
+    text.style.set("margin-left", "0.5em")
+    wrapper.add(box, text)
+    wrapper  }).apply {
     setHeader("Cor")
     isAutoWidth = false
-    width = "3em"
+    width = "10em"
   }
 }
 

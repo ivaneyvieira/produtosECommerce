@@ -224,7 +224,7 @@ class Produto(
   }
 
   companion object {
-    private val listSaldos= saci.saldoLoja4()
+    private val listSaldos = saci.saldoLoja4()
 
     private val listPreco = saci.price()
 

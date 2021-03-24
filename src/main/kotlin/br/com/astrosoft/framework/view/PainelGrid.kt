@@ -61,18 +61,21 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
 
   protected abstract fun Grid<T>.gridConfig()
 
-  fun Grid<T>.withEditor(classBean: KClass<T>, openEditor: (T) -> Unit, closeEditor: (T) -> Unit) {
+  fun Grid<T>.withEditor(
+    classBean: KClass<T>, openEditor: (Binder<T>) -> Unit, closeEditor: (Binder<T>) -> Unit
+                        ) {
     val binder = Binder(classBean.java)
     editor.binder = binder
     addItemDoubleClickListener { event ->
       editor.editItem(event.item)
     }
-    editor.addCloseListener { event ->
-      editor.refresh()
-      openEditor(event.item)
+    editor.addOpenListener { event ->
+      openEditor(binder)
     }
     editor.addCloseListener { _ ->
-      closeEditor(binder.bean)
+      editor.refresh()
+      openEditor(binder)
+      closeEditor(binder)
     }
     element.addEventListener("keyup") { editor.cancel() }.filter =
       "event.key === 'Escape' || event.key === 'Esc'"
@@ -102,13 +105,13 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
 
   private fun colorPainelComponente() = ComboBox<String>().apply {
     this.setSizeFull()
-    val cores = local.findCores()
-    this.setItems(cores.map { it.codigoCor }.sorted())
+    val cores = local.findCores("")
+    this.setItems(cores.sortedBy { it.descricao }.map { it.descricao })
     this.isAllowCustomValue = false
     this.isClearButtonVisible = true
 
-    setRenderer(ComponentRenderer() { information ->
-      val cor = local.findCores().firstOrNull { it.codigoCor == information }
+    setRenderer(ComponentRenderer() { descricao ->
+      val cor = local.findCores(descricao).firstOrNull()
       val text = Div()
       text.text = cor?.descricao ?: "Sem cor"
 

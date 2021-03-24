@@ -69,10 +69,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("textLink", bean.textLink)
       addOptionalParameter("especificacoes", bean.especificacoes)
 
-      if (bean.gradeCompleta.isNullOrEmpty()) {
-        bean.gradeCompleta =
-          findCores().firstOrNull { it.codigoCor == bean.corStr }?.descricao ?: ""
-      }
+      bean.corStr = findCores(bean.gradeCompleta).firstOrNull()?.codigoCor ?: ""
 
       addOptionalParameter("gradeCompleta", bean.gradeCompleta)
       addOptionalParameter("editado", bean.editado ?: 0)
@@ -234,11 +231,12 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     }
   }
 
-  fun findCores(): List<GradeCor> {
+  fun findCores(descricao: String?): List<GradeCor> {
     return query(
       """select TRIM(UPPER(MID(codigoCor, 1, 7))) AS codigoCor, TRIM(descricao) AS descricao 
 from produtoEcomerce.gradeCor
-GROUP BY codigoCor""".trimMargin(), GradeCor::class
+GROUP BY codigoCor
+HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
                 )
   }
 
