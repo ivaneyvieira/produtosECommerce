@@ -28,7 +28,7 @@ class UserSaci : IUser {
   var cor by DelegateAuthorized(5)
 
   val admin
-    get() = login == "ADM"
+    get() = login == "ADM" || login == "YASMINE"
 
   companion object {
     fun findAllAtivos(): List<UserSaci> {
