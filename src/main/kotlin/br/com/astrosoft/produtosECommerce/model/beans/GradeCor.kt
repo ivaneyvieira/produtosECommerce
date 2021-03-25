@@ -7,9 +7,9 @@ import java.time.LocalDateTime
 class GradeCor(
   var descricao: String = "",
   var codigoCor: String = "",
-  var userno: Int = 0,
-  var dataHoraMudanca: LocalDateTime = LocalDateTime.now(),
-  var enviado: Int = 0
+  var userno: Int? = 0,
+  var dataHoraMudanca: LocalDateTime? = LocalDateTime.now(),
+  var enviado: Int? = 0
               ) {
   var descricaoOriginal: String = ""
   var enviadoBool: Boolean?
