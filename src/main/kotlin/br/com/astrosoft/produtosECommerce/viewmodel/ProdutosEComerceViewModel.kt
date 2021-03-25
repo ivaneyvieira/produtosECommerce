@@ -5,7 +5,6 @@ import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
-import java.time.LocalDateTime
 
 class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdutosEComerceView>(view) {
   fun updateGridEditar() {
@@ -62,11 +61,46 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
                                 )
   }
 
+  fun updateGridEnviar() {
+    view.updateGridEnviar(listEnviar())
+  }
+
+  private fun listEnviar(): List<Produto> {
+    val filtro = view.filtroEnviar
+    return Produto.listaProdutos(
+      codigo = filtro.codigo,
+      descricaoI = filtro.descricaoI,
+      descricaoF = filtro.descricaoF,
+      fornecedor = filtro.fornecedor,
+      type = filtro.type,
+      cl = filtro.cl,
+      editado = ENVIAR,
+      categoria = filtro.categoria
+                                )
+  }
+
+  fun updateGridEnviado() {
+    view.updateGridEnviado(listEnviado())
+  }
+
+  private fun listEnviado(): List<Produto> {
+    val filtro = view.filtroEnviado
+    return Produto.listaProdutos(
+      codigo = filtro.codigo,
+      descricaoI = filtro.descricaoI,
+      descricaoF = filtro.descricaoF,
+      fornecedor = filtro.fornecedor,
+      type = filtro.type,
+      cl = filtro.cl,
+      editado = ENVIADO,
+      categoria = filtro.categoria
+                                )
+  }
+
   fun salvaProduto(produto: Produto?) {
     if (produto != null) {
       Produto.save(produto)
-      updateGridEditar()
-      updateGridEditado()
+      updateGrid()
     }
   }
 
@@ -102,6 +136,8 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
       EDITAR    -> updateGridEditar()
       EDITADO   -> updateGridEditado()
       IMPORTADO -> updateGridImportado()
+      ENVIAR    -> updateGridEnviar()
+      ENVIADO   -> updateGridEnviado()
     }
   }
 
@@ -109,7 +145,7 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
     val modelo =
       itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() } ?: fail(
         "Nenhum produto " + "selecionado"
-                                                                                               )
+                                                                                                  )
     itens.forEach { produto ->
       produto.marca = modelo.marca
       produto.categoria = modelo.categoria
@@ -155,6 +191,32 @@ interface IFiltroEditado {
     codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
 }
 
+interface IFiltroEnviar {
+  val codigo: Int
+  val descricaoI: String
+  val descricaoF: String
+  val fornecedor: Fornecedor?
+  val type: TypePrd?
+  val cl: Cl?
+  val categoria: Categoria?
+
+  fun isEmpty() =
+    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
+}
+
+interface IFiltroEnviado {
+  val codigo: Int
+  val descricaoI: String
+  val descricaoF: String
+  val fornecedor: Fornecedor?
+  val type: TypePrd?
+  val cl: Cl?
+  val categoria: Categoria?
+
+  fun isEmpty() =
+    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
+}
+
 interface IFiltroBase {
   val codigo: Int
   val descricaoI: String
@@ -186,6 +248,8 @@ interface IProdutosEComerceView : IView {
   fun updateGridEditado(itens: List<Produto>)
   fun updateGridBase(itens: List<Produto>)
   fun updateGridImportado(itens: List<Produto>)
+  fun updateGridEnviar(itens: List<Produto>)
+  fun updateGridEnviado(itens: List<Produto>)
   fun panelStatus(): EEditor
 
   fun marcaProdutos(itens: List<Produto>, marca: EEditor)
@@ -197,6 +261,8 @@ interface IProdutosEComerceView : IView {
   val filtroEditado: IFiltroEditado
   val filtroBase: IFiltroBase
   val filtroImportado: IFiltroImportado
+  val filtroEnviar: IFiltroEnviar
+  val filtroEnviado: IFiltroEnviado
 }
 
 data class ProcessaBean(

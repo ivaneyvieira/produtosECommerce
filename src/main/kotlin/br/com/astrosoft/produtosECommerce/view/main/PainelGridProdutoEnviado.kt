@@ -1,13 +1,11 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.FilterBar
-import br.com.astrosoft.produtosECommerce.model.beans.Categoria
-import br.com.astrosoft.produtosECommerce.model.beans.Cl
+import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
-import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
-import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
+import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEnviado
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
@@ -24,13 +22,13 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit) :
+class PainelGridProdutoEnviado(view: IProdutosEComerceView, blockUpdate: () -> Unit) :
   PainelGridProdutoAbstract(view, blockUpdate) {
-  override fun statusDefault() = EDITADO
+  override fun statusDefault() = ENVIADO
 
-  override fun filterBar() = FilterBarEditado()
+  override fun filterBar() = FilterBarEnviado()
 
-  inner class FilterBarEditado : FilterBar(), IFiltroEditado {
+  inner class FilterBarEnviado : FilterBar(), IFiltroEnviado {
     private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
@@ -42,12 +40,6 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     override fun FilterBar.contentBlock() {
       button {
         icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), EDITAR) }
-        this.tooltip = "Voltar para o painel editar"
-      }
-      button {
-        icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
         this.tooltip = "Voltar para o painel enviar"
@@ -110,6 +102,5 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     button.tooltip = "Salva a planilha"
     add(button)
   }
-
 }
 

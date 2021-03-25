@@ -25,6 +25,8 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
   private val gridEditar = PainelGridProdutoEditar(this) { viewModel.updateGridEditar() }
   private val gridImportado = PainelGridProdutoImportado(this) { viewModel.updateGridImportado() }
   private val gridEditado = PainelGridProdutoEditado(this) { viewModel.updateGridEditado() }
+  private val gridEnviar = PainelGridProdutoEnviar(this) { viewModel.updateGridEnviar() }
+  private val gridEnviado = PainelGridProdutoEnviado(this) { viewModel.updateGridEnviado() }
   override val viewModel: ProdutosEComerceViewModel = ProdutosEComerceViewModel(this)
 
   override fun isAccept() = true
@@ -36,6 +38,8 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
       tabGrid(TAB_EDITAR, gridEditar)
       tabGrid(TAB_IMPORTADO, gridImportado)
       tabGrid(TAB_EDITADO, gridEditado)
+      tabGrid(TAB_ENVIAR, gridEnviar)
+      tabGrid(TAB_ENVIADO, gridEnviado)
     }
     viewModel.updateGrid()
   }
@@ -56,6 +60,14 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     gridImportado.updateGrid(itens)
   }
 
+  override fun updateGridEnviar(itens: List<Produto>) {
+    gridEnviar.updateGrid(itens)
+  }
+
+  override fun updateGridEnviado(itens: List<Produto>) {
+    gridEnviado.updateGrid(itens)
+  }
+
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet { "" } ?: ""
     return when (id) {
@@ -63,6 +75,8 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
       TAB_EDITAR    -> EDITAR
       TAB_EDITADO   -> EDITADO
       TAB_IMPORTADO -> IMPORTADO
+      TAB_ENVIAR    -> ENVIAR
+      TAB_ENVIADO   -> ENVIADO
       else          -> BASE
     }
   }
@@ -87,12 +101,18 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     get() = gridBase.filterBar as IFiltroBase
   override val filtroImportado: IFiltroImportado
     get() = gridImportado.filterBar as IFiltroImportado
+  override val filtroEnviar: IFiltroEnviar
+    get() = gridEnviar.filterBar as IFiltroEnviar
+  override val filtroEnviado: IFiltroEnviado
+    get() = gridEnviado.filterBar as IFiltroEnviado
 
   companion object {
     const val TAB_EDITAR: String = "Editar"
     const val TAB_EDITADO: String = "Editado"
     const val TAB_IMPORTADO: String = "Importado"
     const val TAB_BASE: String = "Base"
+    const val TAB_ENVIAR: String = "Enviar"
+    const val TAB_ENVIADO: String = "Enviado"
   }
 }
 

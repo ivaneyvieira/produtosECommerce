@@ -272,7 +272,7 @@ class Produto(
 data class ChaveProduto(val codigo: String, val grade: String)
 
 enum class EEditor(val value: Int) {
-  BASE(0), EDITAR(1), EDITADO(2), IMPORTADO(3)
+  BASE(0), EDITAR(1), EDITADO(2), IMPORTADO(3), ENVIAR(4), ENVIADO(5)
 }
 
 enum class EVariacao(val descricao: String) {
