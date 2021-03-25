@@ -211,9 +211,9 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     script(sql) {
       addOptionalParameter("descricao", cor.descricao)
       addOptionalParameter("codigoCor", cor.codigoCor)
-      addOptionalParameter("userno", cor.userno)
+      addOptionalParameter("userno", cor.userno ?: 0)
       addOptionalParameter("dataHoraMudanca", cor.dataHoraMudanca)
-      addOptionalParameter("enviado", cor.enviado)
+      addOptionalParameter("enviado", cor.enviado ?: 0)
     }
   }
 
@@ -230,9 +230,9 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("codigoCor", cor.codigoCor)
       addOptionalParameter("descricao", cor.descricao)
       addOptionalParameter("descricaoOriginal", cor.descricaoOriginal)
-      addOptionalParameter("userno", cor.userno)
+      addOptionalParameter("userno", cor.userno ?: 0)
       addOptionalParameter("dataHoraMudanca", cor.dataHoraMudanca)
-      addOptionalParameter("enviado", cor.enviado)
+      addOptionalParameter("enviado", cor.enviado ?: 0)
     }
   }
 

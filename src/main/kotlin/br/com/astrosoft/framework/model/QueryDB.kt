@@ -124,7 +124,7 @@ open class QueryDB(
     return this
   }
 
-  fun Query.addOptionalParameter(name: String, value: LocalDateTime): Query {
+  fun Query.addOptionalParameter(name: String, value: LocalDateTime?): Query {
     if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }
