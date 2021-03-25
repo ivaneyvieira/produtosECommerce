@@ -7,7 +7,7 @@ SELECT codigo,
        fornecedor,
        typeno,
        typeName,
-       IFNULL(clno, '')                                                AS clno,
+       IFNULL(clno, '') AS clno,
        clname,
        marca,
        categoria,
@@ -21,15 +21,13 @@ SELECT codigo,
        textLink,
        especificacoes,
        precoCheio,
-       IFNULL(ncm, '')                                                 AS ncm,
+       IFNULL(ncm, '')  AS ncm,
        cor,
-       'simples'                                                       AS variacao,
-       IFNULL(IF(corStr = '' || corStr = NULL, codigoCor, corStr), '') AS corStr,
-       dataHoraMudanca,
-       userno
-FROM produtoEcomerce.produto         AS P
-  LEFT JOIN produtoEcomerce.gradeCor AS G
-	      ON P.grade = G.descricao
+       'simples'        AS variacao,
+       corStr           AS corStr,
+       P.dataHoraMudanca,
+       P.userno
+FROM produtoEcomerce.produto AS P
 WHERE (codigo = :codigo OR :codigo = 0)
   AND P.descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')
   AND (vendno = :vendno OR :vendno = 0)

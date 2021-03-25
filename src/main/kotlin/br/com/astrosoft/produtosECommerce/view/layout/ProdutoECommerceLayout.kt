@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.view.layout
 
 import br.com.astrosoft.AppConfig
+import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.view.cruds.BitolaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CategoriaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CorView
@@ -56,28 +57,29 @@ class ProdutoECommerceLayout : AppLayout() {
       hr()
       tabs {
         orientation = Tabs.Orientation.VERTICAL
-        tab {
+        val user = AppConfig.userSaci as? UserSaci
+        if (user?.produto == true) tab {
           this.icon(VaadinIcon.FORM)
           routerLink(text = "Produtos", viewType = ProdutosEComerceView::class)
         }
-        tab {
+        if (user?.categoria == true) tab {
           this.icon(VaadinIcon.CUBES)
           routerLink(text = "Categoria", viewType = CategoriaView::class)
         }
-        tab {
+        if (user?.marca == true) tab {
           this.icon(VaadinIcon.CUBE)
           routerLink(text = "Marca", viewType = MarcaView::class)
         }
-        tab {
+        if (user?.bitola == true) tab {
           this.icon(VaadinIcon.CIRCLE_THIN)
           routerLink(text = "Bitola", viewType = BitolaView::class)
         }
-        tab {
+        if (user?.cor == true) tab {
           this.icon(VaadinIcon.PALETE)
           routerLink(text = "Cor", viewType = CorView::class)
         }
+        if (user?.admin == true)
         tab {
-          this.isEnabled = AppConfig.userSaci?.roles()?.contains("ADMIN") ?: false
           this.icon(VaadinIcon.USER)
           routerLink(text = "Usuário", viewType = UsuarioView::class)
         }
