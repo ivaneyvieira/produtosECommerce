@@ -198,29 +198,41 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   /*Cores*/
   fun findAllCor(): List<GradeCor> {
     return query(
-      """select descricao, codigoCor
+      """select descricao, codigoCor, userno, dataHoraMudanca, enviado
       |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class
                 )
   }
 
   fun addCor(cor: GradeCor) {
-    val sql = """INSERT INTO produtoEcomerce.gradeCor(descricao, codigoCor)
-           |  VALUES(:descricao, :codigoCor)""".trimMargin()
+    val sql =
+      """INSERT INTO produtoEcomerce.gradeCor(descricao, codigoCor, userno, dataHoraMudanca, enviado)
+           |  VALUES(:descricao, :codigoCor, :userno, :dataHoraMudanca, :enviado)""".trimMargin()
+    cor.userno = (AppConfig.userSaci as? UserSaci)?.no ?: 0
     script(sql) {
       addOptionalParameter("descricao", cor.descricao)
       addOptionalParameter("codigoCor", cor.codigoCor)
+      addOptionalParameter("userno", cor.userno)
+      addOptionalParameter("dataHoraMudanca", cor.dataHoraMudanca)
+      addOptionalParameter("enviado", cor.enviado)
     }
   }
 
   fun updateCor(cor: GradeCor) {
     val sql = """UPDATE produtoEcomerce.gradeCor
                         |  SET codigoCor   = :codigoCor,
-                        |  descricao       = :descricao
+                        |  descricao       = :descricao,
+                        |  userno          = :userno, 
+                        |  dataHoraMudanca = :dataHoraMudanca, 
+                        |  enviado         = :enviado
                         | WHERE descricao   = :descricaoOriginal""".trimMargin()
+    cor.dataHoraMudanca = LocalDateTime.now()
     script(sql) {
       addOptionalParameter("codigoCor", cor.codigoCor)
       addOptionalParameter("descricao", cor.descricao)
       addOptionalParameter("descricaoOriginal", cor.descricaoOriginal)
+      addOptionalParameter("userno", cor.userno)
+      addOptionalParameter("dataHoraMudanca", cor.dataHoraMudanca)
+      addOptionalParameter("enviado", cor.enviado)
     }
   }
 

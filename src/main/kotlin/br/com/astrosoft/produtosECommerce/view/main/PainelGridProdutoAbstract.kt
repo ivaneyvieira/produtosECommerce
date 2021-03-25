@@ -17,7 +17,7 @@ import com.vaadin.flow.data.provider.SortDirection
 abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockUpdate: () -> Unit) :
   PainelGrid<Produto>(blockUpdate) {
   override fun Grid<Produto>.gridConfig() {
-    setSelectionMode(MULTI) //
+    setSelectionMode(MULTI)
     withEditor(Produto::class, openEditor = { binder ->
       binder.bean.editado = statusDefault().value
       (getColumnBy(Produto::descricaoCompleta).editorComponent as? Focusable<*>)?.focus()

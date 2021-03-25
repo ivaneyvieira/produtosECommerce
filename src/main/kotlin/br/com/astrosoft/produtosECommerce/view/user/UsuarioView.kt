@@ -54,10 +54,7 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
   private fun gridCrud(): GridCrud<UserSaci> {
     val crud: GridCrud<UserSaci> = GridCrud(UserSaci::class.java)
     crud.grid.setColumns(
-        UserSaci::no.name,
-        UserSaci::login.name,
-        UserSaci::storeno.name,
-        UserSaci::name.name
+      UserSaci::no.name, UserSaci::login.name, UserSaci::storeno.name, UserSaci::name.name
                         )
     crud.grid.getColumnBy(UserSaci::storeno).setHeader("Loja")
 
@@ -109,8 +106,7 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCru
           val allUser = viewModel.findAllUser()
           val filter: ItemFilter<UserSaci> = ItemFilter { user: UserSaci, filterString: String ->
             user.login.contains(filterString, ignoreCase = true) || user.name.contains(
-                filterString,
-                ignoreCase = true
+              filterString, ignoreCase = true
                                                                                       ) || user.no == filterString.toIntOrNull() ?: 0
           }
           this.setItems(filter, allUser)
@@ -137,6 +133,28 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCru
         if (operation in listOf(ADD, READ, DELETE, UPDATE)) integerField("Loja") {
           isReadOnly = false
           binder.bind(this, UserSaci::storeno.name)
+        }
+        if (operation in listOf(ADD, READ, DELETE, UPDATE)) {
+          checkBox("Produto") {
+            isReadOnly = readOnly
+            binder.bind(this, UserSaci::produto.name)
+          }
+          checkBox("Categoria") {
+            isReadOnly = readOnly
+            binder.bind(this, UserSaci::categoria.name)
+          }
+          checkBox("Marca") {
+            isReadOnly = readOnly
+            binder.bind(this, UserSaci::marca.name)
+          }
+          checkBox("Bitola") {
+            isReadOnly = readOnly
+            binder.bind(this, UserSaci::bitola.name)
+          }
+          checkBox("Cor") {
+            isReadOnly = readOnly
+            binder.bind(this, UserSaci::cor.name)
+          }
         }
       }
       hr()

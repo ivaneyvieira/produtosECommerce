@@ -3,6 +3,7 @@ package br.com.astrosoft.produtosECommerce.model.beans
 import br.com.astrosoft.framework.spring.IUser
 import br.com.astrosoft.produtosECommerce.model.saci
 import kotlin.math.pow
+import kotlin.reflect.KProperty
 
 class UserSaci : IUser {
   var no: Int = 0
@@ -19,18 +20,17 @@ class UserSaci : IUser {
   var storeno: Int = 0
 
   //Otiros campos
-  var ativo
-    get() = (bitAcesso and BIT_ATIVO) != 0 || admin
-    set(value) {
-      bitAcesso = if (value) bitAcesso or BIT_ATIVO
-      else bitAcesso and BIT_ATIVO.inv()
-    }
+  var ativo by DelegateAuthorized(0)
+  var produto by DelegateAuthorized(1)
+  var categoria by DelegateAuthorized(2)
+  var marca by DelegateAuthorized(3)
+  var bitola by DelegateAuthorized(4)
+  var cor by DelegateAuthorized(5)
+
   val admin
     get() = login == "ADM"
 
   companion object {
-    private val BIT_ATIVO = 2.pow(12)
-
     fun findAllAtivos(): List<UserSaci> {
       return saci.findAllUser().filter { it.ativo }
     }
@@ -50,3 +50,21 @@ class UserSaci : IUser {
 }
 
 fun Int.pow(e: Int): Int = this.toDouble().pow(e).toInt()
+
+class DelegateAuthorized(numBit: Int) {
+  private val bit = 2.toDouble().pow(numBit).toInt()
+
+  operator fun getValue(thisRef: UserSaci?, property: KProperty<*>): Boolean {
+    thisRef ?: return false
+    return (thisRef.bitAcesso and bit) != 0 || thisRef.admin
+  }
+
+  operator fun setValue(thisRef: UserSaci?, property: KProperty<*>, value: Boolean?) {
+    thisRef ?: return
+    val v = value ?: false
+    thisRef.bitAcesso = when {
+      v    -> thisRef.bitAcesso or bit
+      else -> thisRef.bitAcesso and bit.inv()
+    }
+  }
+}

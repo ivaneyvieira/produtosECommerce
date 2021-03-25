@@ -1,8 +1,6 @@
 package br.com.astrosoft.produtosECommerce.view.cruds
 
-import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.framework.view.colorPick
-import br.com.astrosoft.framework.view.listOrder
+import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.GradeCor
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaGradeCor
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
@@ -17,7 +15,9 @@ import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY
+import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridVariant.*
+import com.vaadin.flow.component.icon.VaadinIcon.CHECK
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
@@ -57,11 +57,21 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
 
   private fun gridCrud(): GridCrud<GradeCor> {
     val crud: GridCrud<GradeCor> = GridCrud(GradeCor::class.java, HorizontalSplitCrudLayout())
+    //crud.grid.setSelectionMode(MULTI)
     crud.grid.setColumns(
-        GradeCor::descricao.name, GradeCor::codigoCor.name
+      GradeCor::descricao.name, GradeCor::codigoCor.name,
                         )
     crud.grid.getColumnBy(GradeCor::descricao).setHeader("Descrição")
     crud.grid.getColumnBy(GradeCor::codigoCor).setHeader("Código Cor")
+    crud.grid.addColumnLocalDateTime(GradeCor::dataHoraMudanca) {
+      this.setHeader("Modificação")
+    }
+    crud.grid.addColumnBool(GradeCor::enviadoBool) {
+      this.setHeader("Enviado")
+    }
+    crud.grid.addColumnString(GradeCor::userName) {
+      this.setHeader("Usuário")
+    }
     crud.grid.addColumn(ComponentRenderer { produto ->
       VerticalLayout().apply {
         if (produto.codigoCor.isBlank()) {
@@ -72,10 +82,10 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
         }
       }
     }).apply {
-        setHeader("Cor")
-        isAutoWidth = false
-        width = "3em"
-      }
+      setHeader("Cor")
+      isAutoWidth = false
+      width = "3em"
+    }
 
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
 
@@ -83,6 +93,7 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
 
     crud.setSizeFull()
     (crud.crudLayout as? WindowBasedCrudLayout)?.setFormWindowWidth("30em")
+    crud.crudLayout.addToolbarComponent(buttonMarcaEnviado())
     crud.crudLayout.addToolbarComponent(buttonDownloadLazy())
     return crud
   }
@@ -98,6 +109,22 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
     val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
     val textTime = LocalDateTime.now().format(sdf)
     return "cores$textTime.xlsx"
+  }
+
+  private fun buttonMarcaEnviado(): Button {
+    val button = Button().apply {
+      this.icon = CHECK.create()
+      this.tooltip = "Marca como enviado"
+      this.onLeftClick {
+        val lista = crud.grid.selectedItems
+        lista.forEach { cor ->
+          cor.enviadoBool = true
+          viewModel.update(cor)
+          crud.grid.dataProvider.refreshItem(cor)
+        }
+      }
+    }
+    return button
   }
 
   private fun buttonDownloadLazy(): LazyDownloadButton {
@@ -144,6 +171,11 @@ class CorCrudFormFactory : AbstractCrudFormFactory<GradeCor>() {
         }
         colorPick("Código Cor") {
           binder.bind(this, GradeCor::codigoCor.name)
+          this.isReadOnly = readOnly
+          colspan = 4
+        }
+        checkBox("Enviado") {
+          binder.bind(this, GradeCor::enviadoBool.name)
           this.isReadOnly = readOnly
           colspan = 4
         }
@@ -216,5 +248,4 @@ class CorCrudFormFactory : AbstractCrudFormFactory<GradeCor>() {
   companion object {
     const val TITLE = "Cor"
   }
-
 }

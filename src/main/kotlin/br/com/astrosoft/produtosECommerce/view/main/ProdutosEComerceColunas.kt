@@ -62,7 +62,7 @@ fun Grid<Produto>.colCorPainel() {
     text.text = produto.corStr ?: ""
 
     val box = VerticalLayout().apply {
-      if (produto.corStr == null) {
+      if (produto.corStr == "") {
         this.element.style.remove("backgroundColor")
       }
       else {

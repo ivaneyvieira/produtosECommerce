@@ -1,11 +1,28 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
 import br.com.astrosoft.produtosECommerce.model.local
+import br.com.astrosoft.produtosECommerce.model.saci
+import java.time.LocalDateTime
 
 class GradeCor(
-  var descricao: String = "", var codigoCor: String = ""
+  var descricao: String = "",
+  var codigoCor: String = "",
+  var userno: Int = 0,
+  var dataHoraMudanca: LocalDateTime = LocalDateTime.now(),
+  var enviado: Int = 0
               ) {
   var descricaoOriginal: String = ""
+  var enviadoBool: Boolean?
+    get() = enviado != 0
+    set(value) {
+      this.enviado = if (value == true) 1 else 0
+    }
+  var userName: String?
+    get() = if (userno == null) null
+    else saci.findAllUser().firstOrNull {
+      it.no == userno
+    }?.name
+    set(value) {}
 
   companion object {
     fun findAll(): List<GradeCor> {
