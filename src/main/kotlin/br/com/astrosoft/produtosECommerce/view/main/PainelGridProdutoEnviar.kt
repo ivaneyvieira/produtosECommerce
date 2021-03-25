@@ -7,7 +7,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
 import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
-import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
+import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEnviar
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
@@ -15,8 +15,7 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.icon.VaadinIcon.TABLE
+import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
@@ -24,13 +23,13 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit) :
+class PainelGridProdutoEnviar(view: IProdutosEComerceView, blockUpdate: () -> Unit) :
   PainelGridProdutoAbstract(view, blockUpdate) {
-  override fun statusDefault() = EDITADO
+  override fun statusDefault() = ENVIAR
 
-  override fun filterBar() = FilterBarEditado()
+  override fun filterBar() = FilterBarEnviar()
 
-  inner class FilterBarEditado : FilterBar(), IFiltroEditado {
+  inner class FilterBarEnviar : FilterBar(), IFiltroEnviar {
     private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
@@ -41,16 +40,16 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
 
     override fun FilterBar.contentBlock() {
       button {
-        icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
+        icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), EDITAR) }
-        this.tooltip = "Voltar para o painel editar"
+        onLeftClick { view.marcaProdutos(multiSelect(), EDITADO) }
+        this.tooltip = "Voltar para o painel editado"
       }
       button {
-        icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
+        icon = ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
-        this.tooltip = "Voltar para o painel enviar"
+        onLeftClick { view.marcaProdutos(multiSelect(), ENVIADO) }
+        this.tooltip = "Voltar para o painel enviado"
       }
       this.downloadExcel()
 
@@ -110,6 +109,5 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     button.tooltip = "Salva a planilha"
     add(button)
   }
-
 }
 
