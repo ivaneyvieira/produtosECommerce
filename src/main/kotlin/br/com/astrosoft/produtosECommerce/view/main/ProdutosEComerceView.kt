@@ -6,6 +6,7 @@ import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
+import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.viewmodel.*
 import com.github.mvysny.karibudsl.v10.*
@@ -32,14 +33,17 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
   override fun isAccept() = true
 
   init {
+    val user = AppConfig.userSaci as? UserSaci
     tabMain = tabSheet {
       setSizeFull()
       tabGrid(TAB_BASE, gridBase)
       tabGrid(TAB_EDITAR, gridEditar)
       tabGrid(TAB_IMPORTADO, gridImportado)
       tabGrid(TAB_EDITADO, gridEditado)
-      tabGrid(TAB_ENVIAR, gridEnviar)
-      tabGrid(TAB_ENVIADO, gridEnviado)
+      if (user?.admin == true) {
+        tabGrid(TAB_ENVIAR, gridEnviar)
+        tabGrid(TAB_ENVIADO, gridEnviado)
+      }
     }
     viewModel.updateGrid()
   }

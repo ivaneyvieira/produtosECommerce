@@ -1,11 +1,9 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.FilterBar
-import br.com.astrosoft.produtosECommerce.model.beans.Categoria
-import br.com.astrosoft.produtosECommerce.model.beans.Cl
+import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
-import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
-import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
@@ -40,17 +38,20 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar.contentBlock() {
+      val user = AppConfig.userSaci as? UserSaci
       button {
         icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick { view.marcaProdutos(multiSelect(), EDITAR) }
         this.tooltip = "Voltar para o painel editar"
       }
-      button {
-        icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
-        this.tooltip = "Voltar para o painel enviar"
+      if (user?.admin == true) {
+        button {
+          icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
+          addThemeVariants(LUMO_SMALL)
+          onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
+          this.tooltip = "Voltar para o painel enviar"
+        }
       }
       this.downloadExcel()
 

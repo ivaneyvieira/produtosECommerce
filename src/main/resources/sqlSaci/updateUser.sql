@@ -1,9 +1,8 @@
-DO @NO:=(SELECT MAX(no) FROM sqldados.users WHERE login = :login);
 
 UPDATE sqldados.users
-SET auxLong1 = :loja
-WHERE no = @NO;
+SET auxLong1 = :storeno
+WHERE no = :no;
 
 INSERT  INTO sqldados.userApp(userno, appName, bitAcesso)
-VALUES(@NO, 'produtoECommerce', :bitAcesso)
+VALUES(:no, 'produtoECommerce', :bitAcesso)
 ON DUPLICATE KEY UPDATE bitAcesso = :bitAcesso
