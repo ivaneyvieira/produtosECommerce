@@ -1,7 +1,9 @@
 package br.com.astrosoft.produtosECommerce.view.cruds
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.GradeCor
+import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaGradeCor
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
@@ -15,7 +17,6 @@ import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY
-import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.icon.VaadinIcon.CHECK
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
@@ -56,8 +57,9 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
   }
 
   private fun gridCrud(): GridCrud<GradeCor> {
-    val crud: GridCrud<GradeCor> = GridCrud(GradeCor::class.java, HorizontalSplitCrudLayout())
-    //crud.grid.setSelectionMode(MULTI)
+    val crud: GridCrud<GradeCor> = GridCrud(
+      GradeCor::class.java, HorizontalSplitCrudLayout()
+                                           ) //crud.grid.setSelectionMode(MULTI)
     crud.grid.setColumns(
       GradeCor::descricao.name, GradeCor::codigoCor.name,
                         )
@@ -132,7 +134,7 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
       val planilha = PlanilhaGradeCor()
       val bytes = planilha.grava(crud.grid.listOrder())
       ByteArrayInputStream(bytes)
-    }) // button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+    })
     button.tooltip = "Salva a planilha"
     return button
   }
@@ -174,10 +176,12 @@ class CorCrudFormFactory : AbstractCrudFormFactory<GradeCor>() {
           this.isReadOnly = readOnly
           colspan = 4
         }
-        checkBox("Enviado") {
-          binder.bind(this, GradeCor::enviadoBool.name)
-          this.isReadOnly = readOnly
-          colspan = 4
+        if ((AppConfig.userSaci as? UserSaci)?.admin == true) {
+          checkBox("Enviado") {
+            binder.bind(this, GradeCor::enviadoBool.name)
+            this.isReadOnly = readOnly
+            colspan = 4
+          }
         }
       }
       if (operation != READ) {
