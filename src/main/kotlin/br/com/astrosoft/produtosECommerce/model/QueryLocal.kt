@@ -245,7 +245,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
 
   fun findCores(descricao: String?): List<GradeCor> {
     return query(
-      """select DISTINCT TRIM(UPPER(MID(codigoCor, 1, 7))) AS codigoCor, TRIM(descricao) AS 
+      """select DISTINCT TRIM(UPPER(MID(TRIM(codigoCor), 1, 7))) AS codigoCor, TRIM(descricao) AS 
         descricao 
 from produtoEcomerce.gradeCor
 HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
