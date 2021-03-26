@@ -10,6 +10,7 @@ import com.vaadin.flow.component.Focusable
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
+import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.provider.SortDirection
@@ -30,7 +31,16 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     colCodigo()
     colBarcode()
     colDescricao()
-    colDescricaoCompleta().textAreaEditor()
+    colDescricaoCompleta().textAreaEditor{
+      this.addValueChangeListener {event ->
+        val string = event.value ?: ""
+        val maxLength = 90
+        if(string.length > maxLength && event.isFromClient) {
+          Notification.show("Este campo só aceita no máximo 90 cartactere")
+          event.source.value = string.substring(0, maxLength)
+        }
+      }
+    }
     colBitola().comboFieldEditor {
       Bitola.findAll().sortedBy { it.lookupValue }
     }

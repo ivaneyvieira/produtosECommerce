@@ -62,7 +62,9 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
   protected abstract fun Grid<T>.gridConfig()
 
   fun Grid<T>.withEditor(
-    classBean: KClass<T>, openEditor: (Binder<T>) -> Unit, closeEditor: (Binder<T>) -> Unit
+    classBean: KClass<T>,
+    openEditor: (Binder<T>) -> Unit,
+    closeEditor: (Binder<T>) -> Unit
                         ) {
     val binder = Binder(classBean.java)
     editor.binder = binder
@@ -85,8 +87,8 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     return ComboBox<T>().apply {
       this.setSizeFull()
       this.setDataProvider({ item: T, filterText: String ->
-        item.lookupValue.contains(filterText, ignoreCase = true)
-      }, ListDataProvider(itens()))
+                             item.lookupValue.contains(filterText, ignoreCase = true)
+                           }, ListDataProvider(itens()))
       this.setItemLabelGenerator { bean ->
         bean.lookupValue
       }
@@ -99,6 +101,13 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     style.set("maxHeight", "50em")
     style.set("minHeight", "2em")
     addThemeVariants(TextAreaVariant.LUMO_SMALL)
+    this.isAutoselect = true
+    setSizeFull()
+  }
+
+  private fun textComponente() = TextField().apply {
+    this.valueChangeMode = ON_CHANGE
+    addThemeVariants(LUMO_SMALL)
     this.isAutoselect = true
     setSizeFull()
   }
@@ -180,8 +189,17 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     return this
   }
 
-  protected fun Column<T>.textAreaEditor(): Column<T> {
+  protected fun Column<T>.textAreaEditor(block: TextArea.() -> Unit = {}): Column<T> {
     val component = textAreaComponente()
+    component.block()
+    grid.editor.binder.forField(component).bind(this.key)
+    this.editorComponent = component
+    return this
+  }
+
+  protected fun Column<T>.textEditor(block: TextField.() -> Unit = {}): Column<T> {
+    val component = textComponente()
+    component.block()
     grid.editor.binder.forField(component).bind(this.key)
     this.editorComponent = component
     return this
@@ -217,12 +235,18 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
 }
 
 class BigDecimalToDoubleConverter : Converter<BigDecimal, Double> {
-  override fun convertToPresentation(value: Double?, context: ValueContext?): BigDecimal {
+  override fun convertToPresentation(
+    value: Double?,
+    context: ValueContext?
+                                    ): BigDecimal {
     value ?: return BigDecimal.valueOf(0.00)
     return BigDecimal.valueOf(value)
   }
 
-  override fun convertToModel(value: BigDecimal?, context: ValueContext?): Result<Double> {
+  override fun convertToModel(
+    value: BigDecimal?,
+    context: ValueContext?
+                             ): Result<Double> {
     return Result.ok(value?.toDouble() ?: 0.00)
   }
 }
