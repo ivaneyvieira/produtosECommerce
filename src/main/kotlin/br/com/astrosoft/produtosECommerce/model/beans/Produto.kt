@@ -144,7 +144,8 @@ class Produto(
     if (variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
 
   fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes ?: ""
-  fun descricao() = if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc"
+  fun descricao() =
+    if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc".substring(0, 100)
 
   fun skuPai() = when (variacao) {
     VARIACAO.descricao -> codigo
@@ -228,7 +229,10 @@ class Produto(
 
     private val listPreco = saci.price()
 
-    fun saldoLoja4(codigo: String, grade: String) = listSaldos.firstOrNull {
+    fun saldoLoja4(
+      codigo: String,
+      grade: String
+                  ) = listSaldos.firstOrNull {
       it.codigo == codigo && it.grade == grade
     }
 
@@ -269,7 +273,10 @@ class Produto(
   }
 }
 
-data class ChaveProduto(val codigo: String, val grade: String)
+data class ChaveProduto(
+  val codigo: String,
+  val grade: String
+                       )
 
 enum class EEditor(val value: Int) {
   BASE(0), EDITAR(1), EDITADO(2), IMPORTADO(3), ENVIAR(4), ENVIADO(5)
