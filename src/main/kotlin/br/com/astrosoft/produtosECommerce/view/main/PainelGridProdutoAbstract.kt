@@ -34,9 +34,9 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     colDescricaoCompleta().textAreaEditor{
       this.addValueChangeListener {event ->
         val string = event.value ?: ""
-        val maxLength = 90
+        val maxLength = 80
         if(string.length > maxLength && event.isFromClient) {
-          Notification.show("Este campo só aceita no máximo 90 cartactere")
+          Notification.show("Este campo só aceita no máximo $maxLength cartactere")
           event.source.value = string.substring(0, maxLength)
         }
       }
