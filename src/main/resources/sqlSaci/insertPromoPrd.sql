@@ -61,7 +61,3 @@ WHERE promono = @PROMO
   AND EXISTS(SELECT *
 	     FROM T_PROMO TP
 	     WHERE validade < CURRENT_DATE);
-
-UPDATE sqldados.promo INNER JOIN T_PROMO ON no = promono
-SET enddate = IF(enddate > validade, enddate, validade)
-WHERE no = @PROMO;
