@@ -9,36 +9,36 @@ import br.com.astrosoft.produtosECommerce.model.saci
 import java.time.LocalDateTime
 
 class Produto(
-        val codigo: String,
-        val grade: String,
-        var gradeCompleta: String?,
-        val barcode: String?,
-        val descricao: String,
-        val vendno: Int,
-        val fornecedor: String?,
-        val typeno: Int,
-        val typeName: String?,
-        val clno: String,
-        val clname: String?,
-        var marca: Int?,
-        var categoria: Int?,
-        var descricaoCompleta: String?,
-        var bitola: Int?,
-        var imagem: String?,
-        var peso: Double?,
-        var altura: Double?,
-        var comprimento: Double?,
-        var largura: Double?,
-        var textLink: String?,
-        var especificacoes: String?,
-        var editado: Int?,
-        val precoCheio: Double?,
-        val ncm: String,
-        var cor: String?,
-        val variacao: String,
-        var corStr: String,
-        var dataHoraMudanca: LocalDateTime,
-        var userno: Int?,
+    val codigo: String,
+    val grade: String,
+    var gradeCompleta: String?,
+    val barcode: String?,
+    val descricao: String,
+    val vendno: Int,
+    val fornecedor: String?,
+    val typeno: Int,
+    val typeName: String?,
+    val clno: String,
+    val clname: String?,
+    var marca: Int?,
+    var categoria: Int?,
+    var descricaoCompleta: String?,
+    var bitola: Int?,
+    var imagem: String?,
+    var peso: Double?,
+    var altura: Double?,
+    var comprimento: Double?,
+    var largura: Double?,
+    var textLink: String?,
+    var especificacoes: String?,
+    var editado: Int?,
+    val precoCheio: Double?,
+    val ncm: String,
+    var cor: String?,
+    val variacao: String,
+    var corStr: String,
+    var dataHoraMudanca: LocalDateTime,
+    var userno: Int?,
 ) : ILookup {
     val userName: String?
         get() = if (userno == null) null
@@ -138,15 +138,17 @@ class Produto(
 
     fun palavrasChave() = if (variacao == VARIACAO.descricao) ""
     else listOf(grupo(), departamento(), secao(), marcaDesc).filter { it.trim() != "" }
-            .joinToString(",")
+        .joinToString(",")
 
     fun nomeProduto() =
-            if (variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
+        if (variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
 
     fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes ?: ""
     fun descricao() =
-            if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc".substring(0, Math
-                    .min("$descricaoCompleta $marcaDesc".length, 100))
+        if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc".substring(
+            0, Math
+                .min("$descricaoCompleta $marcaDesc".length, 100)
+        )
 
     fun skuPai() = when (variacao) {
         VARIACAO.descricao -> codigo
@@ -162,7 +164,7 @@ class Produto(
 
     fun slugProduto() = if (variacao == VARIACAO.descricao) ""
     else descricaoCompleta?.normalize(
-            " " + ""
+        " " + ""
     ) ?: ""
 
     fun marca() = if (variacao == VARIACAO.descricao) "" else marcaDesc
@@ -173,36 +175,36 @@ class Produto(
 
     fun chave() = ChaveProduto(codigo, grade)
     fun copy(variacaoNova: EVariacao) = Produto(
-            codigo,
-            grade,
-            gradeCompleta,
-            barcode,
-            descricao,
-            vendno,
-            fornecedor,
-            typeno,
-            typeName,
-            clno,
-            clname,
-            marca,
-            categoria,
-            descricaoCompleta,
-            bitola,
-            imagem,
-            peso,
-            altura,
-            comprimento,
-            largura,
-            textLink,
-            especificacoes,
-            editado,
-            precoCheio,
-            ncm,
-            cor,
-            variacaoNova.descricao,
-            corStr,
-            dataHoraMudanca,
-            userno,
+        codigo,
+        grade,
+        gradeCompleta,
+        barcode,
+        descricao,
+        vendno,
+        fornecedor,
+        typeno,
+        typeName,
+        clno,
+        clname,
+        marca,
+        categoria,
+        descricaoCompleta,
+        bitola,
+        imagem,
+        peso,
+        altura,
+        comprimento,
+        largura,
+        textLink,
+        especificacoes,
+        editado,
+        precoCheio,
+        ncm,
+        cor,
+        variacaoNova.descricao,
+        corStr,
+        dataHoraMudanca,
+        userno,
     )
 
     override fun equals(other: Any?): Boolean {
@@ -225,14 +227,18 @@ class Produto(
         return result
     }
 
+    fun updatePromo() {
+        saci.updatePromo(codigo, grade)
+    }
+
     companion object {
         private val listSaldos = saci.saldoLoja4()
 
         private val listPreco = saci.price()
 
         fun saldoLoja4(
-                codigo: String,
-                grade: String
+            codigo: String,
+            grade: String
         ) = listSaldos.firstOrNull {
             it.codigo == codigo && it.grade == grade
         }
@@ -243,24 +249,24 @@ class Produto(
             get() = AppConfig.userSaci as UserSaci
 
         fun listaProdutos(
-                codigo: Int,
-                descricaoI: String,
-                descricaoF: String,
-                fornecedor: Fornecedor?,
-                type: TypePrd?,
-                cl: Cl?,
-                editado: EEditor?,
-                categoria: Categoria?
+            codigo: Int,
+            descricaoI: String,
+            descricaoF: String,
+            fornecedor: Fornecedor?,
+            type: TypePrd?,
+            cl: Cl?,
+            editado: EEditor?,
+            categoria: Categoria?
         ): List<Produto> {
             return local.listaProdutos(
-                    codigo = codigo,
-                    descricaoI = descricaoI,
-                    descricaoF = descricaoF,
-                    vendno = fornecedor?.vendno ?: 0,
-                    typeno = type?.typeno ?: 0,
-                    clno = cl?.clno ?: "",
-                    editado = editado?.value ?: 0,
-                    categoria = categoria?.categoriaNo ?: 0
+                codigo = codigo,
+                descricaoI = descricaoI,
+                descricaoF = descricaoF,
+                vendno = fornecedor?.vendno ?: 0,
+                typeno = type?.typeno ?: 0,
+                clno = cl?.clno ?: "",
+                editado = editado?.value ?: 0,
+                categoria = categoria?.categoriaNo ?: 0
             ).map {
                 it.textLink = it.descricaoCompleta?.normalize("-")
                 it
@@ -275,8 +281,8 @@ class Produto(
 }
 
 data class ChaveProduto(
-        val codigo: String,
-        val grade: String
+    val codigo: String,
+    val grade: String
 )
 
 enum class EEditor(val value: Int) {

@@ -97,6 +97,10 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     viewModel.replicarProdutos(itens, marca)
   }
 
+  override fun updatePromo(multiSelect: List<Produto>) {
+    viewModel.updatePromo(multiSelect)
+  }
+
   override val filtroEditar: IFiltroEditar
     get() = gridEditar.filterBar as IFiltroEditar
   override val filtroEditado: IFiltroEditado
