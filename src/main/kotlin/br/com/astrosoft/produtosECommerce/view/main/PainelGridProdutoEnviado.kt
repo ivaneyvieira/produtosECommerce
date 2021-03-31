@@ -14,7 +14,7 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.icon.VaadinIcon.TABLE
+import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
@@ -39,12 +39,19 @@ class PainelGridProdutoEnviado(view: IProdutosEComerceView, blockUpdate: () -> U
 
     override fun FilterBar.contentBlock() {
       button {
-        icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
+        icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
         this.tooltip = "Voltar para o painel enviar"
       }
       this.downloadExcel()
+
+      button {
+        icon = MONEY.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick { view.updatePromo(multiSelect()) }
+        this.tooltip = "Atualizar os preços promocionais"
+      }
 
       edtCodigo = codigoField {
         addValueChangeListener { blockUpdate() }
