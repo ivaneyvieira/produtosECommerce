@@ -38,7 +38,7 @@ class CategoriaViewModel(view: ICategoriaView) : ViewModel<ICategoriaView>(view)
       val listDepartamento = Categoria.listDepartamento(categoria.grupo)
       val catList = listDepartamento.firstOrNull { it.departamento == categoria.departamento }
       catList?.codigoDepartamento ?: (listDepartamento.map { it.codigoDepartamento }.maxOrNull()
-                                      ?: 0) + 1
+        ?: 0) + 1
     }
   }
 

@@ -59,13 +59,12 @@ fun Grid<Produto>.colCor() = addColumnString(Produto::corStr) {
 fun Grid<Produto>.colCorPainel() {
   this.addColumn(ComponentRenderer { produto ->
     val text = Div()
-    text.text = produto.corStr ?: ""
+    text.text = produto.corStr
 
     val box = VerticalLayout().apply {
       if (produto.corStr == "") {
         this.element.style.remove("backgroundColor")
-      }
-      else {
+      } else {
         this.element.style.set("backgroundColor", produto.corStr)
       }
       width = "21px"
@@ -75,7 +74,8 @@ fun Grid<Produto>.colCorPainel() {
     val wrapper = FlexLayout()
     text.style.set("margin-left", "0.5em")
     wrapper.add(box, text)
-    wrapper  }).apply {
+    wrapper
+  }).apply {
     setHeader("Cor")
     isAutoWidth = false
     width = "10em"
@@ -186,7 +186,7 @@ fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
       element.fornecedor.contains(
         filterString,
         ignoreCase = true
-                                 ) || element.vendno.toString() == filterString
+      ) || element.vendno.toString() == filterString
     }
     isClearButtonVisible = true
     this.setItems(filter, saci.listaFornecedores())
@@ -196,10 +196,10 @@ fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
     setRenderer(
       TemplateRenderer.of<Fornecedor>(
         "<div>[[item.vendno]]<br><small>[[item.fornecedor]]</small></div>"
-                                     )
+      )
         .withProperty("vendno", Fornecedor::vendno)
         .withProperty("fornecedor", Fornecedor::fornecedor)
-               )
+    )
     width = "15em"
     element.setAttribute("theme", "small")
     block()
@@ -211,7 +211,7 @@ fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox
     element.typeName.contains(
       filterString,
       ignoreCase = true
-                             ) || element.typeno.toString() == filterString
+    ) || element.typeno.toString() == filterString
   }
   isClearButtonVisible = true
   this.setItems(filter, saci.listaType())
@@ -221,10 +221,10 @@ fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox
   setRenderer(
     TemplateRenderer.of<TypePrd>(
       "<div>[[item.typeno]]<br><small>[[item.typeName]]</small></div>"
-                                )
+    )
       .withProperty("typeno", TypePrd::typeno)
       .withProperty("typeName", TypePrd::typeName)
-             )
+  )
   width = "15em"
   element.setAttribute("theme", "small")
   block()
@@ -236,7 +236,7 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
     element.clname.contains(
       filterString,
       ignoreCase = true
-                           ) || element.clno.startsWith(filterString)
+    ) || element.clno.startsWith(filterString)
   }
   isClearButtonVisible = true
   this.setItems(filter, saci.listaCl())
@@ -246,8 +246,8 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
   setRenderer(
     TemplateRenderer.of<Cl>(
       "<div>[[item.clno]]<br><small>[[item.clname]]</small></div>"
-                           ).withProperty("clno", Cl::clno).withProperty("clname", Cl::clname)
-             )
+    ).withProperty("clno", Cl::clno).withProperty("clname", Cl::clname)
+  )
   width = "18em"
   element.setAttribute("theme", "small")
   block()
@@ -264,7 +264,7 @@ fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>
     element.descricao.contains(
       filterString,
       ignoreCase = true
-                              ) || element.categoriaNo.toString() == filterString
+    ) || element.categoriaNo.toString() == filterString
   }
   isClearButtonVisible = true
   this.setItems(filter, local.findAllCategoria())
@@ -274,10 +274,10 @@ fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>
   setRenderer(
     TemplateRenderer.of<Categoria>(
       "<div>[[item.categoriaNo]]<br><small>[[item.descricao]]</small></div>"
-                                  )
+    )
       .withProperty("categoriaNo", Categoria::categoriaNo)
       .withProperty("descricao", Categoria::descricao)
-             )
+  )
   element.setAttribute("theme", "small")
   width = "20em"
   block()
@@ -294,7 +294,7 @@ fun @VaadinDsl ComboBox<Marca>.extensionMarca(block: ComboBox<Marca>.() -> Unit 
     element.name.contains(
       filterString,
       ignoreCase = true
-                         ) || element.marcaNo.toString() == filterString
+    ) || element.marcaNo.toString() == filterString
   }
   isClearButtonVisible = true
   this.setItems(filter, local.findAllMarca())

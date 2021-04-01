@@ -8,7 +8,8 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceOld {
-  private val campos: List<Campo<*, Produto>> = listOf(CampoString("id"),
+  private val campos: List<Campo<*, Produto>> = listOf(
+    CampoString("id"),
     CampoString("tipo") { "sem-variacao" },
     CampoString("sku-pai"),
     CampoString("sku") { codigo.trim() },
@@ -29,9 +30,9 @@ class PlanilhaEcommerceOld {
     CampoNumber("preco-promocional") { price() },
     CampoString("marca") { marcaDesc },
     CampoNumber("peso-em-kg") { peso ?: 0.00 },
-    CampoNumber("altura-em-cm") { altura?: 0.00 },
-    CampoNumber("largura-em-cm") { largura ?: 0.00},
-    CampoNumber("comprimento-em-cm") { comprimento?: 0.00 },
+    CampoNumber("altura-em-cm") { altura ?: 0.00 },
+    CampoNumber("largura-em-cm") { largura ?: 0.00 },
+    CampoNumber("comprimento-em-cm") { comprimento ?: 0.00 },
     CampoString("categoria-nome-nivel-1") { grupo() },
     CampoString("categoria-nome-nivel-2") { departamento() },
     CampoString("categoria-nome-nivel-3") { secao() },
@@ -54,7 +55,7 @@ class PlanilhaEcommerceOld {
     CampoString("grade-produto-com-duas-cores"),
     CampoString(""),
     CampoString("url-antiga")
-                                                      )
+  )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {
@@ -102,14 +103,14 @@ open class Campo<T : Any, B>(val header: String, val produceVakue: (B) -> T)
 class CampoString<B>(header: String, produceVakue: B.() -> String = { "" }) : Campo<String, B>(
   header,
   produceVakue
-                                                                                              )
+)
 
 class CampoNumber<B>(header: String, produceVakue: B.() -> Double = { 0.00 }) : Campo<Double, B>(
   header,
   produceVakue
-                                                                                                )
+)
 
 class CampoInt<B>(header: String, produceVakue: B.() -> Int = { 0 }) : Campo<Int, B>(
   header,
   produceVakue
-                                                                                    )
+)

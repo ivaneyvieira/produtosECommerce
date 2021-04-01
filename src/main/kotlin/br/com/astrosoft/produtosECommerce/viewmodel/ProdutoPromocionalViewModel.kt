@@ -26,5 +26,5 @@ interface IProdutoPromocionalView : IView {
   fun updateGrid(itens: List<ProdutoPromocao>)
   fun updatePromo(list: List<ProdutoPromocao>)
 
-  val filtro : IFiltroPromocao
+  val filtro: IFiltroPromocao
 }

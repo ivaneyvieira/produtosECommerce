@@ -55,7 +55,7 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
     val crud: GridCrud<UserSaci> = GridCrud(UserSaci::class.java)
     crud.grid.setColumns(
       UserSaci::no.name, UserSaci::login.name, UserSaci::storeno.name, UserSaci::name.name
-                        )
+    )
     crud.grid.getColumnBy(UserSaci::storeno).setHeader("Loja")
 
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
@@ -82,7 +82,8 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
   }
 }
 
-class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCrudFormFactory<UserSaci>() {
+class UserCrudFormFactory(private val viewModel: UsuarioViewModel) :
+  AbstractCrudFormFactory<UserSaci>() {
   private var _newInstanceSupplier: Supplier<UserSaci?>? = null
   private lateinit var comboAbreviacao: MultiselectComboBox<String>
 
@@ -92,7 +93,7 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCru
     readOnly: Boolean,
     cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
     operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-                           ): Component {
+  ): Component {
     val binder = Binder<UserSaci>(UserSaci::class.java)
     return VerticalLayout().apply {
       isSpacing = false
@@ -107,7 +108,7 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCru
           val filter: ItemFilter<UserSaci> = ItemFilter { user: UserSaci, filterString: String ->
             user.login.contains(filterString, ignoreCase = true) || user.name.contains(
               filterString, ignoreCase = true
-                                                                                      ) || user.no == filterString.toIntOrNull() ?: 0
+            ) || user.no == filterString.toIntOrNull() ?: 0
           }
           this.setItems(filter, allUser)
           this.setItemLabelGenerator(UserSaci::login)

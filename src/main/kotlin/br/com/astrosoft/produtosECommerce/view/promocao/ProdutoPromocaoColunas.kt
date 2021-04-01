@@ -16,38 +16,38 @@ fun Grid<ProdutoPromocao>.colDescricao() = addColumnString(ProdutoPromocao::desc
   setHeader("Descrição")
 }
 
-fun Grid<ProdutoPromocao>.colValidade()= addColumnLocalDate(ProdutoPromocao::validade){
+fun Grid<ProdutoPromocao>.colValidade() = addColumnLocalDate(ProdutoPromocao::validade) {
   setHeader("Validação")
 }
 
-fun Grid<ProdutoPromocao>.colPrecoRef()= addColumnDouble(ProdutoPromocao::precoRef){
+fun Grid<ProdutoPromocao>.colPrecoRef() = addColumnDouble(ProdutoPromocao::precoRef) {
   setHeader("Preço Ref")
 }
 
-fun Grid<ProdutoPromocao>.colPerc()= addColumnDouble(ProdutoPromocao::perc){
+fun Grid<ProdutoPromocao>.colPerc() = addColumnDouble(ProdutoPromocao::perc) {
   setHeader("Perc %")
 }
 
-fun Grid<ProdutoPromocao>.colPrecoPromo()= addColumnDouble(ProdutoPromocao::precoPromo){
+fun Grid<ProdutoPromocao>.colPrecoPromo() = addColumnDouble(ProdutoPromocao::precoPromo) {
   setHeader("Preço Promo")
 }
 
-fun Grid<ProdutoPromocao>.colVendno()= addColumnInt(ProdutoPromocao::vendno){
+fun Grid<ProdutoPromocao>.colVendno() = addColumnInt(ProdutoPromocao::vendno) {
   setHeader("Fornecedor")
 }
 
-fun Grid<ProdutoPromocao>.colAbrev()= addColumnString(ProdutoPromocao::abrev){
+fun Grid<ProdutoPromocao>.colAbrev() = addColumnString(ProdutoPromocao::abrev) {
   setHeader("Abrev")
 }
 
-fun Grid<ProdutoPromocao>.colTipo()= addColumnInt(ProdutoPromocao::tipo){
+fun Grid<ProdutoPromocao>.colTipo() = addColumnInt(ProdutoPromocao::tipo) {
   setHeader("Tipo")
 }
 
-fun Grid<ProdutoPromocao>.colCentLucro()= addColumnInt(ProdutoPromocao::centLucro){
+fun Grid<ProdutoPromocao>.colCentLucro() = addColumnInt(ProdutoPromocao::centLucro) {
   setHeader("CL")
 }
 
-fun Grid<ProdutoPromocao>.colSaldo()= addColumnDouble(ProdutoPromocao::saldo){
+fun Grid<ProdutoPromocao>.colSaldo() = addColumnDouble(ProdutoPromocao::saldo) {
   setHeader("Saldo")
 }

@@ -37,7 +37,7 @@ import com.vaadin.flow.theme.lumo.Lumo
   shortName = AppConfig.shortName,
   iconPath = AppConfig.iconPath,
   enableInstallPrompt = false
-    )
+)
 class ProdutoECommerceLayout : AppLayout() {
   init {
     isDrawerOpened = false
@@ -79,10 +79,10 @@ class ProdutoECommerceLayout : AppLayout() {
           routerLink(text = "Cor", viewType = CorView::class)
         }
         if (user?.admin == true)
-        tab {
-          this.icon(VaadinIcon.USER)
-          routerLink(text = "Usuário", viewType = UsuarioView::class)
-        }
+          tab {
+            this.icon(VaadinIcon.USER)
+            routerLink(text = "Usuário", viewType = UsuarioView::class)
+          }
       }
     }
   }

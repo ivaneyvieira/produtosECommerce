@@ -5,4 +5,4 @@ data class Price(
   val price: Double,
   val gtin: String,
   val prdRef: String
-                )
+)

@@ -50,17 +50,17 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
   override fun configure(web: WebSecurity) {
     web.ignoring().antMatchers(
-        "/VAADIN/**",
-        "/favicon.ico",
-        "/robots.txt",
-        "/manifest.webmanifest",
-        "/sw.js",
-        "/offline.html",
-        "/icons/**",
-        "/images/**",
-        "/styles/**",
-        "/h2-console/**"
-                              )
+      "/VAADIN/**",
+      "/favicon.ico",
+      "/robots.txt",
+      "/manifest.webmanifest",
+      "/sw.js",
+      "/offline.html",
+      "/icons/**",
+      "/images/**",
+      "/styles/**",
+      "/h2-console/**"
+    )
   }
 
   companion object {
