@@ -20,8 +20,7 @@ inline fun <reified T> @VaadinDsl Grid<T>.shiftSelect() {
       if (pedidoInicial == null) {
         pedidoInicial = pedido
         grade.select(pedido)
-      }
-      else {
+      } else {
         if (pedidoFinal == null) {
           val itens = grade.listOrder()
           pedidoFinal = pedido
@@ -33,14 +32,12 @@ inline fun <reified T> @VaadinDsl Grid<T>.shiftSelect() {
           }
           pedidoFinal = null
           pedidoInicial = null
-        }
-        else {
+        } else {
           pedidoFinal = null
           pedidoInicial = null
         }
       }
-    }
-    else {
+    } else {
       pedidoFinal = null
       pedidoInicial = null
     }
@@ -52,11 +49,11 @@ inline fun <reified T> Grid<T>.listOrder(): List<T> {
   val filter = dataProvider.filter
   val queryOrdem = comparator(this)
   return dataProvider.items.toList().filter {
-      filter?.test(it) ?: true
-    }.let { list ->
-      if (queryOrdem == null) list
-      else list.sortedWith<T>(queryOrdem)
-    }
+    filter?.test(it) ?: true
+  }.let { list ->
+    if (queryOrdem == null) list
+    else list.sortedWith<T>(queryOrdem)
+  }
 }
 
 inline fun <reified T> (@VaadinDsl Grid<T>).addColumnSeq(label: String) {
@@ -95,6 +92,6 @@ inline fun <reified T> comparator(sortOrder: List<GridSortOrder<T>>): Comparator
       }
     }
   }.reduce { acc, comparator ->
-      acc.thenComparing(comparator)
-    }
+    acc.thenComparing(comparator)
+  }
 }

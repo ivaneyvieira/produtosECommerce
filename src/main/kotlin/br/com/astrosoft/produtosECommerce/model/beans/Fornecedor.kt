@@ -4,7 +4,7 @@ import br.com.astrosoft.framework.model.ILookup
 
 data class Fornecedor(
   val vendno: Int, val fornecedor: String
-                     ) : ILookup {
+) : ILookup {
   override val lookupValue: String
     get() = fornecedor
 }

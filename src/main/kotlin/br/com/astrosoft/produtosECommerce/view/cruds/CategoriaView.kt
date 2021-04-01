@@ -61,15 +61,15 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
   private fun gridCrud(): GridCrud<Categoria> {
     val crud: GridCrud<Categoria> = GridCrud(Categoria::class.java, HorizontalSplitCrudLayout())
     crud.grid.setColumns(
-        Categoria::categoriaNo.name,
-        Categoria::grupo.name,
-        Categoria::departamento.name,
-        Categoria::secao.name
-                        )
+      Categoria::categoriaNo.name,
+      Categoria::grupo.name,
+      Categoria::departamento.name,
+      Categoria::secao.name
+    )
     crud.grid.getColumnBy(Categoria::categoriaNo).apply {
-        this.setHeader("Número")
-        this.setTextAlign(ColumnTextAlign.END)
-      }
+      this.setHeader("Número")
+      this.setTextAlign(ColumnTextAlign.END)
+    }
 
     crud.grid.getColumnBy(Categoria::grupo).setHeader("Grupo")
     crud.grid.getColumnBy(Categoria::departamento).setHeader("Departamento")
@@ -104,7 +104,7 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
       readOnly: Boolean,
       cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
       operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-                             ): Component {
+    ): Component {
       val binder = Binder<Categoria>(Categoria::class.java)
       return VerticalLayout().apply {
         isSpacing = false

@@ -50,8 +50,8 @@ class BitolaView : ViewLayout<BitolaViewModel>(), IBitolaView {
   private fun gridCrud(): GridCrud<Bitola> {
     val crud: GridCrud<Bitola> = GridCrud(Bitola::class.java, HorizontalSplitCrudLayout())
     crud.grid.setColumns(
-        Bitola::bitolaNo.name, Bitola::name.name
-                        )
+      Bitola::bitolaNo.name, Bitola::name.name
+    )
     crud.grid.getColumnBy(Bitola::bitolaNo).setHeader("Número")
     crud.grid.getColumnBy(Bitola::name).setHeader("Bitola")
 
@@ -80,7 +80,7 @@ class BitolaCrudFormFactory : AbstractCrudFormFactory<Bitola>() {
     readOnly: Boolean,
     cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
     operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-                           ): Component {
+  ): Component {
     val binder = Binder<Bitola>(Bitola::class.java)
     return VerticalLayout().apply {
       isSpacing = false

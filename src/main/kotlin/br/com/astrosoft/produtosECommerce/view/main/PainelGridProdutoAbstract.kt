@@ -5,7 +5,6 @@ import br.com.astrosoft.framework.view.addColumnSeq
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.getColumnBy
-import com.github.mvysny.karibudsl.v10.refresh
 import com.vaadin.flow.component.Focusable
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
@@ -31,11 +30,11 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     colCodigo()
     colBarcode()
     colDescricao()
-    colDescricaoCompleta().textAreaEditor{
-      this.addValueChangeListener {event ->
+    colDescricaoCompleta().textAreaEditor {
+      this.addValueChangeListener { event ->
         val string = event.value ?: ""
         val maxLength = 80
-        if(string.length > maxLength && event.isFromClient) {
+        if (string.length > maxLength && event.isFromClient) {
           Notification.show("Este campo só aceita no máximo $maxLength cartactere")
           event.source.value = string.substring(0, maxLength)
         }

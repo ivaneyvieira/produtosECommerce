@@ -18,12 +18,12 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     clno: String,
     editado: Int,
     categoria: Int
-                   ): List<Produto> {
+  ): List<Produto> {
     val sql = "/sqlSaci/produtos.sql"
     return query(sql, Produto::class) {
       addOptionalParameter(
         "codigo", codigo.toString().lpad(6, "0")
-                          )
+      )
       addOptionalParameter("descricaoI", descricaoI)
       addOptionalParameter("descricaoF", descricaoF)
       addOptionalParameter("vendno", vendno)
@@ -79,8 +79,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       if (bean.editado == EDITADO.value) {
         val userSaci = AppConfig.userSaci as? UserSaci
         if (bean.userno == null || bean.userno == 0) bean.userno = userSaci?.no
-      }
-      else {
+      } else {
         bean.userno = 0
       }
       addOptionalParameter("userno", bean.userno ?: 0)
@@ -93,7 +92,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       |             from produtoEcomerce.categoria
       |             order by categoriaNo
       |             """.trimMargin(), Categoria::class
-                )
+    )
   }
 
   fun addCategoria(categoria: Categoria) {
@@ -133,7 +132,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     return query(
       """select marcaNo, name
       |             from produtoEcomerce.marca""".trimMargin(), Marca::class
-                )
+    )
   }
 
   fun addMarca(marca: Marca) {
@@ -166,7 +165,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     return query(
       """select bitolaNo, name
       |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class
-                )
+    )
   }
 
   fun addBitola(bitola: Bitola) {
@@ -200,7 +199,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     return query(
       """select descricao, codigoCor, userno, dataHoraMudanca, enviado
       |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class
-                )
+    )
   }
 
   fun addCor(cor: GradeCor) {
@@ -249,7 +248,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
         descricao 
 from produtoEcomerce.gradeCor
 HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
-                )
+    )
   }
 
   companion object {

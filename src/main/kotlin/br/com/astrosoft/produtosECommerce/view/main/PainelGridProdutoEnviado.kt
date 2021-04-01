@@ -1,10 +1,13 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.FilterBar
-import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
+import br.com.astrosoft.produtosECommerce.model.beans.Categoria
+import br.com.astrosoft.produtosECommerce.model.beans.Cl
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIADO
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIAR
+import br.com.astrosoft.produtosECommerce.model.beans.Fornecedor
+import br.com.astrosoft.produtosECommerce.model.beans.TypePrd
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
-import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
 import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEnviado
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
@@ -13,7 +16,6 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField

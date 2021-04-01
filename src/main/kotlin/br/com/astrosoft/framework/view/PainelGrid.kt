@@ -65,7 +65,7 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     classBean: KClass<T>,
     openEditor: (Binder<T>) -> Unit,
     closeEditor: (Binder<T>) -> Unit
-                        ) {
+  ) {
     val binder = Binder(classBean.java)
     editor.binder = binder
     addItemDoubleClickListener { event ->
@@ -87,8 +87,8 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     return ComboBox<T>().apply {
       this.setSizeFull()
       this.setDataProvider({ item: T, filterText: String ->
-                             item.lookupValue.contains(filterText, ignoreCase = true)
-                           }, ListDataProvider(itens()))
+        item.lookupValue.contains(filterText, ignoreCase = true)
+      }, ListDataProvider(itens()))
       this.setItemLabelGenerator { bean ->
         bean.lookupValue
       }
@@ -119,7 +119,7 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     this.isAllowCustomValue = false
     this.isClearButtonVisible = true
 
-    setRenderer(ComponentRenderer() { descricao ->
+    setRenderer(ComponentRenderer { descricao ->
       val cor = local.findCores(descricao).firstOrNull()
       val text = Div()
       text.text = cor?.descricao ?: "Sem cor"
@@ -127,8 +127,7 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
       val box = VerticalLayout().apply {
         if (cor == null) {
           this.element.style.remove("backgroundColor")
-        }
-        else {
+        } else {
           this.element.style.set("backgroundColor", cor.codigoCor)
         }
         width = "21px"
@@ -238,7 +237,7 @@ class BigDecimalToDoubleConverter : Converter<BigDecimal, Double> {
   override fun convertToPresentation(
     value: Double?,
     context: ValueContext?
-                                    ): BigDecimal {
+  ): BigDecimal {
     value ?: return BigDecimal.valueOf(0.00)
     return BigDecimal.valueOf(value)
   }
@@ -246,7 +245,7 @@ class BigDecimalToDoubleConverter : Converter<BigDecimal, Double> {
   override fun convertToModel(
     value: BigDecimal?,
     context: ValueContext?
-                             ): Result<Double> {
+  ): Result<Double> {
     return Result.ok(value?.toDouble() ?: 0.00)
   }
 }

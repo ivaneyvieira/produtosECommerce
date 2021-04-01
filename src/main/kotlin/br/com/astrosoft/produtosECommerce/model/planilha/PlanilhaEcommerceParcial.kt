@@ -15,7 +15,7 @@ class PlanilhaEcommerceParcial {
     CampoString("grade") { grade },
     CampoString("referencia do fornecedor") { prdRef },
     CampoInt("codigo do fornecedor") { vendno },
-                                                      )
+  )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {
@@ -31,9 +31,9 @@ class PlanilhaEcommerceParcial {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
         listaProdutos.sortedBy { it.codigo + it.grade }.forEach { produto ->
-            val valores = campos.map { it.produceVakue(produto) }
-            row(valores, rowStyle)
-          }
+          val valores = campos.map { it.produceVakue(produto) }
+          row(valores, rowStyle)
+        }
       }
 
       campos.forEachIndexed { index, _ ->

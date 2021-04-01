@@ -9,294 +9,294 @@ import br.com.astrosoft.produtosECommerce.model.saci
 import java.time.LocalDateTime
 
 class Produto(
-    val codigo: String,
-    val grade: String,
-    var gradeCompleta: String?,
-    val barcode: String?,
-    val descricao: String,
-    val vendno: Int,
-    val fornecedor: String?,
-    val typeno: Int,
-    val typeName: String?,
-    val clno: String,
-    val clname: String?,
-    var marca: Int?,
-    var categoria: Int?,
-    var descricaoCompleta: String?,
-    var bitola: Int?,
-    var imagem: String?,
-    var peso: Double?,
-    var altura: Double?,
-    var comprimento: Double?,
-    var largura: Double?,
-    var textLink: String?,
-    var especificacoes: String?,
-    var editado: Int?,
-    val precoCheio: Double?,
-    val ncm: String,
-    var cor: String?,
-    val variacao: String,
-    var corStr: String,
-    var dataHoraMudanca: LocalDateTime,
-    var userno: Int?,
+  val codigo: String,
+  val grade: String,
+  var gradeCompleta: String?,
+  val barcode: String?,
+  val descricao: String,
+  val vendno: Int,
+  val fornecedor: String?,
+  val typeno: Int,
+  val typeName: String?,
+  val clno: String,
+  val clname: String?,
+  var marca: Int?,
+  var categoria: Int?,
+  var descricaoCompleta: String?,
+  var bitola: Int?,
+  var imagem: String?,
+  var peso: Double?,
+  var altura: Double?,
+  var comprimento: Double?,
+  var largura: Double?,
+  var textLink: String?,
+  var especificacoes: String?,
+  var editado: Int?,
+  val precoCheio: Double?,
+  val ncm: String,
+  var cor: String?,
+  val variacao: String,
+  var corStr: String,
+  var dataHoraMudanca: LocalDateTime,
+  var userno: Int?,
 ) : ILookup {
-    val userName: String?
-        get() = if (userno == null) null
-        else saci.findAllUser().firstOrNull {
-            it.no == userno
-        }?.name
-    val marcaDesc
-        get() = marcaBean?.name ?: ""
-    var categoriaBean
-        get() = Categoria.findById(categoria ?: 0)
-        set(value) {
-            categoria = value?.categoriaNo ?: 0
-        }
-    var marcaBean
-        get() = Marca.findById(marca ?: 0)
-        set(value) {
-            marca = value?.marcaNo ?: 0
-        }
-    var bitolaBean
-        get() = Bitola.findById(bitola ?: 0)
-        set(value) {
-            bitola = value?.bitolaNo ?: 0
-        }
-    val categoriaDesc
-        get() = categoriaBean?.descricao ?: ""
-    val corStrOld
-        get() = GradeCor.findAll().firstOrNull { it.descricao == grade && grade != "" }?.codigoCor
+  val userName: String?
+    get() = if (userno == null) null
+    else saci.findAllUser().firstOrNull {
+      it.no == userno
+    }?.name
+  val marcaDesc
+    get() = marcaBean?.name ?: ""
+  var categoriaBean
+    get() = Categoria.findById(categoria ?: 0)
+    set(value) {
+      categoria = value?.categoriaNo ?: 0
+    }
+  var marcaBean
+    get() = Marca.findById(marca ?: 0)
+    set(value) {
+      marca = value?.marcaNo ?: 0
+    }
+  var bitolaBean
+    get() = Bitola.findById(bitola ?: 0)
+    set(value) {
+      bitola = value?.bitolaNo ?: 0
+    }
+  val categoriaDesc
+    get() = categoriaBean?.descricao ?: ""
+  val corStrOld
+    get() = GradeCor.findAll().firstOrNull { it.descricao == grade && grade != "" }?.codigoCor
 
-    override val lookupValue: String
-        get() = "$codigo $descricao"
+  override val lookupValue: String
+    get() = "$codigo $descricao"
 
-    fun descricaoCompletaPlanilha(): String {
-        val parteBitola = when (bitolaBean) {
-            null -> ""
-            else -> "${bitolaBean?.name} - "
-        }
-        val parteGrade = when {
-            !gradeCompleta.isNullOrBlank() -> "$gradeCompleta - "
-            else -> ""
-        }
-        return "$descricaoCompleta - $parteBitola $parteGrade $marcaDesc"
+  fun descricaoCompletaPlanilha(): String {
+    val parteBitola = when (bitolaBean) {
+      null -> ""
+      else -> "${bitolaBean?.name} - "
+    }
+    val parteGrade = when {
+      !gradeCompleta.isNullOrBlank() -> "$gradeCompleta - "
+      else -> ""
+    }
+    return "$descricaoCompleta - $parteBitola $parteGrade $marcaDesc"
+  }
+
+  fun imagem1(): String {
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(0) ?: ""
+  }
+
+  fun imagem2(): String {
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(1) ?: ""
+  }
+
+  fun imagem3(): String {
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(2) ?: ""
+  }
+
+  fun imagem4(): String {
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(3) ?: ""
+  }
+
+  fun imagem5(): String {
+    return imagem?.split(" +".toRegex())?.toList()?.getOrNull(4) ?: ""
+  }
+
+  fun saldoLoja4(): Double {
+    val saldo = if (variacao == COM_VARIACAO.descricao) Produto.saldoLoja4(codigo, "")
+    else Produto.saldoLoja4(codigo, grade)
+    return saldo?.saldo ?: 0.00
+  }
+
+  fun price(): Double {
+    val price = Produto.price(codigo)
+    return price?.price ?: 0.00
+  }
+
+  val prdRef: String
+    get() {
+      val price = Produto.price(codigo)
+      return price?.prdRef ?: ""
     }
 
-    fun imagem1(): String {
-        return imagem?.split(" +".toRegex())?.toList()?.getOrNull(0) ?: ""
-    }
+  fun grupo() = if (variacao == VARIACAO.descricao) ""
+  else categoriaBean?.grupo ?: ""
 
-    fun imagem2(): String {
-        return imagem?.split(" +".toRegex())?.toList()?.getOrNull(1) ?: ""
-    }
+  fun departamento() = if (variacao == VARIACAO.descricao) ""
+  else categoriaBean?.departamento ?: ""
 
-    fun imagem3(): String {
-        return imagem?.split(" +".toRegex())?.toList()?.getOrNull(2) ?: ""
-    }
+  fun secao() = if (variacao == VARIACAO.descricao) ""
+  else categoriaBean?.secao ?: ""
 
-    fun imagem4(): String {
-        return imagem?.split(" +".toRegex())?.toList()?.getOrNull(3) ?: ""
-    }
+  fun tipoVariacao() = variacao
 
-    fun imagem5(): String {
-        return imagem?.split(" +".toRegex())?.toList()?.getOrNull(4) ?: ""
-    }
+  fun ean(): String {
+    val price = Produto.price(codigo)
 
-    fun saldoLoja4(): Double {
-        val saldo = if (variacao == COM_VARIACAO.descricao) Produto.saldoLoja4(codigo, "")
-        else Produto.saldoLoja4(codigo, grade)
-        return saldo?.saldo ?: 0.00
-    }
+    return if (barcode?.trim().isNullOrBlank()) price?.gtin ?: "" else barcode ?: ""
+  }
 
-    fun price(): Double {
-        val price = Produto.price(codigo)
-        return price?.price ?: 0.00
-    }
+  fun palavrasChave() = if (variacao == VARIACAO.descricao) ""
+  else listOf(grupo(), departamento(), secao(), marcaDesc).filter { it.trim() != "" }
+    .joinToString(",")
 
-    val prdRef: String
-        get() {
-            val price = Produto.price(codigo)
-            return price?.prdRef ?: ""
-        }
+  fun nomeProduto() =
+    if (variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
 
-    fun grupo() = if (variacao == VARIACAO.descricao) ""
-    else categoriaBean?.grupo ?: ""
-
-    fun departamento() = if (variacao == VARIACAO.descricao) ""
-    else categoriaBean?.departamento ?: ""
-
-    fun secao() = if (variacao == VARIACAO.descricao) ""
-    else categoriaBean?.secao ?: ""
-
-    fun tipoVariacao() = variacao
-
-    fun ean(): String {
-        val price = Produto.price(codigo)
-
-        return if (barcode?.trim().isNullOrBlank()) price?.gtin ?: "" else barcode ?: ""
-    }
-
-    fun palavrasChave() = if (variacao == VARIACAO.descricao) ""
-    else listOf(grupo(), departamento(), secao(), marcaDesc).filter { it.trim() != "" }
-        .joinToString(",")
-
-    fun nomeProduto() =
-        if (variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
-
-    fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes ?: ""
-    fun descricao() =
-        if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc".substring(
-            0, Math
-                .min("$descricaoCompleta $marcaDesc".length, 100)
-        )
-
-    fun skuPai() = when (variacao) {
-        VARIACAO.descricao -> codigo
-        else -> ""
-    }
-
-    fun sku() = when (variacao) {
-        COM_VARIACAO.descricao -> codigo
-        SIMPLES.descricao -> codigo
-        VARIACAO.descricao -> barcode ?: ""
-        else -> ""
-    }
-
-    fun slugProduto() = if (variacao == VARIACAO.descricao) ""
-    else descricaoCompleta?.normalize(
-        " " + ""
-    ) ?: ""
-
-    fun marca() = if (variacao == VARIACAO.descricao) "" else marcaDesc
-    fun tituloMarca() = if (variacao == VARIACAO.descricao) "" else textLink ?: ""
-    fun descricaoPagina() = if (variacao == VARIACAO.descricao) "" else descricaoCompleta ?: ""
-    fun gradeCor() = if (variacao == VARIACAO.descricao) gradeCompleta ?: "" else ""
-    fun cor() = if (variacao == VARIACAO.descricao) "Cor" else ""
-
-    fun chave() = ChaveProduto(codigo, grade)
-    fun copy(variacaoNova: EVariacao) = Produto(
-        codigo,
-        grade,
-        gradeCompleta,
-        barcode,
-        descricao,
-        vendno,
-        fornecedor,
-        typeno,
-        typeName,
-        clno,
-        clname,
-        marca,
-        categoria,
-        descricaoCompleta,
-        bitola,
-        imagem,
-        peso,
-        altura,
-        comprimento,
-        largura,
-        textLink,
-        especificacoes,
-        editado,
-        precoCheio,
-        ncm,
-        cor,
-        variacaoNova.descricao,
-        corStr,
-        dataHoraMudanca,
-        userno,
+  fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes ?: ""
+  fun descricao() =
+    if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc".substring(
+      0, Math
+        .min("$descricaoCompleta $marcaDesc".length, 100)
     )
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+  fun skuPai() = when (variacao) {
+    VARIACAO.descricao -> codigo
+    else -> ""
+  }
 
-        other as Produto
+  fun sku() = when (variacao) {
+    COM_VARIACAO.descricao -> codigo
+    SIMPLES.descricao -> codigo
+    VARIACAO.descricao -> barcode ?: ""
+    else -> ""
+  }
 
-        if (codigo != other.codigo) return false
-        if (grade != other.grade) return false
-        if (variacao != other.variacao) return false
+  fun slugProduto() = if (variacao == VARIACAO.descricao) ""
+  else descricaoCompleta?.normalize(
+    " " + ""
+  ) ?: ""
 
-        return true
+  fun marca() = if (variacao == VARIACAO.descricao) "" else marcaDesc
+  fun tituloMarca() = if (variacao == VARIACAO.descricao) "" else textLink ?: ""
+  fun descricaoPagina() = if (variacao == VARIACAO.descricao) "" else descricaoCompleta ?: ""
+  fun gradeCor() = if (variacao == VARIACAO.descricao) gradeCompleta ?: "" else ""
+  fun cor() = if (variacao == VARIACAO.descricao) "Cor" else ""
+
+  fun chave() = ChaveProduto(codigo, grade)
+  fun copy(variacaoNova: EVariacao) = Produto(
+    codigo,
+    grade,
+    gradeCompleta,
+    barcode,
+    descricao,
+    vendno,
+    fornecedor,
+    typeno,
+    typeName,
+    clno,
+    clname,
+    marca,
+    categoria,
+    descricaoCompleta,
+    bitola,
+    imagem,
+    peso,
+    altura,
+    comprimento,
+    largura,
+    textLink,
+    especificacoes,
+    editado,
+    precoCheio,
+    ncm,
+    cor,
+    variacaoNova.descricao,
+    corStr,
+    dataHoraMudanca,
+    userno,
+  )
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as Produto
+
+    if (codigo != other.codigo) return false
+    if (grade != other.grade) return false
+    if (variacao != other.variacao) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = codigo.hashCode()
+    result = 31 * result + grade.hashCode()
+    result = 31 * result + variacao.hashCode()
+    return result
+  }
+
+  fun updatePromo() {
+    saci.updatePromo(codigo)
+  }
+
+  companion object {
+    private val listSaldos = saci.saldoLoja4()
+
+    private val listPreco = saci.price()
+
+    fun saldoLoja4(
+      codigo: String,
+      grade: String
+    ) = listSaldos.firstOrNull {
+      it.codigo == codigo && it.grade == grade
     }
 
-    override fun hashCode(): Int {
-        var result = codigo.hashCode()
-        result = 31 * result + grade.hashCode()
-        result = 31 * result + variacao.hashCode()
-        return result
+    fun price(codigo: String) = listPreco.firstOrNull { it.codigo == codigo }
+
+    private val userSaci: UserSaci
+      get() = AppConfig.userSaci as UserSaci
+
+    fun listaProdutos(
+      codigo: Int,
+      descricaoI: String,
+      descricaoF: String,
+      fornecedor: Fornecedor?,
+      type: TypePrd?,
+      cl: Cl?,
+      editado: EEditor?,
+      categoria: Categoria?
+    ): List<Produto> {
+      return local.listaProdutos(
+        codigo = codigo,
+        descricaoI = descricaoI,
+        descricaoF = descricaoF,
+        vendno = fornecedor?.vendno ?: 0,
+        typeno = type?.typeno ?: 0,
+        clno = cl?.clno ?: "",
+        editado = editado?.value ?: 0,
+        categoria = categoria?.categoriaNo ?: 0
+      ).map {
+        it.textLink = it.descricaoCompleta?.normalize("-")
+        it
+      }
     }
 
-    fun updatePromo() {
-        saci.updatePromo(codigo)
+    fun save(bean: Produto) {
+      bean.textLink = bean.descricaoCompleta?.normalize("-")
+      local.salvaProduto(bean)
     }
-
-    companion object {
-        private val listSaldos = saci.saldoLoja4()
-
-        private val listPreco = saci.price()
-
-        fun saldoLoja4(
-            codigo: String,
-            grade: String
-        ) = listSaldos.firstOrNull {
-            it.codigo == codigo && it.grade == grade
-        }
-
-        fun price(codigo: String) = listPreco.firstOrNull { it.codigo == codigo }
-
-        private val userSaci: UserSaci
-            get() = AppConfig.userSaci as UserSaci
-
-        fun listaProdutos(
-            codigo: Int,
-            descricaoI: String,
-            descricaoF: String,
-            fornecedor: Fornecedor?,
-            type: TypePrd?,
-            cl: Cl?,
-            editado: EEditor?,
-            categoria: Categoria?
-        ): List<Produto> {
-            return local.listaProdutos(
-                codigo = codigo,
-                descricaoI = descricaoI,
-                descricaoF = descricaoF,
-                vendno = fornecedor?.vendno ?: 0,
-                typeno = type?.typeno ?: 0,
-                clno = cl?.clno ?: "",
-                editado = editado?.value ?: 0,
-                categoria = categoria?.categoriaNo ?: 0
-            ).map {
-                it.textLink = it.descricaoCompleta?.normalize("-")
-                it
-            }
-        }
-
-        fun save(bean: Produto) {
-            bean.textLink = bean.descricaoCompleta?.normalize("-")
-            local.salvaProduto(bean)
-        }
-    }
+  }
 }
 
 data class ChaveProduto(
-    val codigo: String,
-    val grade: String
+  val codigo: String,
+  val grade: String
 )
 
 enum class EEditor(val value: Int) {
-    BASE(0), EDITAR(1), EDITADO(2), IMPORTADO(3), ENVIAR(4), ENVIADO(5)
+  BASE(0), EDITAR(1), EDITADO(2), IMPORTADO(3), ENVIAR(4), ENVIADO(5)
 }
 
 enum class EVariacao(val descricao: String) {
-    SIMPLES("simples"), VARIACAO("variacao"), COM_VARIACAO("com-variacao")
+  SIMPLES("simples"), VARIACAO("variacao"), COM_VARIACAO("com-variacao")
 }
 
 fun List<Produto>.explodeGrade(): List<Produto> {
-    this.distinctBy {}
-    val comVariacao = this.distinctBy { it.codigo }.map { it.copy(COM_VARIACAO) }
-    val variacao = this.map { it.copy(VARIACAO) }
-    return comVariacao + variacao
+  this.distinctBy {}
+  val comVariacao = this.distinctBy { it.codigo }.map { it.copy(COM_VARIACAO) }
+  val variacao = this.map { it.copy(VARIACAO) }
+  return comVariacao + variacao
 }
 

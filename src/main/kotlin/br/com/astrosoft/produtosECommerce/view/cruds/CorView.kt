@@ -59,10 +59,10 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
   private fun gridCrud(): GridCrud<GradeCor> {
     val crud: GridCrud<GradeCor> = GridCrud(
       GradeCor::class.java, HorizontalSplitCrudLayout()
-                                           ) //crud.grid.setSelectionMode(MULTI)
+    ) //crud.grid.setSelectionMode(MULTI)
     crud.grid.setColumns(
       GradeCor::descricao.name, GradeCor::codigoCor.name,
-                        )
+    )
     crud.grid.getColumnBy(GradeCor::descricao).setHeader("Descrição")
     crud.grid.getColumnBy(GradeCor::codigoCor).setHeader("Código Cor")
     crud.grid.addColumnLocalDateTime(GradeCor::dataHoraMudanca) {
@@ -78,8 +78,7 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
       VerticalLayout().apply {
         if (produto.codigoCor.isBlank()) {
           this.element.style.remove("backgroundColor")
-        }
-        else {
+        } else {
           this.element.style.set("backgroundColor", produto.codigoCor)
         }
       }
@@ -149,7 +148,7 @@ class CorCrudFormFactory : AbstractCrudFormFactory<GradeCor>() {
     readOnly: Boolean,
     cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
     operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-                           ): Component {
+  ): Component {
     val binder = Binder(GradeCor::class.java)
 
     return VerticalLayout().apply {

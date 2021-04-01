@@ -4,7 +4,7 @@ import br.com.astrosoft.framework.model.ILookup
 
 class TypePrd(
   val typeno: Int, val typeName: String
-             ) : ILookup {
+) : ILookup {
   override val lookupValue: String
     get() = typeName
 }

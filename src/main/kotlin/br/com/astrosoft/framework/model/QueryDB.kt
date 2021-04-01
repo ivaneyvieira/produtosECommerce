@@ -28,7 +28,7 @@ open class QueryDB(
   url: String,
   username: String,
   password: String
-                  ) {
+) {
   protected val sql2o: Sql2o
 
   init {
@@ -66,7 +66,7 @@ open class QueryDB(
     file: String,
     classes: KClass<T>,
     lambda: QueryHandle = {}
-                               ): List<T> {
+  ): List<T> {
     val statements = toStratments(file)
     if (statements.isEmpty()) return emptyList()
     val lastIndex = statements.lastIndex
@@ -84,7 +84,7 @@ open class QueryDB(
     sql: String?,
     classes: KClass<T>,
     lambda: QueryHandle = {}
-                                ): List<T> {
+  ): List<T> {
     val query = con.createQuery(sql)
     query.lambda()
     println(sql)

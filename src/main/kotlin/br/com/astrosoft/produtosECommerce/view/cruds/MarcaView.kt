@@ -50,8 +50,8 @@ class MarcaView : ViewLayout<MarcaViewModel>(), IMarcaView {
   private fun gridCrud(): GridCrud<Marca> {
     val crud: GridCrud<Marca> = GridCrud(Marca::class.java, HorizontalSplitCrudLayout())
     crud.grid.setColumns(
-        Marca::marcaNo.name, Marca::name.name
-                        )
+      Marca::marcaNo.name, Marca::name.name
+    )
     crud.grid.getColumnBy(Marca::marcaNo).setHeader("Número")
     crud.grid.getColumnBy(Marca::name).setHeader("Marca")
 
@@ -81,7 +81,7 @@ class MarcaCrudFormFactory : AbstractCrudFormFactory<Marca>() {
     readOnly: Boolean,
     cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
     operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-                           ): Component {
+  ): Component {
     val binder = Binder<Marca>(Marca::class.java)
 
     return VerticalLayout().apply {
