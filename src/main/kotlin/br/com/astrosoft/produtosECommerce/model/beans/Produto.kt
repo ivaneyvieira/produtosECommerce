@@ -228,7 +228,7 @@ class Produto(
     }
 
     fun updatePromo() {
-        saci.updatePromo(codigo, grade)
+        saci.updatePromo(codigo)
     }
 
     companion object {

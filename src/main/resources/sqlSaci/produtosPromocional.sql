@@ -1,0 +1,62 @@
+DO @CL := :centroLucro;
+DO @VD := :fornecedor;
+DO @TP := :tipo;
+DO @CD := LPAD(:codigo*1, 16, ' ');
+DO @DT := CAST(CURRENT_DATE * 1 AS UNSIGNED);
+
+
+DROP TEMPORARY TABLE IF EXISTS T_PROMO;
+CREATE TEMPORARY TABLE T_PROMO
+SELECT prp.prdno                                             AS prdno,
+       prd.name                                              AS name,
+       vend.no                                               AS vendno,
+       vend.sname                                            AS abrev,
+       prd.typeno,
+       prd.clno,
+       prp.refprice,
+       (prp.refprice - prp.promo_price) * 100 / prp.refprice AS perc,
+       prp.promo_price,
+       prp.promo_validate
+FROM sqldados.prd
+  INNER JOIN sqldados.prp
+	       ON (prd.no = prp.prdno AND prp.storeno = 10)
+  INNER JOIN sqldados.vend
+	       ON (prd.mfno = vend.no)
+WHERE (prd.groupno = @CL OR prd.deptno = @CL OR prd.clno = @CL OR @CL = 0)
+  AND (prd.mfno = @VD OR @VD = 0)
+  AND (prd.typeno = @TP OR @TP = 0)
+  AND (prd.no LIKE @CD OR @CD LIKE '')
+  AND (prp.promo_validate >= @DT);
+
+
+DROP TEMPORARY TABLE IF EXISTS T_STK;
+CREATE TEMPORARY TABLE T_STK (
+  PRIMARY KEY (prdno)
+)
+SELECT prdno, SUM(qtty_varejo + qtty_atacado) AS qt
+FROM sqldados.stk
+  INNER JOIN sqldados.store
+	       ON store.no = storeno
+  INNER JOIN T_PROMO
+	       USING (prdno)
+GROUP BY prdno;
+
+SELECT LPAD(prdno, 6, '0')          AS codigo,
+       TRIM(MID(name, 1, 37))       AS descricao,
+       CAST(promo_validate AS date) AS validade,
+       refprice / 100               AS precoRef,
+       ROUND(perc, 2)               AS perc,
+       promo_price / 100            AS precoPromo,
+       vendno,
+       abrev,
+       typeno                       AS tipo,
+       clno                         AS centLucro,
+       qt / 1000                    AS saldo
+FROM T_PROMO
+  INNER JOIN T_STK
+	       USING (prdno)
+
+
+
+
+

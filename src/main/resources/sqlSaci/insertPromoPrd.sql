@@ -1,17 +1,34 @@
 DO @PRDNO := LPAD(:prdno, 16, ' ');
-DO @GRADE := :grade;
 DO @PROMO := :promo;
 
 DROP TEMPORARY TABLE IF EXISTS T_PROMO;
 CREATE TEMPORARY TABLE T_PROMO
 SELECT @PROMO         AS promono,
        prdno,
-       @GRADE         AS grade,
+       grade          AS grade,
        promo_price    AS price,
        promo_validate AS validade
-FROM sqldados.prp p
+FROM sqldados.prp            AS P
+  INNER JOIN sqldados.prdbar AS B
+	       USING (prdno)
 WHERE storeno = 10
   AND prdno = @PRDNO;
+
+DROP TEMPORARY TABLE IF EXISTS T_PROMO_WEB;
+CREATE TEMPORARY TABLE T_PROMO_WEB
+select begdate,
+       enddate,
+       auxLong1,
+       auxLong2,
+       no,
+       type,
+       auxShort1,
+       auxShort2,
+       name,
+       remarks
+from sqldados.promo
+where name = 'E-COMMERCE'
+  AND enddate > current_date;
 
 INSERT IGNORE INTO sqldados.promoprd(price, auxLong1, auxLong2, auxLong3, auxLong4, auxLong5,
 				     auxLong6, auxLong7, auxLong8, auxMy1, auxMy2, auxMy3, auxMy4,
