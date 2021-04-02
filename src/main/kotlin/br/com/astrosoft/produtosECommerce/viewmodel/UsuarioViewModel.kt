@@ -4,6 +4,7 @@ import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
+import br.com.astrosoft.produtosECommerce.model.beans.ativo
 
 class UsuarioViewModel(view: IUserView) : ViewModel<IUserView>(view) {
   fun findAll(): List<UserSaci>? {
@@ -38,10 +39,6 @@ class UsuarioViewModel(view: IUserView) : ViewModel<IUserView>(view) {
       UserSaci.updateUser(userValid)
     }
   }
-
-  // fun findLogins() : List<String>{
-  //   return UserSaci.findAllUser().map{it.login}.distinct().sorted()
-  // }
 
   fun findAllUser(): List<UserSaci> {
     return UserSaci.findAllUser()

@@ -3,6 +3,7 @@ package br.com.astrosoft
 import br.com.astrosoft.framework.spring.IUser
 import br.com.astrosoft.framework.spring.SecurityUtils
 import br.com.astrosoft.framework.view.ViewUtil
+import br.com.astrosoft.produtosECommerce.model.beans.ativo
 import br.com.astrosoft.produtosECommerce.model.saci
 
 object AppConfig {
@@ -18,5 +19,10 @@ object AppConfig {
   val userSaci
     get() = userDetails?.user
 
-  fun findUser(username: String?): IUser? = saci.findUser(username).firstOrNull { it.ativo }
+  fun findUser(username: String?): IUser? {
+    val list = saci.findUser(username)
+    return list.firstOrNull { user ->
+      user.ativo
+    }
+  }
 }

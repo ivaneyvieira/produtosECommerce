@@ -5,34 +5,26 @@ import br.com.astrosoft.produtosECommerce.model.saci
 import kotlin.math.pow
 import kotlin.reflect.KProperty
 
-class UserSaci : IUser {
-  var no: Int = 0
-  var name: String = ""
-  override var login: String = ""
-  override var senha: String = ""
+class UserSaci(
+  var no: Int = 0,
+  var name: String = "",
+  override var login: String = "",
+  var storeno: Int = 0,
+  override var senha: String = "",
+  var bitAcesso: Int = 0
+) : IUser {
+
   override fun roles(): List<String> {
     val roles = if (admin) listOf("ADMIN") else listOf("USER")
-
     return roles
   }
-
-  var bitAcesso: Int = 0
-  var storeno: Int = 0
-
-  //Otiros campos
-  var ativo by DelegateAuthorized(0)
-  var produto by DelegateAuthorized(1)
-  var categoria by DelegateAuthorized(2)
-  var marca by DelegateAuthorized(3)
-  var bitola by DelegateAuthorized(4)
-  var cor by DelegateAuthorized(5)
 
   val admin
     get() = login == "ADM" || login == "YASMINE"
 
   companion object {
     fun findAllAtivos(): List<UserSaci> {
-      return saci.findAllUser().filter { it.ativo }
+      return saci.findAllUser().filter { it.ativo == true}
     }
 
     fun findAllUser(): List<UserSaci> {
@@ -49,7 +41,12 @@ class UserSaci : IUser {
   }
 }
 
-fun Int.pow(e: Int): Int = this.toDouble().pow(e).toInt()
+var UserSaci.ativo by DelegateAuthorized(0)
+var UserSaci.produto by DelegateAuthorized(1)
+var UserSaci.categoria by DelegateAuthorized(2)
+var UserSaci.marca by DelegateAuthorized(3)
+var UserSaci.bitola by DelegateAuthorized(4)
+var UserSaci.cor by DelegateAuthorized(5)
 
 class DelegateAuthorized(numBit: Int) {
   private val bit = 2.toDouble().pow(numBit).toInt()

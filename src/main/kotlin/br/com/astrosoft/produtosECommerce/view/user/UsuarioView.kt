@@ -2,7 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.user
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
+import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
 import br.com.astrosoft.produtosECommerce.viewmodel.IUserView
