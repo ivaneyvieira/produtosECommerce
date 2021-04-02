@@ -272,7 +272,7 @@ class Produto(
         vendno = fornecedor?.vendno ?: 0,
         typeno = type?.typeno ?: 0,
         clno = cl?.clno ?: "",
-        editado = editado?.value ?: 0,
+        editado = editado.value,
         categoria = categoria?.categoriaNo ?: 0
       ).map {
         it.textLink = it.descricaoCompleta?.normalize("-")

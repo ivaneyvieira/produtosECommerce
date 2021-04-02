@@ -56,7 +56,6 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
     get() = gridProdutoSemPromocao.filterBar as IFiltroPromocao
 
   init {
-    val user = AppConfig.userSaci as? UserSaci
     tabMain = tabSheet {
       setSizeFull()
       tabGrid("Produtos Sem Promoção", gridProdutoSemPromocao)

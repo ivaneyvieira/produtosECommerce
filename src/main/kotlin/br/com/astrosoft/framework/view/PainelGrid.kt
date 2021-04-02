@@ -71,7 +71,7 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     addItemDoubleClickListener { event ->
       editor.editItem(event.item)
     }
-    editor.addOpenListener { event ->
+    editor.addOpenListener {
       openEditor(binder)
     }
     editor.addCloseListener { _ ->
