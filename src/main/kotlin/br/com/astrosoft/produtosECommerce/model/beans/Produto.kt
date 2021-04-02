@@ -227,10 +227,6 @@ class Produto(
     return result
   }
 
-  fun updatePromo() {
-    saci.updatePromo(codigo)
-  }
-
   companion object {
     private val listSaldos = saci.saldoLoja4()
 
@@ -248,6 +244,17 @@ class Produto(
     private val userSaci: UserSaci
       get() = AppConfig.userSaci as UserSaci
 
+    fun listaProdutos(editado: EEditor) = listaProdutos(
+      codigo = 0,
+      descricaoI = "",
+      descricaoF = "",
+      fornecedor = null,
+      type = null,
+      cl = null,
+      editado = editado,
+      categoria = null
+    )
+
     fun listaProdutos(
       codigo: Int,
       descricaoI: String,
@@ -255,7 +262,7 @@ class Produto(
       fornecedor: Fornecedor?,
       type: TypePrd?,
       cl: Cl?,
-      editado: EEditor?,
+      editado: EEditor,
       categoria: Categoria?
     ): List<Produto> {
       return local.listaProdutos(

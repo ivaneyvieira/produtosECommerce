@@ -20,7 +20,12 @@ import com.vaadin.flow.router.Route
 @HtmlImport("frontend://styles/shared-styles.html")
 class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdutoPromocionalView {
   private var tabMain: TabSheet
-  private val gridProdutoPromocao = PainelGridProdutoPromocao(this) { viewModel.updateGrid() }
+  private val gridProdutoSemPromocao = PainelGridProdutoSemPromocao(this) {
+    viewModel.updateGridSemPromocao()
+  }
+  private val gridProdutoComPromocao = PainelGridProdutoComPromocao(this) {
+    viewModel.updateGridComPromocao()
+  }
   override val viewModel: ProdutoPromocionalViewModel = ProdutoPromocionalViewModel(this)
 
   override fun isAccept(): Boolean {
@@ -28,23 +33,35 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
     return user?.admin == true
   }
 
-  override fun updateGrid(itens: List<ProdutoPromocao>) {
-    gridProdutoPromocao.updateGrid(itens)
+  override fun updateGridSemPromocao(itens: List<ProdutoPromocao>) {
+    gridProdutoSemPromocao.updateGrid(itens)
   }
 
-  override fun updatePromo(list: List<ProdutoPromocao>) {
-    viewModel.updatePromo(list)
+  override fun savePromocao(list: List<ProdutoPromocao>) {
+    viewModel.savePromocao(list)
   }
 
-  override val filtro: IFiltroPromocao
-    get() = gridProdutoPromocao.filterBar as IFiltroPromocao
+  override fun updateGridComPromocao(itens: List<ProdutoPromocao>) {
+    gridProdutoComPromocao.updateGrid(itens)
+  }
+
+  override fun removePromocao(list: List<ProdutoPromocao>) {
+    viewModel.removePromocao(list)
+  }
+
+  override val filtroComPromocao: IFiltroPromocao
+    get() = gridProdutoComPromocao.filterBar as IFiltroPromocao
+
+  override val filtroSemPromocao: IFiltroPromocao
+    get() = gridProdutoSemPromocao.filterBar as IFiltroPromocao
 
   init {
     val user = AppConfig.userSaci as? UserSaci
     tabMain = tabSheet {
       setSizeFull()
-      tabGrid("Produtos Promocionais", gridProdutoPromocao)
+      tabGrid("Produtos Sem Promoção", gridProdutoSemPromocao)
+      tabGrid("Produtos Com Promoção", gridProdutoComPromocao)
     }
-    viewModel.updateGrid()
+    viewModel.updateGridSemPromocao()
   }
 }

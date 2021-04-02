@@ -17,5 +17,4 @@ FROM sqldados.users          AS U
 	      ON P.no = U.prntno
   LEFT JOIN sqldados.userApp AS A
 	      ON A.userno = U.no AND A.appName = 'produtoECommerce'
-WHERE login = :login
-   OR :login = 'TODOS'
+WHERE (login = :login OR :login = 'TODOS')

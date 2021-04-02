@@ -165,12 +165,6 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) :
     }
     updateGrid()
   }
-
-  fun updatePromo(produtos: List<Produto>) = exec {
-    produtos.forEach {
-      it.updatePromo()
-    }
-  }
 }
 
 interface IFiltroEditar {
@@ -264,7 +258,6 @@ interface IProdutosEComerceView : IView {
 
   fun salvaProduto(bean: Produto?)
   fun replicarProdutos(itens: List<Produto>, marca: EEditor)
-  fun updatePromo(multiSelect: List<Produto>)
 
   val filtroEditar: IFiltroEditar
   val filtroEditado: IFiltroEditado

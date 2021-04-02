@@ -157,6 +157,33 @@ fun Grid<Produto>.colDataHoraMudanca() = addColumnLocalDateTime(Produto::dataHor
 }
 
 //
+fun HasComponents.promocaoField(block: ComboBox<Promocao>.() -> Unit = {}) =
+  comboBox<Promocao>("Promoção") {
+    val filter = ItemFilter { element: Promocao, filterString: String? ->
+      filterString ?: return@ItemFilter true
+      element.descricao.contains(
+        filterString,
+        ignoreCase = true
+      ) || element.promoNo.toString() == filterString
+    }
+    isClearButtonVisible = true
+    this.setItems(filter, Promocao.findPromocoesViergentes())
+    setItemLabelGenerator {
+      "${it.promoNo} ${it.descricao}"
+    }
+    setRenderer(
+      TemplateRenderer.of<Promocao>(
+        "<div>[[item.promoNo]] - [[item.vencimento]]<br><small>[[item.descricao]]</small></div>"
+      )
+        .withProperty("promoNo", Promocao::promoNo)
+        .withProperty("descricao", Promocao::descricao)
+        .withProperty("vencimento", Promocao::vencimentoFormat)
+    )
+    width = "15em"
+    element.setAttribute("theme", "small")
+    block()
+  }
+
 fun HasComponents.codigoField(block: IntegerField.() -> Unit = {}) = integerField("Código") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
   this.valueChangeMode = TIMEOUT

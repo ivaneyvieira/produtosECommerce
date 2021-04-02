@@ -2,15 +2,17 @@ package br.com.astrosoft.produtosECommerce.model
 
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.util.DB
+import br.com.astrosoft.framework.util.toSaciDate
 import br.com.astrosoft.produtosECommerce.model.beans.*
 
 class QuerySaci : QueryDB("saci", driver, url, username, password) {
   fun findUser(login: String?): List<UserSaci> {
     login ?: return emptyList()
     val sql = "/sqlSaci/userSenha.sql"
-    return query(sql, UserSaci::class) {
+    val list = query(sql, UserSaci::class) {
       addParameter("login", login)
     }
+    return list
   }
 
   fun findAllUser(): List<UserSaci> {
@@ -59,24 +61,41 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     )
   }
 
-  fun updatePromo(prdno: String) {
-    return
-    val sql = "/sqlSaci/insertPromoPrd.sql"
-    val promono = 21
+  fun savePromocao(promocao: Promocao, prdno: String, grade: String, price: Double) {
+    val sql = "/sqlSaci/savePromoPrd.sql"
+    val promono = promocao.promoNo
     script(sql) {
       addOptionalParameter("promo", promono)
       addOptionalParameter("prdno", prdno.toIntOrNull() ?: 0)
+      addOptionalParameter("grade", grade)
+      addOptionalParameter("price", (price * 100).toInt())
+    }
+  }
+
+  fun removePromocao(prdno: String, grade: String) {
+    val sql = "/sqlSaci/removePromoPrd.sql"
+    script(sql) {
+      addOptionalParameter("prdno", prdno.toIntOrNull() ?: 0)
+      addOptionalParameter("grade", grade)
     }
   }
 
   fun findProdutosPromocional(filtro: FiltroProdutosPromocional): List<ProdutoPromocao> {
     val sql = "/sqlSaci/produtosPromocional.sql"
+    val promocao = filtro.promocao
     return query(sql, ProdutoPromocao::class) {
       addOptionalParameter("centroLucro", filtro.centroLucro)
       addOptionalParameter("fornecedor", filtro.fornecedor)
       addOptionalParameter("tipo", filtro.tipo)
       addOptionalParameter("codigo", filtro.codigo)
+      addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
+      addOptionalParameter("promocao", if (filtro.temPromocao) "S" else "N")
     }
+  }
+
+  fun findPromocoesViergentes(): List<Promocao> {
+    val sql = "/sqlSaci/promocoesVirgentes.sql"
+    return query(sql, Promocao::class)
   }
 
   companion object {
