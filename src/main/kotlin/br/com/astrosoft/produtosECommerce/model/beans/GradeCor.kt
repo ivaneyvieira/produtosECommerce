@@ -4,6 +4,7 @@ import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 import java.time.LocalDateTime
 
+@Suppress("UNUSED_PARAMETER")
 class GradeCor(
   var descricao: String = "",
   var codigoCor: String = "",
