@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.Bitola
 
 class BitolaViewModel(view: IBitolaView) : ViewModel<IBitolaView>(view) {
   fun findAll(): List<Bitola>? {
+    Bitola.updateList()
     return Bitola.findAll()
   }
 

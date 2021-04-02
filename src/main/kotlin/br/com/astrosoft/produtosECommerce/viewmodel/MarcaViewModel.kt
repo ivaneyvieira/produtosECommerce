@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.Marca
 
 class MarcaViewModel(view: IMarcaView) : ViewModel<IMarcaView>(view) {
   fun findAll(): List<Marca>? {
+    Marca.updateList()
     return Marca.findAll()
   }
 

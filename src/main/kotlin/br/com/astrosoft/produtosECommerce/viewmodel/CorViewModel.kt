@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.GradeCor
 
 class CorViewModel(view: ICorView) : ViewModel<ICorView>(view) {
   fun findAll(): List<GradeCor>? {
+    GradeCor.updateList()
     return GradeCor.findAll()
   }
 

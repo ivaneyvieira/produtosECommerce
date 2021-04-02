@@ -26,11 +26,23 @@ class GradeCor(
     set(value) {}
 
   companion object {
-    fun findAll(): List<GradeCor> {
-      return local.findAllCor().map {
+    private val listGradeCor = mutableListOf<GradeCor>().apply {
+      addAll(local.findAllCor().map {
         it.descricaoOriginal = it.descricao
         it
-      }
+      })
+    }
+
+    fun updateList() {
+      listGradeCor.clear()
+      listGradeCor.addAll(local.findAllCor().map {
+        it.descricaoOriginal = it.descricao
+        it
+      })
+    }
+
+    fun findAll(): List<GradeCor> {
+      return listGradeCor
     }
 
     fun add(cor: GradeCor) {
