@@ -74,6 +74,7 @@ open class QueryDB(
     val updates = if (statements.size > 1) statements.subList(0, lastIndex) else emptyList()
     return transaction { con ->
       scriptSQL(con, updates, lambda)
+      println(query)
       val ret: List<T> = querySQL(con, query, classes, lambda)
       ret
     }

@@ -265,6 +265,10 @@ class Produto(
       editado: EEditor,
       categoria: Categoria?
     ): List<Produto> {
+      Marca.updateList()
+      Bitola.updateList()
+      Categoria.updateList()
+      GradeCor.updateList()
       return local.listaProdutos(
         codigo = codigo,
         descricaoI = descricaoI,

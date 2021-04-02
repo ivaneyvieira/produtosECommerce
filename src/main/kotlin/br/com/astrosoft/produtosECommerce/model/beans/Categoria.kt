@@ -41,9 +41,12 @@ data class Categoria(
       addAll(local.findAllCategoria())
     }
 
-    fun findAll(): List<Categoria> {
+    fun updateList() {
       listCategoria.clear()
       listCategoria.addAll(local.findAllCategoria())
+    }
+
+    fun findAll(): List<Categoria> {
       return listCategoria.toList()
     }
 

@@ -12,9 +12,12 @@ data class Bitola(var bitolaNo: Int = 0, var name: String = "") : Comparable<Bit
       addAll(local.findAllBitola())
     }
 
-    fun findAll(): List<Bitola> {
+    fun updateList() {
       listBitolas.clear()
       listBitolas.addAll(local.findAllBitola())
+    }
+
+    fun findAll(): List<Bitola> {
       return listBitolas
     }
 

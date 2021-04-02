@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 
 class CategoriaViewModel(view: ICategoriaView) : ViewModel<ICategoriaView>(view) {
   fun findAll(): List<Categoria>? {
+    Categoria.updateList()
     return Categoria.findAll()
   }
 
