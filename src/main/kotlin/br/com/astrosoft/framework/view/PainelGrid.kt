@@ -6,11 +6,16 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.produtosECommerce.model.local
 import com.github.juchar.colorpicker.ColorPickerFieldI18n
 import com.github.juchar.colorpicker.ColorPickerFieldRaw
+import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.github.mvysny.karibudsl.v10.tooltip
+import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.Column
 import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.FlexLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.*
@@ -87,6 +92,20 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
       }.toList()
     }
     return serviceQuery.fetch(filter, 0, Int.MAX_VALUE, sortOrders)
+  }
+
+  fun HasComponents.selectAll() {
+    button {
+      icon = VaadinIcon.CHECK_SQUARE_O.create()
+      tooltip = "Seleciona todos"
+      onLeftClick {
+        val allItens = allItens()
+        val multiSelect = multiSelect()
+        if (multiSelect.size == allItens.size)
+          grid.asMultiSelect().deselectAll()
+        else grid.asMultiSelect().select(allItens)
+      }
+    }
   }
 
   protected abstract fun filterBar(): FilterBar<F>

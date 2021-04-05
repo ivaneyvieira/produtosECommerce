@@ -40,6 +40,7 @@ class PainelGridProdutoSemPromocao(
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProdutosPromocional>.contentBlock() {
+      this.selectAll()
       button {
         icon = MONEY_WITHDRAW.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)

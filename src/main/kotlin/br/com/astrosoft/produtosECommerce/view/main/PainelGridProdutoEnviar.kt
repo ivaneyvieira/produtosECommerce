@@ -38,6 +38,8 @@ class PainelGridProdutoEnviar(
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
+      this.selectAll()
+
       button {
         icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
