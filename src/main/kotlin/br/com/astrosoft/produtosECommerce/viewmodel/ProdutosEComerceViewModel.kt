@@ -5,122 +5,18 @@ import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 
 class ProdutosEComerceViewModel(view: IProdutosEComerceView) :
   ViewModel<IProdutosEComerceView>(view) {
-  fun updateGridEditar() {
-    view.updateGridEditar(listEditar())
-  }
 
-  private fun listEditar(): List<Produto> {
-    val filtro = view.filtroEditar
-    return Produto.listaProdutos(
-      codigo = filtro.codigo,
-      descricaoI = filtro.descricaoI,
-      descricaoF = filtro.descricaoF,
-      fornecedor = filtro.fornecedor,
-      type = filtro.type,
-      cl = filtro.cl,
-      editado = EDITAR,
-      categoria = filtro.categoria
-    )
-  }
-
-  fun updateGridBase() {
-    view.updateGridBase(listBase())
-  }
-
-  private fun listBase(): List<Produto> {
-    val filtro = view.filtroBase
-    return Produto.listaProdutos(
-      codigo = filtro.codigo,
-      descricaoI = filtro.descricaoI,
-      descricaoF = filtro.descricaoF,
-      fornecedor = filtro.fornecedor,
-      type = filtro.type,
-      cl = filtro.cl,
-      editado = BASE,
-      categoria = filtro.categoria
-    )
-  }
-
-  fun updateGridEditado() {
-    view.updateGridEditado(listEditado())
-  }
-
-  private fun listEditado(): List<Produto> {
-    val filtro = view.filtroEditado
-    return Produto.listaProdutos(
-      codigo = filtro.codigo,
-      descricaoI = filtro.descricaoI,
-      descricaoF = filtro.descricaoF,
-      fornecedor = filtro.fornecedor,
-      type = filtro.type,
-      cl = filtro.cl,
-      editado = EDITADO,
-      categoria = filtro.categoria
-    )
-  }
-
-  fun updateGridEnviar() {
-    view.updateGridEnviar(listEnviar())
-  }
-
-  private fun listEnviar(): List<Produto> {
-    val filtro = view.filtroEnviar
-    return Produto.listaProdutos(
-      codigo = filtro.codigo,
-      descricaoI = filtro.descricaoI,
-      descricaoF = filtro.descricaoF,
-      fornecedor = filtro.fornecedor,
-      type = filtro.type,
-      cl = filtro.cl,
-      editado = ENVIAR,
-      categoria = filtro.categoria
-    )
-  }
-
-  fun updateGridEnviado() {
-    view.updateGridEnviado(listEnviado())
-  }
-
-  private fun listEnviado(): List<Produto> {
-    val filtro = view.filtroEnviado
-    return Produto.listaProdutos(
-      codigo = filtro.codigo,
-      descricaoI = filtro.descricaoI,
-      descricaoF = filtro.descricaoF,
-      fornecedor = filtro.fornecedor,
-      type = filtro.type,
-      cl = filtro.cl,
-      editado = ENVIADO,
-      categoria = filtro.categoria
-    )
-  }
+  fun serviceQueryProduto() = ServiceQueryProduto()
 
   fun salvaProduto(produto: Produto?) {
     if (produto != null) {
       Produto.save(produto)
       updateGrid()
     }
-  }
-
-  fun updateGridImportado() {
-    view.updateGridImportado(listImportado())
-  }
-
-  private fun listImportado(): List<Produto> {
-    val filtro = view.filtroImportado
-    return Produto.listaProdutos(
-      codigo = filtro.codigo,
-      descricaoI = filtro.descricaoI,
-      descricaoF = filtro.descricaoF,
-      fornecedor = filtro.fornecedor,
-      type = filtro.type,
-      cl = filtro.cl,
-      editado = IMPORTADO,
-      categoria = filtro.categoria
-    )
   }
 
   fun marcaProdutos(itens: List<Produto>, marca: EEditor) {
@@ -132,13 +28,17 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) :
   }
 
   fun updateGrid() {
+    Marca.updateList()
+    Bitola.updateList()
+    Categoria.updateList()
+    Marca.updateList()
     when (view.panelStatus()) {
-      BASE -> updateGridBase()
-      EDITAR -> updateGridEditar()
-      EDITADO -> updateGridEditado()
-      IMPORTADO -> updateGridImportado()
-      ENVIAR -> updateGridEnviar()
-      ENVIADO -> updateGridEnviado()
+      BASE -> view.updateGridBase()
+      EDITAR -> view.updateGridEditar()
+      EDITADO -> view.updateGridEditado()
+      IMPORTADO -> view.updateGridImportado()
+      ENVIAR -> view.updateGridEnviar()
+      ENVIADO -> view.updateGridEnviado()
     }
   }
 
@@ -167,104 +67,25 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) :
   }
 }
 
-interface IFiltroEditar {
-  val codigo: Int
-  val descricaoI: String
-  val descricaoF: String
-  val fornecedor: Fornecedor?
-  val type: TypePrd?
-  val cl: Cl?
-  val categoria: Categoria?
-
-  fun isEmpty() =
-    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
-}
-
-interface IFiltroEditado {
-  val codigo: Int
-  val descricaoI: String
-  val descricaoF: String
-  val fornecedor: Fornecedor?
-  val type: TypePrd?
-  val cl: Cl?
-  val categoria: Categoria?
-
-  fun isEmpty() =
-    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
-}
-
-interface IFiltroEnviar {
-  val codigo: Int
-  val descricaoI: String
-  val descricaoF: String
-  val fornecedor: Fornecedor?
-  val type: TypePrd?
-  val cl: Cl?
-  val categoria: Categoria?
-
-  fun isEmpty() =
-    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
-}
-
-interface IFiltroEnviado {
-  val codigo: Int
-  val descricaoI: String
-  val descricaoF: String
-  val fornecedor: Fornecedor?
-  val type: TypePrd?
-  val cl: Cl?
-  val categoria: Categoria?
-
-  fun isEmpty() =
-    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
-}
-
-interface IFiltroBase {
-  val codigo: Int
-  val descricaoI: String
-  val descricaoF: String
-  val fornecedor: Fornecedor?
-  val type: TypePrd?
-  val cl: Cl?
-  val categoria: Categoria?
-
-  fun isEmpty() =
-    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
-}
-
-interface IFiltroImportado {
-  val codigo: Int
-  val descricaoI: String
-  val descricaoF: String
-  val fornecedor: Fornecedor?
-  val type: TypePrd?
-  val cl: Cl?
-  val categoria: Categoria?
-
-  fun isEmpty() =
-    codigo == 0 && descricaoI == "" && descricaoF == "" && fornecedor == null && type == null && cl == null && categoria == null
-}
-
 interface IProdutosEComerceView : IView {
-  fun updateGridEditar(itens: List<Produto>)
-  fun updateGridEditado(itens: List<Produto>)
-  fun updateGridBase(itens: List<Produto>)
-  fun updateGridImportado(itens: List<Produto>)
-  fun updateGridEnviar(itens: List<Produto>)
-  fun updateGridEnviado(itens: List<Produto>)
+  fun updateGridBase()
+  fun updateGridEditar()
+  fun updateGridEditado()
+  fun updateGridImportado()
+  fun updateGridEnviar()
+  fun updateGridEnviado()
+
   fun panelStatus(): EEditor
-
   fun marcaProdutos(itens: List<Produto>, marca: EEditor)
-
   fun salvaProduto(bean: Produto?)
   fun replicarProdutos(itens: List<Produto>, marca: EEditor)
 
-  val filtroEditar: IFiltroEditar
-  val filtroEditado: IFiltroEditado
-  val filtroBase: IFiltroBase
-  val filtroImportado: IFiltroImportado
-  val filtroEnviar: IFiltroEnviar
-  val filtroEnviado: IFiltroEnviado
+  val filtroEditar: FiltroProduto
+  val filtroEditado: FiltroProduto
+  val filtroBase: FiltroProduto
+  val filtroImportado: FiltroProduto
+  val filtroEnviar: FiltroProduto
+  val filtroEnviado: FiltroProduto
 }
 
 data class ProcessaBean(

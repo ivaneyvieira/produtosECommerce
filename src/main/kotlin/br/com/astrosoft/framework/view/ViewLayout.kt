@@ -414,11 +414,11 @@ fun <T> ListDataProvider<T>.updateItens(itensGrid: List<T>) {
   this.refreshAll()
 }
 
-fun <T : Any> TabSheet.tabGrid(label: String, painelGrid: PainelGrid<T>) = tab {
+fun <T : Any> TabSheet.tabGrid(label: String, painelGrid: PainelGrid<T, *>) = tab {
   painelGrid
 }.apply {
   val button = Button(label) {
-    painelGrid.blockUpdate()
+    painelGrid.updateGrid()
   }
   button.addThemeVariants(ButtonVariant.LUMO_SMALL)
   this.addComponentAsFirst(button)

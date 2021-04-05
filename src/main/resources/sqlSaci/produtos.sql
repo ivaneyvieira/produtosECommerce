@@ -1,4 +1,9 @@
-SELECT codigo,
+
+
+DROP TEMPORARY TABLE IF EXISTS T_RESULT;
+CREATE TEMPORARY TABLE T_RESULT
+SELECT
+       codigo,
        grade,
        gradeCompleta,
        barcode,
@@ -7,7 +12,7 @@ SELECT codigo,
        fornecedor,
        typeno,
        typeName,
-       IFNULL(clno, '') AS clno,
+       IFNULL(clno, '')       AS clno,
        clname,
        marca,
        categoria,
@@ -21,10 +26,10 @@ SELECT codigo,
        textLink,
        especificacoes,
        precoCheio,
-       IFNULL(ncm, '')  AS ncm,
+       IFNULL(ncm, '')        AS ncm,
        cor,
-       'simples'        AS variacao,
-       corStr           AS corStr,
+       'simples'              AS variacao,
+       corStr                 AS corStr,
        P.dataHoraMudanca,
        P.userno
 FROM produtoEcomerce.produto AS P

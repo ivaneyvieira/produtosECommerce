@@ -5,7 +5,7 @@ import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
-import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroEditado
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
@@ -22,13 +22,15 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> Unit) :
-  PainelGridProdutoAbstract(view, blockUpdate) {
+class PainelGridProdutoEditado(
+  view: IProdutosEComerceView,
+  serviceQuery: ServiceQueryProduto
+) : PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = EDITADO
 
   override fun filterBar() = FilterBarEditado()
 
-  inner class FilterBarEditado : FilterBar(), IFiltroEditado {
+  inner class FilterBarEditado : FilterBar<FiltroProduto>() {
     private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
@@ -37,7 +39,7 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
     private lateinit var edtDescricaoI: TextField
     private lateinit var edtCodigo: IntegerField
 
-    override fun FilterBar.contentBlock() {
+    override fun FilterBar<FiltroProduto>.contentBlock() {
       val user = AppConfig.userSaci as? UserSaci
       button {
         icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
@@ -56,42 +58,38 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, blockUpdate: () -> U
       this.downloadExcel()
 
       edtCodigo = codigoField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtDescricaoI = descricaoIField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtDescricaoF = descricaoFField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtFornecedor = fornecedorField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtTipo = tipoField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtCl = clField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtCategoria = categoriaField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
     }
 
-    override val codigo: Int
-      get() = edtCodigo.value ?: 0
-    override val descricaoI: String
-      get() = edtDescricaoI.value ?: ""
-    override val descricaoF: String
-      get() = edtDescricaoF.value ?: ""
-    override val fornecedor: Fornecedor?
-      get() = edtFornecedor.value
-    override val type: TypePrd?
-      get() = edtTipo.value
-    override val cl: Cl?
-      get() = edtCl.value
-    override val categoria: Categoria?
-      get() = edtCategoria.value
+    override fun filtro() = FiltroProduto(
+      codigo = edtCodigo.value ?: 0,
+      descricaoI = edtDescricaoI.value ?: "",
+      descricaoF = edtDescricaoF.value ?: "",
+      fornecedor = edtFornecedor.value,
+      type = edtTipo.value,
+      cl = edtCl.value,
+      categoria = edtCategoria.value,
+      editado = statusDefault()
+    )
   }
 
   private fun filename(): String {

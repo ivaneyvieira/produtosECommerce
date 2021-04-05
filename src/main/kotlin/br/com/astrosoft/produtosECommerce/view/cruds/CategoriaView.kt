@@ -1,7 +1,6 @@
 package br.com.astrosoft.produtosECommerce.view.cruds
 
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.framework.view.listOrder
 import br.com.astrosoft.produtosECommerce.model.beans.Categoria
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaCategoria
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
@@ -26,6 +25,7 @@ import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
+import com.vaadin.flow.data.provider.Query
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import org.claspina.confirmdialog.ConfirmDialog
@@ -40,6 +40,7 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.function.*
+import kotlin.streams.toList
 
 @Route(layout = ProdutoECommerceLayout::class, value = "categoria")
 @PageTitle(TITLE)
@@ -236,7 +237,7 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
   private fun buttonDownloadLazy(): LazyDownloadButton {
     val button = LazyDownloadButton(FontAwesome.Solid.FILE_EXCEL.create(), { filename() }, {
       val planilha = PlanilhaCategoria()
-      val bytes = planilha.grava(crud.grid.listOrder())
+      val bytes = planilha.grava(crud.grid.dataProvider.getAll())
       ByteArrayInputStream(bytes)
     }) // button.addThemeVariants(ButtonVariant.LUMO_SMALL)
     button.tooltip = "Salva a planilha"

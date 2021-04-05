@@ -2,40 +2,15 @@ package br.com.astrosoft.produtosECommerce.model
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.model.QueryDB
+import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
+import org.sql2o.Query
 import java.time.LocalDateTime
 
 class QueryLocal : QueryDB("local", driver, url, username, password) {
-  fun listaProdutos(
-    codigo: Int,
-    descricaoI: String,
-    descricaoF: String,
-    vendno: Int,
-    typeno: Int,
-    clno: String,
-    editado: Int,
-    categoria: Int
-  ): List<Produto> {
-    val sql = "/sqlSaci/produtos.sql"
-    return query(sql, Produto::class) {
-      addOptionalParameter(
-        "codigo", codigo.toString().lpad(6, "0")
-      )
-      addOptionalParameter("descricaoI", descricaoI)
-      addOptionalParameter("descricaoF", descricaoF)
-      addOptionalParameter("vendno", vendno)
-      addOptionalParameter("typeno", typeno)
-      addOptionalParameter("clno1", clno)
-      addOptionalParameter("clno2", clno.max())
-      addOptionalParameter("editado", editado)
-      addOptionalParameter("categoria1", categoria)
-      addOptionalParameter("categoria2", categoria.max())
-    }
-  }
-
   fun String.max(): String {
     val str = this.toString().lpad(6, "0")
     var gru = str.substring(0, 2)
@@ -249,6 +224,52 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
 from produtoEcomerce.gradeCor
 HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
     )
+  }
+
+  private fun <R : Any> filtroProduto(
+    filter: FiltroProduto,
+    complemento: String,
+    result: (Query) -> R
+  ): R {
+    val sql = "/sqlSaci/produtos.sql"
+    return querySerivce(sql, complemento, lambda = {
+      addOptionalParameter("codigo", filter.codigo.toString().lpad(6, "0"))
+      addOptionalParameter("descricaoI", filter.descricaoI)
+      addOptionalParameter("descricaoF", filter.descricaoF)
+      addOptionalParameter("vendno", filter.fornecedor?.vendno ?: 0)
+      addOptionalParameter("typeno", filter.type?.typeno ?: 0)
+      addOptionalParameter("clno1", filter.cl?.clno ?: "")
+      addOptionalParameter("clno2", filter.cl?.clno?.max() ?: "")
+      addOptionalParameter("editado", filter.editado.value)
+      addOptionalParameter("categoria1", filter.categoria?.categoriaNo ?: 0)
+      addOptionalParameter("categoria2", filter.categoria?.categoriaNo?.max() ?: 0)
+    }, result = result)
+  }
+
+  fun countProduto(filter: FiltroProduto): Int {
+    val complemento = "SELECT COUNT(*) FROM T_RESULT"
+    return filtroProduto(filter, complemento) {
+      it.executeScalar(Int::class.java)
+    }
+  }
+
+  fun fetchProduto(
+    filter: FiltroProduto,
+    offset: Int,
+    limit: Int,
+    sortOrders: List<SortOrder>
+  ): List<Produto> {
+    val orderBy = if (sortOrders.isEmpty()) "" else "ORDER BY " + sortOrders.joinToString(
+      separator = ", "
+    ) { it.sql() }
+    val complemento = """DO @OFFSET := $offset;
+      |SELECT @OFFSET := @OFFSET + 1 AS seq, R.* 
+      |FROM T_RESULT AS R 
+      |$orderBy 
+      |LIMIT $limit OFFSET $offset""".trimMargin()
+    return filtroProduto(filter, complemento) {
+      it.executeAndFetch(Produto::class.java)
+    }
   }
 
   companion object {

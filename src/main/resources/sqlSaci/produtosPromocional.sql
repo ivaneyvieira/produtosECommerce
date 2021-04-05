@@ -43,6 +43,7 @@ WHERE (prd.groupno = @CL OR prd.deptno = @CL OR prd.clno = @CL OR @CL = 0)
   AND (prd.no LIKE @CD OR @CD * 1 = 0)
   AND (prp.promo_validate >= @DT)
   AND (prp.promo_validate = @VENCIMENTO OR @VENCIMENTO = 0)
+  AND (prp.prdno IN (:codigos))
 HAVING promocao = @PROMOCAO;
 
 
@@ -58,6 +59,8 @@ FROM sqldados.stk
 	       USING (prdno)
 GROUP BY prdno;
 
+DROP TEMPORARY TABLE IF EXISTS T_RESULT;
+CREATE TEMPORARY TABLE T_RESULT
 SELECT LPAD(prdno * 1, 6, '0')      AS codigo,
        TRIM(MID(name, 1, 37))       AS descricao,
        CAST(promo_validate AS date) AS validade,

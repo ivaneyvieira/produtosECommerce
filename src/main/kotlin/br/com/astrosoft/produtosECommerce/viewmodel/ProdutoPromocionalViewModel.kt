@@ -5,47 +5,35 @@ import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroProdutosPromocional
 import br.com.astrosoft.produtosECommerce.model.beans.ProdutoPromocao
-import br.com.astrosoft.produtosECommerce.model.beans.Promocao
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoPromocional
+import com.vaadin.flow.data.provider.CallbackDataProvider
 
 class ProdutoPromocionalViewModel(view: IProdutoPromocionalView) :
   ViewModel<IProdutoPromocionalView>(view) {
-  fun updateGridSemPromocao() {
-    val filtro = view.filtroSemPromocao.filtro()
-    val list = ProdutoPromocao.findProdutosPromocional(filtro)
-    view.updateGridSemPromocao(list)
-  }
-  fun updateGridComPromocao() {
-    val filtro = view.filtroComPromocao.filtro()
-    val list = ProdutoPromocao.findProdutosPromocional(filtro)
-    view.updateGridComPromocao(list)
-  }
+  fun serviceQueryProdutoPromocional() = ServiceQueryProdutoPromocional()
 
   fun savePromocao(list: List<ProdutoPromocao>) = exec {
     list.ifEmpty { fail("Não há nenhum produto selecionado") }
-    val filtro = view.filtroSemPromocao.filtro()
+    val filtro = view.filtroSemPromocao
     val promocao = filtro.promocao ?: fail("Não existe promoção selecionada")
     ProdutoPromocao.savePromocao(promocao, list)
-    updateGridSemPromocao()
+    view.updateGridSemPromocao()
   }
 
   fun removePromocao(list: List<ProdutoPromocao>) {
     list.ifEmpty { fail("Não há nenhum produto selecionado") }
     ProdutoPromocao.removePromocao(list)
-    updateGridComPromocao()
+    view.updateGridComPromocao()
   }
 }
 
-interface IFiltroPromocao {
-  fun filtro(): FiltroProdutosPromocional
-}
-
 interface IProdutoPromocionalView : IView {
-  fun updateGridSemPromocao(itens: List<ProdutoPromocao>)
   fun savePromocao(list: List<ProdutoPromocao>)
+  fun updateGridSemPromocao()
+  fun updateGridComPromocao()
 
-  fun updateGridComPromocao(itens: List<ProdutoPromocao>)
   fun removePromocao(list: List<ProdutoPromocao>)
 
-  val filtroSemPromocao: IFiltroPromocao
-  val filtroComPromocao: IFiltroPromocao
+  val filtroSemPromocao: FiltroProdutosPromocional
+  val filtroComPromocao: FiltroProdutosPromocional
 }

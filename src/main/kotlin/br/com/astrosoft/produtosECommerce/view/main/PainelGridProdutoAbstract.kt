@@ -3,6 +3,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.framework.view.addColumnSeq
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.getColumnBy
 import com.vaadin.flow.component.Focusable
@@ -11,11 +12,13 @@ import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextArea
-import com.vaadin.flow.data.provider.ListDataProvider
+import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.SortDirection
 
-abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockUpdate: () -> Unit) :
-  PainelGrid<Produto>(blockUpdate) {
+abstract class PainelGridProdutoAbstract(
+  val view: IProdutosEComerceView,
+  serviceQuery: ServiceQueryProduto
+) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
     withEditor(Produto::class, openEditor = { binder ->
@@ -25,7 +28,7 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
       view.salvaProduto(binder.bean)
       grid.dataProvider.refreshItem(binder.bean)
     }) //
-    addColumnSeq("Seq")
+    colSequencai()
     colDataHoraMudanca()
     colCodigo()
     colBarcode()
@@ -68,8 +71,11 @@ abstract class PainelGridProdutoAbstract(val view: IProdutosEComerceView, blockU
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))
   }
 
-  override fun gridPanel(dataProvider: ListDataProvider<Produto>): Grid<Produto> {
-    val grid = Grid<Produto>(Produto::class.java, false)
+  override fun gridPanel(
+    dataProvider: ConfigurableFilterDataProvider<Produto, Void,
+            FiltroProduto>
+  ): Grid<Produto> {
+    val grid = Grid(Produto::class.java, false)
     grid.dataProvider = dataProvider
     return grid
   }

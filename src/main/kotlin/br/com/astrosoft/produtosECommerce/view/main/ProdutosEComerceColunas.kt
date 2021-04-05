@@ -1,9 +1,6 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
-import br.com.astrosoft.framework.view.addColumnBean
-import br.com.astrosoft.framework.view.addColumnDouble
-import br.com.astrosoft.framework.view.addColumnLocalDateTime
-import br.com.astrosoft.framework.view.addColumnString
+import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
@@ -154,6 +151,10 @@ fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
 
 fun Grid<Produto>.colDataHoraMudanca() = addColumnLocalDateTime(Produto::dataHoraMudanca) {
   setHeader("Data Hora")
+}
+
+fun Grid<Produto>.colSequencai() = addColumnInt(Produto::seq) {
+  setHeader("Seq")
 }
 
 //

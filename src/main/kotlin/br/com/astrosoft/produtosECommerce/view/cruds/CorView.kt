@@ -131,7 +131,7 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
   private fun buttonDownloadLazy(): LazyDownloadButton {
     val button = LazyDownloadButton(FILE_EXCEL.create(), { filename() }, {
       val planilha = PlanilhaGradeCor()
-      val bytes = planilha.grava(crud.grid.listOrder())
+      val bytes = planilha.grava(crud.grid.dataProvider.getAll())
       ByteArrayInputStream(bytes)
     })
     button.tooltip = "Salva a planilha"
