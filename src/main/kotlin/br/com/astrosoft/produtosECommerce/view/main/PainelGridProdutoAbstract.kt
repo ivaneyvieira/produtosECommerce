@@ -1,15 +1,19 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
-import br.com.astrosoft.framework.view.addColumnSeq
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
+import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.getColumnBy
+import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.Focusable
+import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
@@ -21,6 +25,7 @@ abstract class PainelGridProdutoAbstract(
 ) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
+
     withEditor(Produto::class, openEditor = { binder ->
       binder.bean.editado = statusDefault().value
       (getColumnBy(Produto::descricaoCompleta).editorComponent as? Focusable<*>)?.focus()

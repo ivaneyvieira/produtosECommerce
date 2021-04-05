@@ -40,6 +40,7 @@ class PainelGridProdutoBase(
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
+      this.selectAll()
       button {
         icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)
