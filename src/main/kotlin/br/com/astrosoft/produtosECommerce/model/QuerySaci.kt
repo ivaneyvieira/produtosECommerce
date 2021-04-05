@@ -1,9 +1,12 @@
 package br.com.astrosoft.produtosECommerce.model
 
 import br.com.astrosoft.framework.model.QueryDB
+import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
+import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.framework.util.toSaciDate
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import org.sql2o.Query
 
 class QuerySaci : QueryDB("saci", driver, url, username, password) {
   fun findUser(login: String?): List<UserSaci> {
@@ -80,16 +83,46 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     }
   }
 
-  fun findProdutosPromocional(filtro: FiltroProdutosPromocional): List<ProdutoPromocao> {
+  fun <R : Any> filtroProdutosPromocional(
+    filtro: FiltroProdutosPromocional,
+    complemento: String,
+    result: (Query) -> R
+  ): R {
     val sql = "/sqlSaci/produtosPromocional.sql"
     val promocao = filtro.promocao
-    return query(sql, ProdutoPromocao::class) {
+    val codigos = local.fetchProduto(
+      FiltroProduto(editado = EEditor.ENVIADO), 0, Int.MAX_VALUE, emptyList()
+    ).map { it.codigo }.distinct().map { it.toIntOrNull().toString().lpad(16, " ") }
+    return querySerivce(sql, complemento, lambda = {
       addOptionalParameter("centroLucro", filtro.centroLucro)
       addOptionalParameter("fornecedor", filtro.fornecedor)
       addOptionalParameter("tipo", filtro.tipo)
       addOptionalParameter("codigo", filtro.codigo)
       addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
+      addOptionalParameter("codigos", codigos)
       addOptionalParameter("promocao", if (filtro.temPromocao) "S" else "N")
+    }, result = result)
+  }
+
+  fun countProduto(filter: FiltroProdutosPromocional): Int {
+    val complemento = "SELECT COUNT(*) FROM T_RESULT"
+    return filtroProdutosPromocional(filter, complemento) {
+      it.executeScalar(Int::class.java)
+    }
+  }
+
+  fun fetchProduto(
+    filter: FiltroProdutosPromocional,
+    offset: Int,
+    limit: Int,
+    sortOrders: List<SortOrder>
+  ): List<ProdutoPromocao> {
+    val orderBy = if (sortOrders.isEmpty()) "" else "ORDER BY " + sortOrders.joinToString(
+      separator = ", "
+    ) { it.sql() }
+    val complemento = "SELECT * FROM T_RESULT $orderBy LIMIT $limit OFFSET $offset"
+    return filtroProdutosPromocional(filter, complemento) {
+      it.executeAndFetch(ProdutoPromocao::class.java)
     }
   }
 

@@ -5,10 +5,13 @@ import br.com.astrosoft.framework.view.ViewLayout
 import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
+import br.com.astrosoft.produtosECommerce.model.beans.FiltroProduto
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
-import br.com.astrosoft.produtosECommerce.viewmodel.*
+import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
+import br.com.astrosoft.produtosECommerce.viewmodel.ProcessaBean
+import br.com.astrosoft.produtosECommerce.viewmodel.ProdutosEComerceViewModel
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.dependency.HtmlImport
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
@@ -22,13 +25,13 @@ import com.vaadin.flow.router.Route
 @HtmlImport("frontend://styles/shared-styles.html")
 class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosEComerceView {
   private var tabMain: TabSheet
-  private val gridBase = PainelGridProdutoBase(this) { viewModel.updateGridBase() }
-  private val gridEditar = PainelGridProdutoEditar(this) { viewModel.updateGridEditar() }
-  private val gridImportado = PainelGridProdutoImportado(this) { viewModel.updateGridImportado() }
-  private val gridEditado = PainelGridProdutoEditado(this) { viewModel.updateGridEditado() }
-  private val gridEnviar = PainelGridProdutoEnviar(this) { viewModel.updateGridEnviar() }
-  private val gridEnviado = PainelGridProdutoEnviado(this) { viewModel.updateGridEnviado() }
   override val viewModel: ProdutosEComerceViewModel = ProdutosEComerceViewModel(this)
+  private val gridBase = PainelGridProdutoBase(this, viewModel.serviceQueryProduto())
+  private val gridEditar = PainelGridProdutoEditar(this, viewModel.serviceQueryProduto())
+  private val gridImportado = PainelGridProdutoImportado(this, viewModel.serviceQueryProduto())
+  private val gridEditado = PainelGridProdutoEditado(this, viewModel.serviceQueryProduto())
+  private val gridEnviar = PainelGridProdutoEnviar(this, viewModel.serviceQueryProduto())
+  private val gridEnviado = PainelGridProdutoEnviado(this, viewModel.serviceQueryProduto())
 
   override fun isAccept() = true
 
@@ -48,28 +51,28 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     viewModel.updateGrid()
   }
 
-  override fun updateGridEditar(itens: List<Produto>) {
-    gridEditar.updateGrid(itens)
+  override fun updateGridBase() {
+    gridBase.updateGrid()
   }
 
-  override fun updateGridEditado(itens: List<Produto>) {
-    gridEditado.updateGrid(itens)
+  override fun updateGridEditar() {
+    gridEditar.updateGrid()
   }
 
-  override fun updateGridBase(itens: List<Produto>) {
-    gridBase.updateGrid(itens)
+  override fun updateGridEditado() {
+    gridEditado.updateGrid()
   }
 
-  override fun updateGridImportado(itens: List<Produto>) {
-    gridImportado.updateGrid(itens)
+  override fun updateGridImportado() {
+    gridImportado.updateGrid()
   }
 
-  override fun updateGridEnviar(itens: List<Produto>) {
-    gridEnviar.updateGrid(itens)
+  override fun updateGridEnviar() {
+    gridEnviar.updateGrid()
   }
 
-  override fun updateGridEnviado(itens: List<Produto>) {
-    gridEnviado.updateGrid(itens)
+  override fun updateGridEnviado() {
+    gridEnviado.updateGrid()
   }
 
   override fun panelStatus(): EEditor {
@@ -97,18 +100,18 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     viewModel.replicarProdutos(itens, marca)
   }
 
-  override val filtroEditar: IFiltroEditar
-    get() = gridEditar.filterBar as IFiltroEditar
-  override val filtroEditado: IFiltroEditado
-    get() = gridEditado.filterBar as IFiltroEditado
-  override val filtroBase: IFiltroBase
-    get() = gridBase.filterBar as IFiltroBase
-  override val filtroImportado: IFiltroImportado
-    get() = gridImportado.filterBar as IFiltroImportado
-  override val filtroEnviar: IFiltroEnviar
-    get() = gridEnviar.filterBar as IFiltroEnviar
-  override val filtroEnviado: IFiltroEnviado
-    get() = gridEnviado.filterBar as IFiltroEnviado
+  override val filtroEditar: FiltroProduto
+    get() = gridEditar.filterBar.filtro()
+  override val filtroEditado: FiltroProduto
+    get() = gridEditado.filterBar.filtro()
+  override val filtroBase: FiltroProduto
+    get() = gridBase.filterBar.filtro()
+  override val filtroImportado: FiltroProduto
+    get() = gridImportado.filterBar.filtro()
+  override val filtroEnviar: FiltroProduto
+    get() = gridEnviar.filterBar.filtro()
+  override val filtroEnviado: FiltroProduto
+    get() = gridEnviado.filterBar.filtro()
 
   companion object {
     const val TAB_EDITAR: String = "Editar"

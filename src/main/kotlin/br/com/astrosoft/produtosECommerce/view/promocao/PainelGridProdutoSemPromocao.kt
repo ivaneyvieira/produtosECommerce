@@ -3,8 +3,8 @@ package br.com.astrosoft.produtosECommerce.view.promocao
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoPromocional
 import br.com.astrosoft.produtosECommerce.view.main.*
-import br.com.astrosoft.produtosECommerce.viewmodel.IFiltroPromocao
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
@@ -14,11 +14,17 @@ import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon.MONEY_WITHDRAW
 import com.vaadin.flow.component.textfield.IntegerField
-import com.vaadin.flow.data.provider.ListDataProvider
+import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
-class PainelGridProdutoSemPromocao(val view: IProdutoPromocionalView, blockUpdate: () -> Unit) :
-  PainelGrid<ProdutoPromocao>(blockUpdate) {
-  override fun gridPanel(dataProvider: ListDataProvider<ProdutoPromocao>): Grid<ProdutoPromocao> {
+class PainelGridProdutoSemPromocao(
+  val view: IProdutoPromocionalView,
+  serviceQuery: ServiceQueryProdutoPromocional
+) :
+  PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
+  override fun gridPanel(
+    dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao,
+            Void, FiltroProdutosPromocional>
+  ): Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -26,14 +32,14 @@ class PainelGridProdutoSemPromocao(val view: IProdutoPromocionalView, blockUpdat
 
   override fun filterBar() = FilterBarBase()
 
-  inner class FilterBarBase : FilterBar(), IFiltroPromocao {
+  inner class FilterBarBase : FilterBar<FiltroProdutosPromocional>() {
     private lateinit var edtPromocao: ComboBox<Promocao>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
     private lateinit var edtCodigo: IntegerField
 
-    override fun FilterBar.contentBlock() {
+    override fun FilterBar<FiltroProdutosPromocional>.contentBlock() {
       button {
         icon = MONEY_WITHDRAW.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)
@@ -42,21 +48,21 @@ class PainelGridProdutoSemPromocao(val view: IProdutoPromocionalView, blockUpdat
       }
 
       edtPromocao = promocaoField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
 
       edtCodigo = codigoField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
 
       edtFornecedor = fornecedorField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtTipo = tipoField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
       edtCl = clField {
-        addValueChangeListener { blockUpdate() }
+        addValueChangeListener { updateGrid() }
       }
     }
 

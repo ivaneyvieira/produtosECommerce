@@ -14,6 +14,7 @@ import org.sql2o.quirks.NoQuirks
 import java.sql.Date
 import java.sql.Time
 import java.sql.Timestamp
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -62,22 +63,59 @@ open class QueryDB(
     query("select 1 from dual", Int::class)
   }
 
+  fun <T> timeExec(log: String, block: () -> T): T {
+    val ti = System.nanoTime()
+    val ret = block()
+    val tf = System.nanoTime()
+    println(log)
+    val segundo = (tf - ti)*1.0/1000000000
+    val sdf = DecimalFormat("#,##0.00")
+    println("Tempo: ${sdf.format(segundo)}")
+    return ret
+  }
+
   protected fun <T : Any> query(
     file: String,
     classes: KClass<T>,
     lambda: QueryHandle = {}
-  ): List<T> {
+  ): List<T> = timeExec(file) {
     val statements = toStratments(file)
-    if (statements.isEmpty()) return emptyList()
+    if (statements.isEmpty()) return@timeExec emptyList()
     val lastIndex = statements.lastIndex
     val query = statements[lastIndex]
     val updates = if (statements.size > 1) statements.subList(0, lastIndex) else emptyList()
-    return transaction { con ->
+    transaction { con ->
       scriptSQL(con, updates, lambda)
-      println(query)
       val ret: List<T> = querySQL(con, query, classes, lambda)
       ret
     }
+  }
+
+  protected fun <R : Any> querySerivce(
+    file: String,
+    complemento: String,
+    lambda: QueryHandle = {},
+    result: (Query) -> R
+  ): R = timeExec(file) {
+    val statements = toStratments(file, complemento)
+    val lastIndex = statements.lastIndex
+    val query = statements[lastIndex]
+    val updates = if (statements.size > 1) statements.subList(0, lastIndex) else emptyList()
+    transaction { con ->
+      scriptSQL(con, updates, lambda)
+      val q = querySQLResult(con, query, lambda)
+      result(q)
+    }
+  }
+
+  private fun querySQLResult(
+    con: Connection,
+    sql: String?,
+    lambda: QueryHandle = {}
+  ): Query {
+    val query = con.createQuery(sql)
+    query.lambda()
+    return query
   }
 
   private fun <T : Any> querySQL(
@@ -88,7 +126,6 @@ open class QueryDB(
   ): List<T> {
     val query = con.createQuery(sql)
     query.lambda()
-    println(sql)
     return query.executeAndFetch(classes.java)
   }
 
@@ -99,11 +136,12 @@ open class QueryDB(
     }
   }
 
-  fun toStratments(file: String): List<String> {
-    return if (file.startsWith("/")) readFile(file)?.split(";")
-      .orEmpty()
+  fun toStratments(file: String, complemento: String? = null): List<String> {
+    val sql = if (file.startsWith("/")) readFile(file) ?: ""
+    else file
+    val sqlComplemento = if (complemento == null) sql else "$sql;\n$complemento"
+    return sqlComplemento.split(";")
       .filter { it.isNotBlank() || it.isNotEmpty() }
-    else listOf(file)
   }
 
   private fun scriptSQL(con: Connection, stratments: List<String>, lambda: QueryHandle = {}) {
@@ -111,7 +149,6 @@ open class QueryDB(
       val query = con.createQuery(sql)
       query.lambda()
       query.executeUpdate()
-      println(sql)
     }
   }
 
@@ -130,7 +167,7 @@ open class QueryDB(
     return this
   }
 
-  fun Query.addOptionalParameter(name: String, value: List<Int>): Query {
+  fun Query.addOptionalParameter(name: String, value: List<*>): Query {
     if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }

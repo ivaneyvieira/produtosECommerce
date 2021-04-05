@@ -1,6 +1,9 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIADO
 import br.com.astrosoft.produtosECommerce.model.saci
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import java.time.LocalDate
 
 class ProdutoPromocao(
@@ -18,13 +21,6 @@ class ProdutoPromocao(
 ) {
 
   companion object {
-    fun findProdutosPromocional(filtro: FiltroProdutosPromocional): List<ProdutoPromocao> {
-      val codigosEditados = Produto.listaProdutos(EEditor.ENVIADO).map { it.codigo }.distinct()
-      return saci.findProdutosPromocional(filtro).filter { prd ->
-        prd.codigo in codigosEditados
-      }
-    }
-
     fun savePromocao(promocao: Promocao, list: List<ProdutoPromocao>) {
       val produtos = listCodigos(list)
       produtos.forEach { produto ->
@@ -38,7 +34,7 @@ class ProdutoPromocao(
 
     private fun listCodigos(list: List<ProdutoPromocao>): List<Produto> {
       val codigos = list.map { it.codigo }
-      val produtos = Produto.listaProdutos(EEditor.ENVIADO).filter {
+      val produtos = ServiceQueryProduto().fetch(ENVIADO).filter {
         it.codigo in codigos
       }
       return produtos

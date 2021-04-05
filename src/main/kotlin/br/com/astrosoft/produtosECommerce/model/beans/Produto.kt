@@ -9,6 +9,7 @@ import br.com.astrosoft.produtosECommerce.model.saci
 import java.time.LocalDateTime
 
 class Produto(
+  val seq: Int,
   val codigo: String,
   val grade: String,
   var gradeCompleta: String?,
@@ -103,19 +104,19 @@ class Produto(
   }
 
   fun saldoLoja4(): Double {
-    val saldo = if (variacao == COM_VARIACAO.descricao) Produto.saldoLoja4(codigo, "")
-    else Produto.saldoLoja4(codigo, grade)
+    val saldo = if (variacao == COM_VARIACAO.descricao) saldoLoja4(codigo, "")
+    else saldoLoja4(codigo, grade)
     return saldo?.saldo ?: 0.00
   }
 
   fun price(): Double {
-    val price = Produto.price(codigo)
+    val price = price(codigo)
     return price?.price ?: 0.00
   }
 
   val prdRef: String
     get() {
-      val price = Produto.price(codigo)
+      val price = price(codigo)
       return price?.prdRef ?: ""
     }
 
@@ -131,7 +132,7 @@ class Produto(
   fun tipoVariacao() = variacao
 
   fun ean(): String {
-    val price = Produto.price(codigo)
+    val price = price(codigo)
 
     return if (barcode?.trim().isNullOrBlank()) price?.gtin ?: "" else barcode ?: ""
   }
@@ -141,7 +142,7 @@ class Produto(
     .joinToString(",")
 
   fun nomeProduto() =
-    if (variacao == VARIACAO.descricao) "" else "${descricaoCompleta} - ${marcaDesc}"
+    if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta - $marcaDesc"
 
   fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes ?: ""
   fun descricao() =
@@ -175,6 +176,7 @@ class Produto(
 
   fun chave() = ChaveProduto(codigo, grade)
   fun copy(variacaoNova: EVariacao) = Produto(
+    seq,
     codigo,
     grade,
     gradeCompleta,
@@ -228,61 +230,19 @@ class Produto(
   }
 
   companion object {
-    private val listSaldos = saci.saldoLoja4()
+    private val listSaldos = saci.saldoLoja4().groupBy { Pair(it.codigo, it.grade) }
 
-    private val listPreco = saci.price()
+    private val listPreco = saci.price().groupBy { it.codigo }
 
     fun saldoLoja4(
       codigo: String,
       grade: String
-    ) = listSaldos.firstOrNull {
-      it.codigo == codigo && it.grade == grade
-    }
+    ) = listSaldos[Pair(codigo, grade)].orEmpty().firstOrNull()
 
-    fun price(codigo: String) = listPreco.firstOrNull { it.codigo == codigo }
+    fun price(codigo: String) = listPreco[codigo].orEmpty().firstOrNull()
 
     private val userSaci: UserSaci
       get() = AppConfig.userSaci as UserSaci
-
-    fun listaProdutos(editado: EEditor) = listaProdutos(
-      codigo = 0,
-      descricaoI = "",
-      descricaoF = "",
-      fornecedor = null,
-      type = null,
-      cl = null,
-      editado = editado,
-      categoria = null
-    )
-
-    fun listaProdutos(
-      codigo: Int,
-      descricaoI: String,
-      descricaoF: String,
-      fornecedor: Fornecedor?,
-      type: TypePrd?,
-      cl: Cl?,
-      editado: EEditor,
-      categoria: Categoria?
-    ): List<Produto> {
-      Marca.updateList()
-      Bitola.updateList()
-      Categoria.updateList()
-      GradeCor.updateList()
-      return local.listaProdutos(
-        codigo = codigo,
-        descricaoI = descricaoI,
-        descricaoF = descricaoF,
-        vendno = fornecedor?.vendno ?: 0,
-        typeno = type?.typeno ?: 0,
-        clno = cl?.clno ?: "",
-        editado = editado.value,
-        categoria = categoria?.categoriaNo ?: 0
-      ).map {
-        it.textLink = it.descricaoCompleta?.normalize("-")
-        it
-      }
-    }
 
     fun save(bean: Produto) {
       bean.textLink = bean.descricaoCompleta?.normalize("-")
@@ -311,3 +271,13 @@ fun List<Produto>.explodeGrade(): List<Produto> {
   return comVariacao + variacao
 }
 
+data class FiltroProduto(
+  val codigo: Int = 0,
+  val descricaoI: String = "",
+  val descricaoF: String = "",
+  val fornecedor: Fornecedor? = null,
+  val type: TypePrd? = null,
+  val cl: Cl? = null,
+  val categoria: Categoria? = null,
+  val editado: EEditor
+)

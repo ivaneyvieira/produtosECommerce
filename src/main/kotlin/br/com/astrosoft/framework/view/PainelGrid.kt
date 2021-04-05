@@ -1,10 +1,11 @@
 package br.com.astrosoft.framework.view
 
 import br.com.astrosoft.framework.model.ILookup
+import br.com.astrosoft.framework.model.IServiceQuery
+import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.produtosECommerce.model.local
 import com.github.juchar.colorpicker.ColorPickerFieldI18n
 import com.github.juchar.colorpicker.ColorPickerFieldRaw
-import com.github.mvysny.karibudsl.v10.getAll
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.Column
@@ -19,22 +20,47 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.binder.Result
 import com.vaadin.flow.data.binder.ValueContext
 import com.vaadin.flow.data.converter.Converter
+import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.provider.DataProvider
 import com.vaadin.flow.data.provider.ListDataProvider
+import com.vaadin.flow.data.provider.Query
+import com.vaadin.flow.data.provider.SortDirection.DESCENDING
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.data.value.ValueChangeMode.ON_CHANGE
 import java.math.BigDecimal
 import java.util.*
+import java.util.stream.Stream
 import kotlin.reflect.KClass
+import kotlin.streams.toList
 
-abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout() {
+abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F>) :
+  VerticalLayout() {
   protected var grid: Grid<T>
-  private val dataProvider = ListDataProvider<T>(mutableListOf())
+  private val dataProvider = DataProvider.fromFilteringCallbacks(
+    ::fetchCallback,
+    ::countCallback
+  ).withConfigurableFilter()
 
-  val filterBar: FilterBar by lazy {
+  private fun fetchCallback(query: Query<T, F>?): Stream<T>? {
+    val filter = query?.filter?.orElseGet(null) ?: return emptyList<T>().stream()
+    val offset = query.offset
+    val limit = query.limit
+    val sortOrders = query.sortOrders.orEmpty().map {
+      SortOrder(it.sorted, it.direction == DESCENDING)
+    }
+    return serviceQuery.fetch(filter, offset, limit, sortOrders).stream()
+  }
+
+  private fun countCallback(query: Query<T, F>?): Int {
+    val filter = query?.filter?.orElseGet { null } ?: return 0
+    return serviceQuery.count(filter)
+  }
+
+  val filterBar: FilterBar<F> by lazy {
     filterBar()
   }
 
-  abstract fun gridPanel(dataProvider: ListDataProvider<T>): Grid<T>
+  abstract fun gridPanel(dataProvider: ConfigurableFilterDataProvider<T, Void, F>): Grid<T>
 
   init {
     this.setSizeFull()
@@ -43,6 +69,9 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
     filterBar.also { add(it) }
     grid = this.gridPanel(dataProvider = dataProvider).apply {
       addThemeVariants(LUMO_COMPACT, LUMO_COLUMN_BORDERS, LUMO_ROW_STRIPES)
+      this.addSortListener {
+        updateFiltro()
+      }
       this.gridConfig()
     }
     addAndExpand(grid)
@@ -50,13 +79,26 @@ abstract class PainelGrid<T : Any>(val blockUpdate: () -> Unit) : VerticalLayout
 
   fun singleSelect(): T? = grid.asSingleSelect().value
   fun multiSelect() = grid.asMultiSelect().value.toList()
-  fun allItens() = dataProvider.getAll()
+  fun allItens(): List<T> {
+    val filter = filterBar.filtro()
+    val sortOrders = grid.sortOrder.flatMap { gridOrder ->
+      gridOrder.sorted.getSortOrder(gridOrder.direction).map {
+        SortOrder(it.sorted, it.direction == DESCENDING)
+      }.toList()
+    }
+    return serviceQuery.fetch(filter, 0, Int.MAX_VALUE, sortOrders)
+  }
 
-  protected abstract fun filterBar(): FilterBar
+  protected abstract fun filterBar(): FilterBar<F>
 
-  open fun updateGrid(itens: List<T>) {
+  fun updateFiltro() {
+    val filter = filterBar.filtro()
+    dataProvider.setFilter(filter)
+  }
+
+  open fun updateGrid() {
     grid.deselectAll()
-    dataProvider.updateItens(itens)
+    updateFiltro()
   }
 
   protected abstract fun Grid<T>.gridConfig()
