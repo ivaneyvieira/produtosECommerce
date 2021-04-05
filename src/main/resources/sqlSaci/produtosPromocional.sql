@@ -61,17 +61,17 @@ GROUP BY prdno;
 
 DROP TEMPORARY TABLE IF EXISTS T_RESULT;
 CREATE TEMPORARY TABLE T_RESULT
-SELECT LPAD(prdno * 1, 6, '0')      AS codigo,
-       TRIM(MID(name, 1, 37))       AS descricao,
-       CAST(promo_validate AS date) AS validade,
-       refprice / 100               AS precoRef,
-       ROUND(perc, 2)               AS perc,
-       promo_price / 100            AS precoPromo,
+SELECT CAST(LPAD(prdno * 1, 6, '0') AS CHAR) AS codigo,
+       TRIM(MID(name, 1, 37))                AS descricao,
+       CAST(promo_validate AS date)          AS validade,
+       refprice / 100                        AS precoRef,
+       ROUND(perc, 2)                        AS perc,
+       promo_price / 100                     AS precoPromo,
        vendno,
        abrev,
-       typeno                       AS tipo,
-       clno                         AS centLucro,
-       qt / 1000                    AS saldo
+       typeno                                AS tipo,
+       clno                                  AS centLucro,
+       qt / 1000                             AS saldo
 FROM T_PROMO
   INNER JOIN T_STK
 	       USING (prdno)
