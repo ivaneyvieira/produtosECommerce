@@ -2,7 +2,7 @@ DO @CL := :centroLucro;
 DO @VD := :fornecedor;
 DO @TP := :tipo;
 DO @CD := LPAD(:codigo * 1, 16, ' ');
-DO @VENCIMENTO := :vencimento;
+DO @VENCIMENTO := 0;
 DO @PROMOCAO := :promocao;
 DO @DT := CAST(CURRENT_DATE * 1 AS UNSIGNED);
 
@@ -44,7 +44,7 @@ WHERE (prd.groupno = @CL OR prd.deptno = @CL OR prd.clno = @CL OR @CL = 0)
   AND (prp.promo_validate >= @DT)
   AND (prp.promo_validate = @VENCIMENTO OR @VENCIMENTO = 0)
   AND (prp.prdno IN (:codigos))
-HAVING promocao = @PROMOCAO;
+  AND IF(V.prdno IS NULL, 'N', 'S') = @PROMOCAO;
 
 
 DROP TEMPORARY TABLE IF EXISTS T_STK;

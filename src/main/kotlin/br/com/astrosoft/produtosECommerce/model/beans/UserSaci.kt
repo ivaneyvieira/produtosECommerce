@@ -22,6 +22,13 @@ class UserSaci(
   val admin
     get() = login == "ADM" || login == "YASMINE"
 
+  var ativo by DelegateAuthorized(0)
+  var produto by DelegateAuthorized(1)
+  var categoria by DelegateAuthorized(2)
+  var marca by DelegateAuthorized(3)
+  var bitola by DelegateAuthorized(4)
+  var cor by DelegateAuthorized(5)
+
   companion object {
     fun findAllAtivos(): List<UserSaci> {
       return saci.findAllUser().filter { it.ativo == true}
@@ -41,12 +48,7 @@ class UserSaci(
   }
 }
 
-var UserSaci.ativo by DelegateAuthorized(0)
-var UserSaci.produto by DelegateAuthorized(1)
-var UserSaci.categoria by DelegateAuthorized(2)
-var UserSaci.marca by DelegateAuthorized(3)
-var UserSaci.bitola by DelegateAuthorized(4)
-var UserSaci.cor by DelegateAuthorized(5)
+
 
 class DelegateAuthorized(numBit: Int) {
   private val bit = 2.toDouble().pow(numBit).toInt()

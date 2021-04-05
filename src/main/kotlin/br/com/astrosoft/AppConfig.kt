@@ -3,7 +3,6 @@ package br.com.astrosoft
 import br.com.astrosoft.framework.spring.IUser
 import br.com.astrosoft.framework.spring.SecurityUtils
 import br.com.astrosoft.framework.view.ViewUtil
-import br.com.astrosoft.produtosECommerce.model.beans.ativo
 import br.com.astrosoft.produtosECommerce.model.saci
 
 object AppConfig {

@@ -56,8 +56,8 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
   init {
     tabMain = tabSheet {
       setSizeFull()
-      tabGrid("Produtos Sem Promoção", gridProdutoSemPromocao)
-      tabGrid("Produtos Com Promoção", gridProdutoComPromocao)
+      tabGrid("Promoção saci", gridProdutoSemPromocao)
+      tabGrid("Promoção web", gridProdutoComPromocao)
     }
     updateGridSemPromocao()
   }
