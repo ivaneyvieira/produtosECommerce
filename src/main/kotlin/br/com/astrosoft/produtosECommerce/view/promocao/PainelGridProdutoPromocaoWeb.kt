@@ -12,15 +12,14 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.icon.VaadinIcon.MONEY_WITHDRAW
+import com.vaadin.flow.component.icon.VaadinIcon.MONEY_DEPOSIT
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
-class PainelGridProdutoSemPromocao(
+class PainelGridProdutoPromocaoWeb(
   val view: IProdutoPromocionalView,
   serviceQuery: ServiceQueryProdutoPromocional
-) :
-  PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
+) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
   override fun gridPanel(
     dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao,
             Void, FiltroProdutosPromocional>
@@ -33,7 +32,6 @@ class PainelGridProdutoSemPromocao(
   override fun filterBar() = FilterBarBase()
 
   inner class FilterBarBase : FilterBar<FiltroProdutosPromocional>() {
-    private lateinit var edtPromocao: ComboBox<Promocao>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
@@ -42,14 +40,10 @@ class PainelGridProdutoSemPromocao(
     override fun FilterBar<FiltroProdutosPromocional>.contentBlock() {
       this.selectAll()
       button {
-        icon = MONEY_WITHDRAW.create()
+        icon = MONEY_DEPOSIT.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)
-        onLeftClick { view.savePromocao(multiSelect()) }
-        this.tooltip = "Adicionar os preços promocionais"
-      }
-
-      edtPromocao = promocaoField {
-        addValueChangeListener { updateGrid() }
+        onLeftClick { view.removePromocao(multiSelect()) }
+        this.tooltip = "Remover os preços promocionais"
       }
 
       edtCodigo = codigoField {
@@ -69,12 +63,12 @@ class PainelGridProdutoSemPromocao(
 
     override fun filtro(): FiltroProdutosPromocional {
       return FiltroProdutosPromocional(
-        promocao = edtPromocao.value,
+        promocao = null,
         centroLucro = edtCl.value?.clno?.toIntOrNull() ?: 0,
         tipo = edtTipo.value?.typeno ?: 0,
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
-        temPromocao = false
+        temPromocao = true
       )
     }
   }

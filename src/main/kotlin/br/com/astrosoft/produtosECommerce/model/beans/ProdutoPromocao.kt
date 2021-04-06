@@ -17,7 +17,8 @@ class ProdutoPromocao(
   val abrev: String,
   val tipo: Int,
   val centLucro: Int,
-  val saldo: Double
+  val saldo: Double,
+  val web: String
 ) {
 
   companion object {
@@ -55,5 +56,5 @@ data class FiltroProdutosPromocional(
   val fornecedor: Int,
   val tipo: Int,
   val codigo: String,
-  val temPromocao: Boolean
+  val temPromocao: Boolean?
 )
