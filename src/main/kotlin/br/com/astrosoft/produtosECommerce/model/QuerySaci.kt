@@ -4,7 +4,6 @@ import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
-import br.com.astrosoft.framework.util.toSaciDate
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import org.sql2o.Query
 
@@ -100,7 +99,13 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
       addOptionalParameter("codigo", filtro.codigo)
 //      addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
       addOptionalParameter("codigos", codigos)
-      addOptionalParameter("promocao", if (filtro.temPromocao) "S" else "N")
+      addOptionalParameter(
+        "promocao", when {
+          filtro.temPromocao == null -> ""
+          filtro.temPromocao -> "S"
+          else -> "N"
+        }
+      )
     }, result = result)
   }
 

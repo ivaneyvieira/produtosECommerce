@@ -21,10 +21,12 @@ import com.vaadin.flow.router.Route
 class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdutoPromocionalView {
   private var tabMain: TabSheet
   override val viewModel: ProdutoPromocionalViewModel = ProdutoPromocionalViewModel(this)
-  private val gridProdutoSemPromocao =
-    PainelGridProdutoSemPromocao(this, viewModel.serviceQueryProdutoPromocional())
-  private val gridProdutoComPromocao =
-    PainelGridProdutoComPromocao(this, viewModel.serviceQueryProdutoPromocional())
+  private val gridProdutoPromocaoSaci =
+    PainelGridProdutoPromocaoSaci(this, viewModel.serviceQueryProdutoPromocional())
+  private val gridProdutoPromocaoWeb =
+    PainelGridProdutoPromocaoWeb(this, viewModel.serviceQueryProdutoPromocional())
+  private val gridProdutoPromocaoBase =
+    PainelGridProdutoPromocaoBase(this, viewModel.serviceQueryProdutoPromocional())
 
   override fun isAccept(): Boolean {
     val user = AppConfig.userSaci as? UserSaci
@@ -35,30 +37,36 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
     viewModel.savePromocao(list)
   }
 
-  override fun updateGridSemPromocao() {
-    gridProdutoSemPromocao.updateGrid()
+  override fun updateGridPromocaoSaci() {
+    gridProdutoPromocaoSaci.updateGrid()
   }
 
-  override fun updateGridComPromocao() {
-    gridProdutoComPromocao.updateGrid()
+  override fun updateGridPromocaoWeb() {
+    gridProdutoPromocaoWeb.updateGrid()
+  }
+
+  override fun updateGridPromocaoBase() {
+    gridProdutoPromocaoBase.updateGrid()
   }
 
   override fun removePromocao(list: List<ProdutoPromocao>) {
     viewModel.removePromocao(list)
   }
 
-  override val filtroComPromocao: FiltroProdutosPromocional
-    get() = gridProdutoComPromocao.filterBar.filtro()
-
-  override val filtroSemPromocao: FiltroProdutosPromocional
-    get() = gridProdutoSemPromocao.filterBar.filtro()
+  override val filtroPromocaoWeb: FiltroProdutosPromocional
+    get() = gridProdutoPromocaoWeb.filterBar.filtro()
+  override val filtroPromocaoBase: FiltroProdutosPromocional
+    get() = gridProdutoPromocaoBase.filterBar.filtro()
+  override val filtroPromocaoSaci: FiltroProdutosPromocional
+    get() = gridProdutoPromocaoSaci.filterBar.filtro()
 
   init {
     tabMain = tabSheet {
       setSizeFull()
-      tabGrid("Promoção saci", gridProdutoSemPromocao)
-      tabGrid("Promoção web", gridProdutoComPromocao)
+      tabGrid("Promoção Base", gridProdutoPromocaoBase)
+      tabGrid("Promoção Saci", gridProdutoPromocaoSaci)
+      tabGrid("Promoção Web", gridProdutoPromocaoWeb)
     }
-    updateGridSemPromocao()
+    updateGridPromocaoBase()
   }
 }

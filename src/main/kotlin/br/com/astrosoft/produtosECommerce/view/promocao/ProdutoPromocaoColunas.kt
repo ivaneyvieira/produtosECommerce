@@ -8,6 +8,10 @@ import br.com.astrosoft.produtosECommerce.model.beans.ProdutoPromocao
 import com.vaadin.flow.component.grid.Grid
 
 
+fun Grid<ProdutoPromocao>.colWeb() = addColumnString(ProdutoPromocao::web) {
+  setHeader("Web")
+}
+
 fun Grid<ProdutoPromocao>.colCodigo() = addColumnString(ProdutoPromocao::codigo) {
   setHeader("Código")
 }

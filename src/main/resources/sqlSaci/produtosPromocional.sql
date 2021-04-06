@@ -10,7 +10,7 @@ DROP TEMPORARY TABLE IF EXISTS T_PRDNO_VALIDADE;
 CREATE TEMPORARY TABLE T_PRDNO_VALIDADE (
   PRIMARY KEY (prdno)
 )
-SELECT prdno, MAX(enddate) AS validade
+SELECT prdno, MAX(promono) AS promono
 FROM sqldados.promo            AS P
   INNER JOIN sqldados.promoprd AS I
 	       ON P.no = I.promono
@@ -29,7 +29,8 @@ SELECT prp.prdno                                             AS prdno,
        (prp.refprice - prp.promo_price) * 100 / prp.refprice AS perc,
        prp.promo_price,
        prp.promo_validate,
-       IF(V.prdno IS NULL, 'N', 'S')                         AS promocao
+       IF(V.prdno IS NULL, 'N', 'S')                         AS promocao,
+       IFNULL(V.promono, 0)                                  AS promono
 FROM sqldados.prd
   INNER JOIN sqldados.prp
 	       ON (prd.no = prp.prdno AND prp.storeno = 10)
@@ -44,7 +45,7 @@ WHERE (prd.groupno = @CL OR prd.deptno = @CL OR prd.clno = @CL OR @CL = 0)
   AND (prp.promo_validate >= @DT)
   AND (prp.promo_validate = @VENCIMENTO OR @VENCIMENTO = 0)
   AND (prp.prdno IN (:codigos))
-  AND IF(V.prdno IS NULL, 'N', 'S') = @PROMOCAO;
+  AND (IF(V.prdno IS NULL, 'N', 'S') = @PROMOCAO OR @PROMOCAO = '');
 
 
 DROP TEMPORARY TABLE IF EXISTS T_STK;
@@ -61,17 +62,18 @@ GROUP BY prdno;
 
 DROP TEMPORARY TABLE IF EXISTS T_RESULT;
 CREATE TEMPORARY TABLE T_RESULT
-SELECT CAST(LPAD(prdno * 1, 6, '0') AS CHAR) AS codigo,
-       TRIM(MID(name, 1, 37))                AS descricao,
-       CAST(promo_validate AS date)          AS validade,
-       refprice / 100                        AS precoRef,
-       ROUND(perc, 2)                        AS perc,
-       promo_price / 100                     AS precoPromo,
+SELECT CAST(LPAD(prdno * 1, 6, '0') AS CHAR)                         AS codigo,
+       TRIM(MID(name, 1, 37))                                        AS descricao,
+       CAST(promo_validate AS date)                                  AS validade,
+       refprice / 100                                                AS precoRef,
+       ROUND(perc, 2)                                                AS perc,
+       promo_price / 100                                             AS precoPromo,
        vendno,
        abrev,
-       typeno                                AS tipo,
-       clno                                  AS centLucro,
-       qt / 1000                             AS saldo
+       typeno                                                        AS tipo,
+       clno                                                          AS centLucro,
+       qt / 1000                                                     AS saldo,
+       CAST(IF(promocao = 'S', CONCAT('WEB ', promono), '') AS CHAR) AS web
 FROM T_PROMO
   INNER JOIN T_STK
 	       USING (prdno)
