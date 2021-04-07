@@ -84,6 +84,7 @@ class PainelGridProdutoPromocaoSaci(
 
     colCodigo()
     colDescricao()
+    colPromoNo()
     colValidade()
     colPrecoRef()
     colPerc()

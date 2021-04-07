@@ -326,10 +326,12 @@ fun <T, B : ILookup> (@VaadinDsl Grid<T>).addColumnBean(
   return column
 }
 
+private val formatInt = DecimalFormat("#,##0")
+
 fun <T> (@VaadinDsl Grid<T>).addColumnInt(
   property: KProperty1<T, Int?>, block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}
 ): Grid.Column<T> {
-  val column = this.addColumnFor(property)
+  val column = this.addColumnFor(property, renderer = NumberRenderer(property, formatInt))
   column.setComparator { o1, o2 ->
     val value1 = property.get(o1) ?: 0
     val value2 = property.get(o2) ?: 0
