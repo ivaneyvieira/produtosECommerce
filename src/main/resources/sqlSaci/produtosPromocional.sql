@@ -18,7 +18,9 @@ WHERE P.enddate >= @DT
 GROUP BY prdno;
 
 DROP TEMPORARY TABLE IF EXISTS T_PROMO;
-CREATE TEMPORARY TABLE T_PROMO
+CREATE TEMPORARY TABLE T_PROMO (
+  PRIMARY KEY (prdno)
+)
 SELECT prp.prdno                                             AS prdno,
        prd.name                                              AS name,
        vend.no                                               AS vendno,
@@ -73,6 +75,7 @@ SELECT CAST(LPAD(prdno * 1, 6, '0') AS CHAR)                         AS codigo,
        typeno                                                        AS tipo,
        clno                                                          AS centLucro,
        qt / 1000                                                     AS saldo,
+       promono                                                       AS promono,
        CAST(IF(promocao = 'S', CONCAT('WEB ', promono), '') AS CHAR) AS web
 FROM T_PROMO
   INNER JOIN T_STK

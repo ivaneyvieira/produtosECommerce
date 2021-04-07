@@ -78,6 +78,7 @@ class PainelGridProdutoPromocaoWeb(
 
     colCodigo()
     colDescricao()
+    colPromoNo()
     colValidade()
     colPrecoRef()
     colPerc()

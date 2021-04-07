@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIADO
 import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
@@ -17,7 +16,8 @@ class ProdutoPromocao(
   val abrev: String,
   val tipo: Int,
   val centLucro: Int,
-  val saldo: Double,
+  val saldo: Int,
+  val promono: Int,
   val web: String
 ) {
 
