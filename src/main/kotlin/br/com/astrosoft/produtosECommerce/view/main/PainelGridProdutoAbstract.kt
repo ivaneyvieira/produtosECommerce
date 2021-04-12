@@ -4,25 +4,19 @@ import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
-import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.getColumnBy
-import com.github.mvysny.karibudsl.v10.onLeftClick
-import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.Focusable
-import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
-import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.SortDirection
 
 abstract class PainelGridProdutoAbstract(
-  val view: IProdutosEComerceView,
-  serviceQuery: ServiceQueryProduto
-) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
+  val view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
+                                        ) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
 
@@ -36,6 +30,7 @@ abstract class PainelGridProdutoAbstract(
     colSequencai()
     colDataHoraMudanca()
     colCodigo()
+    if (statusDefault() == EEditor.EDITADO) colFornecedor()
     colBarcode()
     colDescricao()
     colDescricaoCompleta().textAreaEditor {
@@ -51,8 +46,7 @@ abstract class PainelGridProdutoAbstract(
     colBitola().comboFieldEditor {
       Bitola.findAll().sortedBy { it.lookupValue }
     }
-    colGrade()
-    //colCor()
+    colGrade() //colCor()
     colGradeCompleta().colorPainelEditor()
     colCorPainel()
     colMarca().comboFieldEditor {
@@ -77,9 +71,8 @@ abstract class PainelGridProdutoAbstract(
   }
 
   override fun gridPanel(
-    dataProvider: ConfigurableFilterDataProvider<Produto, Void,
-            FiltroProduto>
-  ): Grid<Produto> {
+    dataProvider: ConfigurableFilterDataProvider<Produto, Void, FiltroProduto>
+                        ): Grid<Produto> {
     val grid = Grid(Produto::class.java, false)
     grid.dataProvider = dataProvider
     return grid
