@@ -25,7 +25,7 @@ class ProdutoPromocao(
     fun savePromocao(promocao: Promocao, list: List<ProdutoPromocao>) {
       val produtos = listCodigos(list)
       produtos.forEach { produto ->
-        val price = list.firstOrNull { it.codigo == it.codigo }?.precoPromo
+        val price = list.firstOrNull { it.codigo == produto.codigo }?.precoPromo
         if (price == null)
           saci.removePromocao(produto.codigo, produto.grade)
         else
