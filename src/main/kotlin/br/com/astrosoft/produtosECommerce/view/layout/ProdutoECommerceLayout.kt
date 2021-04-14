@@ -65,11 +65,14 @@ class ProdutoECommerceLayout : AppLayout() {
           this.icon(FORM)
           routerLink(text = "Produtos", viewType = ProdutosEComerceView::class)
         }
+        /*
         if (user?.admin == true)
           tab {
             this.icon(MONEY)
             routerLink(text = "Promoções", viewType = ProdutoPromocionalView::class)
           }
+
+         */
         if (user?.categoria == true) tab {
           this.icon(CUBES)
           routerLink(text = "Categoria", viewType = CategoriaView::class)

@@ -88,7 +88,6 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     result: (Query) -> R
   ): R {
     val sql = "/sqlSaci/produtosPromocional.sql"
-    val promocao = filtro.promocao
     val codigos = local.fetchProduto(
       FiltroProduto(editado = EEditor.ENVIADO), 0, Int.MAX_VALUE, emptyList()
     ).map { it.codigo }.distinct().map { it.toIntOrNull().toString().lpad(16, " ") }

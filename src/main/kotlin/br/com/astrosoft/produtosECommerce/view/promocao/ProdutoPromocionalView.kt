@@ -15,9 +15,9 @@ import com.vaadin.flow.component.dependency.HtmlImport
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 
-@Route(layout = ProdutoECommerceLayout::class, value = "promocao")
-@PageTitle("Promoção")
-@HtmlImport("frontend://styles/shared-styles.html")
+//@Route(layout = ProdutoECommerceLayout::class, value = "promocao")
+//@PageTitle("Promoção")
+//@HtmlImport("frontend://styles/shared-styles.html")
 class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdutoPromocionalView {
   private var tabMain: TabSheet
   override val viewModel: ProdutoPromocionalViewModel = ProdutoPromocionalViewModel(this)
