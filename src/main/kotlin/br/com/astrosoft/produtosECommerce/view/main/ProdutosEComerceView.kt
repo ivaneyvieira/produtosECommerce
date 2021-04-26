@@ -45,8 +45,8 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
       tabGrid(TAB_EDITADO, gridEditado)
       if (user?.admin == true) {
         tabGrid(TAB_ENVIAR, gridEnviar)
-        tabGrid(TAB_ENVIADO, gridEnviado)
       }
+      tabGrid(TAB_ENVIADO, gridEnviado)
     }
     viewModel.updateGrid()
   }
