@@ -32,6 +32,7 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
   private val gridEditado = PainelGridProdutoEditado(this, viewModel.serviceQueryProduto())
   private val gridEnviar = PainelGridProdutoEnviar(this, viewModel.serviceQueryProduto())
   private val gridEnviado = PainelGridProdutoEnviado(this, viewModel.serviceQueryProduto())
+  private val gridCorrecao = PainelGridProdutoCorrecao(this, viewModel.serviceQueryProduto())
 
   override fun isAccept() = true
 
@@ -47,6 +48,7 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
         tabGrid(TAB_ENVIAR, gridEnviar)
       }
       tabGrid(TAB_ENVIADO, gridEnviado)
+      tabGrid(TAB_CORRECAO, gridCorrecao)
     }
     viewModel.updateGrid()
   }
@@ -75,16 +77,21 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     gridEnviado.updateGrid()
   }
 
+  override fun updateGridCorrecao() {
+    gridCorrecao.updateGrid()
+  }
+
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet { "" } ?: ""
     return when (id) {
-      TAB_BASE -> BASE
-      TAB_EDITAR -> EDITAR
-      TAB_EDITADO -> EDITADO
+      TAB_BASE      -> BASE
+      TAB_EDITAR    -> EDITAR
+      TAB_EDITADO   -> EDITADO
       TAB_IMPORTADO -> IMPORTADO
-      TAB_ENVIAR -> ENVIAR
-      TAB_ENVIADO -> ENVIADO
-      else -> BASE
+      TAB_ENVIAR    -> ENVIAR
+      TAB_ENVIADO   -> ENVIADO
+      TAB_CORRECAO  -> CORRECAO
+      else          -> BASE
     }
   }
 
@@ -112,6 +119,8 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     get() = gridEnviar.filterBar.filtro()
   override val filtroEnviado: FiltroProduto
     get() = gridEnviado.filterBar.filtro()
+  override val filtroCorrecao: FiltroProduto
+    get() = gridCorrecao.filterBar.filtro()
 
   companion object {
     const val TAB_EDITAR: String = "Editar"
@@ -120,6 +129,7 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     const val TAB_BASE: String = "Base"
     const val TAB_ENVIAR: String = "Enviar"
     const val TAB_ENVIADO: String = "Enviado"
+    const val TAB_CORRECAO: String = "Correção"
   }
 }
 

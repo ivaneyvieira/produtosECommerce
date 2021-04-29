@@ -14,7 +14,7 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.icon.VaadinIcon.TABLE
+import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
@@ -42,7 +42,7 @@ class PainelGridProdutoBase(
     override fun FilterBar<FiltroProduto>.contentBlock() {
       this.selectAll()
       button {
-        icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
+        icon = ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick { view.marcaProdutos(multiSelect(), EDITAR) }
         this.tooltip = "Enviar para o painel editar"

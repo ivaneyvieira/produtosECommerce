@@ -50,7 +50,7 @@ class PainelGridProdutoEnviar(
         icon = ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick { view.marcaProdutos(multiSelect(), ENVIADO) }
-        this.tooltip = "Voltar para o painel enviado"
+        this.tooltip = "Enviar para o painel enviado"
       }
       this.downloadExcel()
 

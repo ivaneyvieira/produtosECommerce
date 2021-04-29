@@ -2,7 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIADO
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
@@ -12,7 +12,8 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.icon.VaadinIcon.*
+import com.vaadin.flow.component.icon.VaadinIcon.ARROW_CIRCLE_LEFT
+import com.vaadin.flow.component.icon.VaadinIcon.TABLE
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
@@ -20,15 +21,15 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoEnviado(
+class PainelGridProdutoCorrecao(
   view: IProdutosEComerceView,
-  serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
-  override fun statusDefault() = ENVIADO
+  serviceQuery: ServiceQueryProduto,
+                               ) : PainelGridProdutoAbstract(view, serviceQuery) {
+  override fun statusDefault() = EEditor.CORRECAO
 
-  override fun filterBar() = FilterBarEnviado()
+  override fun filterBar() = FilterBarCorrecao()
 
-  inner class FilterBarEnviado : FilterBar<FiltroProduto>() {
+  inner class FilterBarCorrecao : FilterBar<FiltroProduto>() {
     private lateinit var edtCategoria: ComboBox<Categoria>
     private lateinit var edtCl: ComboBox<Cl>
     private lateinit var edtTipo: ComboBox<TypePrd>
@@ -42,14 +43,8 @@ class PainelGridProdutoEnviado(
       button {
         icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
-        this.tooltip = "Voltar para o painel enviar"
-      }
-      button {
-        icon = ARROW_CIRCLE_RIGHT.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), CORRECAO) }
-        this.tooltip = "Enviar para o painel correcao"
+        onLeftClick { view.marcaProdutos(multiSelect(), ENVIADO) }
+        this.tooltip = "Voltar para o painel envidado"
       }
       this.downloadExcel()
 
@@ -76,16 +71,14 @@ class PainelGridProdutoEnviado(
       }
     }
 
-    override fun filtro() = FiltroProduto(
-      codigo = edtCodigo.value ?: 0,
-      descricaoI = edtDescricaoI.value ?: "",
-      descricaoF = edtDescricaoF.value ?: "",
-      fornecedor = edtFornecedor.value,
-      type = edtTipo.value,
-      cl = edtCl.value,
-      categoria = edtCategoria.value,
-      editado = statusDefault()
-    )
+    override fun filtro() = FiltroProduto(codigo = edtCodigo.value ?: 0,
+                                          descricaoI = edtDescricaoI.value ?: "",
+                                          descricaoF = edtDescricaoF.value ?: "",
+                                          fornecedor = edtFornecedor.value,
+                                          type = edtTipo.value,
+                                          cl = edtCl.value,
+                                          categoria = edtCategoria.value,
+                                          editado = statusDefault())
   }
 
   private fun filename(): String {

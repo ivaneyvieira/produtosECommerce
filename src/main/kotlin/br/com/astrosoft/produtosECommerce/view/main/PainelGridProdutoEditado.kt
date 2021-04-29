@@ -14,7 +14,7 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.icon.VaadinIcon.TABLE
+import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
@@ -43,17 +43,17 @@ class PainelGridProdutoEditado(
       val user = AppConfig.userSaci as? UserSaci
       this.selectAll()
       button {
-        icon = VaadinIcon.ARROW_CIRCLE_LEFT.create()
+        icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick { view.marcaProdutos(multiSelect(), EDITAR) }
         this.tooltip = "Voltar para o painel editar"
       }
       if (user?.admin == true) {
         button {
-          icon = VaadinIcon.ARROW_CIRCLE_RIGHT.create()
+          icon = ARROW_CIRCLE_RIGHT.create()
           addThemeVariants(LUMO_SMALL)
           onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
-          this.tooltip = "Voltar para o painel enviar"
+          this.tooltip = "Envia para o painel enviar"
         }
       }
       this.downloadExcel()
