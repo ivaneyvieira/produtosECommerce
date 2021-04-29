@@ -2,7 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIAR
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIADO
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
@@ -43,8 +43,8 @@ class PainelGridProdutoCorrecao(
       button {
         icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
-        this.tooltip = "Voltar para o painel enviar"
+        onLeftClick { view.marcaProdutos(multiSelect(), ENVIADO) }
+        this.tooltip = "Voltar para o painel envidado"
       }
       this.downloadExcel()
 

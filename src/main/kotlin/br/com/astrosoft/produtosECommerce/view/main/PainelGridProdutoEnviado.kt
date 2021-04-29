@@ -2,8 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIADO
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.ENVIAR
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
@@ -13,8 +12,7 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.icon.VaadinIcon.ARROW_CIRCLE_LEFT
-import com.vaadin.flow.component.icon.VaadinIcon.TABLE
+import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
@@ -46,6 +44,12 @@ class PainelGridProdutoEnviado(
         addThemeVariants(LUMO_SMALL)
         onLeftClick { view.marcaProdutos(multiSelect(), ENVIAR) }
         this.tooltip = "Voltar para o painel enviar"
+      }
+      button {
+        icon = ARROW_CIRCLE_RIGHT.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick { view.marcaProdutos(multiSelect(), CORRECAO) }
+        this.tooltip = "Enviar para o painel correcao"
       }
       this.downloadExcel()
 
