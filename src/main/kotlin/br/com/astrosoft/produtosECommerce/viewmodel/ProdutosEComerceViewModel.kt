@@ -7,8 +7,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 
-class ProdutosEComerceViewModel(view: IProdutosEComerceView) :
-  ViewModel<IProdutosEComerceView>(view) {
+class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdutosEComerceView>(view) {
 
   fun serviceQueryProduto() = ServiceQueryProduto()
 
@@ -33,21 +32,19 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) :
     Categoria.updateList()
     Marca.updateList()
     when (view.panelStatus()) {
-      BASE -> view.updateGridBase()
-      EDITAR -> view.updateGridEditar()
-      EDITADO -> view.updateGridEditado()
+      BASE      -> view.updateGridBase()
+      EDITAR    -> view.updateGridEditar()
+      EDITADO   -> view.updateGridEditado()
       IMPORTADO -> view.updateGridImportado()
-      ENVIAR -> view.updateGridEnviar()
-      ENVIADO -> view.updateGridEnviado()
+      ENVIAR    -> view.updateGridEnviar()
+      ENVIADO   -> view.updateGridEnviado()
+      CORRECAO   -> view.updateGridCorrecao()
     }
   }
 
   fun replicarProdutos(itens: List<Produto>, marca: EEditor) = exec {
-    val modelo =
-      itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() }
-        ?: fail(
-          "Nenhum produto " + "selecionado"
-        )
+    val modelo = itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() }
+                 ?: fail("Nenhum produto " + "selecionado")
     itens.forEach { produto ->
       produto.marca = modelo.marca
       produto.categoria = modelo.categoria
@@ -74,6 +71,7 @@ interface IProdutosEComerceView : IView {
   fun updateGridImportado()
   fun updateGridEnviar()
   fun updateGridEnviado()
+  fun updateGridCorrecao()
 
   fun panelStatus(): EEditor
   fun marcaProdutos(itens: List<Produto>, marca: EEditor)
@@ -86,6 +84,7 @@ interface IProdutosEComerceView : IView {
   val filtroImportado: FiltroProduto
   val filtroEnviar: FiltroProduto
   val filtroEnviado: FiltroProduto
+  val filtroCorrecao: FiltroProduto
 }
 
 data class ProcessaBean(
@@ -98,5 +97,5 @@ data class ProcessaBean(
   var bitola: Int? = 0,
   var bitolaCheck: Boolean = true,
   var imagem: String? = "",
-  var imagemCheck: Boolean = true
-)
+  var imagemCheck: Boolean = true,
+                       )

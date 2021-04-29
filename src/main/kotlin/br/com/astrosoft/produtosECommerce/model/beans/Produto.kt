@@ -40,7 +40,7 @@ class Produto(
   var corStr: String,
   var dataHoraMudanca: LocalDateTime,
   var userno: Int?,
-) : ILookup {
+             ) : ILookup {
   val userName: String?
     get() = if (userno == null) null
     else saci.findAllUser().firstOrNull {
@@ -78,7 +78,7 @@ class Produto(
     }
     val parteGrade = when {
       !gradeCompleta.isNullOrBlank() -> "$gradeCompleta - "
-      else -> ""
+      else                           -> ""
     }
     return "$descricaoCompleta - $parteBitola $parteGrade $marcaDesc"
   }
@@ -138,35 +138,28 @@ class Produto(
   }
 
   fun palavrasChave() = if (variacao == VARIACAO.descricao) ""
-  else listOf(grupo(), departamento(), secao(), marcaDesc).filter { it.trim() != "" }
-    .joinToString(",")
+  else listOf(grupo(), departamento(), secao(), marcaDesc).filter { it.trim() != "" }.joinToString(",")
 
-  fun nomeProduto() =
-    if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta - $marcaDesc"
+  fun nomeProduto() = if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta - $marcaDesc"
 
   fun descricaoDetalhada() = if (variacao == VARIACAO.descricao) "" else especificacoes ?: ""
-  fun descricao() =
-    if (variacao == VARIACAO.descricao) "" else "$descricaoCompleta $marcaDesc".substring(
-      0, Math
-        .min("$descricaoCompleta $marcaDesc".length, 100)
-    )
+  fun descricao() = if (variacao == VARIACAO.descricao) ""
+  else "$descricaoCompleta $marcaDesc".substring(0, Math.min("$descricaoCompleta $marcaDesc".length, 100))
 
   fun skuPai() = when (variacao) {
     VARIACAO.descricao -> codigo
-    else -> ""
+    else               -> ""
   }
 
   fun sku() = when (variacao) {
     COM_VARIACAO.descricao -> codigo
-    SIMPLES.descricao -> codigo
-    VARIACAO.descricao -> barcode ?: ""
-    else -> ""
+    SIMPLES.descricao      -> codigo
+    VARIACAO.descricao     -> barcode ?: ""
+    else                   -> ""
   }
 
   fun slugProduto() = if (variacao == VARIACAO.descricao) ""
-  else descricaoCompleta?.normalize(
-    " " + ""
-  ) ?: ""
+  else descricaoCompleta?.normalize(" " + "") ?: ""
 
   fun marca() = if (variacao == VARIACAO.descricao) "" else marcaDesc
   fun tituloMarca() = if (variacao == VARIACAO.descricao) "" else textLink ?: ""
@@ -207,7 +200,7 @@ class Produto(
     corStr,
     dataHoraMudanca,
     userno,
-  )
+                                             )
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -236,8 +229,8 @@ class Produto(
 
     fun saldoLoja4(
       codigo: String,
-      grade: String
-    ) = listSaldos[Pair(codigo, grade)].orEmpty().firstOrNull()
+      grade: String,
+                  ) = listSaldos[Pair(codigo, grade)].orEmpty().firstOrNull()
 
     fun price(codigo: String) = listPreco[codigo].orEmpty().firstOrNull()
 
@@ -253,15 +246,23 @@ class Produto(
 
 data class ChaveProduto(
   val codigo: String,
-  val grade: String
-)
+  val grade: String,
+                       )
 
 enum class EEditor(val value: Int) {
-  BASE(0), EDITAR(1), EDITADO(2), IMPORTADO(3), ENVIAR(4), ENVIADO(5)
+  BASE(0),
+  EDITAR(1),
+  EDITADO(2),
+  IMPORTADO(3),
+  ENVIAR(4),
+  ENVIADO(5),
+  CORRECAO(6)
 }
 
 enum class EVariacao(val descricao: String) {
-  SIMPLES("simples"), VARIACAO("variacao"), COM_VARIACAO("com-variacao")
+  SIMPLES("simples"),
+  VARIACAO("variacao"),
+  COM_VARIACAO("com-variacao")
 }
 
 fun List<Produto>.explodeGrade(): List<Produto> {
@@ -279,5 +280,5 @@ data class FiltroProduto(
   val type: TypePrd? = null,
   val cl: Cl? = null,
   val categoria: Categoria? = null,
-  val editado: EEditor
-)
+  val editado: EEditor,
+                        )
