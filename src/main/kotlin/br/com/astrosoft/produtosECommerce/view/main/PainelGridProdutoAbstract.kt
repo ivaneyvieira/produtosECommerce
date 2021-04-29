@@ -2,6 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.getColumnBy
@@ -27,10 +28,11 @@ abstract class PainelGridProdutoAbstract(
       view.salvaProduto(binder.bean)
       grid.dataProvider.refreshItem(binder.bean)
     }) //
-    colSequencai()
+    colSequencial()
+    if (statusDefault() == CORRECAO) colUsuario()
     colDataHoraMudanca()
     colCodigo()
-    if (statusDefault() == EEditor.EDITADO) colFornecedor()
+    if (statusDefault() == EDITADO) colFornecedor()
     colBarcode()
     colDescricao()
     colDescricaoCompleta().textAreaEditor {
@@ -65,7 +67,7 @@ abstract class PainelGridProdutoAbstract(
     colAltura().decimalFieldEditor()
     colLargura().decimalFieldEditor()
     colComprimento().decimalFieldEditor()
-    if (statusDefault() == EEditor.EDITADO) colUsuario()
+    if (statusDefault() == EDITADO) colUsuario()
 
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))
   }

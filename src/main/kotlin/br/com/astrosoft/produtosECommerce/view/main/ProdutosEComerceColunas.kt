@@ -153,7 +153,7 @@ fun Grid<Produto>.colDataHoraMudanca() = addColumnLocalDateTime(Produto::dataHor
   setHeader("Data Hora")
 }
 
-fun Grid<Produto>.colSequencai() = addColumnInt(Produto::seq) {
+fun Grid<Produto>.colSequencial() = addColumnInt(Produto::seq) {
   setHeader("Seq")
 }
 
