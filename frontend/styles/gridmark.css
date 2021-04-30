@@ -1,0 +1,5 @@
+[part~="cell"].markEdit {
+    background: darkblue;
+    color: whitesmoke;
+    font-weight: bold;
+}
