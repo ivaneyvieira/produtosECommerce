@@ -42,6 +42,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("altura", bean.altura ?: 0.00)
       addOptionalParameter("textLink", bean.textLink)
       addOptionalParameter("especificacoes", bean.especificacoes)
+      addOptionalParameter("modificado", bean.modificado)
 
       bean.corStr = findCores(bean.gradeCompleta).firstOrNull()?.codigoCor ?: ""
 

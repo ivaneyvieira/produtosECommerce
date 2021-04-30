@@ -21,6 +21,7 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
   fun marcaProdutos(itens: List<Produto>, marca: EEditor) {
     itens.forEach { produto ->
       produto.editado = marca.value
+      produto.modificado = "N"
       Produto.save(produto)
     }
     updateGrid()

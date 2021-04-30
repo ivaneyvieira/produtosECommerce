@@ -40,6 +40,7 @@ class Produto(
   var corStr: String,
   var dataHoraMudanca: LocalDateTime,
   var userno: Int?,
+  var modificado: String,
              ) : ILookup {
   val userName: String?
     get() = if (userno == null) null
@@ -200,6 +201,7 @@ class Produto(
     corStr,
     dataHoraMudanca,
     userno,
+    modificado
                                              )
 
   override fun equals(other: Any?): Boolean {
@@ -249,9 +251,9 @@ data class ChaveProduto(
   val grade: String,
                        )
 
-enum class EEditor(val value: Int, val canEdit : Boolean) {
+enum class EEditor(val value: Int, val canEdit: Boolean) {
   BASE(0, false),
-  EDITAR(1, false),
+  EDITAR(1, true),
   EDITADO(2, true),
   IMPORTADO(3, false),
   ENVIAR(4, false),

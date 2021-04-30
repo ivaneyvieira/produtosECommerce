@@ -25,7 +25,7 @@ abstract class PainelGridProdutoAbstract(
 
     val ativaEditor = statusDefault().canEdit || (userSaci?.admin == true)
 
-    if(ativaEditor) {
+    if (ativaEditor) {
       withEditor(Produto::class, openEditor = { binder ->
         binder.bean.editado = statusDefault().value
         (getColumnBy(Produto::descricaoCompleta).editorComponent as? Focusable<*>)?.focus()
@@ -33,8 +33,12 @@ abstract class PainelGridProdutoAbstract(
         view.salvaProduto(binder.bean)
         grid.dataProvider.refreshItem(binder.bean)
       })
+      editor.binder.addValueChangeListener {
+        (it.value as? Produto)?.modificado = "S"
+      }
     }
     colSequencial()
+    if(statusDefault() == ENVIADO) colModificado()
     if (statusDefault() == CORRECAO) colUsuario()
     colDataHoraMudanca()
     colCodigo()
