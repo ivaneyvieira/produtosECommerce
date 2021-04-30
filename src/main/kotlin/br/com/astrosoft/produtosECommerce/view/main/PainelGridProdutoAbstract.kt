@@ -8,6 +8,7 @@ import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.getColumnBy
 import com.vaadin.flow.component.Focusable
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
@@ -16,9 +17,10 @@ import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.SortDirection
 
-abstract class PainelGridProdutoAbstract(
+@CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid") abstract class PainelGridProdutoAbstract(
   val view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto,
-                                        ) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
+                                                                                                              ) :
+        PainelGrid<Produto, FiltroProduto>(serviceQuery) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
     val userSaci = AppConfig.userSaci as? UserSaci
@@ -34,11 +36,12 @@ abstract class PainelGridProdutoAbstract(
         grid.dataProvider.refreshItem(binder.bean)
       })
       editor.binder.addValueChangeListener {
-        (it.value as? Produto)?.modificado = "S"
+        val bean = editor.binder.bean
+        bean?.modificado = "S"
       }
     }
     colSequencial()
-    if(statusDefault() == ENVIADO) colModificado()
+    //if (statusDefault() == ENVIADO) colModificado()
     if (statusDefault() == CORRECAO) colUsuario()
     colDataHoraMudanca()
     colCodigo()
@@ -103,6 +106,9 @@ abstract class PainelGridProdutoAbstract(
     if (statusDefault() == EDITADO) colUsuario()
 
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))
+    this.setClassNameGenerator {
+      if (it.modificado == "S") "markEdit" else null
+    }
   }
 
 
