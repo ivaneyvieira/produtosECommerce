@@ -1,5 +1,6 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
@@ -16,18 +17,23 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.SortDirection
 
 abstract class PainelGridProdutoAbstract(
-  val view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
+  val view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto,
                                         ) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
+    val userSaci = AppConfig.userSaci as? UserSaci
 
-    withEditor(Produto::class, openEditor = { binder ->
-      binder.bean.editado = statusDefault().value
-      (getColumnBy(Produto::descricaoCompleta).editorComponent as? Focusable<*>)?.focus()
-    }, closeEditor = { binder ->
-      view.salvaProduto(binder.bean)
-      grid.dataProvider.refreshItem(binder.bean)
-    }) //
+    val ativaEditor = statusDefault().canEdit || (userSaci?.admin == true)
+
+    if(ativaEditor) {
+      withEditor(Produto::class, openEditor = { binder ->
+        binder.bean.editado = statusDefault().value
+        (getColumnBy(Produto::descricaoCompleta).editorComponent as? Focusable<*>)?.focus()
+      }, closeEditor = { binder ->
+        view.salvaProduto(binder.bean)
+        grid.dataProvider.refreshItem(binder.bean)
+      })
+    }
     colSequencial()
     if (statusDefault() == CORRECAO) colUsuario()
     colDataHoraMudanca()
@@ -35,45 +41,69 @@ abstract class PainelGridProdutoAbstract(
     if (statusDefault() == EDITADO) colFornecedor()
     colBarcode()
     colDescricao()
-    colDescricaoCompleta().textAreaEditor {
-      this.addValueChangeListener { event ->
-        val string = event.value ?: ""
-        val maxLength = 80
-        if (string.length > maxLength && event.isFromClient) {
-          Notification.show("Este campo só aceita no máximo $maxLength cartactere")
-          event.source.value = string.substring(0, maxLength)
+    colDescricaoCompleta().apply {
+      if (ativaEditor) textAreaEditor {
+        this.addValueChangeListener { event ->
+          val string = event.value ?: ""
+          val maxLength = 80
+          if (string.length > maxLength && event.isFromClient) {
+            Notification.show("Este campo só aceita no máximo $maxLength cartactere")
+            event.source.value = string.substring(0, maxLength)
+          }
         }
       }
     }
-    colBitola().comboFieldEditor {
-      Bitola.findAll().sortedBy { it.lookupValue }
+    colBitola().apply {
+      if (ativaEditor) comboFieldEditor {
+        Bitola.findAll().sortedBy { it.lookupValue }
+      }
     }
     colGrade() //colCor()
-    colGradeCompleta().colorPainelEditor()
+    colGradeCompleta().apply {
+      if (ativaEditor) colorPainelEditor()
+    }
     colCorPainel()
-    colMarca().comboFieldEditor {
-      Marca.findAll().sortedBy { it.lookupValue }
+    colMarca().apply {
+      if (ativaEditor) comboFieldEditor {
+        Marca.findAll().sortedBy { it.lookupValue }
+      }
     }
-    colCategoria().comboFieldEditor {
-      Categoria.findAll().sortedBy { it.lookupValue }
+    colCategoria().apply {
+      if (ativaEditor) comboFieldEditor {
+        Categoria.findAll().sortedBy { it.lookupValue }
+      }
     }
-    colImagem().textAreaEditor()
-    colTexLink().textAreaEditor().apply {
-      (this.editorComponent as? TextArea)?.isReadOnly = true
+    colImagem().apply {
+      if (ativaEditor) textAreaEditor()
     }
-
-    colEspecificacoes().textAreaEditor()
-    colPeso().decimalFieldEditor()
-    colAltura().decimalFieldEditor()
-    colLargura().decimalFieldEditor()
-    colComprimento().decimalFieldEditor()
+    colTexLink().apply {
+      if (ativaEditor) textAreaEditor().apply {
+        (this.editorComponent as? TextArea)?.isReadOnly = true
+      }
+    }
+    colEspecificacoes().apply {
+      if (ativaEditor) textAreaEditor()
+    }
+    colPeso().apply {
+      if (ativaEditor) decimalFieldEditor()
+    }
+    colAltura().apply {
+      if (ativaEditor) decimalFieldEditor()
+    }
+    colLargura().apply {
+      if (ativaEditor) decimalFieldEditor()
+    }
+    colComprimento().apply {
+      if (ativaEditor) decimalFieldEditor()
+    }
     if (statusDefault() == EDITADO) colUsuario()
 
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))
   }
 
+
   override fun gridPanel(
-    dataProvider: ConfigurableFilterDataProvider<Produto, Void, FiltroProduto>
+    dataProvider: ConfigurableFilterDataProvider<Produto, Void, FiltroProduto>,
                         ): Grid<Produto> {
     val grid = Grid(Produto::class.java, false)
     grid.dataProvider = dataProvider
