@@ -249,14 +249,14 @@ data class ChaveProduto(
   val grade: String,
                        )
 
-enum class EEditor(val value: Int) {
-  BASE(0),
-  EDITAR(1),
-  EDITADO(2),
-  IMPORTADO(3),
-  ENVIAR(4),
-  ENVIADO(5),
-  CORRECAO(6)
+enum class EEditor(val value: Int, val canEdit : Boolean) {
+  BASE(0, false),
+  EDITAR(1, false),
+  EDITADO(2, true),
+  IMPORTADO(3, false),
+  ENVIAR(4, false),
+  ENVIADO(5, true),
+  CORRECAO(6, false)
 }
 
 enum class EVariacao(val descricao: String) {

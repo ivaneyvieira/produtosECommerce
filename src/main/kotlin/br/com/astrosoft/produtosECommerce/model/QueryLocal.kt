@@ -6,7 +6,6 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import org.sql2o.Query
 import java.time.LocalDateTime
 
@@ -51,23 +50,19 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       addOptionalParameter("corStr", bean.corStr)
       bean.dataHoraMudanca = LocalDateTime.now()
       addOptionalParameter("dataHoraMudanca", bean.dataHoraMudanca)
-      if (bean.editado == EDITADO.value) {
-        val userSaci = AppConfig.userSaci as? UserSaci
-        if (bean.userno == null || bean.userno == 0) bean.userno = userSaci?.no
-      } else {
-        bean.userno = 0
+      val userSaci = AppConfig.userSaci as? UserSaci
+      if (bean.editado in EEditor.values().filter { it.canEdit }.map { it.value } || userSaci?.admin == true) {
+        bean.userno = userSaci?.no
       }
       addOptionalParameter("userno", bean.userno ?: 0)
     }
   }
 
   fun findAllCategoria(): List<Categoria> {
-    return query(
-      """select categoriaNo, grupo, departamento, secao
+    return query("""select categoriaNo, grupo, departamento, secao
       |             from produtoEcomerce.categoria
       |             order by categoriaNo
-      |             """.trimMargin(), Categoria::class
-    )
+      |             """.trimMargin(), Categoria::class)
   }
 
   fun addCategoria(categoria: Categoria) {
@@ -104,10 +99,8 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllMarca(): List<Marca> {
-    return query(
-      """select marcaNo, name
-      |             from produtoEcomerce.marca""".trimMargin(), Marca::class
-    )
+    return query("""select marcaNo, name
+      |             from produtoEcomerce.marca""".trimMargin(), Marca::class)
   }
 
   fun addMarca(marca: Marca) {
@@ -137,10 +130,8 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllBitola(): List<Bitola> {
-    return query(
-      """select bitolaNo, name
-      |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class
-    )
+    return query("""select bitolaNo, name
+      |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class)
   }
 
   fun addBitola(bitola: Bitola) {
@@ -171,15 +162,12 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
 
   /*Cores*/
   fun findAllCor(): List<GradeCor> {
-    return query(
-      """select descricao, codigoCor, userno, dataHoraMudanca, enviado
-      |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class
-    )
+    return query("""select descricao, codigoCor, userno, dataHoraMudanca, enviado
+      |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class)
   }
 
   fun addCor(cor: GradeCor) {
-    val sql =
-      """INSERT INTO produtoEcomerce.gradeCor(descricao, codigoCor, userno, dataHoraMudanca, enviado)
+    val sql = """INSERT INTO produtoEcomerce.gradeCor(descricao, codigoCor, userno, dataHoraMudanca, enviado)
            |  VALUES(:descricao, :codigoCor, :userno, :dataHoraMudanca, :enviado)""".trimMargin()
     cor.userno = (AppConfig.userSaci as? UserSaci)?.no ?: 0
     script(sql) {
@@ -218,19 +206,17 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findCores(descricao: String?): List<GradeCor> {
-    return query(
-      """select DISTINCT TRIM(UPPER(MID(TRIM(codigoCor), 1, 7))) AS codigoCor, TRIM(descricao) AS 
+    return query("""select DISTINCT TRIM(UPPER(MID(TRIM(codigoCor), 1, 7))) AS codigoCor, TRIM(descricao) AS 
         descricao 
 from produtoEcomerce.gradeCor
-HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
-    )
+HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class)
   }
 
   private fun <R : Any> filtroProduto(
     filter: FiltroProduto,
     complemento: String,
-    result: (Query) -> R
-  ): R {
+    result: (Query) -> R,
+                                     ): R {
     val sql = "/sqlSaci/produtos.sql"
     return querySerivce(sql, complemento, lambda = {
       addOptionalParameter("codigo", filter.codigo.toString().lpad(6, "0"))
@@ -257,11 +243,10 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
     filter: FiltroProduto,
     offset: Int,
     limit: Int,
-    sortOrders: List<SortOrder>
-  ): List<Produto> {
-    val orderBy = if (sortOrders.isEmpty()) "" else "ORDER BY " + sortOrders.joinToString(
-      separator = ", "
-    ) { it.sql() }
+    sortOrders: List<SortOrder>,
+                  ): List<Produto> {
+    val orderBy = if (sortOrders.isEmpty()) ""
+    else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
     val complemento = """DO @OFFSET := $offset;
       |SELECT @OFFSET := @OFFSET + 1 AS seq, R.* 
       |FROM T_RESULT AS R 
