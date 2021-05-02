@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val vaadinonkotlin_version = "1.0.4"
-val vaadin10_version = "14.5.1"
+val vaadin10_version = "14.5.3"
 val kotlin_version = "1.4.32"
 val spring_boot_version = "2.3.1.RELEASE"
 
