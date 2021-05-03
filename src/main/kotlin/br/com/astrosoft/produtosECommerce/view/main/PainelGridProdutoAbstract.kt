@@ -3,7 +3,8 @@ package br.com.astrosoft.produtosECommerce.view.main
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.CORRECAO
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.getColumnBy
@@ -25,9 +26,9 @@ import com.vaadin.flow.data.provider.SortDirection
     setSelectionMode(MULTI)
     val userSaci = AppConfig.userSaci as? UserSaci
 
-    val ativaEditor = statusDefault().canEdit || (userSaci?.admin == true)
+    val ativaEdicao = statusDefault().canEdit || (userSaci?.admin == true)
 
-    if (ativaEditor) {
+    if (ativaEdicao) {
       withEditor(Produto::class, openEditor = { binder ->
         binder.bean.editado = statusDefault().value
         (getColumnBy(Produto::descricaoCompleta).editorComponent as? Focusable<*>)?.focus()
@@ -40,69 +41,48 @@ import com.vaadin.flow.data.provider.SortDirection
         bean?.modificado = "S"
       }
     }
-    colSequencial()
-    //if (statusDefault() == ENVIADO) colModificado()
+    colSequencial() //if (statusDefault() == ENVIADO) colModificado()
     if (statusDefault() == CORRECAO) colUsuario()
     colDataHoraMudanca()
     colCodigo()
     if (statusDefault() == EDITADO) colFornecedor()
     colBarcode()
     colDescricao()
-    colDescricaoCompleta().apply {
-      if (ativaEditor) textAreaEditor {
-        this.addValueChangeListener { event ->
-          val string = event.value ?: ""
-          val maxLength = 80
-          if (string.length > maxLength && event.isFromClient) {
-            Notification.show("Este campo só aceita no máximo $maxLength cartactere")
-            event.source.value = string.substring(0, maxLength)
-          }
+    colDescricaoCompleta().textAreaEditor {
+      this.addValueChangeListener { event ->
+        val string = event.value ?: ""
+        val maxLength = 80
+        if (string.length > maxLength && event.isFromClient) {
+          Notification.show("Este campo só aceita no máximo $maxLength cartactere")
+          event.source.value = string.substring(0, maxLength)
         }
       }
     }
-    colBitola().apply {
-      if (ativaEditor) comboFieldEditor {
-        Bitola.findAll().sortedBy { it.lookupValue }
-      }
-    }
+//    colBitola().comboFieldEditor {
+//      Bitola.findAll().sortedBy { it.lookupValue }
+//    }
     colGrade() //colCor()
-    colGradeCompleta().apply {
-      if (ativaEditor) colorPainelEditor()
+    colGradeCompleta().colorPainelEditor()
+    colGradeAlternativa().textEditor(){
+      this.placeholder = "Temperatura: 333K"
     }
     colCorPainel()
-    colMarca().apply {
-      if (ativaEditor) comboFieldEditor {
-        Marca.findAll().sortedBy { it.lookupValue }
-      }
+    colMarca().comboFieldEditor {
+      Marca.findAll().sortedBy { it.lookupValue }
     }
-    colCategoria().apply {
-      if (ativaEditor) comboFieldEditor {
-        Categoria.findAll().sortedBy { it.lookupValue }
-      }
+    colCategoria().comboFieldEditor {
+      Categoria.findAll().sortedBy { it.lookupValue }
     }
-    colImagem().apply {
-      if (ativaEditor) textAreaEditor()
+    colImagem().textAreaEditor()
+    colTexLink().textAreaEditor().apply {
+      (this.editorComponent as? TextArea)?.isReadOnly = true
     }
-    colTexLink().apply {
-      if (ativaEditor) textAreaEditor().apply {
-        (this.editorComponent as? TextArea)?.isReadOnly = true
-      }
-    }
-    colEspecificacoes().apply {
-      if (ativaEditor) textAreaEditor()
-    }
-    colPeso().apply {
-      if (ativaEditor) decimalFieldEditor()
-    }
-    colAltura().apply {
-      if (ativaEditor) decimalFieldEditor()
-    }
-    colLargura().apply {
-      if (ativaEditor) decimalFieldEditor()
-    }
-    colComprimento().apply {
-      if (ativaEditor) decimalFieldEditor()
-    }
+    colEspecificacoes().textAreaEditor()
+    colPeso().decimalFieldEditor()
+    colAltura().decimalFieldEditor()
+    colLargura().decimalFieldEditor()
+    colComprimento().decimalFieldEditor()
+
     if (statusDefault() == EDITADO) colUsuario()
 
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))

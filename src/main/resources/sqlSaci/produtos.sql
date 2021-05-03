@@ -29,7 +29,8 @@ SELECT codigo,
        corStr           AS corStr,
        P.dataHoraMudanca,
        P.userno,
-       modificado
+       modificado,
+       gradeAlternativa
 FROM produtoEcomerce.produto AS P
 WHERE (codigo = :codigo OR :codigo = 0)
   AND P.descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')
