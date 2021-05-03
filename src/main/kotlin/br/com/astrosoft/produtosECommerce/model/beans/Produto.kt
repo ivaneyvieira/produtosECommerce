@@ -41,6 +41,7 @@ class Produto(
   var dataHoraMudanca: LocalDateTime,
   var userno: Int?,
   var modificado: String,
+  var gradeAlternativa: String,
              ) : ILookup {
   val userName: String?
     get() = if (userno == null) null
@@ -165,44 +166,54 @@ class Produto(
   fun marca() = if (variacao == VARIACAO.descricao) "" else marcaDesc
   fun tituloMarca() = if (variacao == VARIACAO.descricao) "" else textLink ?: ""
   fun descricaoPagina() = if (variacao == VARIACAO.descricao) "" else descricaoCompleta ?: ""
-  fun gradeCor() = if (variacao == VARIACAO.descricao) gradeCompleta ?: "" else ""
-  fun cor() = if (variacao == VARIACAO.descricao) "Cor" else ""
+  fun gradeCor() = when (variacao) {
+    VARIACAO.descricao -> when (gradeAlternativa) {
+      ""   -> gradeCompleta ?: ""
+      else -> gradeAlternativa.split(":").getOrNull(1) ?: ""
+    }
+    else               -> ""
+  }
+
+  fun cor() = if (variacao == VARIACAO.descricao) when (gradeAlternativa) {
+    ""   -> "Cor"
+    else -> gradeAlternativa.split(":").getOrNull(0) ?: ""
+  }
+  else ""
 
   fun chave() = ChaveProduto(codigo, grade)
-  fun copy(variacaoNova: EVariacao) = Produto(
-    seq,
-    codigo,
-    grade,
-    gradeCompleta,
-    barcode,
-    descricao,
-    vendno,
-    fornecedor,
-    typeno,
-    typeName,
-    clno,
-    clname,
-    marca,
-    categoria,
-    descricaoCompleta,
-    bitola,
-    imagem,
-    peso,
-    altura,
-    comprimento,
-    largura,
-    textLink,
-    especificacoes,
-    editado,
-    precoCheio,
-    ncm,
-    cor,
-    variacaoNova.descricao,
-    corStr,
-    dataHoraMudanca,
-    userno,
-    modificado
-                                             )
+  fun copy(variacaoNova: EVariacao) = Produto(seq,
+                                              codigo,
+                                              grade,
+                                              gradeCompleta,
+                                              barcode,
+                                              descricao,
+                                              vendno,
+                                              fornecedor,
+                                              typeno,
+                                              typeName,
+                                              clno,
+                                              clname,
+                                              marca,
+                                              categoria,
+                                              descricaoCompleta,
+                                              bitola,
+                                              imagem,
+                                              peso,
+                                              altura,
+                                              comprimento,
+                                              largura,
+                                              textLink,
+                                              especificacoes,
+                                              editado,
+                                              precoCheio,
+                                              ncm,
+                                              cor,
+                                              variacaoNova.descricao,
+                                              corStr,
+                                              dataHoraMudanca,
+                                              userno,
+                                              modificado,
+                                              gradeAlternativa)
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

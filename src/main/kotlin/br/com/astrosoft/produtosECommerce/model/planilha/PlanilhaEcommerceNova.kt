@@ -45,8 +45,8 @@ class PlanilhaEcommerceNova {
     CampoString("url_imagem_8"),
     CampoString("url_imagem_9"),
     CampoString("url_imagem_10"),
-    CampoString("nome_variacao_1") { cor() },
-    CampoString("variacao_1") { gradeCor() },
+    CampoString("nome_variacao_1") { cor().trim() },
+    CampoString("variacao_1") { gradeCor().trim() },
     CampoString("nome_variacao2"),
     CampoString("variacao_2")
   )
