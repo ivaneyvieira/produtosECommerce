@@ -36,7 +36,7 @@ class PainelGridProdutoEnviado(
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
     private lateinit var edtDescricaoF: TextField
     private lateinit var edtDescricaoI: TextField
-    private lateinit var edtCodigo: IntegerField
+    private lateinit var edtCodigo: TextField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
       val user = AppConfig.userSaci as? UserSaci
@@ -58,7 +58,7 @@ class PainelGridProdutoEnviado(
       }
       this.downloadExcel()
 
-      edtCodigo = codigoField {
+      edtCodigo = listaProdutoField {
         addValueChangeListener { updateGrid() }
       }
       edtDescricaoI = descricaoIField {
@@ -82,7 +82,8 @@ class PainelGridProdutoEnviado(
     }
 
     override fun filtro() = FiltroProduto(
-      codigo = edtCodigo.value ?: 0,
+      codigo = 0,
+      listaProduto= edtCodigo.value ?: "",
       descricaoI = edtDescricaoI.value ?: "",
       descricaoF = edtDescricaoF.value ?: "",
       fornecedor = edtFornecedor.value,

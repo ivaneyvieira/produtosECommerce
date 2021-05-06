@@ -221,7 +221,12 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
                                      ): R {
     val sql = "/sqlSaci/produtos.sql"
     return querySerivce(sql, complemento, lambda = {
+      val listaProduto = filter.listaProduto.split(" +".toRegex()).filter { it.trim() != "" }.map {
+        it.trim().lpad(6, "0")
+      }
       addOptionalParameter("codigo", filter.codigo.toString().lpad(6, "0"))
+      addOptionalParameter("listaProduto", listaProduto)
+      addOptionalParameter("listaProdutoVazia", if(listaProduto.isEmpty()) "S" else "N")
       addOptionalParameter("descricaoI", filter.descricaoI)
       addOptionalParameter("descricaoF", filter.descricaoF)
       addOptionalParameter("vendno", filter.fornecedor?.vendno ?: 0)
