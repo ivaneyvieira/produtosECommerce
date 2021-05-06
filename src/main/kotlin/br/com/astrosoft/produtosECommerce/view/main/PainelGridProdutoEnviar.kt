@@ -1,5 +1,6 @@
 package br.com.astrosoft.produtosECommerce.view.main
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
@@ -38,19 +39,24 @@ class PainelGridProdutoEnviar(
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
+      val user = AppConfig.userSaci as? UserSaci
       this.selectAll()
 
-      button {
-        icon = ARROW_CIRCLE_LEFT.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), EDITADO) }
-        this.tooltip = "Voltar para o painel editado"
+      if (user?.admin == true) {
+        button {
+          icon = ARROW_CIRCLE_LEFT.create()
+          addThemeVariants(LUMO_SMALL)
+          onLeftClick { view.marcaProdutos(multiSelect(), EDITADO) }
+          this.tooltip = "Voltar para o painel editado"
+        }
       }
-      button {
-        icon = ARROW_CIRCLE_RIGHT.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick { view.marcaProdutos(multiSelect(), ENVIADO) }
-        this.tooltip = "Enviar para o painel enviado"
+      if (user?.admin == true) {
+        button {
+          icon = ARROW_CIRCLE_RIGHT.create()
+          addThemeVariants(LUMO_SMALL)
+          onLeftClick { view.marcaProdutos(multiSelect(), ENVIADO) }
+          this.tooltip = "Enviar para o painel enviado"
+        }
       }
       this.downloadExcel()
 
