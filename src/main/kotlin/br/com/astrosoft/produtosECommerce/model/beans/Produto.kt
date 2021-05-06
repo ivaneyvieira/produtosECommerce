@@ -287,6 +287,7 @@ fun List<Produto>.explodeGrade(): List<Produto> {
 
 data class FiltroProduto(
   val codigo: Int = 0,
+  val listaProduto : String = "",
   val descricaoI: String = "",
   val descricaoF: String = "",
   val fornecedor: Fornecedor? = null,

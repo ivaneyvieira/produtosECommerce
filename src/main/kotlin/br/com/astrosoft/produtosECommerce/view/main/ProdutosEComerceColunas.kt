@@ -197,6 +197,13 @@ fun HasComponents.codigoField(block: IntegerField.() -> Unit = {}) = integerFiel
   block()
 }
 
+fun HasComponents.listaProdutoField(block: TextField.() -> Unit = {}) = textField("Lista Produtos") {
+  addThemeVariants(TextFieldVariant.LUMO_SMALL)
+  this.valueChangeMode = TIMEOUT
+  this.valueChangeTimeout = 1000
+  block()
+}
+
 fun HasComponents.descricaoIField(block: TextField.() -> Unit = {}) = textField("Descrição Inicial") {
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
   this.valueChangeMode = TIMEOUT
