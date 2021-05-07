@@ -14,7 +14,6 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon.*
-import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
@@ -36,7 +35,7 @@ class PainelGridProdutoEnviar(
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
     private lateinit var edtDescricaoF: TextField
     private lateinit var edtDescricaoI: TextField
-    private lateinit var edtCodigo: IntegerField
+    private lateinit var edtCodigo: TextField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
       val user = AppConfig.userSaci as? UserSaci
@@ -60,7 +59,7 @@ class PainelGridProdutoEnviar(
       }
       this.downloadExcel()
 
-      edtCodigo = codigoField {
+      edtCodigo = listaProdutoField {
         addValueChangeListener { updateGrid() }
       }
       edtDescricaoI = descricaoIField {
@@ -84,7 +83,8 @@ class PainelGridProdutoEnviar(
     }
 
     override fun filtro() = FiltroProduto(
-      codigo = edtCodigo.value ?: 0,
+      codigo = 0,
+      listaProduto = edtCodigo.value ?: "",
       descricaoI = edtDescricaoI.value ?: "",
       descricaoF = edtDescricaoF.value ?: "",
       fornecedor = edtFornecedor.value,
@@ -98,8 +98,7 @@ class PainelGridProdutoEnviar(
   private fun filename(): String {
     val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
     val textTime = LocalDateTime.now().format(sdf)
-    val filename = "planilha$textTime.xlsx"
-    return filename
+    return "planilha$textTime.xlsx"
   }
 
   private fun HasComponents.downloadExcel() {
