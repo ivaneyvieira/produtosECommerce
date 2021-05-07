@@ -14,7 +14,6 @@ import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon.ARROW_CIRCLE_LEFT
 import com.vaadin.flow.component.icon.VaadinIcon.TABLE
-import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
@@ -36,7 +35,7 @@ class PainelGridProdutoCorrecao(
     private lateinit var edtFornecedor: ComboBox<Fornecedor>
     private lateinit var edtDescricaoF: TextField
     private lateinit var edtDescricaoI: TextField
-    private lateinit var edtCodigo: IntegerField
+    private lateinit var edtListaProduto: TextField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
       this.selectAll()
@@ -48,7 +47,7 @@ class PainelGridProdutoCorrecao(
       }
       this.downloadExcel()
 
-      edtCodigo = codigoField {
+      edtListaProduto = listaProdutoField {
         addValueChangeListener { updateGrid() }
       }
       edtDescricaoI = descricaoIField {
@@ -71,7 +70,8 @@ class PainelGridProdutoCorrecao(
       }
     }
 
-    override fun filtro() = FiltroProduto(codigo = edtCodigo.value ?: 0,
+    override fun filtro() = FiltroProduto(codigo = 0,
+                                          listaProduto = edtListaProduto.value ?: "",
                                           descricaoI = edtDescricaoI.value ?: "",
                                           descricaoF = edtDescricaoF.value ?: "",
                                           fornecedor = edtFornecedor.value,
