@@ -44,7 +44,7 @@ open class QueryDB(
     config.isAutoCommit = false
     config.poolName = name
     val ds = HikariDataSource(config)
-    ds.maximumPoolSize = 5
+    //ds.maximumPoolSize = 5
     val maps = HashMap<Class<*>, Converter<*>>()
     maps[LocalDate::class.java] = LocalDateConverter()
     maps[LocalTime::class.java] = LocalSqlTimeConverter()
