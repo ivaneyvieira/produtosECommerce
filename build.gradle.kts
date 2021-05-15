@@ -3,11 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val vaadinonkotlin_version = "1.0.4"
 val vaadin10_version = "14.5.3"
 val kotlin_version = "1.4.32"
-val spring_boot_version = "2.3.1.RELEASE"
+val spring_boot_version = "2.4.5"
 
 plugins {
-  id("org.springframework.boot") version "2.3.1.RELEASE"
-  id("io.spring.dependency-management") version "1.0.9.RELEASE"
+  id("org.springframework.boot") version "2.4.5"
+  id("io.spring.dependency-management") version "1.0.11.RELEASE"
   kotlin("jvm") version "1.4.32"
   id("org.gretty") version "3.0.1"
   war
