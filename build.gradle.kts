@@ -49,8 +49,6 @@ dependencies {
   implementation("com.vaadin:vaadin-core:$vaadin10_version")
   implementation("com.vaadin:vaadin-spring-boot-starter:$vaadin10_version")
   providedCompile("javax.servlet:javax.servlet-api:3.1.0")
-  
-  implementation("com.zaxxer:HikariCP:3.4.1")
 
   // currently we are logging through the SLF4J API to LogBack. See src/main/resources/logback.xml file for the logger configuration
   implementation("ch.qos.logback:logback-classic:1.2.3")
@@ -59,7 +57,7 @@ dependencies {
   implementation("org.sql2o:sql2o:1.6.0")
   implementation("mysql:mysql-connector-java:5.1.48")
   //implementation("mysql:mysql-connector-java:8.0.21")
-  implementation("com.zaxxer:HikariCP:3.4.1")
+  implementation("com.zaxxer:HikariCP:4.0.3")
   implementation("org.imgscalr:imgscalr-lib:4.2")
   implementation("com.jcraft:jsch:0.1.55")
   implementation("org.cups4j:cups4j:0.7.6")
