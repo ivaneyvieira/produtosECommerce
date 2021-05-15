@@ -3,8 +3,6 @@ package br.com.astrosoft.framework.model
 import br.com.astrosoft.framework.util.SystemUtils.readFile
 import br.com.astrosoft.framework.util.toLocalDateTime
 import br.com.astrosoft.framework.util.toTimeStamp
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 import org.sql2o.Connection
 import org.sql2o.Query
 import org.sql2o.Sql2o
@@ -34,22 +32,12 @@ open class QueryDB(
 
   init {
     registerDriver(driver)
-    val config = HikariConfig()
-    config.jdbcUrl = url
-    config.username = username
-    config.password = password
-    config.addDataSourceProperty("cachePrepStmts", "true")
-    config.addDataSourceProperty("prepStmtCacheSize", "250")
-    config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
-    config.isAutoCommit = false
-    config.poolName = name
-    val ds = HikariDataSource(config)
-    //ds.maximumPoolSize = 5
+
     val maps = HashMap<Class<*>, Converter<*>>()
     maps[LocalDate::class.java] = LocalDateConverter()
     maps[LocalTime::class.java] = LocalSqlTimeConverter()
     maps[LocalDateTime::class.java] = LocalSqlDateTimeConverter()
-    this.sql2o = Sql2o(ds, NoQuirks(maps))
+    this.sql2o = Sql2o(url, username, password, NoQuirks(maps))
   }
 
   private fun registerDriver(driver: String) {

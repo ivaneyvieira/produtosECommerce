@@ -57,7 +57,7 @@ dependencies {
   implementation("org.sql2o:sql2o:1.6.0")
   implementation("mysql:mysql-connector-java:5.1.48")
   //implementation("mysql:mysql-connector-java:8.0.21")
-  implementation("com.zaxxer:HikariCP:4.0.3")
+  //implementation("com.zaxxer:HikariCP:4.0.3")
   implementation("org.imgscalr:imgscalr-lib:4.2")
   implementation("com.jcraft:jsch:0.1.55")
   implementation("org.cups4j:cups4j:0.7.6")
