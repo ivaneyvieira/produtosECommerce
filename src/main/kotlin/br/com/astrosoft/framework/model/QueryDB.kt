@@ -49,7 +49,7 @@ open class QueryDB(
     maps[LocalDate::class.java] = LocalDateConverter()
     maps[LocalTime::class.java] = LocalSqlTimeConverter()
     maps[LocalDateTime::class.java] = LocalSqlDateTimeConverter()
-    this.sql2o = Sql2o(url, username, password, NoQuirks(maps))
+    this.sql2o = Sql2o(ds, NoQuirks(maps))
   }
 
   private fun registerDriver(driver: String) {
