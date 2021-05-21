@@ -37,7 +37,7 @@ import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.function.*
+import java.util.function.Supplier
 
 @Route(layout = ProdutoECommerceLayout::class, value = "cor")
 @PageTitle(TITLE)
@@ -59,10 +59,10 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
   private fun gridCrud(): GridCrud<GradeCor> {
     val crud: GridCrud<GradeCor> = GridCrud(
       GradeCor::class.java, HorizontalSplitCrudLayout()
-    ) //crud.grid.setSelectionMode(MULTI)
+                                           ) //crud.grid.setSelectionMode(MULTI)
     crud.grid.setColumns(
       GradeCor::descricao.name, GradeCor::codigoCor.name,
-    )
+                        )
     crud.grid.getColumnBy(GradeCor::descricao).setHeader("Descrição")
     crud.grid.getColumnBy(GradeCor::codigoCor).setHeader("Código Cor")
     crud.grid.addColumnLocalDateTime(GradeCor::dataHoraMudanca) {
@@ -101,9 +101,9 @@ class CorView : ViewLayout<CorViewModel>(), ICorView {
 
   private fun setOperation(crud: GridCrud<GradeCor>) {
     crud.setOperations({ viewModel.findAll() },
-      { user: GradeCor -> viewModel.add(user) },
-      { user: GradeCor? -> viewModel.update(user) },
-      { user: GradeCor? -> viewModel.delete(user) })
+                       { user: GradeCor -> viewModel.add(user) },
+                       { user: GradeCor? -> viewModel.update(user) },
+                       { user: GradeCor? -> viewModel.delete(user) })
   }
 
   private fun filename(): String {
@@ -148,7 +148,7 @@ class CorCrudFormFactory : AbstractCrudFormFactory<GradeCor>() {
     readOnly: Boolean,
     cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
     operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-  ): Component {
+                           ): Component {
     val binder = Binder(GradeCor::class.java)
 
     return VerticalLayout().apply {
@@ -221,10 +221,7 @@ class CorCrudFormFactory : AbstractCrudFormFactory<GradeCor>() {
   override fun buildCaption(operation: CrudOperation?, domainObject: GradeCor?) = null
 
   override fun showError(operation: CrudOperation?, e: Exception?) {
-    ConfirmDialog.createError()
-      .withCaption("Erro do aplicativo")
-      .withMessage(e?.message ?: "Erro desconhecido")
-      .open()
+    ConfirmDialog.createError().withCaption("Erro do aplicativo").withMessage(e?.message ?: "Erro desconhecido").open()
   }
 
   override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<GradeCor?>) {

@@ -4,7 +4,10 @@ import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoPromocional
-import br.com.astrosoft.produtosECommerce.view.main.*
+import br.com.astrosoft.produtosECommerce.view.main.clField
+import br.com.astrosoft.produtosECommerce.view.main.codigoField
+import br.com.astrosoft.produtosECommerce.view.main.fornecedorField
+import br.com.astrosoft.produtosECommerce.view.main.tipoField
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
@@ -17,13 +20,11 @@ import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
 class PainelGridProdutoPromocaoWeb(
-  val view: IProdutoPromocionalView,
-  serviceQuery: ServiceQueryProdutoPromocional
-) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
+  val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional
+                                  ) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
   override fun gridPanel(
-    dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao,
-            Void, FiltroProdutosPromocional>
-  ): Grid<ProdutoPromocao> {
+    dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao, Void, FiltroProdutosPromocional>
+                        ): Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -69,7 +70,7 @@ class PainelGridProdutoPromocaoWeb(
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
         temPromocao = true
-      )
+                                      )
     }
   }
 

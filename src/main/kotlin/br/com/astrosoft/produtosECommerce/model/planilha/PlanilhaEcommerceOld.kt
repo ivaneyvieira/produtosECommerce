@@ -55,7 +55,7 @@ class PlanilhaEcommerceOld {
     CampoString("grade-produto-com-duas-cores"),
     CampoString(""),
     CampoString("url-antiga")
-  )
+                                                      )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {
@@ -70,9 +70,7 @@ class PlanilhaEcommerceOld {
       val stSemGrade = sheet("Produtos Sem Grade") {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
-        listaProdutos.filter { it.grade == "" }
-          .sortedBy { it.codigo + it.grade }
-          .forEach { produto ->
+        listaProdutos.filter { it.grade == "" }.sortedBy { it.codigo + it.grade }.forEach { produto ->
             val valores = campos.map { it.produceVakue(produto) }
             row(valores, rowStyle)
           }
@@ -80,9 +78,7 @@ class PlanilhaEcommerceOld {
       val stComGrade = sheet("Produtos Com Grade") {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
-        listaProdutos.filter { it.grade != "" }
-          .sortedBy { it.codigo + it.grade }
-          .forEach { produto ->
+        listaProdutos.filter { it.grade != "" }.sortedBy { it.codigo + it.grade }.forEach { produto ->
             val valores = campos.map { it.produceVakue(produto) }
             row(valores, rowStyle)
           }
@@ -101,16 +97,13 @@ class PlanilhaEcommerceOld {
 open class Campo<T : Any, B>(val header: String, val produceVakue: (B) -> T)
 
 class CampoString<B>(header: String, produceVakue: B.() -> String = { "" }) : Campo<String, B>(
-  header,
-  produceVakue
-)
+  header, produceVakue
+                                                                                              )
 
 class CampoNumber<B>(header: String, produceVakue: B.() -> Double = { 0.00 }) : Campo<Double, B>(
-  header,
-  produceVakue
-)
+  header, produceVakue
+                                                                                                )
 
 class CampoInt<B>(header: String, produceVakue: B.() -> Int = { 0 }) : Campo<Int, B>(
-  header,
-  produceVakue
-)
+  header, produceVakue
+                                                                                    )

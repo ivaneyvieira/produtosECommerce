@@ -22,12 +22,8 @@ import kotlin.reflect.KClass
 typealias QueryHandle = Query.() -> Unit
 
 open class QueryDB(
-  val name: String,
-  driver: String,
-  url: String,
-  username: String,
-  password: String
-) {
+  val name: String, driver: String, url: String, username: String, password: String
+                  ) {
   protected val sql2o: Sql2o
 
   init {
@@ -56,17 +52,15 @@ open class QueryDB(
     val ret = block()
     val tf = System.nanoTime()
     println(log)
-    val segundo = (tf - ti)*1.0/1000000000
+    val segundo = (tf - ti) * 1.0 / 1000000000
     val sdf = DecimalFormat("#,##0.00")
     println("Tempo: ${sdf.format(segundo)}")
     return ret
   }
 
   protected fun <T : Any> query(
-    file: String,
-    classes: KClass<T>,
-    lambda: QueryHandle = {}
-  ): List<T> = timeExec(file) {
+    file: String, classes: KClass<T>, lambda: QueryHandle = {}
+                               ): List<T> = timeExec(file) {
     val statements = toStratments(file)
     if (statements.isEmpty()) return@timeExec emptyList()
     val lastIndex = statements.lastIndex
@@ -80,11 +74,8 @@ open class QueryDB(
   }
 
   protected fun <R : Any> querySerivce(
-    file: String,
-    complemento: String,
-    lambda: QueryHandle = {},
-    result: (Query) -> R
-  ): R = timeExec(file) {
+    file: String, complemento: String, lambda: QueryHandle = {}, result: (Query) -> R
+                                      ): R = timeExec(file) {
     val statements = toStratments(file, complemento)
     val lastIndex = statements.lastIndex
     val query = statements[lastIndex]
@@ -97,21 +88,16 @@ open class QueryDB(
   }
 
   private fun querySQLResult(
-    con: Connection,
-    sql: String?,
-    lambda: QueryHandle = {}
-  ): Query {
+    con: Connection, sql: String?, lambda: QueryHandle = {}
+                            ): Query {
     val query = con.createQuery(sql)
     query.lambda()
     return query
   }
 
   private fun <T : Any> querySQL(
-    con: Connection,
-    sql: String?,
-    classes: KClass<T>,
-    lambda: QueryHandle = {}
-  ): List<T> {
+    con: Connection, sql: String?, classes: KClass<T>, lambda: QueryHandle = {}
+                                ): List<T> {
     val query = con.createQuery(sql)
     query.lambda()
     return query.executeAndFetch(classes.java)
@@ -128,8 +114,7 @@ open class QueryDB(
     val sql = if (file.startsWith("/")) readFile(file) ?: ""
     else file
     val sqlComplemento = if (complemento == null) sql else "$sql;\n$complemento"
-    return sqlComplemento.split(";")
-      .filter { it.isNotBlank() || it.isNotEmpty() }
+    return sqlComplemento.split(";").filter { it.isNotBlank() || it.isNotEmpty() }
   }
 
   private fun scriptSQL(con: Connection, stratments: List<String>, lambda: QueryHandle = {}) {
@@ -185,8 +170,7 @@ open class QueryDB(
 }
 
 class LocalDateConverter : Converter<LocalDate?> {
-  @Throws(ConverterException::class)
-  override fun convert(value: Any?): LocalDate? {
+  @Throws(ConverterException::class) override fun convert(value: Any?): LocalDate? {
     if (value !is Date) return null
     return value.toLocalDate()
   }
@@ -198,8 +182,7 @@ class LocalDateConverter : Converter<LocalDate?> {
 }
 
 class LocalSqlTimeConverter : Converter<LocalTime?> {
-  @Throws(ConverterException::class)
-  override fun convert(value: Any?): LocalTime? {
+  @Throws(ConverterException::class) override fun convert(value: Any?): LocalTime? {
     if (value !is Time) return null
     return value.toLocalTime()
   }
@@ -211,12 +194,11 @@ class LocalSqlTimeConverter : Converter<LocalTime?> {
 }
 
 class LocalSqlDateTimeConverter : Converter<LocalDateTime?> {
-  @Throws(ConverterException::class)
-  override fun convert(value: Any?): LocalDateTime? {
+  @Throws(ConverterException::class) override fun convert(value: Any?): LocalDateTime? {
     return when (value) {
-      is Date -> value.toLocalDateTime()
+      is Date      -> value.toLocalDateTime()
       is Timestamp -> value.toLocalDateTime()
-      else -> null
+      else         -> null
     }
   }
 

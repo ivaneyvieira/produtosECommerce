@@ -2,7 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.user
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.view.user.UserCrudFormFactory.Companion.TITLE
 import br.com.astrosoft.produtosECommerce.viewmodel.IUserView
@@ -33,7 +33,7 @@ import org.vaadin.crudui.crud.CrudOperation.*
 import org.vaadin.crudui.crud.impl.GridCrud
 import org.vaadin.crudui.form.AbstractCrudFormFactory
 import org.vaadin.gatanaso.MultiselectComboBox
-import java.util.function.*
+import java.util.function.Supplier
 
 @Route(layout = ProdutoECommerceLayout::class)
 @PageTitle(TITLE)
@@ -55,7 +55,7 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
     val crud: GridCrud<UserSaci> = GridCrud(UserSaci::class.java)
     crud.grid.setColumns(
       UserSaci::no.name, UserSaci::login.name, UserSaci::storeno.name, UserSaci::name.name
-    )
+                        )
     crud.grid.getColumnBy(UserSaci::storeno).setHeader("Loja")
 
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
@@ -67,9 +67,9 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
 
   private fun setOperation(crud: GridCrud<UserSaci>) {
     crud.setOperations({ viewModel.findAll() },
-      { user: UserSaci -> viewModel.add(user) },
-      { user: UserSaci? -> viewModel.update(user) },
-      { user: UserSaci? -> viewModel.delete(user) })
+                       { user: UserSaci -> viewModel.add(user) },
+                       { user: UserSaci? -> viewModel.update(user) },
+                       { user: UserSaci? -> viewModel.delete(user) })
   }
 
   private fun Grid<UserSaci>.addColumnBool(caption: String, value: UserSaci.() -> Boolean) {
@@ -82,8 +82,7 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
   }
 }
 
-class UserCrudFormFactory(private val viewModel: UsuarioViewModel) :
-  AbstractCrudFormFactory<UserSaci>() {
+class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCrudFormFactory<UserSaci>() {
   private var _newInstanceSupplier: Supplier<UserSaci?>? = null
   private lateinit var comboAbreviacao: MultiselectComboBox<String>
 
@@ -93,7 +92,7 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) :
     readOnly: Boolean,
     cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
     operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-  ): Component {
+                           ): Component {
     val binder = Binder<UserSaci>(UserSaci::class.java)
     return VerticalLayout().apply {
       isSpacing = false
@@ -108,24 +107,23 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) :
           val filter: ItemFilter<UserSaci> = ItemFilter { user: UserSaci, filterString: String ->
             user.login.contains(filterString, ignoreCase = true) || user.name.contains(
               filterString, ignoreCase = true
-            ) || user.no == filterString.toIntOrNull() ?: 0
+                                                                                      ) || user.no == filterString.toIntOrNull() ?: 0
           }
           this.setItems(filter, allUser)
           this.setItemLabelGenerator(UserSaci::login)
           this.setRenderer(TemplateRenderer.of<UserSaci>("<div>[[item.login]]<br><small>[[item.nome]]</small></div>")
-            .withProperty("login") {
-              it.login
-            }
-            .withProperty("nome") { user ->
+                             .withProperty("login") {
+                               it.login
+                             }.withProperty("nome") { user ->
               "${user.no} - ${user.name}"
             })
           binder.bind(this, { bean ->
             bean
           }, { bean, field ->
-            bean.no = field.no
-            bean.name = field.name
-            bean.login = field.login
-          })
+                        bean.no = field.no
+                        bean.name = field.name
+                        bean.login = field.login
+                      })
         }
         if (operation in listOf(READ, DELETE, UPDATE)) textField("Nome") {
           isReadOnly = true
@@ -193,10 +191,7 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) :
   }
 
   override fun showError(operation: CrudOperation?, e: Exception?) {
-    ConfirmDialog.createError()
-      .withCaption("Erro do aplicativo")
-      .withMessage(e?.message ?: "Erro desconhecido")
-      .open()
+    ConfirmDialog.createError().withCaption("Erro do aplicativo").withMessage(e?.message ?: "Erro desconhecido").open()
   }
 
   override fun setNewInstanceSupplier(newInstanceSupplier: Supplier<UserSaci?>) {

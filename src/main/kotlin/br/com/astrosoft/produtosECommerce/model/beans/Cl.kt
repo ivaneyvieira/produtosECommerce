@@ -4,7 +4,7 @@ import br.com.astrosoft.framework.model.ILookup
 
 data class Cl(
   val clno: String, val clname: String
-) : ILookup {
+             ) : ILookup {
   override val lookupValue: String
     get() = clname
 }

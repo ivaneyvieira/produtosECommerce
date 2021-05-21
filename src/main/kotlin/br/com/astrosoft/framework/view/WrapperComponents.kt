@@ -11,10 +11,9 @@ import org.vaadin.gatanaso.MultiselectComboBox
 fun <T> (@VaadinDsl HasComponents).multiselectComboBox(block: (@VaadinDsl MultiselectComboBox<T>).() -> Unit = {}) =
   init(MultiselectComboBox(), block)
 
-@VaadinDsl
-fun (@VaadinDsl HasComponents).colorPick(
+@VaadinDsl fun (@VaadinDsl HasComponents).colorPick(
   label: String? = null, block: (@VaadinDsl ColorPickerFieldRaw).() -> Unit = {}
-): @VaadinDsl ColorPickerFieldRaw {
+                                                   ): @VaadinDsl ColorPickerFieldRaw {
   val compnent = ColorPickerFieldRaw(label).apply {
     setPinnedPalettes(true)
     isHexEnabled = true

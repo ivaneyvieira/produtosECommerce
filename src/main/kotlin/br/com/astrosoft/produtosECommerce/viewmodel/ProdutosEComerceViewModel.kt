@@ -39,13 +39,13 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
       IMPORTADO -> view.updateGridImportado()
       ENVIAR    -> view.updateGridEnviar()
       ENVIADO   -> view.updateGridEnviado()
-      CORRECAO   -> view.updateGridCorrecao()
+      CORRECAO  -> view.updateGridCorrecao()
     }
   }
 
   fun replicarProdutos(itens: List<Produto>, marca: EEditor) = exec {
     val modelo = itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() }
-                 ?: fail("Nenhum produto " + "selecionado")
+      ?: fail("Nenhum produto " + "selecionado")
     itens.forEach { produto ->
       produto.marca = modelo.marca
       produto.categoria = modelo.categoria

@@ -13,8 +13,8 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.icon.VaadinIcon.*
+import com.vaadin.flow.component.icon.VaadinIcon.ARROW_CIRCLE_RIGHT
+import com.vaadin.flow.component.icon.VaadinIcon.TABLE
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
@@ -23,9 +23,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class PainelGridProdutoBase(
-  view: IProdutosEComerceView,
-  serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
+  view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
+                           ) : PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = BASE
 
   override fun filterBar() = FilterBarBase()
@@ -80,7 +79,7 @@ class PainelGridProdutoBase(
       cl = edtCl.value,
       categoria = edtCategoria.value,
       editado = statusDefault()
-    )
+                                         )
   }
 
   private fun filename(): String {

@@ -38,13 +38,11 @@ import java.util.stream.Stream
 import kotlin.reflect.KClass
 import kotlin.streams.toList
 
-abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F>) :
-  VerticalLayout() {
+abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F>) : VerticalLayout() {
   protected var grid: Grid<T>
   private val dataProvider = DataProvider.fromFilteringCallbacks(
-    ::fetchCallback,
-    ::countCallback
-  ).withConfigurableFilter()
+    ::fetchCallback, ::countCallback
+                                                                ).withConfigurableFilter()
 
   private fun fetchCallback(query: Query<T, F>?): Stream<T>? {
     val filter = query?.filter?.orElseGet(null) ?: return emptyList<T>().stream()
@@ -101,8 +99,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
       onLeftClick {
         val allItens = allItens()
         val multiSelect = multiSelect()
-        if (multiSelect.size == allItens.size)
-          grid.asMultiSelect().deselectAll()
+        if (multiSelect.size == allItens.size) grid.asMultiSelect().deselectAll()
         else grid.asMultiSelect().select(allItens)
       }
     }
@@ -123,10 +120,8 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
   protected abstract fun Grid<T>.gridConfig()
 
   fun Grid<T>.withEditor(
-    classBean: KClass<T>,
-    openEditor: (Binder<T>) -> Unit,
-    closeEditor: (Binder<T>) -> Unit
-  ) {
+    classBean: KClass<T>, openEditor: (Binder<T>) -> Unit, closeEditor: (Binder<T>) -> Unit
+                        ) {
     val binder = Binder(classBean.java)
     editor.binder = binder
     addItemDoubleClickListener { event ->
@@ -140,16 +135,15 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
       openEditor(binder)
       closeEditor(binder)
     }
-    element.addEventListener("keyup") { editor.cancel() }.filter =
-      "event.key === 'Escape' || event.key === 'Esc'"
+    element.addEventListener("keyup") { editor.cancel() }.filter = "event.key === 'Escape' || event.key === 'Esc'"
   }
 
   private fun <T : ILookup> comboFieldComponente(itens: () -> List<T>): ComboBox<T> {
     return ComboBox<T>().apply {
       this.setSizeFull()
       this.setDataProvider({ item: T, filterText: String ->
-        item.lookupValue.contains(filterText, ignoreCase = true)
-      }, ListDataProvider(itens()))
+                             item.lookupValue.contains(filterText, ignoreCase = true)
+                           }, ListDataProvider(itens()))
       this.setItemLabelGenerator { bean ->
         bean.lookupValue
       }
@@ -242,9 +236,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
   //***********************************************************************************************
   protected fun Column<T>.decimalFieldEditor(): Column<T> {
     val component = decimalFieldComponent()
-    grid.editor.binder.forField(component)
-      .withConverter(BigDecimalToDoubleConverter())
-      .bind(this.key)
+    grid.editor.binder.forField(component).withConverter(BigDecimalToDoubleConverter()).bind(this.key)
     this.editorComponent = component
     return this
   }
@@ -296,17 +288,15 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
 
 class BigDecimalToDoubleConverter : Converter<BigDecimal, Double> {
   override fun convertToPresentation(
-    value: Double?,
-    context: ValueContext?
-  ): BigDecimal {
+    value: Double?, context: ValueContext?
+                                    ): BigDecimal {
     value ?: return BigDecimal.valueOf(0.00)
     return BigDecimal.valueOf(value)
   }
 
   override fun convertToModel(
-    value: BigDecimal?,
-    context: ValueContext?
-  ): Result<Double> {
+    value: BigDecimal?, context: ValueContext?
+                             ): Result<Double> {
     return Result.ok(value?.toDouble() ?: 0.00)
   }
 }
