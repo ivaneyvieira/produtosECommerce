@@ -61,10 +61,12 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllCategoria(): List<Categoria> {
-    return query("""select categoriaNo, grupo, departamento, secao
+    return query(
+      """select categoriaNo, grupo, departamento, secao
       |             from produtoEcomerce.categoria
       |             order by categoriaNo
-      |             """.trimMargin(), Categoria::class)
+      |             """.trimMargin(), Categoria::class
+                )
   }
 
   fun addCategoria(categoria: Categoria) {
@@ -101,8 +103,10 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllMarca(): List<Marca> {
-    return query("""select marcaNo, name
-      |             from produtoEcomerce.marca""".trimMargin(), Marca::class)
+    return query(
+      """select marcaNo, name
+      |             from produtoEcomerce.marca""".trimMargin(), Marca::class
+                )
   }
 
   fun addMarca(marca: Marca) {
@@ -132,8 +136,10 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllBitola(): List<Bitola> {
-    return query("""select bitolaNo, name
-      |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class)
+    return query(
+      """select bitolaNo, name
+      |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class
+                )
   }
 
   fun addBitola(bitola: Bitola) {
@@ -164,8 +170,10 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
 
   /*Cores*/
   fun findAllCor(): List<GradeCor> {
-    return query("""select descricao, codigoCor, userno, dataHoraMudanca, enviado
-      |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class)
+    return query(
+      """select descricao, codigoCor, userno, dataHoraMudanca, enviado
+      |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class
+                )
   }
 
   fun addCor(cor: GradeCor) {
@@ -208,10 +216,12 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findCores(descricao: String?): List<GradeCor> {
-    return query("""select DISTINCT TRIM(UPPER(MID(TRIM(codigoCor), 1, 7))) AS codigoCor, TRIM(descricao) AS 
+    return query(
+      """select DISTINCT TRIM(UPPER(MID(TRIM(codigoCor), 1, 7))) AS codigoCor, TRIM(descricao) AS 
         descricao 
 from produtoEcomerce.gradeCor
-HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class)
+HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
+                )
   }
 
   private fun <R : Any> filtroProduto(
@@ -226,7 +236,7 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
       }
       addOptionalParameter("codigo", filter.codigo.toString().lpad(6, "0"))
       addOptionalParameter("listaProduto", listaProduto)
-      addOptionalParameter("listaProdutoVazia", if(listaProduto.isEmpty()) "S" else "N")
+      addOptionalParameter("listaProdutoVazia", if (listaProduto.isEmpty()) "S" else "N")
       addOptionalParameter("descricaoI", filter.descricaoI)
       addOptionalParameter("descricaoF", filter.descricaoF)
       addOptionalParameter("vendno", filter.fornecedor?.vendno ?: 0)

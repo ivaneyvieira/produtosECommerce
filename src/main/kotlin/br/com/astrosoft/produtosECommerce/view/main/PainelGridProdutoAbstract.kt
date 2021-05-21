@@ -18,10 +18,10 @@ import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.SortDirection
 
-@CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid") abstract class PainelGridProdutoAbstract(
+@CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
+abstract class PainelGridProdutoAbstract(
   val view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto,
-                                                                                                              ) :
-        PainelGrid<Produto, FiltroProduto>(serviceQuery) {
+                                        ) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
     val userSaci = AppConfig.userSaci as? UserSaci
@@ -57,13 +57,12 @@ import com.vaadin.flow.data.provider.SortDirection
           event.source.value = string.substring(0, maxLength)
         }
       }
-    }
-//    colBitola().comboFieldEditor {
-//      Bitola.findAll().sortedBy { it.lookupValue }
-//    }
+    } //    colBitola().comboFieldEditor {
+    //      Bitola.findAll().sortedBy { it.lookupValue }
+    //    }
     colGrade() //colCor()
     colGradeCompleta().colorPainelEditor()
-    colGradeAlternativa().textEditor(){
+    colGradeAlternativa().textEditor {
       this.placeholder = "Temperatura: 333K"
     }
     colCorPainel()

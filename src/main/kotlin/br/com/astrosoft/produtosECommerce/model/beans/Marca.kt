@@ -12,7 +12,7 @@ data class Marca(var marcaNo: Int = 0, var name: String = "") : Comparable<Marca
       addAll(local.findAllMarca())
     }
 
-    fun updateList(){
+    fun updateList() {
       listMarcas.clear()
       listMarcas.addAll(local.findAllMarca())
     }

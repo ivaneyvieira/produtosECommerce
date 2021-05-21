@@ -15,14 +15,11 @@ import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
 class PainelGridProdutoPromocaoBase(
-  val view: IProdutoPromocionalView,
-  serviceQuery: ServiceQueryProdutoPromocional
-) :
-  PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
+  val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional
+                                   ) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
   override fun gridPanel(
-    dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao,
-            Void, FiltroProdutosPromocional>
-  ): Grid<ProdutoPromocao> {
+    dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao, Void, FiltroProdutosPromocional>
+                        ): Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -61,7 +58,7 @@ class PainelGridProdutoPromocaoBase(
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
         temPromocao = null
-      )
+                                      )
     }
   }
 

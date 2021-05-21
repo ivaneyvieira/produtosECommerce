@@ -70,15 +70,17 @@ class PainelGridProdutoCorrecao(
       }
     }
 
-    override fun filtro() = FiltroProduto(codigo = 0,
-                                          listaProduto = edtListaProduto.value ?: "",
-                                          descricaoI = edtDescricaoI.value ?: "",
-                                          descricaoF = edtDescricaoF.value ?: "",
-                                          fornecedor = edtFornecedor.value,
-                                          type = edtTipo.value,
-                                          cl = edtCl.value,
-                                          categoria = edtCategoria.value,
-                                          editado = statusDefault())
+    override fun filtro() = FiltroProduto(
+      codigo = 0,
+      listaProduto = edtListaProduto.value ?: "",
+      descricaoI = edtDescricaoI.value ?: "",
+      descricaoF = edtDescricaoF.value ?: "",
+      fornecedor = edtFornecedor.value,
+      type = edtTipo.value,
+      cl = edtCl.value,
+      categoria = edtCategoria.value,
+      editado = statusDefault()
+                                         )
   }
 
   private fun filename(): String {

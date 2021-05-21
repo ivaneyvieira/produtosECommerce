@@ -19,17 +19,15 @@ class ProdutoPromocao(
   val saldo: Int,
   val promono: Int,
   val web: String
-) {
+                     ) {
 
   companion object {
     fun savePromocao(promocao: Promocao, list: List<ProdutoPromocao>) {
       val produtos = listCodigos(list)
       produtos.forEach { produto ->
         val price = list.firstOrNull { it.codigo == produto.codigo }?.precoPromo
-        if (price == null)
-          saci.removePromocao(produto.codigo, produto.grade)
-        else
-          saci.savePromocao(promocao, produto.codigo, produto.grade, price)
+        if (price == null) saci.removePromocao(produto.codigo, produto.grade)
+        else saci.savePromocao(promocao, produto.codigo, produto.grade, price)
       }
     }
 
@@ -72,4 +70,4 @@ data class FiltroProdutosPromocional(
   val tipo: Int,
   val codigo: String,
   val temPromocao: Boolean?
-)
+                                    )

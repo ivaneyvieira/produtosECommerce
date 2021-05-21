@@ -16,8 +16,7 @@ class CategoriaViewModel(view: ICategoriaView) : ViewModel<ICategoriaView>(view)
         val codigoGrupo = novoCodigoGrupo(categoria)
         val codigoDepartamento = novoCodigoDepartamento(categoria)
         val codigoSecao = novoCodigoSecao(categoria)
-        categoria.categoriaNo =
-          Categoria.makeCodigo(codigoGrupo, codigoDepartamento, codigoSecao).toIntOrNull() ?: 0
+        categoria.categoriaNo = Categoria.makeCodigo(codigoGrupo, codigoDepartamento, codigoSecao).toIntOrNull() ?: 0
       }
       Categoria.add(categoria)
     }
@@ -38,8 +37,7 @@ class CategoriaViewModel(view: ICategoriaView) : ViewModel<ICategoriaView>(view)
     else {
       val listDepartamento = Categoria.listDepartamento(categoria.grupo)
       val catList = listDepartamento.firstOrNull { it.departamento == categoria.departamento }
-      catList?.codigoDepartamento ?: (listDepartamento.map { it.codigoDepartamento }.maxOrNull()
-        ?: 0) + 1
+      catList?.codigoDepartamento ?: (listDepartamento.map { it.codigoDepartamento }.maxOrNull() ?: 0) + 1
     }
   }
 

@@ -46,21 +46,19 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   fun listaType(): List<TypePrd> {
     return query(
       "select no as typeno, name as typeName from sqldados.type group by no;", TypePrd::class
-    )
+                )
   }
 
   fun listaCl(): List<Cl> {
     return query(
-      "select CAST(LPAD(no, 6, '0') AS CHAR) as clno, name as clname from sqldados.cl group by no",
-      Cl::class
-    )
+      "select CAST(LPAD(no, 6, '0') AS CHAR) as clno, name as clname from sqldados.cl group by no", Cl::class
+                )
   }
 
   fun listaFornecedores(): List<Fornecedor> {
     return query(
-      "select no as vendno, name as fornecedor from sqldados.vend group by no",
-      Fornecedor::class
-    )
+      "select no as vendno, name as fornecedor from sqldados.vend group by no", Fornecedor::class
+                )
   }
 
   fun savePromocao(promocao: Promocao, prdno: String, grade: String, price: Double) {
@@ -83,28 +81,28 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   }
 
   fun <R : Any> filtroProdutosPromocional(
-    filtro: FiltroProdutosPromocional,
-    complemento: String,
-    result: (Query) -> R
-  ): R {
+    filtro: FiltroProdutosPromocional, complemento: String, result: (Query) -> R
+                                         ): R {
     val sql = "/sqlSaci/produtosPromocional.sql"
     val codigos = local.fetchProduto(
       FiltroProduto(editado = EEditor.ENVIADO), 0, Int.MAX_VALUE, emptyList()
-    ).map { it.codigo }.distinct().map { it.toIntOrNull().toString().lpad(16, " ") }
+                                    ).map { it.codigo }.distinct().map { it.toIntOrNull().toString().lpad(16, " ") }
     return querySerivce(sql, complemento, lambda = {
       addOptionalParameter("centroLucro", filtro.centroLucro)
       addOptionalParameter("fornecedor", filtro.fornecedor)
       addOptionalParameter("tipo", filtro.tipo)
-      addOptionalParameter("codigo", filtro.codigo)
-//      addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
+      addOptionalParameter(
+        "codigo",
+        filtro.codigo
+                          ) //      addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
       addOptionalParameter("codigos", codigos)
       addOptionalParameter(
         "promocao", when {
           filtro.temPromocao == null -> ""
-          filtro.temPromocao -> "S"
-          else -> "N"
+          filtro.temPromocao         -> "S"
+          else                       -> "N"
         }
-      )
+                          )
     }, result = result)
   }
 
@@ -116,14 +114,11 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   }
 
   fun fetchProduto(
-    filter: FiltroProdutosPromocional,
-    offset: Int,
-    limit: Int,
-    sortOrders: List<SortOrder>
-  ): List<ProdutoPromocao> {
+    filter: FiltroProdutosPromocional, offset: Int, limit: Int, sortOrders: List<SortOrder>
+                  ): List<ProdutoPromocao> {
     val orderBy = if (sortOrders.isEmpty()) "" else "ORDER BY " + sortOrders.joinToString(
       separator = ", "
-    ) { it.sql() }
+                                                                                         ) { it.sql() }
     val complemento = "SELECT * FROM T_RESULT $orderBy LIMIT $limit OFFSET $offset"
     return filtroProdutosPromocional(filter, complemento) {
       it.executeAndFetch(ProdutoPromocao::class.java)

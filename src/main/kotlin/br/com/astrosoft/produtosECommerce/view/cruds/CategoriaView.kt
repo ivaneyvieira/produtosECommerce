@@ -25,7 +25,6 @@ import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_ALIGN_RIGHT
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
-import com.vaadin.flow.data.provider.Query
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import org.claspina.confirmdialog.ConfirmDialog
@@ -39,8 +38,7 @@ import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.function.*
-import kotlin.streams.toList
+import java.util.function.Supplier
 
 @Route(layout = ProdutoECommerceLayout::class, value = "categoria")
 @PageTitle(TITLE)
@@ -62,11 +60,8 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
   private fun gridCrud(): GridCrud<Categoria> {
     val crud: GridCrud<Categoria> = GridCrud(Categoria::class.java, HorizontalSplitCrudLayout())
     crud.grid.setColumns(
-      Categoria::categoriaNo.name,
-      Categoria::grupo.name,
-      Categoria::departamento.name,
-      Categoria::secao.name
-    )
+      Categoria::categoriaNo.name, Categoria::grupo.name, Categoria::departamento.name, Categoria::secao.name
+                        )
     crud.grid.getColumnBy(Categoria::categoriaNo).apply {
       this.setHeader("Número")
       this.setTextAlign(ColumnTextAlign.END)
@@ -87,9 +82,9 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
 
   private fun setOperation(crud: GridCrud<Categoria>) {
     crud.setOperations({ viewModel.findAll() },
-      { user: Categoria -> viewModel.add(user) },
-      { user: Categoria? -> viewModel.update(user) },
-      { user: Categoria? -> viewModel.delete(user) })
+                       { user: Categoria -> viewModel.add(user) },
+                       { user: Categoria? -> viewModel.update(user) },
+                       { user: Categoria? -> viewModel.delete(user) })
   }
 
   inner class CategoriaCrudFormFactory : AbstractCrudFormFactory<Categoria>() {
@@ -105,7 +100,7 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
       readOnly: Boolean,
       cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
       operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-    ): Component {
+                             ): Component {
       val binder = Binder<Categoria>(Categoria::class.java)
       return VerticalLayout().apply {
         isSpacing = false
@@ -188,9 +183,7 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
     override fun buildCaption(operation: CrudOperation?, domainObject: Categoria?) = null
 
     override fun showError(operation: CrudOperation?, e: Exception?) {
-      ConfirmDialog.createError()
-        .withCaption("Erro do aplicativo")
-        .withMessage(e?.message ?: "Erro desconhecido")
+      ConfirmDialog.createError().withCaption("Erro do aplicativo").withMessage(e?.message ?: "Erro desconhecido")
         .open()
     }
 

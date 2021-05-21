@@ -14,7 +14,6 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.icon.VaadinIcon.*
-import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
@@ -22,9 +21,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class PainelGridProdutoEnviado(
-  view: IProdutosEComerceView,
-  serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
+  view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
+                              ) : PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = ENVIADO
 
   override fun filterBar() = FilterBarEnviado()
@@ -83,7 +81,7 @@ class PainelGridProdutoEnviado(
 
     override fun filtro() = FiltroProduto(
       codigo = 0,
-      listaProduto= edtCodigo.value ?: "",
+      listaProduto = edtCodigo.value ?: "",
       descricaoI = edtDescricaoI.value ?: "",
       descricaoF = edtDescricaoF.value ?: "",
       fornecedor = edtFornecedor.value,
@@ -91,7 +89,7 @@ class PainelGridProdutoEnviado(
       cl = edtCl.value,
       categoria = edtCategoria.value,
       editado = statusDefault()
-    )
+                                         )
   }
 
   private fun filename(): String {

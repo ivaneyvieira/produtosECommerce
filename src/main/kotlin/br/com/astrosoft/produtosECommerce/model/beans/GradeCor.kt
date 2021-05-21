@@ -11,7 +11,7 @@ class GradeCor(
   var userno: Int? = 0,
   var dataHoraMudanca: LocalDateTime? = LocalDateTime.now(),
   var enviado: Int? = 0
-) {
+              ) {
   var descricaoOriginal: String = ""
   var enviadoBool: Boolean?
     get() = enviado != 0

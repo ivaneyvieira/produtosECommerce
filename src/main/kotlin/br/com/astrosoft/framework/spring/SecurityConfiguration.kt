@@ -13,38 +13,20 @@ import org.springframework.security.web.util.matcher.RequestMatcher
 @EnableWebSecurity
 @Configuration
 class SecurityConfiguration : WebSecurityConfigurerAdapter() {
-  @Throws(Exception::class)
-  override fun configure(http: HttpSecurity) {
-    http.csrf()
-      .disable()
-      .requestCache()
-      .requestCache(CustomRequestCache())
-      .and()
-      .authorizeRequests()
+  @Throws(Exception::class) override fun configure(http: HttpSecurity) {
+    http.csrf().disable().requestCache().requestCache(CustomRequestCache()).and().authorizeRequests()
       .requestMatchers(RequestMatcher { request ->
         SecurityUtils.isFrameworkInternalRequest(request)
-      })
-      .permitAll()
-      .anyRequest()
-      .authenticated()
-      .and()
-      .formLogin()
-      .loginPage(LOGIN_URL)
-      .permitAll()
-      .loginProcessingUrl(LOGIN_PROCESSING_URL)
-      .failureUrl(LOGIN_FAILURE_URL)
-      .and()
-      .logout()
+      }).permitAll().anyRequest().authenticated().and().formLogin().loginPage(LOGIN_URL).permitAll()
+      .loginProcessingUrl(LOGIN_PROCESSING_URL).failureUrl(LOGIN_FAILURE_URL).and().logout()
       .logoutSuccessUrl(LOGOUT_SUCCESS_URL)
   }
 
-  @Bean
-  public override fun userDetailsService(): UserDetailsService {
+  @Bean public override fun userDetailsService(): UserDetailsService {
     return UserSaciDetailsService()
   }
 
-  @Bean
-  fun passwordEncoder(): PasswordEncoder? {
+  @Bean fun passwordEncoder(): PasswordEncoder? {
     return passwordNoEncoder
   }
 
@@ -60,7 +42,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
       "/images/**",
       "/styles/**",
       "/h2-console/**"
-    )
+                              )
   }
 
   companion object {
@@ -74,6 +56,5 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
 class PasswordNoEncoder : PasswordEncoder {
   override fun encode(rawPassword: CharSequence?) = rawPassword?.toString()
-  override fun matches(rawPassword: CharSequence?, encodedPassword: String?) =
-    rawPassword.toString() == encodedPassword
+  override fun matches(rawPassword: CharSequence?, encodedPassword: String?) = rawPassword.toString() == encodedPassword
 }

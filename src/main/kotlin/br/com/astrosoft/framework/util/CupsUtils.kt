@@ -21,8 +21,7 @@ object CupsUtils {
     return printers.firstOrNull { it.name == printerName }
   }
 
-  @Throws(ECupsPrinter::class)
-  fun CupsPrinter.printText(text: String, resultMsg: (String) -> Unit = {}) {
+  @Throws(ECupsPrinter::class) fun CupsPrinter.printText(text: String, resultMsg: (String) -> Unit = {}) {
     val job = PrintJob.Builder(text.toByteArray()).build()
     try {
       val result = print(job)
@@ -36,8 +35,7 @@ object CupsUtils {
     printText(etiqueta)
   }
 
-  @Throws(ECupsPrinter::class)
-  fun printCups(impressora: String, text: String, resultMsg: (String) -> Unit = {}) {
+  @Throws(ECupsPrinter::class) fun printCups(impressora: String, text: String, resultMsg: (String) -> Unit = {}) {
     val printer = findPrinter(impressora)
       ?: throw ECupsPrinter("Impressora $impressora não está configurada no sistema operacional")
     printer.printText(text, resultMsg)

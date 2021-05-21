@@ -7,8 +7,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.FiltroProdutosPromocional
 import br.com.astrosoft.produtosECommerce.model.beans.ProdutoPromocao
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoPromocional
 
-class ProdutoPromocionalViewModel(view: IProdutoPromocionalView) :
-  ViewModel<IProdutoPromocionalView>(view) {
+class ProdutoPromocionalViewModel(view: IProdutoPromocionalView) : ViewModel<IProdutoPromocionalView>(view) {
   fun serviceQueryProdutoPromocional() = ServiceQueryProdutoPromocional()
 
   fun savePromocao(list: List<ProdutoPromocao>) = exec {

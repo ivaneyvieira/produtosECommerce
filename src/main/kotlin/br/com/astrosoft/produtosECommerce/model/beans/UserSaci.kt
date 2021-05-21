@@ -12,7 +12,7 @@ class UserSaci(
   var storeno: Int = 0,
   override var senha: String = "",
   var bitAcesso: Int = 0
-) : IUser {
+              ) : IUser {
 
   override fun roles(): List<String> {
     val roles = if (admin) listOf("ADMIN") else listOf("USER")
@@ -31,7 +31,7 @@ class UserSaci(
 
   companion object {
     fun findAllAtivos(): List<UserSaci> {
-      return saci.findAllUser().filter { it.ativo == true}
+      return saci.findAllUser().filter { it.ativo == true }
     }
 
     fun findAllUser(): List<UserSaci> {
@@ -49,7 +49,6 @@ class UserSaci(
 }
 
 
-
 class DelegateAuthorized(numBit: Int) {
   private val bit = 2.toDouble().pow(numBit).toInt()
 
@@ -62,7 +61,7 @@ class DelegateAuthorized(numBit: Int) {
     thisRef ?: return
     val v = value ?: false
     thisRef.bitAcesso = when {
-      v -> thisRef.bitAcesso or bit
+      v    -> thisRef.bitAcesso or bit
       else -> thisRef.bitAcesso and bit.inv()
     }
   }

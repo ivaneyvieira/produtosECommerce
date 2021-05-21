@@ -3,7 +3,7 @@ package br.com.astrosoft.framework.view
 import com.github.mvysny.karibudsl.v10.content
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 
-abstract class FilterBar<F: Any> : HorizontalLayout() {
+abstract class FilterBar<F : Any> : HorizontalLayout() {
   init {
     isMargin = false
     isPadding = false
@@ -19,7 +19,7 @@ abstract class FilterBar<F: Any> : HorizontalLayout() {
 
   protected abstract fun FilterBar<F>.contentBlock()
 
-  abstract fun filtro() : F
+  abstract fun filtro(): F
 }
 
 

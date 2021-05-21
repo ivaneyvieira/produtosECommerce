@@ -12,7 +12,6 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
@@ -22,9 +21,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class PainelGridProdutoEditar(
-  view: IProdutosEComerceView,
-  serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
+  view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
+                             ) : PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = EDITAR
 
   override fun filterBar() = FilterBarEditar()
@@ -91,7 +89,7 @@ class PainelGridProdutoEditar(
       cl = edtCl.value,
       categoria = edtCategoria.value,
       editado = statusDefault()
-    )
+                                         )
   }
 
   private fun filename(): String {
