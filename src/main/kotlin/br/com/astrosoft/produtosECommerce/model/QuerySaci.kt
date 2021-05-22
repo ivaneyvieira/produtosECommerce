@@ -92,8 +92,7 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
       addOptionalParameter("fornecedor", filtro.fornecedor)
       addOptionalParameter("tipo", filtro.tipo)
       addOptionalParameter(
-        "codigo",
-        filtro.codigo
+        "codigo", filtro.codigo
                           ) //      addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
       addOptionalParameter("codigos", codigos)
       addOptionalParameter(
