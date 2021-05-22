@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 public class DetectFormat {
+	/*
 	public static void main(String[] args) throws IOException, URISyntaxException {
 		DetectFormat detectFormat = new DetectFormat();
 		String urlLink = "https://images-shoptime.b2w" +
@@ -24,7 +25,7 @@ public class DetectFormat {
 		String format = detectFormat.getImageFileExtFromUrl(new URL(urlLink));
 		System.out.println(format);
 	}
-
+*/
 	public String getImageFileExtFromUrl(URL urlObject) throws URISyntaxException, IOException {
 		System.out.println("IN DOWNLOAD FILE FROM URL METHOD");
 		String tmpFolder = System.getProperty("java.io.tmpdir");

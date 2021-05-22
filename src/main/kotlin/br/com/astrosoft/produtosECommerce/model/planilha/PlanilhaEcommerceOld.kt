@@ -71,17 +71,17 @@ class PlanilhaEcommerceOld {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
         listaProdutos.filter { it.grade == "" }.sortedBy { it.codigo + it.grade }.forEach { produto ->
-            val valores = campos.map { it.produceVakue(produto) }
-            row(valores, rowStyle)
-          }
+          val valores = campos.map { it.produceVakue(produto) }
+          row(valores, rowStyle)
+        }
       }
       val stComGrade = sheet("Produtos Com Grade") {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
         listaProdutos.filter { it.grade != "" }.sortedBy { it.codigo + it.grade }.forEach { produto ->
-            val valores = campos.map { it.produceVakue(produto) }
-            row(valores, rowStyle)
-          }
+          val valores = campos.map { it.produceVakue(produto) }
+          row(valores, rowStyle)
+        }
       }
       campos.forEachIndexed { index, _ ->
         stSemGrade.autoSizeColumn(index)

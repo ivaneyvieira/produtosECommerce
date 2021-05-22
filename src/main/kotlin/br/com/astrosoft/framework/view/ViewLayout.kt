@@ -74,8 +74,8 @@ abstract class ViewLayout<VM : ViewModel<*>> : VerticalLayout(), IView, BeforeLe
 
   private fun showQuestion(msg: String, execYes: () -> Unit, execNo: () -> Unit) {
     ConfirmDialog.createQuestion().withCaption("Confirmação").withMessage(msg).withYesButton(Runnable {
-        execYes()
-      }, caption("Sim")).withNoButton(Runnable { execNo() }, caption("Não")).open()
+      execYes()
+    }, caption("Sim")).withNoButton(Runnable { execNo() }, caption("Não")).open()
   }
 
   override fun beforeLeave(event: BeforeLeaveEvent?) {
