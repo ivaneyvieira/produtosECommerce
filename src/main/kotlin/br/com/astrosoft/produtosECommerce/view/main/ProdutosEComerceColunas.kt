@@ -44,6 +44,7 @@ fun Grid<Produto>.colMarca() = addColumnBean(Produto::marcaBean) {
   setHeader("Marca")
   isAutoWidth = false
   width = "20em"
+  setSortProperty("marcaNome")
 }
 
 fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
@@ -94,6 +95,7 @@ fun Grid<Produto>.colCategoria() = addColumnBean(Produto::categoriaBean) {
   setHeader("Categoria")
   isAutoWidth = false
   width = "20em"
+  setSortProperty("categoriaNome")
 }
 
 fun Grid<Produto>.colDescricaoCompleta() = addColumnString(Produto::descricaoCompleta) {
