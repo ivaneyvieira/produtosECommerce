@@ -9,10 +9,22 @@ SELECT codigo,
        fornecedor,
        typeno,
        typeName,
-       IFNULL(clno, '') AS clno,
+       IFNULL(clno, '')   AS clno,
        clname,
        marca,
+       IFNULL(M.name, '') AS marcaNome,
        categoria,
+       CASE
+	 WHEN C.categoriaNo IS NULL
+	   THEN ''
+	 WHEN C.grupo = ''
+	   THEN ''
+	 WHEN C.departamento = ''
+	   THEN C.grupo
+	 WHEN C.secao = ''
+	   THEN CAST(CONCAT(C.grupo, '/', C.departamento) AS CHAR)
+	 ELSE CAST(CONCAT(C.grupo, '/', C.departamento, '/', C.secao) AS CHAR)
+       END                AS categoriaNome,
        descricaoCompleta,
        bitola,
        imagem,
@@ -23,15 +35,19 @@ SELECT codigo,
        textLink,
        especificacoes,
        precoCheio,
-       IFNULL(ncm, '')  AS ncm,
+       IFNULL(ncm, '')    AS ncm,
        cor,
-       'simples'        AS variacao,
-       corStr           AS corStr,
+       'simples'          AS variacao,
+       corStr             AS corStr,
        P.dataHoraMudanca,
        P.userno,
        modificado,
        gradeAlternativa
-FROM produtoEcomerce.produto AS P
+FROM produtoEcomerce.produto          AS P
+  LEFT JOIN produtoEcomerce.marca     AS M
+	      ON P.marca = M.marcaNo
+  LEFT JOIN produtoEcomerce.categoria AS C
+	      ON P.categoria = C.categoriaNo
 WHERE (codigo = :codigo OR :codigo = 0)
   AND P.descricao BETWEEN RPAD(:descricaoI, 37, ' ') AND RPAD(:descricaoF, 37, 'Z')
   AND (vendno = :vendno OR :vendno = 0)
