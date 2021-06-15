@@ -3,8 +3,7 @@ package br.com.astrosoft.produtosECommerce.view.main
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.CORRECAO
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.EDITADO
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.getColumnBy
@@ -42,10 +41,14 @@ abstract class PainelGridProdutoAbstract(
       }
     }
     colSequencial() //if (statusDefault() == ENVIADO) colModificado()
-    if (statusDefault() == CORRECAO) colUsuario()
+    if (statusDefault() == CORRECAO) {
+      colUsuario()
+    }
     colDataHoraMudanca()
     colCodigo()
-    if (statusDefault() == EDITADO) colFornecedor()
+    if (statusDefault() in listOf(EDITADO, ENVIAR)) {
+      colFornecedor()
+    }
     colBarcode()
     colDescricao()
     colDescricaoCompleta().textAreaEditor {
@@ -82,7 +85,9 @@ abstract class PainelGridProdutoAbstract(
     colLargura().decimalFieldEditor()
     colComprimento().decimalFieldEditor()
 
-    if (statusDefault() == EDITADO) colUsuario()
+    if (statusDefault() == EDITADO) {
+      colUsuario()
+    }
 
     this.sort(listOf(GridSortOrder(getColumnBy(Produto::descricao), SortDirection.ASCENDING)))
     this.setClassNameGenerator {
