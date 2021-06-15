@@ -46,9 +46,6 @@ abstract class PainelGridProdutoAbstract(
     }
     colDataHoraMudanca()
     colCodigo()
-    if (statusDefault() in listOf(EDITADO, ENVIAR)) {
-      colFornecedor()
-    }
     colBarcode()
     colDescricao()
     colDescricaoCompleta().textAreaEditor {
@@ -60,15 +57,16 @@ abstract class PainelGridProdutoAbstract(
           event.source.value = string.substring(0, maxLength)
         }
       }
-    } //    colBitola().comboFieldEditor {
-    //      Bitola.findAll().sortedBy { it.lookupValue }
-    //    }
-    colGrade() //colCor()
+    }
+    colGrade()
     colGradeCompleta().colorPainelEditor()
     colGradeAlternativa().textEditor {
       this.placeholder = "Temperatura: 333K"
     }
     colCorPainel()
+    if (statusDefault() in listOf(EDITADO, ENVIAR)) {
+      colFornecedor()
+    }
     colMarca().comboFieldEditor {
       Marca.findAll().sortedBy { it.lookupValue }
     }
