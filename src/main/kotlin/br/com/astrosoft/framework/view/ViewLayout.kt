@@ -120,6 +120,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnString(
     value1.compareTo(value2)
   }
   column.isAutoWidth = true
+
   column.left()
   column.block()
   return column
@@ -151,6 +152,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnLocalDate(
     property, renderer = LocalDateRenderer(property, "dd/MM/yyyy")
                                 ) //column.width = "8em"
   column.isAutoWidth = true
+
   column.left()
 
   column.setComparator { o1, o2 ->
@@ -170,6 +172,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnLocalDateTime(
     property, renderer = LocalDateTimeRenderer(property, "dd/MM/yyyy hh:mm:ss")
                                 ) //column.width = "8em"
   column.isAutoWidth = true
+
   column.left()
   column.setComparator { a, b ->
     val dataA = property.get(a) ?: LocalDateTime.MIN

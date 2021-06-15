@@ -24,37 +24,45 @@ import com.vaadin.flow.data.value.ValueChangeMode.TIMEOUT
 
 fun Grid<Produto>.colCodigo() = addColumnString(Produto::codigo) {
   setHeader("Código")
+  isResizable = true
 }
 
 fun Grid<Produto>.colGrade() = addColumnString(Produto::grade) {
   setHeader("Grade")
   isAutoWidth = false
+  isResizable = true
   width = "10em"
 }
 
 fun Grid<Produto>.colBarcode() = addColumnString(Produto::barcode) {
   setHeader("Código de barras")
+  isResizable = true
 }
 
 fun Grid<Produto>.colDescricao() = addColumnString(Produto::descricao) {
   setHeader("Descrição")
+  isResizable = true
 }
 
 fun Grid<Produto>.colMarca() = addColumnBean(Produto::marcaBean) {
   setHeader("Marca")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
   setSortProperty("marcaNome")
 }
 
 fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
   setHeader("Fornecedor")
+  isAutoWidth = true
+  isResizable = true
 }
 
 fun Grid<Produto>.colCor() = addColumnString(Produto::corStr) {
   setHeader("Codigo Cor")
-  isAutoWidth = false
-  width = "8em"
+  isAutoWidth = true
+  isResizable = true
+  //width = "8em"
 }
 
 fun Grid<Produto>.colCorPainel() {
@@ -79,21 +87,25 @@ fun Grid<Produto>.colCorPainel() {
   }).apply {
     setHeader("Cor")
     isAutoWidth = false
+    isResizable = true
     width = "10em"
   }
 }
 
 fun Grid<Produto>.colTipo() = addColumnString(Produto::typeName) {
   setHeader("Tipo")
+  isResizable = true
 }
 
 fun Grid<Produto>.colCl() = addColumnString(Produto::clname) {
   setHeader("Cl")
+  isResizable = true
 }
 
 fun Grid<Produto>.colCategoria() = addColumnBean(Produto::categoriaBean) {
   setHeader("Categoria")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
   setSortProperty("categoriaNome")
 }
@@ -101,76 +113,91 @@ fun Grid<Produto>.colCategoria() = addColumnBean(Produto::categoriaBean) {
 fun Grid<Produto>.colDescricaoCompleta() = addColumnString(Produto::descricaoCompleta) {
   setHeader("Descrição Completa")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
 }
 
 fun Grid<Produto>.colGradeCompleta() = addColumnString(Produto::gradeCompleta) {
   setHeader("Grade Completa")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
 }
 
 fun Grid<Produto>.colTexLink() = addColumnString(Produto::textLink) {
   setHeader("Nome TextLink")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
 }
 
 fun Grid<Produto>.colEspecificacoes() = addColumnString(Produto::especificacoes) {
   setHeader("Especificacoes")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
 }
 
 fun Grid<Produto>.colBitola() = addColumnBean(Produto::bitolaBean) {
   setHeader("Bitola")
   isAutoWidth = false
+  isResizable = true
   width = "10em"
 }
 
 fun Grid<Produto>.colGradeAlternativa() = addColumnString(Produto::gradeAlternativa) {
   setHeader("Grade Alternativa")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
 }
 
 fun Grid<Produto>.colImagem() = addColumnString(Produto::imagem) {
   setHeader("Imagem")
   isAutoWidth = false
+  isResizable = true
   width = "20em"
 }
 
 fun Grid<Produto>.colPeso() = addColumnDouble(Produto::peso) {
   setHeader("Peso (kg)")
+  isResizable = true
 }
 
 fun Grid<Produto>.colAltura() = addColumnDouble(Produto::altura) {
   setHeader("Altura (cm)")
+  isResizable = true
 }
 
 fun Grid<Produto>.colComprimento() = addColumnDouble(Produto::comprimento) {
   setHeader("Comprimento (cm)")
+  isResizable = true
 }
 
 fun Grid<Produto>.colUsuario() = addColumnString(Produto::userName) {
   setHeader("Usuario")
+  isResizable = true
 }
 
 fun Grid<Produto>.colModificado() = addColumnString(Produto::modificado) {
   setHeader("M")
+  isResizable = true
 }
 
 fun Grid<Produto>.colLargura() = addColumnDouble(Produto::largura) {
   setHeader("Largura (cm)")
+  isResizable = true
 }
 
 fun Grid<Produto>.colDataHoraMudanca() = addColumnLocalDateTime(Produto::dataHoraMudanca) {
   setHeader("Data Hora")
+  isResizable = true
 }
 
 fun Grid<Produto>.colSequencial() = addColumnInt(Produto::seq) {
   setHeader("Seq")
   isAutoWidth = false
+  isResizable = true
   width = "4em"
 }
 
