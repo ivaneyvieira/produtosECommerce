@@ -7,6 +7,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 import java.time.LocalDateTime
+import kotlin.concurrent.thread
 
 class Produto(
   val seq: Int,
@@ -260,6 +261,22 @@ class Produto(
       bean.textLink = bean.descricaoCompleta?.normalize("-")
       local.salvaProduto(bean)
     }
+
+    private var datahoraUpdate = LocalDateTime.now().minusDays(1)
+
+    fun updateProduto() {
+      val agora = LocalDateTime.now()
+      if (agora > datahoraUpdate.plusHours(5)) {
+        thread {
+          saci.updateProdutos()
+          datahoraUpdate = agora
+        }
+      }
+    }
+
+    init {
+      updateProduto()
+    }
   }
 }
 
@@ -285,7 +302,6 @@ enum class EVariacao(val descricao: String) {
 }
 
 fun List<Produto>.explodeGrade(): List<Produto> {
-  this.distinctBy {}
   val comVariacao = this.distinctBy { it.codigo }.map { it.copy(COM_VARIACAO) }
   val variacao = this.map { it.copy(VARIACAO) }
   return comVariacao + variacao

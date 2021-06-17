@@ -3,6 +3,7 @@ package br.com.astrosoft.produtosECommerce.model
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
+import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import org.sql2o.Query
@@ -11,10 +12,9 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   fun findUser(login: String?): List<UserSaci> {
     login ?: return emptyList()
     val sql = "/sqlSaci/userSenha.sql"
-    val list = query(sql, UserSaci::class) {
+    return query(sql, UserSaci::class) {
       addParameter("login", login)
     }
-    return list
   }
 
   fun findAllUser(): List<UserSaci> {
@@ -127,6 +127,40 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   fun findPromocoesViergentes(): List<Promocao> {
     val sql = "/sqlSaci/promocoesVirgentes.sql"
     return query(sql, Promocao::class)
+  }
+
+  private fun findProdutosSaci(): List<ProdutoSaci> {
+    val sql = "/sqlSaci/produtoSaci.sql"
+    return query(sql, ProdutoSaci::class)
+  }
+
+  fun updateProdutos() {
+    val produtoSaci = findProdutosSaci()
+    val sql = "/sqlSaci/updateProduto.sql"
+
+    SystemUtils.readFile(sql)?.let { sqlUpdate ->
+      sql2o.beginTransaction().use { con ->
+        val query = con.createQuery(sqlUpdate)
+        produtoSaci.forEach { produtos ->
+          query.addOptionalParameter("codigo", produtos.codigo)
+          query.addOptionalParameter("grade", produtos.grade)
+          query.addOptionalParameter("barcode", produtos.barcode)
+          query.addOptionalParameter("descricao", produtos.descricao)
+          query.addOptionalParameter("vendno", produtos.vendno)
+          query.addOptionalParameter("fornecedor", produtos.fornecedor)
+          query.addOptionalParameter("typeno", produtos.typeno)
+          query.addOptionalParameter("typeName", produtos.typeName)
+          query.addOptionalParameter("clno", produtos.clno)
+          query.addOptionalParameter("clname", produtos.clname)
+          query.addOptionalParameter("precoCheio", produtos.precoCheio)
+          query.addOptionalParameter("ncm", produtos.ncm)
+        }
+        query.executeBatch()
+        print(".")
+        con.commit()
+      }
+    }
+
   }
 
   companion object {
