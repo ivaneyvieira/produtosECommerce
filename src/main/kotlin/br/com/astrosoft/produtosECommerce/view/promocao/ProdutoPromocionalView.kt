@@ -6,14 +6,18 @@ import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroProdutosPromocional
 import br.com.astrosoft.produtosECommerce.model.beans.ProdutoPromocao
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
+import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
 import br.com.astrosoft.produtosECommerce.viewmodel.ProdutoPromocionalViewModel
 import com.github.mvysny.karibudsl.v10.TabSheet
 import com.github.mvysny.karibudsl.v10.tabSheet
+import com.vaadin.flow.component.dependency.HtmlImport
+import com.vaadin.flow.router.PageTitle
+import com.vaadin.flow.router.Route
 
-//@Route(layout = ProdutoECommerceLayout::class, value = "promocao")
-//@PageTitle("Promoção")
-//@HtmlImport("frontend://styles/shared-styles.html")
+@Route(layout = ProdutoECommerceLayout::class, value = "promocao")
+@PageTitle("Promoção")
+@HtmlImport("frontend://styles/shared-styles.html")
 class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdutoPromocionalView {
   private var tabMain: TabSheet
   override val viewModel: ProdutoPromocionalViewModel = ProdutoPromocionalViewModel(this)

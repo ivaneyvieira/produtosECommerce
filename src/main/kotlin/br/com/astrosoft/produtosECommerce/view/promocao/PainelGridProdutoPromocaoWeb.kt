@@ -9,13 +9,8 @@ import br.com.astrosoft.produtosECommerce.view.main.codigoField
 import br.com.astrosoft.produtosECommerce.view.main.fornecedorField
 import br.com.astrosoft.produtosECommerce.view.main.tipoField
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
-import com.github.mvysny.karibudsl.v10.button
-import com.github.mvysny.karibudsl.v10.onLeftClick
-import com.github.mvysny.karibudsl.v10.tooltip
-import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.icon.VaadinIcon.MONEY_DEPOSIT
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
@@ -39,13 +34,13 @@ class PainelGridProdutoPromocaoWeb(
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProdutosPromocional>.contentBlock() {
-      this.selectAll()
+      this.selectAll()/*
       button {
         icon = MONEY_DEPOSIT.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)
         onLeftClick { view.removePromocao(multiSelect()) }
         this.tooltip = "Remover os preços promocionais"
-      }
+      }*/
 
       edtCodigo = codigoField {
         addValueChangeListener { updateGrid() }

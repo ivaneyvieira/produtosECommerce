@@ -7,6 +7,7 @@ import br.com.astrosoft.produtosECommerce.view.cruds.CategoriaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CorView
 import br.com.astrosoft.produtosECommerce.view.cruds.MarcaView
 import br.com.astrosoft.produtosECommerce.view.main.ProdutosEComerceView
+import br.com.astrosoft.produtosECommerce.view.promocao.ProdutoPromocionalView
 import br.com.astrosoft.produtosECommerce.view.user.UsuarioView
 import com.github.mvysny.karibudsl.v10.anchor
 import com.github.mvysny.karibudsl.v10.drawer
@@ -58,14 +59,12 @@ class ProdutoECommerceLayout : AppLayout() {
         if (user?.produto == true) tab {
           this.icon(FORM)
           routerLink(text = "Produtos", viewType = ProdutosEComerceView::class)
-        }/*
+        }
         if (user?.admin == true)
           tab {
             this.icon(MONEY)
             routerLink(text = "Promoções", viewType = ProdutoPromocionalView::class)
           }
-
-         */
         if (user?.categoria == true) tab {
           this.icon(CUBES)
           routerLink(text = "Categoria", viewType = CategoriaView::class)
