@@ -18,7 +18,7 @@ class ProdutoPromocionalViewModel(view: IProdutoPromocionalView) : ViewModel<IPr
     view.updateGridPromocaoSaci()
   }
 
-  fun removePromocao(list: List<ProdutoPromocao>) {
+  fun removePromocao(list: List<ProdutoPromocao>) = exec {
     list.ifEmpty { fail("Não há nenhum produto selecionado") }
     ProdutoPromocao.removePromocao(list)
     view.updateGridPromocaoWeb()
