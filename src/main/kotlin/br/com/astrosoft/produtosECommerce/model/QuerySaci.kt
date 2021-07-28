@@ -7,6 +7,7 @@ import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import org.sql2o.Query
+import kotlin.math.roundToInt
 
 class QuerySaci : QueryDB("saci", driver, url, username, password) {
   fun findUser(login: String?): List<UserSaci> {
@@ -68,7 +69,7 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
       addOptionalParameter("promo", promono)
       addOptionalParameter("prdno", prdno.toIntOrNull() ?: 0)
       addOptionalParameter("grade", grade)
-      addOptionalParameter("price", (price * 100).toInt())
+      addOptionalParameter("price", (price * 100).roundToInt())
     }
   }
 
