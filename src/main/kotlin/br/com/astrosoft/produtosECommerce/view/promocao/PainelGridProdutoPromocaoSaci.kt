@@ -6,8 +6,13 @@ import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoPromocional
 import br.com.astrosoft.produtosECommerce.view.main.*
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
+import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.github.mvysny.karibudsl.v10.tooltip
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
@@ -34,7 +39,7 @@ class PainelGridProdutoPromocaoSaci(
     override fun FilterBar<FiltroProdutosPromocional>.contentBlock() {
       this.selectAll()
       button {
-        icon = MONEY_WITHDRAW.create()
+        icon = VaadinIcon.MONEY_WITHDRAW.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)
         onLeftClick { view.savePromocao(multiSelect()) }
         this.tooltip = "Adicionar os preços promocionais"
