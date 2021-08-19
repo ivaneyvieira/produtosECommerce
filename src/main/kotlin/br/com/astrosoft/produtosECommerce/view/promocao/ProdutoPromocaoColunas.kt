@@ -26,7 +26,7 @@ fun Grid<ProdutoPromocao>.colDescricao() = addColumnString(ProdutoPromocao::desc
 }
 
 fun Grid<ProdutoPromocao>.colValidade() = addColumnLocalDate(ProdutoPromocao::validade) {
-  setHeader("Validação")
+  setHeader("Validade")
 }
 
 fun Grid<ProdutoPromocao>.colPrecoRef() = addColumnDouble(ProdutoPromocao::precoRef) {
