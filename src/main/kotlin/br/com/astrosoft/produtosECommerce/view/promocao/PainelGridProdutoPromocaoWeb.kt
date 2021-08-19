@@ -3,6 +3,8 @@ package br.com.astrosoft.produtosECommerce.view.promocao
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceParcial
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaPromocao
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoPromocional
 import br.com.astrosoft.produtosECommerce.view.main.clField
 import br.com.astrosoft.produtosECommerce.view.main.codigoField
@@ -12,6 +14,7 @@ import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.github.mvysny.karibudsl.v10.tooltip
+import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
@@ -19,6 +22,10 @@ import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.icon.VaadinIcon.*
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import org.vaadin.stefan.LazyDownloadButton
+import java.io.ByteArrayInputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PainelGridProdutoPromocaoWeb(
   val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional
@@ -47,6 +54,8 @@ class PainelGridProdutoPromocaoWeb(
         onLeftClick { view.removePromocao(multiSelect()) }
         this.tooltip = "Remover os preços promocionais"
       }
+
+      this.downloadExcel()
 
       edtCodigo = codigoField {
         addValueChangeListener { updateGrid() }
@@ -90,5 +99,23 @@ class PainelGridProdutoPromocaoWeb(
     colTipo()
     colCentLucro()
     colSaldo()
+  }
+
+  private fun filename(): String {
+    val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
+    val textTime = LocalDateTime.now().format(sdf)
+    val filename = "planilha$textTime.xlsx"
+    return filename
+  }
+
+  private fun HasComponents.downloadExcel() {
+    val button = LazyDownloadButton(TABLE.create(), { filename() }, {
+      val planilha = PlanilhaPromocao()
+      val bytes = planilha.grava(allItens())
+      ByteArrayInputStream(bytes)
+    })
+    button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    add(button)
   }
 }
