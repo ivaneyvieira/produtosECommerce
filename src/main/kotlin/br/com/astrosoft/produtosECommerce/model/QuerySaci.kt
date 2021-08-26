@@ -114,7 +114,10 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   }
 
   fun fetchProduto(
-    filter: FiltroProdutosPromocional, offset: Int, limit: Int, sortOrders: List<SortOrder>
+    filter: FiltroProdutosPromocional,
+    offset: Int,
+    limit: Int,
+    sortOrders: List<SortOrder>
                   ): List<ProdutoPromocao> {
     val orderBy = if (sortOrders.isEmpty()) "" else "ORDER BY " + sortOrders.joinToString(
       separator = ", "

@@ -21,18 +21,21 @@ DROP TEMPORARY TABLE IF EXISTS T_PROMO;
 CREATE TEMPORARY TABLE T_PROMO (
   PRIMARY KEY (prdno)
 )
-SELECT prp.prdno                                             AS prdno,
-       prd.name                                              AS name,
-       vend.no                                               AS vendno,
-       vend.sname                                            AS abrev,
+SELECT prp.prdno                                                  AS prdno,
+       prd.name                                                   AS name,
+       vend.no                                                    AS vendno,
+       vend.sname                                                 AS abrev,
        prd.typeno,
        prd.clno,
        prp.refprice,
-       (prp.refprice - prp.promo_price) * 100 / prp.refprice AS perc,
-       prp.promo_price,
+       (prp.refprice - IF(prp.promo_validate >= CURRENT_DATE, prp.promo_price, 0)) * 100 /
+       prp.refprice                                               AS perc,
+       IF(prp.promo_validate >= CURRENT_DATE, prp.promo_price, 0) AS promo_price,
        prp.promo_validate,
-       IF(V.prdno IS NULL, 'N', 'S')                         AS promocao,
-       IFNULL(V.promono, 0)                                  AS promono
+       IF(prp.promo_validate >= CURRENT_DATE, prp.promo_price, 0) AS precoPromoValidade,
+       IF(V.prdno IS NULL, 'N', 'S')                              AS promocaoWeb,
+       IF(prp.promo_validate >= @DT, 'S', 'N')                    AS promocaoSaci,
+       IFNULL(V.promono, 0)                                       AS promono
 FROM sqldados.prd
   INNER JOIN sqldados.prp
 	       ON (prd.no = prp.prdno AND prp.storeno = 10)
@@ -44,7 +47,7 @@ WHERE (prd.groupno = @CL OR prd.deptno = @CL OR prd.clno = @CL OR @CL = 0)
   AND (prd.mfno = @VD OR @VD = 0)
   AND (prd.typeno = @TP OR @TP = 0)
   AND (prd.no LIKE @CD OR @CD * 1 = 0)
-  AND (prp.promo_validate >= @DT)
+/*  AND (prp.promo_validate >= @DT)*/
   AND (prp.promo_validate = @VENCIMENTO OR @VENCIMENTO = 0)
   AND (prp.prdno IN (:codigos))
   AND (IF(V.prdno IS NULL, 'N', 'S') = @PROMOCAO OR @PROMOCAO = '');
@@ -66,7 +69,7 @@ DROP TEMPORARY TABLE IF EXISTS T_RESULT;
 CREATE TEMPORARY TABLE T_RESULT
 SELECT CAST(LPAD(prdno * 1, 6, '0') AS CHAR)                         AS codigo,
        TRIM(MID(name, 1, 37))                                        AS descricao,
-       CAST(promo_validate AS date)                                  AS validade,
+       CAST(IF(promo_validate = 0, NULL, promo_validate) AS date)    AS validade,
        refprice / 100                                                AS precoRef,
        ROUND(perc, 2)                                                AS perc,
        promo_price / 100                                             AS precoPromo,
@@ -76,7 +79,8 @@ SELECT CAST(LPAD(prdno * 1, 6, '0') AS CHAR)                         AS codigo,
        clno                                                          AS centLucro,
        qt / 1000                                                     AS saldo,
        promono                                                       AS promono,
-       CAST(IF(promocao = 'S', CONCAT('WEB ', promono), '') AS CHAR) AS web
+       CAST(IF(promocaoWeb = 'S', CONCAT('WEB ', promono), '') AS CHAR) AS web
 FROM T_PROMO
   INNER JOIN T_STK
 	       USING (prdno)
+WHERE promocaoWeb = 'S' OR promocaoSaci = 'S'
