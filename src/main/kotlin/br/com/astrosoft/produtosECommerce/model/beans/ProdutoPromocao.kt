@@ -8,7 +8,7 @@ import java.time.LocalDate
 class ProdutoPromocao(
   val codigo: String,
   val descricao: String,
-  val validade: LocalDate,
+  val validade: LocalDate?,
   val precoRef: Double,
   val perc: Double,
   val precoPromo: Double,

@@ -3,7 +3,6 @@ package br.com.astrosoft.produtosECommerce.view.promocao
 import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceParcial
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaPromocao
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoPromocional
 import br.com.astrosoft.produtosECommerce.view.main.clField
@@ -18,8 +17,8 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.icon.VaadinIcon.*
+import com.vaadin.flow.component.icon.VaadinIcon.MONEY_DEPOSIT
+import com.vaadin.flow.component.icon.VaadinIcon.TABLE
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import org.vaadin.stefan.LazyDownloadButton
