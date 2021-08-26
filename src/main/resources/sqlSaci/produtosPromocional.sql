@@ -29,11 +29,9 @@ SELECT prp.prdno                                                  AS prdno,
        prd.typeno,
        prd.clno,
        prp.refprice,
-       (prp.refprice - IF(prp.promo_validate >= CURRENT_DATE, prp.promo_price, 0)) * 100 /
-       prp.refprice                                               AS perc,
-       IF(prp.promo_validate >= CURRENT_DATE, prp.promo_price, 0) AS promo_price,
+       (prp.refprice - prp.promo_price) * 100 / prp.refprice      AS perc,
+       prp.promo_price,
        prp.promo_validate,
-       IF(prp.promo_validate >= CURRENT_DATE, prp.promo_price, 0) AS precoPromoValidade,
        IF(V.prdno IS NULL, 'N', 'S')                              AS promocaoWeb,
        IF(prp.promo_validate >= @DT, 'S', 'N')                    AS promocaoSaci,
        IFNULL(V.promono, 0)                                       AS promono
@@ -52,7 +50,7 @@ WHERE (prd.groupno = @CL OR prd.deptno = @CL OR prd.clno = @CL OR @CL = 0)
   AND (prp.promo_validate = @VENCIMENTO OR @VENCIMENTO = 0)
   AND (prp.prdno IN (:codigos))
   AND (IF(V.prdno IS NULL, 'N', 'S') = @PROMOCAO_WEB OR @PROMOCAO_WEB = '')
-AND (IF(prp.promo_validate >= @DT, 'S', 'N') = @PROMOCAO_SACI OR @PROMOCAO_SACI = '');
+  AND (IF(prp.promo_validate >= @DT, 'S', 'N') = @PROMOCAO_SACI OR @PROMOCAO_SACI = '');
 
 
 DROP TEMPORARY TABLE IF EXISTS T_STK;
