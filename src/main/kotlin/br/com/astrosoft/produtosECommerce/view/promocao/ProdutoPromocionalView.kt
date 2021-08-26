@@ -24,6 +24,9 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
   private val gridProdutoPromocaoSaci = PainelGridProdutoPromocaoSaci(this, viewModel.serviceQueryProdutoPromocional())
   private val gridProdutoPromocaoWeb = PainelGridProdutoPromocaoWeb(this, viewModel.serviceQueryProdutoPromocional())
   private val gridProdutoPromocaoBase = PainelGridProdutoPromocaoBase(this, viewModel.serviceQueryProdutoPromocional())
+  private val gridProdutoPromocaoWebInvalida = PainelGridProdutoPromocaoWebInvalida(
+    this, viewModel.serviceQueryProdutoPromocional()
+                                                                                   )
 
   override fun isAccept(): Boolean {
     val user = AppConfig.userSaci as? UserSaci
@@ -52,6 +55,8 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
 
   override val filtroPromocaoWeb: FiltroProdutosPromocional
     get() = gridProdutoPromocaoWeb.filterBar.filtro()
+  override val filtroPromocaoWebInvalida: FiltroProdutosPromocional
+    get() = gridProdutoPromocaoWebInvalida.filterBar.filtro()
   override val filtroPromocaoBase: FiltroProdutosPromocional
     get() = gridProdutoPromocaoBase.filterBar.filtro()
   override val filtroPromocaoSaci: FiltroProdutosPromocional
@@ -63,6 +68,7 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
       tabGrid("Promoção Base", gridProdutoPromocaoBase)
       tabGrid("Promoção Saci", gridProdutoPromocaoSaci)
       tabGrid("Promoção Web", gridProdutoPromocaoWeb)
+      tabGrid("Promoção Web Inválida", gridProdutoPromocaoWebInvalida)
     }
     updateGridPromocaoBase()
   }

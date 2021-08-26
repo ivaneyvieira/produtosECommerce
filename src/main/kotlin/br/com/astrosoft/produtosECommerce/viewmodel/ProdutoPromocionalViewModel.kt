@@ -35,5 +35,6 @@ interface IProdutoPromocionalView : IView {
 
   val filtroPromocaoSaci: FiltroProdutosPromocional
   val filtroPromocaoWeb: FiltroProdutosPromocional
+  val filtroPromocaoWebInvalida: FiltroProdutosPromocional
   val filtroPromocaoBase: FiltroProdutosPromocional
 }
