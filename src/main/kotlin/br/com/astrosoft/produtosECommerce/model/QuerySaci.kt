@@ -97,10 +97,17 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
                           ) //      addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
       addOptionalParameter("codigos", codigos)
       addOptionalParameter(
-        "promocao", when {
-          filtro.temPromocao == null -> ""
-          filtro.temPromocao         -> "S"
-          else                       -> "N"
+        "promocaoWeb", when {
+          filtro.temPromocaoWeb == null -> ""
+          filtro.temPromocaoWeb         -> "S"
+          else                          -> "N"
+        }
+                          )
+      addOptionalParameter(
+        "promocaoSaci", when {
+          filtro.temPromocaoSaci == null -> ""
+          filtro.temPromocaoSaci         -> "S"
+          else                           -> "N"
         }
                           )
     }, result = result)
@@ -114,10 +121,7 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   }
 
   fun fetchProduto(
-    filter: FiltroProdutosPromocional,
-    offset: Int,
-    limit: Int,
-    sortOrders: List<SortOrder>
+    filter: FiltroProdutosPromocional, offset: Int, limit: Int, sortOrders: List<SortOrder>
                   ): List<ProdutoPromocao> {
     val orderBy = if (sortOrders.isEmpty()) "" else "ORDER BY " + sortOrders.joinToString(
       separator = ", "

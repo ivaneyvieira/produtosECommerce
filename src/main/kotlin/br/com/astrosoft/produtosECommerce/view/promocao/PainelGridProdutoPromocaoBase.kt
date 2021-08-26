@@ -57,7 +57,8 @@ class PainelGridProdutoPromocaoBase(
         tipo = edtTipo.value?.typeno ?: 0,
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
-        temPromocao = null
+        temPromocaoWeb = null,
+        temPromocaoSaci = null
                                       )
     }
   }
