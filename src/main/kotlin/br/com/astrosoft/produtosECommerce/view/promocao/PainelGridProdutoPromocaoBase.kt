@@ -10,6 +10,7 @@ import br.com.astrosoft.produtosECommerce.view.main.fornecedorField
 import br.com.astrosoft.produtosECommerce.view.main.tipoField
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
 import com.vaadin.flow.component.combobox.ComboBox
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
@@ -57,8 +58,7 @@ class PainelGridProdutoPromocaoBase(
         tipo = edtTipo.value?.typeno ?: 0,
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
-        temPromocaoWeb = null,
-        temPromocaoSaci = null
+        tipoPainel = ETipoPainel.BASE,
                                       )
     }
   }

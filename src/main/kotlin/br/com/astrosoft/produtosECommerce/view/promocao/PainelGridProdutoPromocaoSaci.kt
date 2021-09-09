@@ -11,6 +11,7 @@ import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
@@ -71,8 +72,7 @@ class PainelGridProdutoPromocaoSaci(
         tipo = edtTipo.value?.typeno ?: 0,
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
-        temPromocaoWeb = false,
-        temPromocaoSaci = true,
+        tipoPainel = ETipoPainel.SACI,
                                       )
     }
   }

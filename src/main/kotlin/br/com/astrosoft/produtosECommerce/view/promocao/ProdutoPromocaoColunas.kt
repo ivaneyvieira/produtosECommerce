@@ -23,10 +23,23 @@ fun Grid<ProdutoPromocao>.colCodigo() = addColumnString(ProdutoPromocao::codigo)
 
 fun Grid<ProdutoPromocao>.colDescricao() = addColumnString(ProdutoPromocao::descricao) {
   setHeader("Descrição")
+  this.setClassNameGenerator {
+    if(it.promocaoSaci == "N" && it.promocaoWeb == "S") "marcaDiferenca" else null
+  }
 }
 
 fun Grid<ProdutoPromocao>.colValidade() = addColumnLocalDate(ProdutoPromocao::validade) {
   setHeader("Validade")
+  this.setClassNameGenerator {
+    if(it.dataAlinhada == "N") "marcaDiferenca" else null
+  }
+}
+
+fun Grid<ProdutoPromocao>.colValidadeWeb() = addColumnLocalDate(ProdutoPromocao::promoDateWeb) {
+  setHeader("Validade Web")
+  this.setClassNameGenerator {
+    if(it.dataAlinhada == "N") "marcaDiferenca" else null
+  }
 }
 
 fun Grid<ProdutoPromocao>.colPrecoRef() = addColumnDouble(ProdutoPromocao::precoRef) {
@@ -42,6 +55,17 @@ fun Grid<ProdutoPromocao>.colPerc() = addColumnDouble(ProdutoPromocao::perc) {
 fun Grid<ProdutoPromocao>.colPrecoPromo() = addColumnDouble(ProdutoPromocao::precoPromo) {
   setHeader("Preço Promo")
   width = "8em"
+  this.setClassNameGenerator {
+    if(it.precoAlinhado == "N") "marcaDiferenca" else null
+  }
+}
+
+fun Grid<ProdutoPromocao>.colPrecoPromoWeb() = addColumnDouble(ProdutoPromocao::precoPromoWeb) {
+  setHeader("Preço Promo Web")
+  width = "8em"
+  this.setClassNameGenerator {
+    if(it.precoAlinhado == "N") "marcaDiferenca" else null
+  }
 }
 
 fun Grid<ProdutoPromocao>.colVendno() = addColumnInt(ProdutoPromocao::vendno) {
