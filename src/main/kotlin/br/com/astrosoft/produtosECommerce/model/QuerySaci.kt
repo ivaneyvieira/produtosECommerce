@@ -82,7 +82,9 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   }
 
   fun <R : Any> filtroProdutosPromocional(
-    filtro: FiltroProdutosPromocional, complemento: String, result: (Query) -> R
+    filtro: FiltroProdutosPromocional,
+    complemento: String,
+    result: (Query) -> R
                                          ): R {
     val sql = "/sqlSaci/produtosPromocional.sql"
     val codigos = local.fetchProduto(
@@ -92,26 +94,12 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
       addOptionalParameter("centroLucro", filtro.centroLucro)
       addOptionalParameter("fornecedor", filtro.fornecedor)
       addOptionalParameter("tipo", filtro.tipo)
-      addOptionalParameter(
-        "codigo", filtro.codigo
-                          ) //      addOptionalParameter("vencimento", promocao?.vencimento?.toSaciDate() ?: 0)
+      addOptionalParameter("codigo", filtro.codigo)
       addOptionalParameter("codigos", codigos)
-      addOptionalParameter(
-        "promocaoWeb", when {
-          filtro.temPromocaoWeb == null -> ""
-          filtro.temPromocaoWeb         -> "S"
-          else                          -> "N"
-        }
-                          )
-      addOptionalParameter(
-        "promocaoSaci", when {
-          filtro.temPromocaoSaci == null -> ""
-          filtro.temPromocaoSaci         -> "S"
-          else                           -> "N"
-        }
-                          )
+      addOptionalParameter("tipoPainel", filtro.tipoPainel.toString())
     }, result = result)
   }
+
 
   fun countProduto(filter: FiltroProdutosPromocional): Int {
     val complemento = "SELECT COUNT(*) FROM T_RESULT"

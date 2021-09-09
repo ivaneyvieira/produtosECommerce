@@ -14,6 +14,7 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon.TABLE
 import com.vaadin.flow.component.textfield.IntegerField
@@ -23,6 +24,7 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@CssImport("./styles/gridmark.css")
 class PainelGridProdutoPromocaoWebInvalida(
   val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional
                                           ) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
@@ -69,8 +71,7 @@ class PainelGridProdutoPromocaoWebInvalida(
         tipo = edtTipo.value?.typeno ?: 0,
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
-        temPromocaoWeb = true,
-        temPromocaoSaci = false
+        tipoPainel = ETipoPainel.INVALIDO,
                                       )
     }
   }
@@ -82,9 +83,11 @@ class PainelGridProdutoPromocaoWebInvalida(
     colDescricao()
     colPromoNo()
     colValidade()
+    colValidadeWeb()
     colPrecoRef()
     colPerc()
     colPrecoPromo()
+    colPrecoPromoWeb()
     colVendno()
     colAbrev()
     colTipo()

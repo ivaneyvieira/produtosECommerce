@@ -8,9 +8,11 @@ import java.time.LocalDate
 class ProdutoPromocao(
   val codigo: String,
   val descricao: String,
+  val promoDateWeb: LocalDate?,
   val validade: LocalDate?,
   val precoRef: Double,
   val perc: Double,
+  val precoPromoWeb: Double,
   val precoPromo: Double,
   val vendno: Int,
   val abrev: String,
@@ -21,6 +23,8 @@ class ProdutoPromocao(
   val web: String,
   val promocaoWeb: String,
   val promocaoSaci: String,
+  val precoAlinhado: String,
+  val dataAlinhada: String,
                      ) {
 
   companion object {
@@ -71,6 +75,9 @@ data class FiltroProdutosPromocional(
   val fornecedor: Int,
   val tipo: Int,
   val codigo: String,
-  val temPromocaoWeb: Boolean?,
-  val temPromocaoSaci: Boolean?,
+  val tipoPainel : ETipoPainel,
                                     )
+
+enum class ETipoPainel {
+  BASE, SACI, WEB, INVALIDO
+}
