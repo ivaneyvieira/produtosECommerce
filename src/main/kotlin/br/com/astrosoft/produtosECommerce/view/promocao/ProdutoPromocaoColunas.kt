@@ -53,7 +53,7 @@ fun Grid<ProdutoPromocao>.colPerc() = addColumnDouble(ProdutoPromocao::perc) {
 }
 
 fun Grid<ProdutoPromocao>.colPrecoPromo() = addColumnDouble(ProdutoPromocao::precoPromo) {
-  setHeader("Preço Promo")
+  setHeader("Pro Saci")
   width = "8em"
   this.setClassNameGenerator {
     if(it.precoAlinhado == "N") "marcaDiferenca" else null
@@ -61,7 +61,7 @@ fun Grid<ProdutoPromocao>.colPrecoPromo() = addColumnDouble(ProdutoPromocao::pre
 }
 
 fun Grid<ProdutoPromocao>.colPrecoPromoWeb() = addColumnDouble(ProdutoPromocao::precoPromoWeb) {
-  setHeader("Preço Promo Web")
+  setHeader("Promo Web")
   width = "8em"
   this.setClassNameGenerator {
     if(it.precoAlinhado == "N") "marcaDiferenca" else null
