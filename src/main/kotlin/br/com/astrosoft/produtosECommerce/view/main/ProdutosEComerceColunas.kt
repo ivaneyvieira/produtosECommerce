@@ -4,10 +4,7 @@ import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
-import com.github.mvysny.karibudsl.v10.VaadinDsl
-import com.github.mvysny.karibudsl.v10.comboBox
-import com.github.mvysny.karibudsl.v10.integerField
-import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.combobox.ComboBox.ItemFilter
@@ -176,6 +173,7 @@ fun Grid<Produto>.colComprimento() = addColumnDouble(Produto::comprimento) {
 
 fun Grid<Produto>.colUsuario() = addColumnString(Produto::userName) {
   setHeader("Usuario")
+  this.setSortProperty("userno")
   isResizable = true
 }
 
