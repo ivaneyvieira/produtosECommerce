@@ -99,6 +99,13 @@ fun Grid<Produto>.colCl() = addColumnString(Produto::clname) {
   isResizable = true
 }
 
+fun Grid<Produto>.colClName() = addColumnString(Produto::clname) {
+  setHeader("Centro de Lucro")
+  isAutoWidth = false
+  isResizable = true
+  width = "20em"
+}
+
 fun Grid<Produto>.colCategoria() = addColumnBean(Produto::categoriaBean) {
   setHeader("Categoria")
   isAutoWidth = false

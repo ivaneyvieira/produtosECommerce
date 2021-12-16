@@ -70,6 +70,9 @@ abstract class PainelGridProdutoAbstract(
     colMarca().comboFieldEditor {
       Marca.findAll().sortedBy { it.lookupValue }
     }
+    if (statusDefault() == ENVIADO) {
+      colClName()
+    }
     colCategoria().comboFieldEditor {
       Categoria.findAll().sortedBy { it.lookupValue }
     }
