@@ -22,6 +22,8 @@ class PlanilhaEcommerceNova {
     CampoNumber("estoque") { saldoLoja4() },
     CampoString("ean") { ean() },
     CampoString("marca") { marca() },
+    CampoString("codigo CL") { clno },
+    CampoString("nome CL") { clname ?: "" },
     CampoNumber("preco_de") { price() },
     CampoNumber("preco_por") { price() },
     CampoNumber("peso_kg") { peso ?: 0.00 },
