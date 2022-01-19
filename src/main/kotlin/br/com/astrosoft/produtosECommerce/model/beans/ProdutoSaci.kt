@@ -12,5 +12,5 @@ class ProdutoSaci(
   val clno: String,
   val clname: String,
   val precoCheio: Double,
-  val ncm : String
-                 )
+  val ncm: String
+)

@@ -14,7 +14,7 @@ class ServiceQueryProduto : IServiceQuery<Produto, FiltroProduto> {
 
   override fun fetch(
     filter: FiltroProduto, offset: Int, limit: Int, sortOrders: List<SortOrder>
-                    ): List<Produto> {
+  ): List<Produto> {
     return local.fetchProduto(filter, offset, limit, sortOrders)
   }
 

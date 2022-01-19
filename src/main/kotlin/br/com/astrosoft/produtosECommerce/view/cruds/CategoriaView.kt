@@ -61,7 +61,7 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
     val crud: GridCrud<Categoria> = GridCrud(Categoria::class.java, HorizontalSplitCrudLayout())
     crud.grid.setColumns(
       Categoria::categoriaNo.name, Categoria::grupo.name, Categoria::departamento.name, Categoria::secao.name
-                        )
+    )
     crud.grid.getColumnBy(Categoria::categoriaNo).apply {
       this.setHeader("Número")
       this.setTextAlign(ColumnTextAlign.END)
@@ -82,9 +82,9 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
 
   private fun setOperation(crud: GridCrud<Categoria>) {
     crud.setOperations({ viewModel.findAll() },
-                       { user: Categoria -> viewModel.add(user) },
-                       { user: Categoria? -> viewModel.update(user) },
-                       { user: Categoria? -> viewModel.delete(user) })
+      { user: Categoria -> viewModel.add(user) },
+      { user: Categoria? -> viewModel.update(user) },
+      { user: Categoria? -> viewModel.delete(user) })
   }
 
   inner class CategoriaCrudFormFactory : AbstractCrudFormFactory<Categoria>() {
@@ -100,7 +100,7 @@ class CategoriaView : ViewLayout<CategoriaViewModel>(), ICategoriaView {
       readOnly: Boolean,
       cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
       operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-                             ): Component {
+    ): Component {
       val binder = Binder<Categoria>(Categoria::class.java)
       return VerticalLayout().apply {
         isSpacing = false

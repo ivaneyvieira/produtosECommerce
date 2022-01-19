@@ -6,7 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.local
 
 data class Categoria(
   var categoriaNo: Int = 0, var grupo: String = "", var departamento: String = "", var secao: String = ""
-                    ) : Comparable<Categoria?>, ILookup {
+) : Comparable<Categoria?>, ILookup {
   override val lookupValue: String
     get() = descricao
   val codigo
@@ -19,10 +19,10 @@ data class Categoria(
     get() = codigo.substring(4, 6).toIntOrNull() ?: 0
   val descricao
     get() = when {
-      grupo == ""        -> ""
+      grupo == "" -> ""
       departamento == "" -> grupo
-      secao == ""        -> "$grupo/$departamento"
-      else               -> "$grupo/$departamento/$secao"
+      secao == "" -> "$grupo/$departamento"
+      else -> "$grupo/$departamento/$secao"
     }
 
   companion object {
@@ -51,20 +51,20 @@ data class Categoria(
     fun findByDescricao(grupo: String?, departamento: String?, secao: String?) =
       listCategoria.firstOrNull { categoria ->
         when {
-          grupo.isNullOrBlank()        -> false
+          grupo.isNullOrBlank() -> false
           departamento.isNullOrBlank() -> categoria.grupo.equals(grupo, ignoreCase = true)
-          secao.isNullOrBlank()        -> categoria.grupo.equals(
+          secao.isNullOrBlank() -> categoria.grupo.equals(
             grupo, ignoreCase = true
-                                                                ) && categoria.departamento.equals(
+          ) && categoria.departamento.equals(
             departamento, ignoreCase = true
-                                                                                                  )
-          else                         -> categoria.grupo.equals(
+          )
+          else -> categoria.grupo.equals(
             grupo, ignoreCase = true
-                                                                ) && categoria.departamento.equals(
+          ) && categoria.departamento.equals(
             departamento, ignoreCase = true
-                                                                                                  ) && categoria.secao.equals(
+          ) && categoria.secao.equals(
             secao, ignoreCase = true
-                                                                                                                             )
+          )
         }
       }
 

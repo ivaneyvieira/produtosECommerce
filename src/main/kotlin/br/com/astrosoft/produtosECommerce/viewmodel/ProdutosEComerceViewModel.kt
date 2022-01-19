@@ -33,13 +33,13 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
     Categoria.updateList()
     Marca.updateList()
     when (view.panelStatus()) {
-      BASE      -> view.updateGridBase()
-      EDITAR    -> view.updateGridEditar()
-      EDITADO   -> view.updateGridEditado()
+      BASE -> view.updateGridBase()
+      EDITAR -> view.updateGridEditar()
+      EDITADO -> view.updateGridEditado()
       IMPORTADO -> view.updateGridImportado()
-      ENVIAR    -> view.updateGridEnviar()
-      ENVIADO   -> view.updateGridEnviado()
-      CORRECAO  -> view.updateGridCorrecao()
+      ENVIAR -> view.updateGridEnviar()
+      ENVIADO -> view.updateGridEnviado()
+      CORRECAO -> view.updateGridCorrecao()
     }
   }
 
@@ -99,4 +99,4 @@ data class ProcessaBean(
   var bitolaCheck: Boolean = true,
   var imagem: String? = "",
   var imagemCheck: Boolean = true,
-                       )
+)

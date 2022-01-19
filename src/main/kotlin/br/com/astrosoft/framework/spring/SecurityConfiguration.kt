@@ -13,7 +13,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher
 @EnableWebSecurity
 @Configuration
 class SecurityConfiguration : WebSecurityConfigurerAdapter() {
-  @Throws(Exception::class) override fun configure(http: HttpSecurity) {
+  @Throws(Exception::class)
+  override fun configure(http: HttpSecurity) {
     http.csrf().disable().requestCache().requestCache(CustomRequestCache()).and().authorizeRequests()
       .requestMatchers(RequestMatcher { request ->
         SecurityUtils.isFrameworkInternalRequest(request)
@@ -22,11 +23,13 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
       .logoutSuccessUrl(LOGOUT_SUCCESS_URL)
   }
 
-  @Bean public override fun userDetailsService(): UserDetailsService {
+  @Bean
+  public override fun userDetailsService(): UserDetailsService {
     return UserSaciDetailsService()
   }
 
-  @Bean fun passwordEncoder(): PasswordEncoder? {
+  @Bean
+  fun passwordEncoder(): PasswordEncoder? {
     return passwordNoEncoder
   }
 
@@ -42,7 +45,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
       "/images/**",
       "/styles/**",
       "/h2-console/**"
-                              )
+    )
   }
 
   companion object {

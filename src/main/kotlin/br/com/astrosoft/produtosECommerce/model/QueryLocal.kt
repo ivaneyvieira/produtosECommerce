@@ -66,7 +66,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
       |             from produtoEcomerce.categoria
       |             order by categoriaNo
       |             """.trimMargin(), Categoria::class
-                )
+    )
   }
 
   fun addCategoria(categoria: Categoria) {
@@ -106,7 +106,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     return query(
       """select marcaNo, name
       |             from produtoEcomerce.marca""".trimMargin(), Marca::class
-                )
+    )
   }
 
   fun addMarca(marca: Marca) {
@@ -139,7 +139,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     return query(
       """select bitolaNo, name
       |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class
-                )
+    )
   }
 
   fun addBitola(bitola: Bitola) {
@@ -173,7 +173,7 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
     return query(
       """select descricao, codigoCor, userno, dataHoraMudanca, enviado
       |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class
-                )
+    )
   }
 
   fun addCor(cor: GradeCor) {
@@ -221,14 +221,14 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
         descricao 
 from produtoEcomerce.gradeCor
 HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
-                )
+    )
   }
 
   private fun <R : Any> filtroProduto(
     filter: FiltroProduto,
     complemento: String,
     result: (Query) -> R,
-                                     ): R {
+  ): R {
     val sql = "/sqlSaci/produtos.sql"
     return querySerivce(sql, complemento, lambda = {
       val listaProduto = filter.listaProduto.split(" +".toRegex()).filter { it.trim() != "" }.map {
@@ -261,7 +261,7 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
     offset: Int,
     limit: Int,
     sortOrders: List<SortOrder>,
-                  ): List<Produto> {
+  ): List<Produto> {
     val orderBy = if (sortOrders.isEmpty()) ""
     else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
     val complemento = """DO @OFFSET := $offset;

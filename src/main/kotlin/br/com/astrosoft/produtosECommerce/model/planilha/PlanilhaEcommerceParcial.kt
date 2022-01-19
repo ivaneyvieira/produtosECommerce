@@ -15,7 +15,7 @@ class PlanilhaEcommerceParcial {
     CampoString("grade") { grade },
     CampoString("referencia do fornecedor") { prdRef },
     CampoInt("codigo do fornecedor") { vendno },
-                                                      )
+  )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {
