@@ -13,7 +13,7 @@ class ServiceQueryProdutoPromocional : IServiceQuery<ProdutoPromocao, FiltroProd
 
   override fun fetch(
     filter: FiltroProdutosPromocional, offset: Int, limit: Int, sortOrders: List<SortOrder>
-                    ): List<ProdutoPromocao> {
+  ): List<ProdutoPromocao> {
     return saci.fetchProduto(filter, offset, limit, sortOrders)
   }
 }

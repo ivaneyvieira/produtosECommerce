@@ -51,7 +51,7 @@ class PlanilhaEcommerceNova {
     CampoString("variacao_1") { gradeCor().trim() },
     CampoString("nome_variacao2"),
     CampoString("variacao_2")
-                                                      )
+  )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {

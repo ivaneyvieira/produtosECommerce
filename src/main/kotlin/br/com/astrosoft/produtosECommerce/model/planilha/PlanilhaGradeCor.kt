@@ -13,7 +13,7 @@ class PlanilhaGradeCor {
     CampoString("Descrição") { descricao },
     CampoString("Código") { codigoCor.toUpperCase() },
     CampoString("Modificação") { dataHoraMudanca.format() },
-                                                       )
+  )
 
   fun grava(listaBean: List<GradeCor>): ByteArray {
     val wb = workbook {

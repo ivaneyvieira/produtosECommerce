@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 class PainelGridProdutoCorrecao(
   view: IProdutosEComerceView,
   serviceQuery: ServiceQueryProduto,
-                               ) : PainelGridProdutoAbstract(view, serviceQuery) {
+) : PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = EEditor.CORRECAO
 
   override fun filterBar() = FilterBarCorrecao()
@@ -80,7 +80,7 @@ class PainelGridProdutoCorrecao(
       cl = edtCl.value,
       categoria = edtCategoria.value,
       editado = statusDefault()
-                                         )
+    )
   }
 
   private fun filename(): String {

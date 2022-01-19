@@ -84,14 +84,14 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet { "" } ?: ""
     return when (id) {
-      TAB_BASE      -> BASE
-      TAB_EDITAR    -> EDITAR
-      TAB_EDITADO   -> EDITADO
+      TAB_BASE -> BASE
+      TAB_EDITAR -> EDITAR
+      TAB_EDITADO -> EDITADO
       TAB_IMPORTADO -> IMPORTADO
-      TAB_ENVIAR    -> ENVIAR
-      TAB_ENVIADO   -> ENVIADO
-      TAB_CORRECAO  -> CORRECAO
-      else          -> BASE
+      TAB_ENVIAR -> ENVIAR
+      TAB_ENVIADO -> ENVIADO
+      TAB_CORRECAO -> CORRECAO
+      else -> BASE
     }
   }
 

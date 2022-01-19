@@ -12,7 +12,7 @@ abstract class PrintText<T> {
 
   fun columText(
     header: String, size: Int, lineBreak: Boolean = false, process: T.() -> String
-               ): PrintText<T> {
+  ): PrintText<T> {
     val column = Column(header, size, lineBreak, process) { str ->
       str.rpad(size, " ")
     }
@@ -26,7 +26,7 @@ abstract class PrintText<T> {
 
   fun columNumber(
     header: String, size: Int, format: String = "0", lineBreak: Boolean = false, process: T.() -> Double
-                 ): PrintText<T> {
+  ): PrintText<T> {
     val decimalFormat = DecimalFormat(format)
     val column = Column(header, size, lineBreak, process) { number ->
       decimalFormat.format(number.toInt()).lpad(size, " ")
@@ -131,7 +131,7 @@ abstract class PrintText<T> {
 
 data class Column<T, V>(
   val header: String, val size: Int, val lineBreak: Boolean, val process: T.() -> V, val posProcess: (V) -> String
-                       ) {
+) {
   val columnText
     get() = header.rpad(size, "_")
 

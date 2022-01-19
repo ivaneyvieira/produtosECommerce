@@ -12,7 +12,7 @@ class UserSaci(
   var storeno: Int = 0,
   override var senha: String = "",
   var bitAcesso: Int = 0
-              ) : IUser {
+) : IUser {
 
   override fun roles(): List<String> {
     val roles = if (admin) listOf("ADMIN") else listOf("USER")
@@ -61,7 +61,7 @@ class DelegateAuthorized(numBit: Int) {
     thisRef ?: return
     val v = value ?: false
     thisRef.bitAcesso = when {
-      v    -> thisRef.bitAcesso or bit
+      v -> thisRef.bitAcesso or bit
       else -> thisRef.bitAcesso and bit.inv()
     }
   }

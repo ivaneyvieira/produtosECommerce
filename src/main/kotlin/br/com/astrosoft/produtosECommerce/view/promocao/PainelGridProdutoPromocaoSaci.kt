@@ -11,7 +11,6 @@ import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
@@ -19,10 +18,10 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
 class PainelGridProdutoPromocaoSaci(
   val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional
-                                   ) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
+) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
   override fun gridPanel(
     dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao, Void, FiltroProdutosPromocional>
-                        ): Grid<ProdutoPromocao> {
+  ): Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -73,7 +72,7 @@ class PainelGridProdutoPromocaoSaci(
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
         tipoPainel = ETipoPainel.SACI,
-                                      )
+      )
     }
   }
 

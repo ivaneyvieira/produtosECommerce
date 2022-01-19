@@ -35,7 +35,7 @@ import com.vaadin.flow.theme.lumo.Lumo
 @Push
 @PWA(
   name = AppConfig.title, shortName = AppConfig.shortName, iconPath = AppConfig.iconPath, enableInstallPrompt = false
-    )
+)
 class ProdutoECommerceLayout : AppLayout() {
   init {
     isDrawerOpened = false

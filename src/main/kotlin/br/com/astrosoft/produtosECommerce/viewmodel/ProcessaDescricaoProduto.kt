@@ -30,7 +30,7 @@ data class Descricao(val text: String) {
         return@prefixo if (index == 0) Descricao("")
         else Descricao(
           palavras.subList(0, index).joinToString(" ")
-                      )
+        )
       }
     }
     return Descricao("")

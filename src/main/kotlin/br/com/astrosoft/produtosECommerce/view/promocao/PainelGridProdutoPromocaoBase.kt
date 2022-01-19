@@ -10,17 +10,16 @@ import br.com.astrosoft.produtosECommerce.view.main.fornecedorField
 import br.com.astrosoft.produtosECommerce.view.main.tipoField
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
 import com.vaadin.flow.component.combobox.ComboBox
-import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 
 class PainelGridProdutoPromocaoBase(
   val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional
-                                   ) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
+) : PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
   override fun gridPanel(
     dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao, Void, FiltroProdutosPromocional>
-                        ): Grid<ProdutoPromocao> {
+  ): Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -59,7 +58,7 @@ class PainelGridProdutoPromocaoBase(
         fornecedor = edtFornecedor.value?.vendno ?: 0,
         codigo = edtCodigo.value?.toString() ?: "",
         tipoPainel = ETipoPainel.BASE,
-                                      )
+      )
     }
   }
 

@@ -1,7 +1,6 @@
 package br.com.astrosoft.produtosECommerce.model.planilha
 
 import br.com.astrosoft.framework.util.format
-import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.beans.ProdutoPromocao
 import com.github.nwillc.poink.workbook
 import org.apache.commons.io.output.ByteArrayOutputStream
@@ -23,7 +22,7 @@ class PlanilhaPromocao {
     CampoString("Tipo") { tipo.toString() },
     CampoString("CL") { centLucro.toString() },
     CampoInt("Saldo") { saldo }
-                                                      )
+  )
 
   fun grava(listaProdutos: List<ProdutoPromocao>): ByteArray {
     val wb = workbook {
