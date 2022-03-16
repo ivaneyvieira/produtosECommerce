@@ -14,7 +14,7 @@ class PlanilhaEcommerceNovaEAC {
     CampoString("código produto") { codigo },
     CampoString("código de barras") { barcode ?: "" },
     CampoString("grade") { grade },
-    CampoString("grade do aplicativo") { gradeCor() },
+    CampoString("grade do aplicativo") { gradeAlternativa },
     CampoString("descricao completa") { nomeProduto() },
   )
 
@@ -31,7 +31,12 @@ class PlanilhaEcommerceNovaEAC {
       val produtos = sheet("Produtos") {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
-        listaProdutos.sortedBy { it.codigo + it.grade }.forEach { produto ->
+        val listaSemGrade = listaProdutos.filter { it.grade == "" }.map {
+          it.copy(SIMPLES)
+        }
+        val listaComGrade = listaProdutos.filter { it.grade != "" }.explodeGrade()
+        val listaProdutosCompleta = listaComGrade + listaSemGrade
+        listaProdutosCompleta.sortedBy { it.codigo + it.grade }.forEach { produto ->
           val valores = campos.map { it.produceVakue(produto) }
           row(valores, rowStyle)
         }
