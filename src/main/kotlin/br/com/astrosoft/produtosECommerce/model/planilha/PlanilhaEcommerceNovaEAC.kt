@@ -14,8 +14,8 @@ class PlanilhaEcommerceNovaEAC {
     CampoString("código produto") { codigo },
     CampoString("código de barras") { barcode ?: "" },
     CampoString("grade") { grade },
-    CampoString("grade do aplicativo") { gradeAlternativa },
-    CampoString("descricao completa") { nomeProduto() },
+    CampoString("grade do aplicativo") { gradeCor() },
+    CampoString("descricao completa") { "$descricaoCompleta - $marcaDesc" },
   )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
@@ -36,7 +36,9 @@ class PlanilhaEcommerceNovaEAC {
         }
         val listaComGrade = listaProdutos.filter { it.grade != "" }.explodeGrade()
         val listaProdutosCompleta = listaComGrade + listaSemGrade
-        listaProdutosCompleta.sortedBy { it.codigo + it.grade }.forEach { produto ->
+        listaProdutosCompleta.distinctBy {
+          it.codigo + it.barcode + it.grade
+        }.sortedBy { it.codigo + it.grade }.forEach { produto ->
           val valores = campos.map { it.produceVakue(produto) }
           row(valores, rowStyle)
         }
