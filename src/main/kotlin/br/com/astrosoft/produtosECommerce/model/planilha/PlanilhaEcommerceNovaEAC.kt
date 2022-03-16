@@ -16,7 +16,7 @@ class PlanilhaEcommerceNovaEAC {
     CampoString("código produto") { codigo },
     CampoString("código de barras") { barcode ?: "" },
     CampoString("grade") { grade },
-    CampoString("grade do aplicativo") { if(gradeAlternativa == "") gradeCompleta ?: "" else gradeAlternativa},
+    CampoString("grade do aplicativo") { if(gradeAlternativa == "") gradeCompleta ?: "" else grade},
     CampoString("descricao completa") { "$descricaoCompleta - $marcaDesc" },
   )
 
