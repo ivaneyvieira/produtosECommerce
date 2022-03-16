@@ -5,6 +5,7 @@ import br.com.astrosoft.framework.view.FilterBar
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNova
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceNovaEAC
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.button
@@ -55,6 +56,7 @@ class PainelGridProdutoEnviado(
         this.tooltip = "Enviar para o painel correcao"
       }
       this.downloadExcel()
+      this.downloadExcelEAC()
 
       edtCodigo = listaProdutoField {
         addValueChangeListener { updateGrid() }
@@ -92,16 +94,28 @@ class PainelGridProdutoEnviado(
     )
   }
 
-  private fun filename(): String {
+  private fun filename(pre : String): String {
     val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
     val textTime = LocalDateTime.now().format(sdf)
-    val filename = "planilha$textTime.xlsx"
+    val filename = "planilha$pre$textTime.xlsx"
     return filename
   }
 
   private fun HasComponents.downloadExcel() {
-    val button = LazyDownloadButton(TABLE.create(), { filename() }, {
+    val button = LazyDownloadButton(TABLE.create(), { filename("") }, {
       val planilha = PlanilhaEcommerceNova()
+      val bytes = planilha.grava(multiSelect().ifEmpty { allItens() })
+      ByteArrayInputStream(bytes)
+    })
+    button.addThemeVariants(LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    add(button)
+  }
+
+
+  private fun HasComponents.downloadExcelEAC() {
+    val button = LazyDownloadButton(TABLE.create(), { filename("EAC") }, {
+      val planilha = PlanilhaEcommerceNovaEAC()
       val bytes = planilha.grava(multiSelect().ifEmpty { allItens() })
       ByteArrayInputStream(bytes)
     })
