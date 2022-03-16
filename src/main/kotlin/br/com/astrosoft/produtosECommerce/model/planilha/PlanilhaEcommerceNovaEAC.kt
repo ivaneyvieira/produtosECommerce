@@ -1,6 +1,8 @@
 package br.com.astrosoft.produtosECommerce.model.planilha
 
+import br.com.astrosoft.produtosECommerce.model.beans.EVariacao
 import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.SIMPLES
+import br.com.astrosoft.produtosECommerce.model.beans.EVariacao.VARIACAO
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.beans.explodeGrade
 import com.github.nwillc.poink.workbook
@@ -34,7 +36,9 @@ class PlanilhaEcommerceNovaEAC {
         val listaSemGrade = listaProdutos.filter { it.grade == "" }.map {
           it.copy(SIMPLES)
         }
-        val listaComGrade = listaProdutos.filter { it.grade != "" }.explodeGrade()
+        val listaComGrade = listaProdutos.filter { it.grade != "" }.map {
+          it.copy(VARIACAO)
+        }
         val listaProdutosCompleta = listaComGrade + listaSemGrade
         listaProdutosCompleta.distinctBy {
           it.codigo + it.barcode + it.grade
