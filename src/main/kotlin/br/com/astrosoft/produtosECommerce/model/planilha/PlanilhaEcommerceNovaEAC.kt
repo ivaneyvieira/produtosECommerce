@@ -14,8 +14,8 @@ class PlanilhaEcommerceNovaEAC {
     CampoString("código produto") { codigo },
     CampoString("código de barras") { barcode ?: "" },
     CampoString("grade") { grade },
-    CampoString("grade do aplicativo") { gradeCompleta ?: "" },
-    CampoString("descricao completa") { descricaoCompleta ?: "" },
+    CampoString("grade do aplicativo") { gradeCor() },
+    CampoString("descricao completa") { nomeProduto() },
   )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
