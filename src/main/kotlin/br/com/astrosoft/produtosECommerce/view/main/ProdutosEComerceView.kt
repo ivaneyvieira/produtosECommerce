@@ -33,6 +33,7 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
   private val gridEnviar = PainelGridProdutoEnviar(this, viewModel.serviceQueryProduto())
   private val gridEnviado = PainelGridProdutoEnviado(this, viewModel.serviceQueryProduto())
   private val gridCorrecao = PainelGridProdutoCorrecao(this, viewModel.serviceQueryProduto())
+  private val gridConferencia = PainelGridProdutoConferencia(this, viewModel.serviceQueryProdutoConferencia())
 
   override fun isAccept() = true
 
@@ -49,6 +50,9 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
       }
       tabGrid(TAB_ENVIADO, gridEnviado)
       tabGrid(TAB_CORRECAO, gridCorrecao)
+      if (user?.admin == true) {
+        tabGrid(TAB_CONFERENCIA, gridConferencia)
+      }
     }
     viewModel.updateGrid()
   }
@@ -91,6 +95,7 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
       TAB_ENVIAR -> ENVIAR
       TAB_ENVIADO -> ENVIADO
       TAB_CORRECAO -> CORRECAO
+      TAB_CONFERENCIA -> CONFERENCIA
       else -> BASE
     }
   }
@@ -130,6 +135,7 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     const val TAB_ENVIAR: String = "Enviar"
     const val TAB_ENVIADO: String = "Enviado"
     const val TAB_CORRECAO: String = "Correção"
+    const val TAB_CONFERENCIA: String = "Conferencia"
   }
 }
 

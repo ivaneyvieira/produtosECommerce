@@ -52,7 +52,7 @@ class UserSaci(
 class DelegateAuthorized(numBit: Int) {
   private val bit = 2.toDouble().pow(numBit).toInt()
 
-  operator fun getValue(thisRef: UserSaci?, property: KProperty<*>): Boolean {
+  operator fun getValue(thisRef: UserSaci?, property: KProperty<*>): Boolean? {
     thisRef ?: return false
     return (thisRef.bitAcesso and bit) != 0 || thisRef.admin
   }

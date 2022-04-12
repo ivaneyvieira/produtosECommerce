@@ -74,7 +74,7 @@ open class QueryDB(
   }
 
   protected fun <R : Any> querySerivce(
-    file: String, complemento: String, lambda: QueryHandle = {}, result: (Query) -> R
+    file: String, complemento: String? = null, lambda: QueryHandle = {}, result: (Query) -> R
   ): R = timeExec(file) {
     val statements = toStratments(file, complemento)
     val lastIndex = statements.lastIndex

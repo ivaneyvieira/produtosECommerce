@@ -256,6 +256,18 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
     }
   }
 
+  fun countProdutoConferencia(filter: FiltroProdutoConferencia): Int {
+    val codigo = filter.codigo
+    val sql = """SELECT COUNT(*) FROM produtoEcomerce.produtoConferencia 
+      |WHERE prdno = LPAD('$codigo', 16, ' ') OR '$codigo' = '' 
+      |  AND precoSaci != listPrice
+      |""".trimMargin()
+
+    return querySerivce(sql) {
+      it.executeScalar(Int::class.java)
+    }
+  }
+
   fun fetchProduto(
     filter: FiltroProduto,
     offset: Int,
@@ -271,6 +283,59 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
       |LIMIT $limit OFFSET $offset""".trimMargin()
     return filtroProduto(filter, complemento) {
       it.executeAndFetch(Produto::class.java)
+    }
+  }
+
+  fun produtosBarcode(): List<ProdutoBarcode> {
+    val sql = """SELECT barcode, codigo * 1 AS codigo
+FROM produtoEcomerce.produto
+GROUP BY barcode"""
+    return query(sql, ProdutoBarcode::class)
+  }
+
+  fun fetchProdutoConferencia(
+    filter: FiltroProdutoConferencia,
+    offset: Int,
+    limit: Int,
+    sortOrders: List<SortOrder>,
+  ): List<ProdutoConferencia> {
+    val codigo = filter.codigo
+    val orderBy = if (sortOrders.isEmpty()) ""
+    else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
+    val sql = """SELECT * FROM produtoEcomerce.produtoConferencia
+      |WHERE prdno = LPAD('$codigo', 16, ' ') OR '$codigo' = '' 
+      |  AND precoSaci != listPrice
+      |$orderBy 
+      |LIMIT $limit OFFSET $offset
+    """.trimMargin()
+    return querySerivce(sql) {
+      it.executeAndFetch(ProdutoConferencia::class.java)
+    }
+  }
+
+  fun apagaPrecos() {
+    val sql = "TRUNCATE TABLE produtoEcomerce.produtoConferencia"
+    script(sql)
+  }
+
+  fun addPrecoConferencia(
+    refid: String,
+    listPrice: Double,
+    prdno: String,
+    grade: String,
+    descricao: String,
+    precoSaci: Double
+  ) {
+    val sql =
+      "INSERT IGNORE produtoEcomerce.produtoConferencia(refid, listPrice, prdno, grade, descricao, precoSaci) " +
+        "VALUES(:refid, :listPrice, :prdno, :grade, :descricao, :precoSaci)"
+    script(sql) {
+      addOptionalParameter("refid", refid)
+      addOptionalParameter("listPrice", listPrice)
+      addOptionalParameter("prdno", prdno)
+      addOptionalParameter("grade", grade)
+      addOptionalParameter("descricao", descricao)
+      addOptionalParameter("precoSaci", precoSaci)
     }
   }
 

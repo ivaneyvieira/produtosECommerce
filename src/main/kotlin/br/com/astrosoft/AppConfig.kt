@@ -21,7 +21,7 @@ object AppConfig {
   fun findUser(username: String?): IUser? {
     val list = saci.findUser(username)
     return list.firstOrNull { user ->
-      user.ativo
+      user.ativo ?: false
     }
   }
 }

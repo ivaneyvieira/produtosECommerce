@@ -19,10 +19,8 @@ defaultTasks("clean", "vaadinBuildFrontend", "build")
 
 repositories {
   mavenCentral()
-  jcenter() // for Gretty runners
-  maven {
-    url = uri("https://maven.vaadin.com/vaadin-addons")
-  }
+  maven { setUrl("https://maven.vaadin.com/vaadin-addons") }
+  maven { setUrl("https://repo.gradle.org/gradle/libs-releases") }
 }
 
 gretty {
@@ -75,13 +73,11 @@ dependencies {
   implementation("com.vaadin.componentfactory:tooltip:1.2.2")
   implementation("com.github.nwillc:poink:0.4.6")
   implementation("org.vaadin.stefan:lazy-download-button:1.0.0")
-  /*
-  <dependency>
-    <groupId>com.github.appreciated</groupId>
-    <artifactId>color-picker-field-flow</artifactId>
-    <version>2.0.0.beta6</version>
-</dependency>
-   */
+
+  // Data Science
+  implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+  implementation("com.github.nwillc:poink:0.4.6")
+
   implementation("com.github.appreciated:color-picker-field-flow:2.0.0.beta6")
   //  compile("org.webjars.bowergithub.vaadin:vaadin-combo-box:4.2.7")
   //compile("com.github.appreciated:app-layout-addon:4.0.0.rc4")
