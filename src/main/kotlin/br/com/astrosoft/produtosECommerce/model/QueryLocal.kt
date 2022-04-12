@@ -61,12 +61,10 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllCategoria(): List<Categoria> {
-    return query(
-      """select categoriaNo, grupo, departamento, secao
+    return query("""select categoriaNo, grupo, departamento, secao
       |             from produtoEcomerce.categoria
       |             order by categoriaNo
-      |             """.trimMargin(), Categoria::class
-    )
+      |             """.trimMargin(), Categoria::class)
   }
 
   fun addCategoria(categoria: Categoria) {
@@ -103,10 +101,8 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllMarca(): List<Marca> {
-    return query(
-      """select marcaNo, name
-      |             from produtoEcomerce.marca""".trimMargin(), Marca::class
-    )
+    return query("""select marcaNo, name
+      |             from produtoEcomerce.marca""".trimMargin(), Marca::class)
   }
 
   fun addMarca(marca: Marca) {
@@ -136,10 +132,8 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findAllBitola(): List<Bitola> {
-    return query(
-      """select bitolaNo, name
-      |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class
-    )
+    return query("""select bitolaNo, name
+      |             from produtoEcomerce.bitola""".trimMargin(), Bitola::class)
   }
 
   fun addBitola(bitola: Bitola) {
@@ -170,10 +164,8 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
 
   /*Cores*/
   fun findAllCor(): List<GradeCor> {
-    return query(
-      """select descricao, codigoCor, userno, dataHoraMudanca, enviado
-      |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class
-    )
+    return query("""select descricao, codigoCor, userno, dataHoraMudanca, enviado
+      |             from produtoEcomerce.gradeCor""".trimMargin(), GradeCor::class)
   }
 
   fun addCor(cor: GradeCor) {
@@ -216,19 +208,17 @@ class QueryLocal : QueryDB("local", driver, url, username, password) {
   }
 
   fun findCores(descricao: String?): List<GradeCor> {
-    return query(
-      """select DISTINCT TRIM(UPPER(MID(TRIM(codigoCor), 1, 7))) AS codigoCor, TRIM(descricao) AS 
+    return query("""select DISTINCT TRIM(UPPER(MID(TRIM(codigoCor), 1, 7))) AS codigoCor, TRIM(descricao) AS 
         descricao 
 from produtoEcomerce.gradeCor
-HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class
-    )
+HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor::class)
   }
 
   private fun <R : Any> filtroProduto(
     filter: FiltroProduto,
     complemento: String,
     result: (Query) -> R,
-  ): R {
+                                     ): R {
     val sql = "/sqlSaci/produtos.sql"
     return querySerivce(sql, complemento, lambda = {
       val listaProduto = filter.listaProduto.split(" +".toRegex()).filter { it.trim() != "" }.map {
@@ -260,7 +250,7 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
     val codigo = filter.codigo
     val sql = """SELECT COUNT(*) FROM produtoEcomerce.produtoConferencia 
       |WHERE prdno = LPAD('$codigo', 16, ' ') OR '$codigo' = '' 
-      |  AND precoSaci != listPrice
+      |  AND precoRef != listPrice
       |""".trimMargin()
 
     return querySerivce(sql) {
@@ -273,7 +263,7 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
     offset: Int,
     limit: Int,
     sortOrders: List<SortOrder>,
-  ): List<Produto> {
+                  ): List<Produto> {
     val orderBy = if (sortOrders.isEmpty()) ""
     else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
     val complemento = """DO @OFFSET := $offset;
@@ -298,13 +288,13 @@ GROUP BY barcode"""
     offset: Int,
     limit: Int,
     sortOrders: List<SortOrder>,
-  ): List<ProdutoConferencia> {
+                             ): List<ProdutoConferencia> {
     val codigo = filter.codigo
     val orderBy = if (sortOrders.isEmpty()) ""
     else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
     val sql = """SELECT * FROM produtoEcomerce.produtoConferencia
       |WHERE prdno = LPAD('$codigo', 16, ' ') OR '$codigo' = '' 
-      |  AND precoSaci != listPrice
+      |  AND precoRef != listPrice
       |$orderBy 
       |LIMIT $limit OFFSET $offset
     """.trimMargin()
@@ -325,11 +315,13 @@ GROUP BY barcode"""
     grade: String,
     descricaoSite: String,
     descricaoSaci: String,
-    precoSaci: Double
-  ) {
-    val sql =
-      "INSERT IGNORE produtoEcomerce.produtoConferencia(refid, listPrice, prdno, grade, descricaoSite, descricaoSaci, precoSaci) " +
-        "VALUES(:refid, :listPrice, :prdno, :grade, :descricaoSite, :descricaoSaci, :precoSaci)"
+    precoPromo: Double,
+    precoRef: Double,
+                         ) {
+    val sql = """INSERT IGNORE produtoEcomerce.produtoConferencia(refid, listPrice, prdno, grade, 
+      |descricaoSite, descricaoSaci, precoPromo, precoRef) 
+      |VALUES(:refid, :listPrice, :prdno, :grade, :descricaoSite, :descricaoSaci, 
+      |:precoPromo, :precoRef)""".trimMargin()
     script(sql) {
       addOptionalParameter("refid", refid)
       addOptionalParameter("listPrice", listPrice)
@@ -337,7 +329,8 @@ GROUP BY barcode"""
       addOptionalParameter("grade", grade)
       addOptionalParameter("descricaoSite", descricaoSite)
       addOptionalParameter("descricaoSaci", descricaoSaci)
-      addOptionalParameter("precoSaci", precoSaci)
+      addOptionalParameter("precoPromo", precoPromo)
+      addOptionalParameter("precoRef", precoRef)
     }
   }
 

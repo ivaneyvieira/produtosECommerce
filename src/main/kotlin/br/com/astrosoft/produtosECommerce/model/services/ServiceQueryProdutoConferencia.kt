@@ -31,13 +31,16 @@ class ServiceQueryProdutoConferencia : IServiceQuery<ProdutoConferencia, FiltroP
       val produto = produtosBarcode[it.codigo] ?: produtosCodigo[it.codigo.toIntOrNull()]
       val prdSaci = precosSaci[produto?.codigo]
 
-      local.addPrecoConferencia(refid = it.codigo,
-                                listPrice = it.preco,
-                                prdno = prdSaci?.codigo?.toString() ?: "",
-                                grade = produto?.grade ?: "",
-                                descricaoSite = it.descricao,
-                                descricaoSaci = prdSaci?.descricao ?: "",
-                                precoSaci = prdSaci?.preco ?: 0.00)
+      local.addPrecoConferencia(
+        refid = it.codigo,
+        listPrice = it.preco,
+        prdno = prdSaci?.codigo?.toString() ?: "",
+        grade = produto?.grade ?: "",
+        descricaoSite = it.descricao,
+        descricaoSaci = prdSaci?.descricao ?: "",
+        precoPromo = prdSaci?.promoprice ?: 0.00,
+        precoRef = prdSaci?.refprice ?: 0.00,
+                               )
     }
   }
 }
