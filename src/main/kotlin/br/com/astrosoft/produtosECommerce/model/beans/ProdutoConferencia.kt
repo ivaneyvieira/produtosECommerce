@@ -5,8 +5,10 @@ class ProdutoConferencia(
   val listPrice: Double,
   val prdno: String? = null,
   val grade: String? = null,
-  val descricao: String? = null,
-  val precoSaci: Double? = null
+  val descricaoSite: String? = null,
+  val descricaoSaci: String? = null,
+  val precoPromo: Double? = null,
+  val precoRef: Double? = null,
 )
 
 data class FiltroProdutoConferencia(

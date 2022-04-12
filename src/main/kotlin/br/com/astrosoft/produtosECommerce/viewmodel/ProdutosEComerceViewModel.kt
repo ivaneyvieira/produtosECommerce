@@ -43,6 +43,7 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
       ENVIAR -> view.updateGridEnviar()
       ENVIADO -> view.updateGridEnviado()
       CORRECAO -> view.updateGridCorrecao()
+      CONFERENCIA -> view.updateGridConferencia()
     }
   }
 
@@ -76,6 +77,7 @@ interface IProdutosEComerceView : IView {
   fun updateGridEnviar()
   fun updateGridEnviado()
   fun updateGridCorrecao()
+  fun updateGridConferencia()
 
   fun panelStatus(): EEditor
   fun marcaProdutos(itens: List<Produto>, marca: EEditor)

@@ -6,24 +6,34 @@ import br.com.astrosoft.framework.view.addColumnDouble
 import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroProdutoConferencia
 import br.com.astrosoft.produtosECommerce.model.beans.ProdutoConferencia
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaConferencia
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceParcial
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import org.vaadin.stefan.LazyDownloadButton
+import java.io.ByteArrayInputStream
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PainelGridProdutoConferencia(
   val view: IProdutosEComerceView, serviceQuery: ServiceQueryProdutoConferencia,
 ) : PainelGrid<ProdutoConferencia, FiltroProdutoConferencia>(serviceQuery) {
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<ProdutoConferencia, Void, FiltroProdutoConferencia>): Grid<ProdutoConferencia> {
     val grid = Grid(ProdutoConferencia::class.java, false)
+    grid.setSelectionMode(Grid.SelectionMode.MULTI)
     grid.dataProvider = dataProvider
     return grid
   }
@@ -35,8 +45,9 @@ class PainelGridProdutoConferencia(
   inner class FilterConferencia : FilterBar<FiltroProdutoConferencia>() {
     private lateinit var edtCodigo: TextField
 
-
     override fun FilterBar<FiltroProdutoConferencia>.contentBlock() {
+      this.selectAll()
+
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
         val fileName = "/tmp/${it.fileName}"
@@ -44,7 +55,10 @@ class PainelGridProdutoConferencia(
         val file = File(fileName)
         file.writeBytes(bytes)
         (serviceQuery as? ServiceQueryProdutoConferencia)?.readExcel(fileName)
+        updateGrid()
       }
+
+      this.downloadExcel()
 
       edtCodigo = textField {
         addValueChangeListener { updateGrid() }
@@ -78,26 +92,61 @@ class PainelGridProdutoConferencia(
     addColumnString(ProdutoConferencia::refid) {
       setHeader("Código Site")
       isResizable = true
+      isAutoWidth = true
     }
     addColumnString(ProdutoConferencia::prdno) {
       setHeader("Código Saci")
       isResizable = true
+      isAutoWidth = true
     }
     addColumnString(ProdutoConferencia::grade) {
       setHeader("Grade")
       isResizable = true
+      isAutoWidth = true
     }
-    addColumnString(ProdutoConferencia::descricao) {
-      setHeader("Descricao")
+    addColumnString(ProdutoConferencia::descricaoSite) {
+      setHeader("Descricao Site")
+      width = "100px"
       isResizable = true
+      isAutoWidth = true
+    }
+    addColumnString(ProdutoConferencia::descricaoSaci) {
+      setHeader("Descricao Saci")
+      isResizable = true
+      isAutoWidth = true
     }
     addColumnDouble(ProdutoConferencia::listPrice) {
       setHeader("Preço Site")
       isResizable = true
+      isAutoWidth = true
     }
-    addColumnDouble(ProdutoConferencia::precoSaci) {
-      setHeader("Preço Saci")
+    addColumnDouble(ProdutoConferencia::precoRef) {
+      setHeader("Preço Referência")
       isResizable = true
+      isAutoWidth = true
     }
+    addColumnDouble(ProdutoConferencia::precoPromo) {
+      setHeader("Preço Promocional")
+      isResizable = true
+      isAutoWidth = true
+    }
+  }
+
+  private fun HasComponents.downloadExcel() {
+    val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
+      val planilha = PlanilhaConferencia()
+      val bytes = planilha.grava(allItens())
+      ByteArrayInputStream(bytes)
+    })
+    button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    add(button)
+  }
+
+  private fun filename(): String {
+    val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
+    val textTime = LocalDateTime.now().format(sdf)
+    val filename = "planilha$textTime.xlsx"
+    return filename
   }
 }
