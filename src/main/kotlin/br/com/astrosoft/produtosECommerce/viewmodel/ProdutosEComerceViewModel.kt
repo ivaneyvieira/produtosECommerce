@@ -6,10 +6,13 @@ import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
 
 class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdutosEComerceView>(view) {
 
   fun serviceQueryProduto() = ServiceQueryProduto()
+
+  fun serviceQueryProdutoConferencia() = ServiceQueryProdutoConferencia()
 
   fun salvaProduto(produto: Produto?) {
     if (produto != null) {

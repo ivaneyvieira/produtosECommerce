@@ -292,7 +292,8 @@ enum class EEditor(val value: Int, val canEdit: Boolean) {
   IMPORTADO(3, false),
   ENVIAR(4, false),
   ENVIADO(5, true),
-  CORRECAO(6, false)
+  CORRECAO(6, false),
+  CONFERENCIA(7, false),
 }
 
 enum class EVariacao(val descricao: String) {

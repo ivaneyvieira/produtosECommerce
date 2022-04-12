@@ -96,7 +96,6 @@ abstract class PainelGridProdutoAbstract(
     }
   }
 
-
   override fun gridPanel(
     dataProvider: ConfigurableFilterDataProvider<Produto, Void, FiltroProduto>,
   ): Grid<Produto> {
