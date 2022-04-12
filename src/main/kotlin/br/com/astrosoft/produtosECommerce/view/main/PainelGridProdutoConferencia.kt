@@ -106,8 +106,13 @@ class PainelGridProdutoConferencia(
       isResizable = true
       isAutoWidth = true
     }
-    addColumnDouble(ProdutoConferencia::precoSaci) {
-      setHeader("Preço Saci")
+    addColumnDouble(ProdutoConferencia::precoRef) {
+      setHeader("Preço Referência")
+      isResizable = true
+      isAutoWidth = true
+    }
+    addColumnDouble(ProdutoConferencia::precoPromo) {
+      setHeader("Preço Promocional")
       isResizable = true
       isAutoWidth = true
     }

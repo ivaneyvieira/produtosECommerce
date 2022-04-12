@@ -8,5 +8,7 @@ create table produtoEcomerce.produtoConferencia
     grade     varchar(8),
     descricaoSaci varchar(100),
     descricaoSite varchar(150),
-    precoSaci decimal(13, 2)
+    precoPromo decimal(13, 2),
+    precoRef decimal(13, 2)
 )
+
