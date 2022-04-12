@@ -100,7 +100,10 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
         val allItens = allItens()
         val multiSelect = multiSelect()
         if (multiSelect.size == allItens.size) grid.asMultiSelect().deselectAll()
-        else grid.asMultiSelect().select(allItens)
+        else {
+          grid.asMultiSelect().deselectAll()
+          grid.asMultiSelect().select(allItens)
+        }
       }
     }
   }
