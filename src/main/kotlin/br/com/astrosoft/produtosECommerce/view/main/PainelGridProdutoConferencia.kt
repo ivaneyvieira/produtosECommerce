@@ -7,7 +7,6 @@ import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroProdutoConferencia
 import br.com.astrosoft.produtosECommerce.model.beans.ProdutoConferencia
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaConferencia
-import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaEcommerceParcial
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import com.github.mvysny.karibudsl.v10.textField
@@ -16,6 +15,8 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridMultiSelectionModel
+import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
@@ -33,7 +34,6 @@ class PainelGridProdutoConferencia(
 ) : PainelGrid<ProdutoConferencia, FiltroProdutoConferencia>(serviceQuery) {
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<ProdutoConferencia, Void, FiltroProdutoConferencia>): Grid<ProdutoConferencia> {
     val grid = Grid(ProdutoConferencia::class.java, false)
-    grid.setSelectionMode(Grid.SelectionMode.MULTI)
     grid.dataProvider = dataProvider
     return grid
   }
@@ -46,7 +46,7 @@ class PainelGridProdutoConferencia(
     private lateinit var edtCodigo: TextField
 
     override fun FilterBar<FiltroProdutoConferencia>.contentBlock() {
-      this.selectAll()
+      //this.selectAll()
 
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
@@ -89,6 +89,9 @@ class PainelGridProdutoConferencia(
   }
 
   override fun Grid<ProdutoConferencia>.gridConfig() {
+    this.setSelectionMode(Grid.SelectionMode.MULTI)
+    val multiModel = this.selectionModel as GridMultiSelectionModel<ProdutoConferencia>
+    multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
     addColumnString(ProdutoConferencia::refid) {
       setHeader("Código Site")
       isResizable = true
