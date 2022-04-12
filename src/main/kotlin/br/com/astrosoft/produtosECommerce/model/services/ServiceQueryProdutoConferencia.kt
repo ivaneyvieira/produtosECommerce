@@ -13,12 +13,10 @@ class ServiceQueryProdutoConferencia : IServiceQuery<ProdutoConferencia, FiltroP
     return local.countProdutoConferencia(filter)
   }
 
-  override fun fetch(
-    filter: FiltroProdutoConferencia,
-    offset: Int,
-    limit: Int,
-    sortOrders: List<SortOrder>
-  ): List<ProdutoConferencia> {
+  override fun fetch(filter: FiltroProdutoConferencia,
+                     offset: Int,
+                     limit: Int,
+                     sortOrders: List<SortOrder>): List<ProdutoConferencia> {
     return local.fetchProdutoConferencia(filter, offset, limit, sortOrders)
   }
 
@@ -26,19 +24,20 @@ class ServiceQueryProdutoConferencia : IServiceQuery<ProdutoConferencia, FiltroP
     val precos = PrecosEcomerce.readExcel(fileName)
     local.apagaPrecos()
     val precosSaci = saci.precoSaci().groupBy { it.codigo }.mapValues { it.value.firstOrNull() }
-    val produtos =
-      local.produtosBarcode().groupBy { it.barcode }.mapValues { it.value.firstOrNull()?.codigo }
+    val produtosLocal = local.produtosBarcode()
+    val produtosBarcode = produtosLocal.groupBy { it.barcode }.mapValues { it.value.firstOrNull() }
+    val produtosCodigo = produtosLocal.groupBy { it.codigo }.mapValues { it.value.firstOrNull() }
     precos.forEach {
-      val prdSaci = precosSaci[it.codigo.toIntOrNull() ?: -1] ?: precosSaci[produtos[it.codigo]]
+      val produto = produtosBarcode[it.codigo] ?: produtosCodigo[it.codigo.toIntOrNull()]
+      val prdSaci = precosSaci[produto?.codigo]
 
-      local.addPrecoConferencia(
-        refid = it.codigo,
-        listPrice = it.preco,
-        prdno = prdSaci?.codigo?.toString() ?: "",
-        grade = "",
-        descricao = prdSaci?.descricao ?: "",
-        precoSaci = prdSaci?.preco ?: 0.00
-      )
+      local.addPrecoConferencia(refid = it.codigo,
+                                listPrice = it.preco,
+                                prdno = prdSaci?.codigo?.toString() ?: "",
+                                grade = produto?.grade ?: "",
+                                descricaoSite = it.descricao,
+                                descricaoSaci = prdSaci?.descricao ?: "",
+                                precoSaci = prdSaci?.preco ?: 0.00)
     }
   }
 }

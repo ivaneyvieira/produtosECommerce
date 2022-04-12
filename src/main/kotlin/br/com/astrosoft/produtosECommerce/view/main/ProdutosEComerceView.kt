@@ -85,6 +85,10 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
     gridCorrecao.updateGrid()
   }
 
+  override fun updateGridConferencia() {
+    gridConferencia.updateGrid()
+  }
+
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet { "" } ?: ""
     return when (id) {
