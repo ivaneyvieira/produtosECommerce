@@ -35,7 +35,6 @@ class PainelGridProdutoConferencia(
   inner class FilterConferencia : FilterBar<FiltroProdutoConferencia>() {
     private lateinit var edtCodigo: TextField
 
-
     override fun FilterBar<FiltroProdutoConferencia>.contentBlock() {
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
@@ -44,6 +43,7 @@ class PainelGridProdutoConferencia(
         val file = File(fileName)
         file.writeBytes(bytes)
         (serviceQuery as? ServiceQueryProdutoConferencia)?.readExcel(fileName)
+        updateGrid()
       }
 
       edtCodigo = textField {
@@ -78,26 +78,38 @@ class PainelGridProdutoConferencia(
     addColumnString(ProdutoConferencia::refid) {
       setHeader("Código Site")
       isResizable = true
+      isAutoWidth = true
     }
     addColumnString(ProdutoConferencia::prdno) {
       setHeader("Código Saci")
       isResizable = true
+      isAutoWidth = true
     }
     addColumnString(ProdutoConferencia::grade) {
       setHeader("Grade")
       isResizable = true
+      isAutoWidth = true
     }
-    addColumnString(ProdutoConferencia::descricao) {
-      setHeader("Descricao")
+    addColumnString(ProdutoConferencia::descricaoSite) {
+      setHeader("Descricao Site")
+      width = "100px"
       isResizable = true
+      isAutoWidth = true
+    }
+    addColumnString(ProdutoConferencia::descricaoSaci) {
+      setHeader("Descricao Saci")
+      isResizable = true
+      isAutoWidth = true
     }
     addColumnDouble(ProdutoConferencia::listPrice) {
       setHeader("Preço Site")
       isResizable = true
+      isAutoWidth = true
     }
     addColumnDouble(ProdutoConferencia::precoSaci) {
       setHeader("Preço Saci")
       isResizable = true
+      isAutoWidth = true
     }
   }
 }

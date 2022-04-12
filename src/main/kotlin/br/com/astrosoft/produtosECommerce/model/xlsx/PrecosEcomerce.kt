@@ -4,7 +4,7 @@ import com.github.nwillc.poink.workbook
 import java.text.Normalizer
 import java.util.regex.Pattern
 
-data class PrecosEcomerce(val codigo: String, val preco: Double) {
+data class PrecosEcomerce(val codigo: String, val preco: Double, val descricao: String) {
   companion object {
     private val mapKey = mutableMapOf<String, String>()
     private fun deAccent(str: String): String {
@@ -31,9 +31,11 @@ data class PrecosEcomerce(val codigo: String, val preco: Double) {
       val lista = dataFrame.mapNotNull {
         val refID = it.getString("Ref ID") ?: return@mapNotNull null
         val listPrice = it.getString("List Price")?.toDoubleOrNull() ?: return@mapNotNull null
+        val descricao = it.getString("Product Name") ?: return@mapNotNull null
         PrecosEcomerce(
           codigo = refID,
           preco = listPrice,
+          descricao = descricao,
         )
       }
       return lista

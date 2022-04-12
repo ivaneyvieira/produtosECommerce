@@ -287,7 +287,7 @@ HAVING descricao =  '$descricao' OR '$descricao' = ''""".trimMargin(), GradeCor:
   }
 
   fun produtosBarcode(): List<ProdutoBarcode> {
-    val sql = """SELECT barcode, codigo * 1 AS codigo
+    val sql = """SELECT barcode, codigo * 1 AS codigo, grade
 FROM produtoEcomerce.produto
 GROUP BY barcode"""
     return query(sql, ProdutoBarcode::class)
@@ -323,18 +323,20 @@ GROUP BY barcode"""
     listPrice: Double,
     prdno: String,
     grade: String,
-    descricao: String,
+    descricaoSite: String,
+    descricaoSaci: String,
     precoSaci: Double
   ) {
     val sql =
-      "INSERT IGNORE produtoEcomerce.produtoConferencia(refid, listPrice, prdno, grade, descricao, precoSaci) " +
-        "VALUES(:refid, :listPrice, :prdno, :grade, :descricao, :precoSaci)"
+      "INSERT IGNORE produtoEcomerce.produtoConferencia(refid, listPrice, prdno, grade, descricaoSite, descricaoSaci, precoSaci) " +
+        "VALUES(:refid, :listPrice, :prdno, :grade, :descricaoSite, :descricaoSaci, :precoSaci)"
     script(sql) {
       addOptionalParameter("refid", refid)
       addOptionalParameter("listPrice", listPrice)
       addOptionalParameter("prdno", prdno)
       addOptionalParameter("grade", grade)
-      addOptionalParameter("descricao", descricao)
+      addOptionalParameter("descricaoSite", descricaoSite)
+      addOptionalParameter("descricaoSaci", descricaoSaci)
       addOptionalParameter("precoSaci", precoSaci)
     }
   }
