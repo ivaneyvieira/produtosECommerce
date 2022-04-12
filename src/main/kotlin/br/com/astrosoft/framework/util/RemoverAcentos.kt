@@ -1,6 +1,7 @@
 package br.com.astrosoft.framework.util
 
 import java.text.Normalizer
+import java.util.*
 
 private val REGEX_UNACCENT = "\\p{InCombiningDiacriticalMarks}+".toRegex()
 fun CharSequence?.normalize(sep: String): String {

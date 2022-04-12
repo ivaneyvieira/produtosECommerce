@@ -1,5 +1,8 @@
 package br.com.astrosoft.framework.model
 
+import br.com.astrosoft.produtosECommerce.model.local
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosEcomerce
+
 interface IServiceQuery<T : Any, F : Any> {
   fun count(filter: F): Int
   fun fetch(
