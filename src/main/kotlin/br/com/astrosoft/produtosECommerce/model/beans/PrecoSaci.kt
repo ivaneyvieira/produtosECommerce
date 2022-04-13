@@ -5,6 +5,6 @@ class PrecoSaci(
   val descricao: String,
   val refprice: Double,
   val validade: Int,
-  val promoprice: Double,
-  val preco: Double
+  val promoprice: Double?,
+  val preco: Double?
 )
