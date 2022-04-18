@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.view.cruds.BitolaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CategoriaView
 import br.com.astrosoft.produtosECommerce.view.cruds.CorView
 import br.com.astrosoft.produtosECommerce.view.cruds.MarcaView
+import br.com.astrosoft.produtosECommerce.view.diferencas.DiferencasView
 import br.com.astrosoft.produtosECommerce.view.main.ProdutosEComerceView
 import br.com.astrosoft.produtosECommerce.view.promocao.ProdutoPromocionalView
 import br.com.astrosoft.produtosECommerce.view.user.UsuarioView
@@ -60,6 +61,11 @@ class ProdutoECommerceLayout : AppLayout() {
           this.icon(FORM)
           routerLink(text = "Produtos", viewType = ProdutosEComerceView::class)
         }
+        if (user?.admin == true)
+          tab {
+            this.icon(MONEY)
+            routerLink(text = "Diferenças", viewType = DiferencasView::class)
+          }
         if (user?.admin == true)
           tab {
             this.icon(MONEY)
