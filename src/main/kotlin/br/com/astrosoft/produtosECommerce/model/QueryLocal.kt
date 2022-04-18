@@ -315,8 +315,8 @@ GROUP BY barcode"""
     grade: String,
     descricaoSite: String,
     descricaoSaci: String,
-    precoPromo: Double,
-    precoRef: Double,
+    precoPromo: Double?,
+    precoRef: Double?,
                          ) {
     val sql = """INSERT IGNORE produtoEcomerce.produtoConferencia(refid, listPrice, prdno, grade, 
       |descricaoSite, descricaoSaci, precoPromo, precoRef) 
