@@ -38,8 +38,8 @@ class ServiceQueryProdutoConferencia : IServiceQuery<ProdutoConferencia, FiltroP
         grade = produto?.grade ?: "",
         descricaoSite = it.descricao,
         descricaoSaci = prdSaci?.descricao ?: "",
-        precoPromo = prdSaci?.preco ?: 0.00,
-        precoRef = prdSaci?.refprice ?: 0.00,
+        precoPromo = prdSaci?.preco,
+        precoRef = prdSaci?.refprice,
                                )
     }
   }

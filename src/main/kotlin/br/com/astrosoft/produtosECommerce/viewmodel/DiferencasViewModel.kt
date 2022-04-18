@@ -8,7 +8,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
 
-class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdutosEComerceView>(view) {
+class DiferencasViewModel(view: IDiferencasView) : ViewModel<IDiferencasView>(view) {
 
   fun serviceQueryProduto() = ServiceQueryProduto()
 
@@ -31,18 +31,8 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
   }
 
   fun updateGrid() {
-    Marca.updateList()
-    Bitola.updateList()
-    Categoria.updateList()
-    Marca.updateList()
     when (view.panelStatus()) {
-      BASE -> view.updateGridBase()
-      EDITAR -> view.updateGridEditar()
-      EDITADO -> view.updateGridEditado()
-      IMPORTADO -> view.updateGridImportado()
-      ENVIAR -> view.updateGridEnviar()
-      ENVIADO -> view.updateGridEnviado()
-      CORRECAO -> view.updateGridCorrecao()
+      CONFERENCIA -> view.updateGridConferencia()
     }
   }
 
@@ -68,38 +58,11 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
   }
 }
 
-interface IProdutosEComerceView : IView {
-  fun updateGridBase()
-  fun updateGridEditar()
-  fun updateGridEditado()
-  fun updateGridImportado()
-  fun updateGridEnviar()
-  fun updateGridEnviado()
-  fun updateGridCorrecao()
+interface IDiferencasView : IView {
+  fun updateGridConferencia()
 
   fun panelStatus(): EEditor
   fun marcaProdutos(itens: List<Produto>, marca: EEditor)
-  fun salvaProduto(bean: Produto?)
-  fun replicarProdutos(itens: List<Produto>, marca: EEditor)
-
-  val filtroEditar: FiltroProduto
-  val filtroEditado: FiltroProduto
-  val filtroBase: FiltroProduto
-  val filtroImportado: FiltroProduto
-  val filtroEnviar: FiltroProduto
-  val filtroEnviado: FiltroProduto
-  val filtroCorrecao: FiltroProduto
 }
 
-data class ProcessaBean(
-  var marca: Marca? = null,
-  var marcaCheck: Boolean = true,
-  var categoria: Categoria? = null,
-  var categoriaCheck: Boolean = true,
-  var descricaoCompleta: String? = "",
-  var descricaoCompletaCheck: Boolean = true,
-  var bitola: Int? = 0,
-  var bitolaCheck: Boolean = true,
-  var imagem: String? = "",
-  var imagemCheck: Boolean = true,
-)
+
