@@ -39,6 +39,11 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     return query(sql, SaldoLoja4::class)
   }
 
+  fun produtoBarcodeSaci(): List<ProdutoCodigo> {
+    val sql = "/sqlSaci/produtoBarcodeSaci.sql"
+    return query(sql, ProdutoCodigo::class)
+  }
+
   fun precoSaci(): List<PrecoSaci> {
     val sql = "/sqlSaci/precoSaci.sql"
     return query(sql, PrecoSaci::class)
