@@ -13,6 +13,10 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
   override fun fetch(
     filter: FiltroVtex, offset: Int, limit: Int, sortOrders: List<SortOrder>
   ): List<Vtex> {
-    return local.fetchVtex(filter, offset, limit, sortOrders)
+    val lista =  local.fetchVtex(filter, offset, limit, sortOrders)
+    lista.forEachIndexed { index, vtex ->
+      vtex.seq = offset + index + 1
+    }
+    return lista
   }
 }

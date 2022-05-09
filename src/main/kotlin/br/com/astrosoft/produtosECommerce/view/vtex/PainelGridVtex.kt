@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.ProdutoConferencia
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
+import com.github.mvysny.karibudsl.v10.getAll
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.HasComponents
@@ -95,6 +96,13 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
     this.setSelectionMode(Grid.SelectionMode.MULTI)
     val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
     multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
+    addColumnInt(Vtex::seq){
+      setHeader("Seq")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+      isSortable = false
+    }
     addColumnInt(Vtex::skuId) {
       setHeader("Sku ID")
       isExpand = false
