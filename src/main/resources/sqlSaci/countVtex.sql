@@ -10,8 +10,9 @@ DO @ID_MARCA := IF(@MARCA REGEXP '^[0-9]+$', @MARCA * 1, 0);
 
 SELECT COUNT(*)
 FROM produtoEcomerce.vtex
-WHERE (referenciaSKU LIKE CONCAT(@SKU, '%') OR @SKU = '')
-  AND (idProd = @ID_PRODUTO OR nomeSku LIKE CONCAT('%', @PRODUTO, '%') OR @PRODUTO = '')
+WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
+  AND (idProd = @ID_PRODUTO OR nomeSku LIKE CONCAT('%', @PRODUTO, '%') OR
+       referenciaSKU LIKE CONCAT(@PRODUTO, '%') OR @PRODUTO = '')
   AND (idDep = @ID_DEP OR nomeDepartamento LIKE CONCAT('%', @DEP, '%') OR @DEP = '')
   AND (idCat = @ID_CAT OR nomeCategoria LIKE CONCAT('%', @CAT, '%') OR @CAT = '')
   AND (idMarca = @ID_MARCA OR nomeMarca LIKE CONCAT('%', @MARCA, '%') OR @MARCA = '')
