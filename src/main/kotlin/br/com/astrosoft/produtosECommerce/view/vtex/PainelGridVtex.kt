@@ -40,11 +40,11 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
     private lateinit var edtMarca: TextField
 
     override fun FilterBar<FiltroVtex>.contentBlock() { //this.selectAll()
-      edtProduto = textField("Produto") {
+      edtSku = textField("SKU ID") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
-      edtSku = textField("SKU") {
+      edtProduto = textField("Produto") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
