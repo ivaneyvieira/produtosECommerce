@@ -15,6 +15,14 @@ CREATE TABLE vtex (
   nomeMarca        varchar(100)
 );
 
-SELECT * FROM vtex;
+SELECT *
+FROM vtex;
+
+ALTER TABLE vtex
+  ADD COLUMN estoque INT DEFAULT 0;
+
+ALTER TABLE vtex
+  ADD COLUMN preco decimal(13, 2) DEFAULT 0.00;
+
 
 

@@ -17,7 +17,9 @@ SELECT skuId,
        idCat,
        nomeCategoria,
        idMarca,
-       nomeMarca
+       nomeMarca,
+       estoque,
+       preco
 FROM produtoEcomerce.vtex
 WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (idProd = @ID_PRODUTO OR nomeSku LIKE CONCAT('%', @PRODUTO, '%') OR
