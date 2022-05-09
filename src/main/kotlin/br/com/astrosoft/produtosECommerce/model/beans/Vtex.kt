@@ -1,8 +1,7 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
-import br.com.astrosoft.produtosECommerce.model.saci
-
 data class Vtex(
+  var seq: Int?,
   val skuId: Int,
   val idProd: Int,
   val nomeSku: String,
