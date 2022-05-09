@@ -10,6 +10,7 @@ import br.com.astrosoft.produtosECommerce.view.diferencas.DiferencasView
 import br.com.astrosoft.produtosECommerce.view.main.ProdutosEComerceView
 import br.com.astrosoft.produtosECommerce.view.promocao.ProdutoPromocionalView
 import br.com.astrosoft.produtosECommerce.view.user.UsuarioView
+import br.com.astrosoft.produtosECommerce.view.vtex.VtexView
 import com.github.mvysny.karibudsl.v10.anchor
 import com.github.mvysny.karibudsl.v10.drawer
 import com.github.mvysny.karibudsl.v10.drawerToggle
@@ -34,9 +35,10 @@ import com.vaadin.flow.theme.lumo.Lumo
 
 @Theme(value = Lumo::class, variant = Lumo.DARK)
 @Push
-@PWA(
-  name = AppConfig.title, shortName = AppConfig.shortName, iconPath = AppConfig.iconPath, enableInstallPrompt = false
-)
+@PWA(name = AppConfig.title,
+     shortName = AppConfig.shortName,
+     iconPath = AppConfig.iconPath,
+     enableInstallPrompt = false)
 class ProdutoECommerceLayout : AppLayout() {
   init {
     isDrawerOpened = false
@@ -61,16 +63,18 @@ class ProdutoECommerceLayout : AppLayout() {
           this.icon(FORM)
           routerLink(text = "Produtos", viewType = ProdutosEComerceView::class)
         }
-        if (user?.admin == true)
-          tab {
-            this.icon(MONEY)
-            routerLink(text = "Diferenças", viewType = DiferencasView::class)
-          }
-        if (user?.admin == true)
-          tab {
-            this.icon(MONEY)
-            routerLink(text = "Promoções", viewType = ProdutoPromocionalView::class)
-          }
+        if (user?.admin == true) tab {
+          this.icon(INVOICE)
+          routerLink(text = "Vtex", viewType = VtexView::class)
+        }
+        if (user?.admin == true) tab {
+          this.icon(MONEY)
+          routerLink(text = "Diferenças", viewType = DiferencasView::class)
+        }
+        if (user?.admin == true) tab {
+          this.icon(MONEY)
+          routerLink(text = "Promoções", viewType = ProdutoPromocionalView::class)
+        }
         if (user?.categoria == true) tab {
           this.icon(CUBES)
           routerLink(text = "Categoria", viewType = CategoriaView::class)

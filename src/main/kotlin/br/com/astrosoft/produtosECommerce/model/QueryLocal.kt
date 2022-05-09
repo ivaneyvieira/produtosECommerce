@@ -4,6 +4,7 @@ import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
+import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import org.sql2o.Query
@@ -332,6 +333,37 @@ GROUP BY barcode"""
       addOptionalParameter("precoPromo", precoPromo)
       addOptionalParameter("precoRef", precoRef)
     }
+  }
+
+  fun fetchVtex(filtro: FiltroVtex, offset: Int, limit: Int, sortOrders: List<SortOrder>): List<Vtex> {
+    val sqlIncial = SystemUtils.readFile("/sqlSaci/fetchVtex.sql") ?: return emptyList()
+
+    val orderBy = if (sortOrders.isEmpty()) ""
+    else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
+    val sql = """$sqlIncial
+      |$orderBy 
+      |LIMIT $limit OFFSET $offset
+    """.trimMargin()
+    return query(sql, Vtex::class) {
+      addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("sku", filtro.sku)
+      addOptionalParameter("departamento", filtro.departamento)
+      addOptionalParameter("marca", filtro.marca)
+      addOptionalParameter("categoria", filtro.categoria)
+    }
+  }
+
+  fun countVtex(filtro: FiltroVtex): Int {
+    val sql = "/sqlSaci/countVtex.sql"
+    return querySerivce(sql, lambda = {
+      addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("sku", filtro.sku)
+      addOptionalParameter("departamento", filtro.departamento)
+      addOptionalParameter("marca", filtro.marca)
+      addOptionalParameter("categoria", filtro.categoria)
+    }, result = {
+      it.executeScalar(Int::class.java)
+    })
   }
 
   companion object {

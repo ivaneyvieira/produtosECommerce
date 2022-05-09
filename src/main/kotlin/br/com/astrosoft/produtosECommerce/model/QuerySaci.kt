@@ -5,7 +5,12 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
+import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.driver
+import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.password
+import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.url
+import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.username
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.view.vtex.VtexView
 import org.sql2o.Query
 import kotlin.math.roundToInt
 
@@ -166,7 +171,6 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
         con.commit()
       }
     }
-
   }
 
   companion object {
