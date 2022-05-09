@@ -96,8 +96,12 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
     this.setSelectionMode(Grid.SelectionMode.MULTI)
     val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
     multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
-    addColumnSeq("Seq"){
-      this.dataProvider.getAll()
+    addColumnInt(Vtex::seq){
+      setHeader("Seq")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+      isSortable = false
     }
     addColumnInt(Vtex::skuId) {
       setHeader("Sku ID")
