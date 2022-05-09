@@ -18,6 +18,7 @@ import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.value.ValueChangeMode
 
 class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
         PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
@@ -40,18 +41,23 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
 
     override fun FilterBar<FiltroVtex>.contentBlock() { //this.selectAll()
       edtProduto = textField("Produto") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
       edtSku = textField("SKU") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
       edtDepartamento = textField("Departamento") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
       edtCategoria = textField("Categoria") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
       edtMarca = textField("Marca") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
     }
