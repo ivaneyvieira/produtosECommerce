@@ -3,10 +3,8 @@ package br.com.astrosoft.produtosECommerce.view.vtex
 import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
-import br.com.astrosoft.produtosECommerce.model.beans.ProdutoConferencia
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.getAll
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.HasComponents
@@ -21,7 +19,7 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 
-class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
+class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
         PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
@@ -36,9 +34,6 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
   inner class FilterConferencia : FilterBar<FiltroVtex>() {
     private lateinit var edtProduto: TextField
     private lateinit var edtSku: TextField
-    private lateinit var edtDepartamento: TextField
-    private lateinit var edtCategoria: TextField
-    private lateinit var edtMarca: TextField
 
     override fun FilterBar<FiltroVtex>.contentBlock() { //this.selectAll()
       edtSku = textField("SKU ID") {
@@ -49,45 +44,15 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
-      edtDepartamento = textField("Departamento") {
-        valueChangeMode = ValueChangeMode.TIMEOUT
-        addValueChangeListener { updateGrid() }
-      }
-      edtCategoria = textField("Categoria") {
-        valueChangeMode = ValueChangeMode.TIMEOUT
-        addValueChangeListener { updateGrid() }
-      }
-      edtMarca = textField("Marca") {
-        valueChangeMode = ValueChangeMode.TIMEOUT
-        addValueChangeListener { updateGrid() }
-      }
-    }
-
-    private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
-      val buffer = MultiFileMemoryBuffer()
-      val upload = Upload(buffer)
-      val uploadButton = Button("Planilha")
-      upload.uploadButton = uploadButton
-      upload.isAutoUpload = true
-      upload.isDropAllowed = false
-      upload.maxFileSize = 1024 * 1024 * 1024
-      upload.addFileRejectedListener { event: FileRejectedEvent ->
-        println(event.errorMessage)
-      }
-      upload.addFailedListener { event ->
-        println(event.reason.message)
-      }
-      add(upload)
-      return Pair(buffer, upload)
     }
 
     override fun filtro(): FiltroVtex {
       return FiltroVtex(
         produto = edtProduto.value ?: "",
         sku = edtSku.value ?: "",
-        departamento = edtDepartamento.value ?: "",
-        categoria = edtCategoria.value ?: "",
-        marca = edtMarca.value ?: "",
+        departamento = "",
+        categoria = "",
+        marca = "",
                        )
     }
   }
@@ -96,7 +61,7 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
     this.setSelectionMode(Grid.SelectionMode.MULTI)
     val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
     multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
-    addColumnInt(Vtex::seq){
+    addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
       isResizable = true
@@ -123,46 +88,23 @@ class PainelGridVtex(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Filt
     }
     addColumnString(Vtex::referenciaSKU) {
       setHeader("Referencia SKU")
-      width = "100px"
       isExpand = false
       isResizable = true
       isAutoWidth = true
     }
-    addColumnInt(Vtex::idDep) {
-      setHeader("Id Dep")
+    addColumnInt(Vtex::estoque) {
+      setHeader("Estoque")
       isExpand = false
       isResizable = true
-      isAutoWidth = true
+      isAutoWidth = false
+      width = "150px"
     }
-    addColumnString(Vtex::nomeDepartamento) {
-      setHeader("Nome Departamento")
+    addColumnDouble(Vtex::preco) {
+      setHeader("Preco")
       isExpand = false
       isResizable = true
-      isAutoWidth = true
-    }
-    addColumnInt(Vtex::idCat) {
-      setHeader("Id Cat")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
-    addColumnString(Vtex::nomeCategoria) {
-      setHeader("Nome Categoria")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
-    addColumnInt(Vtex::idMarca) {
-      setHeader("Id Marca")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
-    addColumnString(Vtex::nomeMarca) {
-      setHeader("Nome Marca")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
+      isAutoWidth = false
+      width = "150px"
     }
   }
 }

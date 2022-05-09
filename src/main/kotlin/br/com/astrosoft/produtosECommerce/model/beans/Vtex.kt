@@ -12,6 +12,8 @@ data class Vtex(
   val nomeCategoria: String,
   val idMarca: Int,
   val nomeMarca: String,
+  val estoque: Int,
+  val preco: Double
                )
 
 data class FiltroVtex(

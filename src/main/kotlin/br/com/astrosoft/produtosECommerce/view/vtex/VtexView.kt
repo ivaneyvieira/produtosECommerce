@@ -3,8 +3,6 @@ package br.com.astrosoft.produtosECommerce.view.vtex
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
 import br.com.astrosoft.framework.view.tabGrid
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
-import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.viewmodel.*
@@ -20,7 +18,8 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
   private var tabMain: TabSheet
   override val viewModel: VtexViewModel = VtexViewModel(this)
 
-  private val gridConferencia = PainelGridVtex(this, viewModel.servicoBase())
+  private val gridProduto = PainelGridProduto(this, viewModel.servicoVtexProduto())
+  private val gridPreco = PainelGridPreco(this, viewModel.servicoVtexProduto())
 
   override fun isAccept() = true
 
@@ -28,12 +27,13 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
     val user = AppConfig.userSaci as? UserSaci
     tabMain = tabSheet {
       setSizeFull()
-      tabGrid("Base", gridConferencia)
+      tabGrid("Produto", gridProduto)
+      tabGrid("Preco", gridPreco)
     }
-    viewModel.updateGridBase()
+    viewModel.updateGridProduto()
   }
 
-  override fun updateGridBase() {
-    gridConferencia.updateGrid()
+  override fun updateGridProduto() {
+    gridProduto.updateGrid()
   }
 }
