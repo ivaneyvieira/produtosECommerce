@@ -4,6 +4,8 @@ import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
@@ -12,12 +14,14 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
+import java.io.File
 
 class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
         PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
@@ -35,7 +39,36 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
     private lateinit var edtProduto: TextField
     private lateinit var edtSku: TextField
 
-    override fun FilterBar<FiltroVtex>.contentBlock() { //this.selectAll()
+    private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
+      val buffer = MultiFileMemoryBuffer()
+      val upload = Upload(buffer)
+      val uploadButton = Button(VaadinIcon.MONEY.create())
+      upload.uploadButton = uploadButton
+      upload.isAutoUpload = true
+      upload.isDropAllowed = false
+      upload.maxFileSize = 1024 * 1024 * 1024
+      upload.addFileRejectedListener { event: FileRejectedEvent ->
+        println(event.errorMessage)
+      }
+      upload.addFailedListener { event ->
+        println(event.reason.message)
+      }
+      add(upload)
+      return Pair(buffer, upload)
+    }
+
+
+    override fun FilterBar<FiltroVtex>.contentBlock() {
+      val (buffer, upload) = uploadFileXls()
+      upload.addSucceededListener {
+        val fileName = "/tmp/${it.fileName}"
+        val bytes = buffer.getInputStream(it.fileName).readBytes()
+        val file = File(fileName)
+        file.writeBytes(bytes)
+        (serviceQuery as? ServiceQueryVtex)?.readExcel(fileName)
+        updateGrid()
+      }
+
       edtSku = textField("SKU ID") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
