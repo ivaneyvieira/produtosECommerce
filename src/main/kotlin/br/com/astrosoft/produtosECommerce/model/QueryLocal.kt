@@ -354,6 +354,17 @@ GROUP BY barcode"""
     }
   }
 
+  fun updateVtex(vtex : Vtex){
+    val sql = "/sqlSaci/updateVtex.sql"
+
+    script(sql){
+      addOptionalParameter("precoCompor", vtex.precoCompor())
+      addOptionalParameter("promoprice", vtex.promoprice())
+      addOptionalParameter("refprice", vtex.refprice())
+      addOptionalParameter("skuId", vtex.skuId)
+    }
+  }
+
   fun countVtex(filtro: FiltroVtex): Int {
     val sql = "/sqlSaci/countVtex.sql"
     return querySerivce(sql, lambda = {
