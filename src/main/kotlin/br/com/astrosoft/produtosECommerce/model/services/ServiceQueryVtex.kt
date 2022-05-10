@@ -44,8 +44,4 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
       local.updatePrecoVtex(preco)
     }
   }
-
-  fun updateAll() {
-    fetch(FiltroVtex())
-  }
 }
