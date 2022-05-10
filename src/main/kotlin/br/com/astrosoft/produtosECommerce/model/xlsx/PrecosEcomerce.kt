@@ -27,7 +27,7 @@ data class PrecosEcomerce(val codigo: String, val preco: Double, val descricao: 
     }
 
     fun readExcel(filename: String): List<PrecosEcomerce> {
-      val dataFrame = readXlsx(filename)
+      val dataFrame = readXlsx(filename, 0)
       val lista = dataFrame.mapNotNull {
         val refID = it.getString("Ref ID") ?: return@mapNotNull null
         val listPrice = it.getString("List Price")?.toDoubleOrNull() ?: return@mapNotNull null
@@ -44,18 +44,18 @@ data class PrecosEcomerce(val codigo: String, val preco: Double, val descricao: 
 }
 
 
-private fun readXlsx(filename: String): List<Map<String, String>> {
+fun readXlsx(filename: String, rowIndexCol : Int): List<Map<String, String>> {
   val listMap = mutableListOf<Map<String, String>>()
   workbook(filename) {
     sheet(0) {
       val colunas = mutableListOf<String>()
       var rowIndex = 0
       this.rowIterator().forEach { row ->
-        if (rowIndex == 1) {
+        if (rowIndex == rowIndexCol) {
           row.iterator().forEach { cell ->
             colunas.add(cell.stringCellValue)
           }
-        } else if (rowIndex > 1) {
+        } else if (rowIndex > rowIndexCol) {
           val map = mutableMapOf<String, String>()
           var colIndex = 0
           colunas.forEachIndexed { index, col ->
