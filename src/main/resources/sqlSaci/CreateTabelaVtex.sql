@@ -25,4 +25,13 @@ ALTER TABLE vtex
   ADD COLUMN preco decimal(13, 2) DEFAULT 0.00;
 
 
+ALTER TABLE vtex
+  ADD COLUMN promoprice INT DEFAULT 0;
+
+ALTER TABLE vtex
+  ADD COLUMN refprice decimal(13, 2) DEFAULT 0.00;
+
+ALTER TABLE vtex
+  ADD COLUMN precoCompor INT DEFAULT 0;
+
 

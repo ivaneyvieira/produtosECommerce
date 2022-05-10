@@ -33,6 +33,7 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
     lista.forEachIndexed { index, vtex ->
       vtex.seq = offset + index + 1
       vtex.priceSaci = findPrice(vtex.referenciaSKU)
+      vtex.update()
     }
     return lista
   }
@@ -42,5 +43,9 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
+  }
+
+  fun updateAll() {
+    fetch(FiltroVtex())
   }
 }
