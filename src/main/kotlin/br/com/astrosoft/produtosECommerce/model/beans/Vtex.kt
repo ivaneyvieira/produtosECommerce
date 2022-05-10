@@ -27,10 +27,12 @@ data class Vtex(
   fun precoCompor() = priceSaci?.precoCompor
 
   fun update() {
-    local.updateVtex(this)
-    promoprice = promoprice()
-    refprice = refprice()
-    precoCompor = precoCompor()
+    if (promoprice != promoprice() || refprice != refprice() || precoCompor != precoCompor()) {
+      local.updateVtex(this)
+      promoprice = promoprice()
+      refprice = refprice()
+      precoCompor = precoCompor()
+    }
   }
 }
 
@@ -40,4 +42,5 @@ data class FiltroVtex(
   val departamento: String = "",
   val categoria: String = "",
   val marca: String = "",
+  val promocao: Boolean = false
                      )

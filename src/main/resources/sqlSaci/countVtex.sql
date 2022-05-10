@@ -16,5 +16,6 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (idDep = @ID_DEP OR nomeDepartamento LIKE CONCAT('%', @DEP, '%') OR @DEP = '')
   AND (idCat = @ID_CAT OR nomeCategoria LIKE CONCAT('%', @CAT, '%') OR @CAT = '')
   AND (idMarca = @ID_MARCA OR nomeMarca LIKE CONCAT('%', @MARCA, '%') OR @MARCA = '')
+  AND (promoprice > 0 OR :promocao != 'S')
 
 
