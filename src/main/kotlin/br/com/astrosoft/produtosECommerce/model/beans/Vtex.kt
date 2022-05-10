@@ -16,7 +16,7 @@ data class Vtex(var seq: Int?,
   var priceSaci: PrecoSaci? = null
 
   val promoprice
-    get() = priceSaci?.promoprice
+    get() = priceSaci?.promopricev
 
   val refprice
     get() = priceSaci?.refprice
