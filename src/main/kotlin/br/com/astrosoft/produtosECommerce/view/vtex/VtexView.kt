@@ -20,6 +20,7 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
 
   private val gridProduto = PainelGridProduto(this, viewModel.servicoVtexProduto())
   private val gridPreco = PainelGridPreco(this, viewModel.servicoVtexProduto())
+  private val gridPromocao = PainelGridPromocao(this, viewModel.servicoVtexProduto())
 
   override fun isAccept() = true
 
@@ -29,6 +30,7 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
       setSizeFull()
       tabGrid("Produto", gridProduto)
       tabGrid("Preco", gridPreco)
+      tabGrid("Promocao", gridPromocao)
     }
     viewModel.updateGridProduto()
   }

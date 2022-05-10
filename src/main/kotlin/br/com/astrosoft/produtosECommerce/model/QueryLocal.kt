@@ -351,13 +351,14 @@ GROUP BY barcode"""
       addOptionalParameter("departamento", filtro.departamento)
       addOptionalParameter("marca", filtro.marca)
       addOptionalParameter("categoria", filtro.categoria)
+      addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
     }
   }
 
-  fun updateVtex(vtex : Vtex){
+  fun updateVtex(vtex: Vtex) {
     val sql = "/sqlSaci/updateVtex.sql"
 
-    script(sql){
+    script(sql) {
       addOptionalParameter("precoCompor", vtex.precoCompor())
       addOptionalParameter("promoprice", vtex.promoprice())
       addOptionalParameter("refprice", vtex.refprice())
@@ -373,6 +374,7 @@ GROUP BY barcode"""
       addOptionalParameter("departamento", filtro.departamento)
       addOptionalParameter("marca", filtro.marca)
       addOptionalParameter("categoria", filtro.categoria)
+      addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
     }, result = {
       it.executeScalar(Int::class.java)
     })
@@ -380,7 +382,7 @@ GROUP BY barcode"""
 
   fun updatePrecoVtex(preco: PrecosVtex) {
     val sql = "UPDATE produtoEcomerce.vtex SET preco = :preco WHERE skuId = :skuId"
-    script(sql){
+    script(sql) {
       addOptionalParameter("preco", preco.preco)
       addOptionalParameter("skuId", preco.skuId)
     }
