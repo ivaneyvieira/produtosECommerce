@@ -4,13 +4,17 @@ import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaConferencia
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
@@ -21,7 +25,11 @@ import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
+import org.vaadin.stefan.LazyDownloadButton
+import java.io.ByteArrayInputStream
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
         PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
@@ -57,7 +65,6 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       return Pair(buffer, upload)
     }
 
-
     override fun FilterBar<FiltroVtex>.contentBlock() {
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
@@ -68,6 +75,8 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
         (serviceQuery as? ServiceQueryVtex)?.readExcel(fileName)
         updateGrid()
       }
+
+      this.downloadExcel()
 
       edtSku = textField("SKU ID") {
         valueChangeMode = ValueChangeMode.TIMEOUT
@@ -127,34 +136,49 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
     }
     addColumnDouble(Vtex::precoCompor) {
       setHeader("Preço Compor")
-      isSortable = false
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "150px"
     }
     addColumnDouble(Vtex::refprice) {
-      setHeader("Preco Ref")
-      isSortable = false
+      setHeader("Preço Ref")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "150px"
     }
     addColumnDouble(Vtex::promoprice) {
-      setHeader("Preco Promo")
-      isSortable = false
+      setHeader("Preço Promo")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "150px"
     }
     addColumnDouble(Vtex::preco) {
-      setHeader("Preco Vtex")
+      setHeader("Preço Vtex")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "150px"
     }
+  }
+
+  private fun HasComponents.downloadExcel() {
+    val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
+      val planilha = PlanilhaVtexPreco()
+      val bytes = planilha.grava(allItens())
+      ByteArrayInputStream(bytes)
+    })
+    button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    add(button)
+  }
+
+  private fun filename(): String {
+    val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
+    val textTime = LocalDateTime.now().format(sdf)
+    val filename = "planilha$textTime.xlsx"
+    return filename
   }
 }
