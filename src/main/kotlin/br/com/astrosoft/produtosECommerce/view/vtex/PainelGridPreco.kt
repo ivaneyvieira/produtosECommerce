@@ -14,6 +14,7 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
@@ -41,7 +42,7 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
     private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
       val buffer = MultiFileMemoryBuffer()
       val upload = Upload(buffer)
-      val uploadButton = Button("Planilha")
+      val uploadButton = Button(VaadinIcon.MONEY.create())
       upload.uploadButton = uploadButton
       upload.isAutoUpload = true
       upload.isDropAllowed = false
