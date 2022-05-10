@@ -125,12 +125,13 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       isResizable = true
       isAutoWidth = true
     }
-    addColumnInt(Vtex::estoque) {
-      setHeader("Estoque")
+    addColumnDouble(Vtex::precoCompor) {
+      setHeader("Preço Compor")
+      isSortable = false
       isExpand = false
       isResizable = true
       isAutoWidth = false
-      width = "100px"
+      width = "150px"
     }
     addColumnDouble(Vtex::refprice) {
       setHeader("Preco Ref")
