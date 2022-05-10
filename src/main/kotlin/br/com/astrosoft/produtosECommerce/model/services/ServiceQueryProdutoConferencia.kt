@@ -10,7 +10,7 @@ import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosEcomerce
 
-private fun ProdutoBarcode?.toProdutoCodigo(): ProdutoCodigo? {
+fun ProdutoBarcode?.toProdutoCodigo(): ProdutoCodigo? {
   val produto = this ?: return null
   return ProdutoCodigo(codigo = produto.codigo.toString(), grade = produto.grade, barcode = produto.barcode)
 }

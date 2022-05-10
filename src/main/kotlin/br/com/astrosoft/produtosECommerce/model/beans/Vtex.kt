@@ -1,20 +1,26 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
-data class Vtex(
-  var seq: Int?,
-  val skuId: Int,
-  val idProd: Int,
-  val nomeSku: String,
-  val referenciaSKU: String,
-  val idDep: Int,
-  val nomeDepartamento: String,
-  val idCat: Int,
-  val nomeCategoria: String,
-  val idMarca: Int,
-  val nomeMarca: String,
-  val estoque: Int,
-  val preco: Double
-               )
+data class Vtex(var seq: Int?,
+                val skuId: Int,
+                val idProd: Int,
+                val nomeSku: String,
+                val referenciaSKU: String,
+                val idDep: Int,
+                val nomeDepartamento: String,
+                val idCat: Int,
+                val nomeCategoria: String,
+                val idMarca: Int,
+                val nomeMarca: String,
+                val estoque: Int,
+                val preco: Double) {
+  var priceSaci: PrecoSaci? = null
+
+  val promoprice
+    get() = priceSaci?.promoprice
+
+  val refprice
+    get() = priceSaci?.refprice
+}
 
 data class FiltroVtex(
   val produto: String,
