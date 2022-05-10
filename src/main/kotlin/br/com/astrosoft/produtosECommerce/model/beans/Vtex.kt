@@ -20,6 +20,9 @@ data class Vtex(var seq: Int?,
 
   val refprice
     get() = priceSaci?.refprice
+
+  val precoCompor
+    get() = priceSaci?.precoCompor
 }
 
 data class FiltroVtex(
