@@ -134,6 +134,7 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
     }
     addColumnDouble(Vtex::refprice) {
       setHeader("Preco Ref")
+      isSortable = false
       isExpand = false
       isResizable = true
       isAutoWidth = false
@@ -141,6 +142,7 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
     }
     addColumnDouble(Vtex::promoprice) {
       setHeader("Preco Promo")
+      isSortable = false
       isExpand = false
       isResizable = true
       isAutoWidth = false
