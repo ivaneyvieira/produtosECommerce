@@ -80,8 +80,8 @@ class PainelGridProduto(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, F
       setHeader("Seq")
       isExpand = false
       isResizable = true
-      isAutoWidth = true
-      isSortable = false
+      isAutoWidth = false
+      width = "70px"
     }
     addColumnInt(Vtex::skuId) {
       setHeader("Sku ID")
