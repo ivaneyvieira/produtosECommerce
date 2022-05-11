@@ -19,19 +19,22 @@ data class Vtex(
   var promoprice: Double?,
   var refprice: Double?,
   var precoCompor: Double?,
+  var codigo: String,
                ) {
   var priceSaci: PrecoSaci? = null
 
   fun promoprice() = priceSaci?.promopricev
   fun refprice() = priceSaci?.refprice
   fun precoCompor() = priceSaci?.precoCompor
+  fun codigo() = priceSaci?.codigo?.toString() ?: ""
 
   fun update() {
-    if (promoprice != promoprice() || refprice != refprice() || precoCompor != precoCompor()) {
+    if (promoprice != promoprice() || refprice != refprice() || precoCompor != precoCompor() || codigo != codigo()) {
       local.updateVtex(this)
       promoprice = promoprice()
       refprice = refprice()
       precoCompor = precoCompor()
+      codigo = codigo()
     }
   }
 }
