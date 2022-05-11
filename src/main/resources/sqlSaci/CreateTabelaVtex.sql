@@ -37,4 +37,7 @@ ALTER TABLE vtex
 ALTER TABLE vtex
   ADD COLUMN codigo VARCHAR(16) DEFAULT '';
 
+ALTER TABLE vtex
+  ADD COLUMN validade DATE;
+
 
