@@ -96,8 +96,8 @@ class PainelGridPromocao(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, 
       setHeader("Seq")
       isExpand = false
       isResizable = true
-      isAutoWidth = true
-      isSortable = false
+      isAutoWidth = false
+      width = "70px"
     }
     addColumnInt(Vtex::skuId) {
       setHeader("Sku ID")
@@ -123,6 +123,12 @@ class PainelGridPromocao(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, 
       isResizable = true
       isAutoWidth = true
     }
+    addColumnString(Vtex::codigo) {
+      setHeader("Cód Saci")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnDouble(Vtex::precoCompor) {
       setHeader("Preço Compor")
       isExpand = false
@@ -130,15 +136,21 @@ class PainelGridPromocao(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, 
       isAutoWidth = false
       width = "150px"
     }
-    addColumnDouble(Vtex::refprice) {
-      setHeader("Preço Ref")
+    addColumnLocalDate(Vtex::validade) {
+      setHeader("Validade")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
+    addColumnDouble(Vtex::promoprice) {
+      setHeader("Preço Promo")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "150px"
     }
-    addColumnDouble(Vtex::promoprice) {
-      setHeader("Preço Promo")
+    addColumnDouble(Vtex::refprice) {
+      setHeader("Preço Ref")
       isExpand = false
       isResizable = true
       isAutoWidth = false

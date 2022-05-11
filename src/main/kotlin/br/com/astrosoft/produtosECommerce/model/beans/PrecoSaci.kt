@@ -14,4 +14,6 @@ class PrecoSaci(
                ) {
   val promopricev
     get() = if (LocalDate.now().toSaciDate() <= validade) promoprice else null
+  val validadev
+    get() = if (LocalDate.now().toSaciDate() <= validade) validade else 0
 }
