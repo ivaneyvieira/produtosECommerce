@@ -362,6 +362,7 @@ GROUP BY barcode"""
       addOptionalParameter("precoCompor", vtex.precoCompor())
       addOptionalParameter("promoprice", vtex.promoprice())
       addOptionalParameter("refprice", vtex.refprice())
+      addOptionalParameter("codigo", vtex.codigo())
       addOptionalParameter("skuId", vtex.skuId)
     }
   }

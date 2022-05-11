@@ -1,5 +1,6 @@
 UPDATE produtoEcomerce.vtex
 SET promoprice  = :promoprice,
     refprice    = :refprice,
-    precoCompor = :precoCompor
+    precoCompor = :precoCompor,
+    codigo      = :codigo
 WHERE skuId = :skuId

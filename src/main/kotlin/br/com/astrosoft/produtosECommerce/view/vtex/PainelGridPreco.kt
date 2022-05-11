@@ -134,6 +134,12 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       isResizable = true
       isAutoWidth = true
     }
+    addColumnString(Vtex::codigo) {
+      setHeader("Cód Saci")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnDouble(Vtex::precoCompor) {
       setHeader("Preço Compor")
       isExpand = false
