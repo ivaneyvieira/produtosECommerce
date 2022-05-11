@@ -1,9 +1,11 @@
 package br.com.astrosoft.produtosECommerce.model.xlsx
 
+import br.com.astrosoft.framework.util.parserDate
 import java.text.Normalizer
+import java.time.LocalDate
 import java.util.regex.Pattern
 
-private data class PrecosVtex(val skuId: Int, val preco: Double) {
+data class PromoVtex(val skuId: Int, val precoPromo: Double, val precoList: Double, val validade: LocalDate?) {
   companion object {
     private val mapKey = mutableMapOf<String, String>()
     private fun deAccent(str: String): String {
@@ -25,15 +27,18 @@ private data class PrecosVtex(val skuId: Int, val preco: Double) {
       return this[key]?.trim()
     }
 
-    fun readExcel(filename: String): List<PrecosVtex> {
+    fun readExcel(filename: String): List<PromoVtex> {
       val dataFrame = readXlsx(filename, 0)
       val lista = dataFrame.mapNotNull {
         val skuId = it.getString("SKU ID")?.toIntOrNull() ?: return@mapNotNull null
-        val listPrice = it.getString("Price")?.toDoubleOrNull() ?: return@mapNotNull null
-        PrecosVtex(
-          skuId = skuId,
-          preco = listPrice
-                  )
+        val precoPromo = it.getString("Price")?.toDoubleOrNull() ?: 0.00
+        val precoList = it.getString("List Price")?.toDoubleOrNull() ?: 0.00
+        val validade = it.getString("Date To")?.split(" ")?.get(0)
+        val data = validade.parserDate("M/d/yyyy")
+        PromoVtex(skuId = skuId,
+                  precoPromo = precoPromo,
+                  precoList = precoList,
+                  validade = data)
       }
       return lista
     }

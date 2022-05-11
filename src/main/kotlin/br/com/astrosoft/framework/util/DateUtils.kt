@@ -104,3 +104,11 @@ fun String?.parserDate(): LocalDate? {
     null
   }
 }
+
+fun String?.parserDate(format: String): LocalDate? {
+  return try {
+    LocalDate.parse(this, DateTimeFormatter.ofPattern(format))
+  } catch (e: Exception) {
+    null
+  }
+}

@@ -5,8 +5,7 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
-import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosEcomerce
-import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 
 class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
   private val precosSaci = saci.precoSaci().groupBy { it.codigo }.mapValues { it.value.firstOrNull() }
@@ -39,7 +38,7 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
   }
 
   fun readExcel(fileName: String) {
-    val precos = PrecosVtex.readExcel(fileName)
+    val precos = PromoVtex.readExcel(fileName)
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
