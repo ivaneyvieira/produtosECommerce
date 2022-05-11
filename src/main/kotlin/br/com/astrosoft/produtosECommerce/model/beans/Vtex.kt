@@ -23,6 +23,8 @@ data class Vtex(
   var precoCompor: Double?,
   var codigo: String,
   var validade: LocalDate?,
+  val promoVtex: Double?,
+  val validadeVtex: LocalDate?,
                ) {
   var priceSaci: PrecoSaci? = null
 

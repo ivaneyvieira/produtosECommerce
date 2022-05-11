@@ -108,6 +108,12 @@ class PainelGridProduto(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, F
       isResizable = true
       isAutoWidth = true
     }
+    addColumnString(Vtex::codigo) {
+      setHeader("Cód Saci")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnInt(Vtex::idDep) {
       setHeader("Id Dep")
       isExpand = false

@@ -41,3 +41,11 @@ ALTER TABLE vtex
   ADD COLUMN validade DATE;
 
 
+
+ALTER TABLE vtex
+  ADD COLUMN promoVtex INT DEFAULT 0;
+
+ALTER TABLE vtex
+  ADD COLUMN validadeVtex DATE;
+
+
