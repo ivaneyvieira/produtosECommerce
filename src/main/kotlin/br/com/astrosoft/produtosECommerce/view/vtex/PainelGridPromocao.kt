@@ -66,6 +66,8 @@ class PainelGridPromocao(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, 
     }
 
     override fun FilterBar<FiltroVtex>.contentBlock() {
+      this.downloadExcel()
+
       edtSku = textField("SKU ID") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
@@ -131,6 +133,19 @@ class PainelGridPromocao(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, 
     }
     addColumnDouble(Vtex::precoCompor) {
       setHeader("Preço Compor")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "150px"
+    }
+    addColumnLocalDate(Vtex::validadeVtex) {
+      setHeader("Validade Vtex")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
+    addColumnDouble(Vtex::promoVtex) {
+      setHeader("Promo Vtex")
       isExpand = false
       isResizable = true
       isAutoWidth = false

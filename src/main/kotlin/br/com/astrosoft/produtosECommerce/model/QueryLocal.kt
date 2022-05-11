@@ -7,7 +7,7 @@ import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 import org.sql2o.Query
 import java.time.LocalDateTime
 
@@ -382,10 +382,12 @@ GROUP BY barcode"""
     })
   }
 
-  fun updatePrecoVtex(preco: PrecosVtex) {
-    val sql = "UPDATE produtoEcomerce.vtex SET preco = :preco WHERE skuId = :skuId"
+  fun updatePrecoVtex(preco: PromoVtex) {
+    val sql = "/sqlSaci/updatePrecos.sql"
     script(sql) {
-      addOptionalParameter("preco", preco.preco)
+      addOptionalParameter("preco", preco.precoList)
+      addOptionalParameter("promoVtex", preco.precoPromo)
+      addOptionalParameter("validadeVtex", preco.validade)
       addOptionalParameter("skuId", preco.skuId)
     }
   }
