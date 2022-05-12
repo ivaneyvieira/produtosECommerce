@@ -1,5 +1,6 @@
 package br.com.astrosoft.produtosECommerce.model.planilha
 
+import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import com.github.nwillc.poink.workbook
 import org.apache.commons.io.output.ByteArrayOutputStream
@@ -14,9 +15,13 @@ class PlanilhaVtexPreco {
       CampoString("Id Prod") { idProd.toString() },
       CampoString("Nome SKU") { nomeSku },
       CampoString("Referencia SKU") { referenciaSKU },
+      CampoString("Cód Saci") { codigo },
       CampoNumber("Preço Compor") { precoCompor ?: 0.00 },
-      CampoNumber("Preço Ref") { refprice ?: 0.00 },
+      CampoString("Validade") { validade.format() },
       CampoNumber("Preço Promo") { promoprice ?: 0.00 },
+      CampoNumber("Preço Ref") { refprice ?: 0.00 },
+      CampoString("Validade Vtex") { validadeVtex.format() },
+      CampoNumber("Promo Vtex") { promoVtex ?: 0.00 },
       CampoNumber("Preço Vtex") { preco },
           )
 
