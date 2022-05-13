@@ -371,6 +371,7 @@ GROUP BY barcode"""
       addOptionalParameter("marca", filtro.marca)
       addOptionalParameter("categoria", filtro.categoria)
       addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
+      addOptionalParameter("diferencai", filtro.diferenca.id)
     }
   }
 
