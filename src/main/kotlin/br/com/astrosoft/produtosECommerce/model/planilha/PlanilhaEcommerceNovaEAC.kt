@@ -16,8 +16,7 @@ class PlanilhaEcommerceNovaEAC {
       CampoString("grade") { grade },
       CampoString("grade do aplicativo") {
         if (gradeCompleta == "") grade
-        else gradeCompleta ?: grade.replace(".",
-                                            " ")
+        else gradeCompleta ?: grade.replace(".", " ")
       },
       CampoString("descricao completa") { "$descricaoCompleta - $marcaDesc" },
           )
