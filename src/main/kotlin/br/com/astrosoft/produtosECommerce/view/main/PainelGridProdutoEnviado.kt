@@ -21,9 +21,8 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoEnviado(
-  view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
+class PainelGridProdutoEnviado(view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto) :
+        PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = ENVIADO
 
   override fun filterBar() = FilterBarEnviado()
@@ -81,20 +80,18 @@ class PainelGridProdutoEnviado(
       }
     }
 
-    override fun filtro() = FiltroProduto(
-      codigo = 0,
-      listaProduto = edtCodigo.value ?: "",
-      descricaoI = edtDescricaoI.value ?: "",
-      descricaoF = edtDescricaoF.value ?: "",
-      fornecedor = edtFornecedor.value,
-      type = edtTipo.value,
-      cl = edtCl.value,
-      categoria = edtCategoria.value,
-      editado = statusDefault()
-    )
+    override fun filtro() = FiltroProduto(codigo = 0,
+                                          listaProduto = edtCodigo.value ?: "",
+                                          descricaoI = edtDescricaoI.value ?: "",
+                                          descricaoF = edtDescricaoF.value ?: "",
+                                          fornecedor = edtFornecedor.value,
+                                          type = edtTipo.value,
+                                          cl = edtCl.value,
+                                          categoria = edtCategoria.value,
+                                          editado = statusDefault())
   }
 
-  private fun filename(pre : String): String {
+  private fun filename(pre: String): String {
     val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
     val textTime = LocalDateTime.now().format(sdf)
     val filename = "planilha$pre$textTime.xlsx"
@@ -111,7 +108,6 @@ class PainelGridProdutoEnviado(
     button.tooltip = "Salva a planilha"
     add(button)
   }
-
 
   private fun HasComponents.downloadExcelEAC() {
     val button = LazyDownloadButton(TABLE.create(), { filename("EAC") }, {

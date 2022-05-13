@@ -43,7 +43,7 @@ class DiferencasView : ViewLayout<DiferencasViewModel>(), IDiferencasView {
     val user = AppConfig.userSaci as? UserSaci
     tabMain = tabSheet {
       setSizeFull()
-        tabGrid(TAB_CONFERENCIA, gridConferencia)
+      tabGrid(TAB_CONFERENCIA, gridConferencia)
     }
     viewModel.updateGrid()
   }
@@ -55,15 +55,15 @@ class DiferencasView : ViewLayout<DiferencasViewModel>(), IDiferencasView {
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet { "" } ?: ""
     return when (id) {
-      TAB_BASE -> BASE
-      TAB_EDITAR -> EDITAR
-      TAB_EDITADO -> EDITADO
-      TAB_IMPORTADO -> IMPORTADO
-      TAB_ENVIAR -> ENVIAR
-      TAB_ENVIADO -> ENVIADO
-      TAB_CORRECAO -> CORRECAO
+      TAB_BASE        -> BASE
+      TAB_EDITAR      -> EDITAR
+      TAB_EDITADO     -> EDITADO
+      TAB_IMPORTADO   -> IMPORTADO
+      TAB_ENVIAR      -> ENVIAR
+      TAB_ENVIADO     -> ENVIADO
+      TAB_CORRECAO    -> CORRECAO
       TAB_CONFERENCIA -> CONFERENCIA
-      else -> BASE
+      else            -> BASE
     }
   }
 

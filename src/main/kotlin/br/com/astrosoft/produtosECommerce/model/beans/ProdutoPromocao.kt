@@ -25,7 +25,7 @@ class ProdutoPromocao(
   val promocaoSaci: String,
   val precoAlinhado: String,
   val dataAlinhada: String,
-) {
+                     ) {
 
   companion object {
     fun savePromocao(promocao: Promocao, list: List<ProdutoPromocao>) {
@@ -76,7 +76,7 @@ data class FiltroProdutosPromocional(
   val tipo: Int,
   val codigo: String,
   val tipoPainel: ETipoPainel,
-)
+                                    )
 
 enum class ETipoPainel {
   BASE, SACI, WEB, INVALIDO

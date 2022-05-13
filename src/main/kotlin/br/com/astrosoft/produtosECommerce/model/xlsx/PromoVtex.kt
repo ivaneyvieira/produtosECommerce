@@ -35,10 +35,7 @@ data class PromoVtex(val skuId: Int, val precoPromo: Double, val precoList: Doub
         val precoList = it.getString("List Price")?.toDoubleOrNull() ?: 0.00
         val validade = it.getString("Date To")?.split(" ")?.get(0)
         val data = validade.parserDate("M/d/yyyy")
-        PromoVtex(skuId = skuId,
-                  precoPromo = precoPromo,
-                  precoList = precoList,
-                  validade = data)
+        PromoVtex(skuId = skuId, precoPromo = precoPromo, precoList = precoList, validade = data)
       }
       return lista
     }

@@ -20,9 +20,8 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoImportado(
-  view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
+class PainelGridProdutoImportado(view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto) :
+        PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = IMPORTADO
 
   override fun filterBar() = FilterBarImportado()
@@ -75,16 +74,14 @@ class PainelGridProdutoImportado(
       }
     }
 
-    override fun filtro() = FiltroProduto(
-      codigo = edtCodigo.value ?: 0,
-      descricaoI = edtDescricaoI.value ?: "",
-      descricaoF = edtDescricaoF.value ?: "",
-      fornecedor = edtFornecedor.value,
-      type = edtTipo.value,
-      cl = edtCl.value,
-      categoria = edtCategoria.value,
-      editado = statusDefault()
-    )
+    override fun filtro() = FiltroProduto(codigo = edtCodigo.value ?: 0,
+                                          descricaoI = edtDescricaoI.value ?: "",
+                                          descricaoF = edtDescricaoF.value ?: "",
+                                          fornecedor = edtFornecedor.value,
+                                          type = edtTipo.value,
+                                          cl = edtCl.value,
+                                          categoria = edtCategoria.value,
+                                          editado = statusDefault())
   }
 
   private fun filename(): String {

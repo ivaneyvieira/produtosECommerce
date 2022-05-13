@@ -37,7 +37,7 @@ class ServiceQueryProdutoConferencia : IServiceQuery<ProdutoConferencia, FiltroP
     val produtosCodigo = produtosLocal.groupBy { it.codigo }.mapValues { it.value.firstOrNull()?.toProdutoCodigo() }
     precos.forEach {
       val produto =
-              produtoBarcodeSaci[it.codigo] ?: produtosBarcode[it.codigo] ?: produtosCodigo[it.codigo.toIntOrNull()]
+        produtoBarcodeSaci[it.codigo] ?: produtosBarcode[it.codigo] ?: produtosCodigo[it.codigo.toIntOrNull()]
       val prdSaci = precosSaci[produto?.codigo?.toIntOrNull()] ?: precosSaci[it.codigo.toIntOrNull()]
 
       local.addPrecoConferencia(

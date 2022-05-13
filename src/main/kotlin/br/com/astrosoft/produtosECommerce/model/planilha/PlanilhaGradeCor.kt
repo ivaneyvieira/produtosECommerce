@@ -9,11 +9,12 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 import java.io.ByteArrayOutputStream
 
 class PlanilhaGradeCor {
-  private val campos: List<Campo<*, GradeCor>> = listOf(
-    CampoString("Descrição") { descricao },
-    CampoString("Código") { codigoCor.toUpperCase() },
-    CampoString("Modificação") { dataHoraMudanca.format() },
-  )
+  private val campos: List<Campo<*, GradeCor>> =
+    listOf(
+      CampoString("Descrição") { descricao },
+      CampoString("Código") { codigoCor.toUpperCase() },
+      CampoString("Modificação") { dataHoraMudanca.format() },
+          )
 
   fun grava(listaBean: List<GradeCor>): ByteArray {
     val wb = workbook {

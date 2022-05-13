@@ -49,9 +49,7 @@ class BitolaView : ViewLayout<BitolaViewModel>(), IBitolaView {
 
   private fun gridCrud(): GridCrud<Bitola> {
     val crud: GridCrud<Bitola> = GridCrud(Bitola::class.java, HorizontalSplitCrudLayout())
-    crud.grid.setColumns(
-      Bitola::bitolaNo.name, Bitola::name.name
-    )
+    crud.grid.setColumns(Bitola::bitolaNo.name, Bitola::name.name)
     crud.grid.getColumnBy(Bitola::bitolaNo).setHeader("Número")
     crud.grid.getColumnBy(Bitola::name).setHeader("Bitola")
 
@@ -65,22 +63,20 @@ class BitolaView : ViewLayout<BitolaViewModel>(), IBitolaView {
 
   private fun setOperation(crud: GridCrud<Bitola>) {
     crud.setOperations({ viewModel.findAll() },
-      { user: Bitola -> viewModel.add(user) },
-      { user: Bitola? -> viewModel.update(user) },
-      { user: Bitola? -> viewModel.delete(user) })
+                       { user: Bitola -> viewModel.add(user) },
+                       { user: Bitola? -> viewModel.update(user) },
+                       { user: Bitola? -> viewModel.delete(user) })
   }
 }
 
 class BitolaCrudFormFactory : AbstractCrudFormFactory<Bitola>() {
   private var _newInstanceSupplier: Supplier<Bitola?>? = null
 
-  override fun buildNewForm(
-    operation: CrudOperation?,
-    domainObject: Bitola?,
-    readOnly: Boolean,
-    cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
-    operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-  ): Component {
+  override fun buildNewForm(operation: CrudOperation?,
+                            domainObject: Bitola?,
+                            readOnly: Boolean,
+                            cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
+                            operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
     val binder = Binder<Bitola>(Bitola::class.java)
     return VerticalLayout().apply {
       isSpacing = false
@@ -140,8 +136,8 @@ class BitolaCrudFormFactory : AbstractCrudFormFactory<Bitola>() {
   fun createCaption(operation: CrudOperation?): String {
     return operation?.let { crudOperation ->
       when (crudOperation) {
-        READ -> "Consulta"
-        ADD -> "Adiciona"
+        READ   -> "Consulta"
+        ADD    -> "Adiciona"
         UPDATE -> "Atualiza"
         DELETE -> "Remove"
       }

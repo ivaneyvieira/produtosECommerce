@@ -30,10 +30,7 @@ private data class PrecosVtex(val skuId: Int, val preco: Double) {
       val lista = dataFrame.mapNotNull {
         val skuId = it.getString("SKU ID")?.toIntOrNull() ?: return@mapNotNull null
         val listPrice = it.getString("Price")?.toDoubleOrNull() ?: return@mapNotNull null
-        PrecosVtex(
-          skuId = skuId,
-          preco = listPrice
-                  )
+        PrecosVtex(skuId = skuId, preco = listPrice)
       }
       return lista
     }

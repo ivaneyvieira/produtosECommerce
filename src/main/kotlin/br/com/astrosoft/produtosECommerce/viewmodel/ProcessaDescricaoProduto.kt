@@ -28,9 +28,7 @@ data class Descricao(val text: String) {
       val palavraOutra = outra.palavras.getOrNull(index) ?: ""
       if (palavra != palavraOutra) {
         return@prefixo if (index == 0) Descricao("")
-        else Descricao(
-          palavras.subList(0, index).joinToString(" ")
-        )
+        else Descricao(palavras.subList(0, index).joinToString(" "))
       }
     }
     return Descricao("")

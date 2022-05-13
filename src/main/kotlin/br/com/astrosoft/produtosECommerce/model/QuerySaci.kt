@@ -5,12 +5,7 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
-import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.driver
-import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.password
-import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.url
-import br.com.astrosoft.produtosECommerce.model.QueryLocal.Companion.username
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.view.vtex.VtexView
 import org.sql2o.Query
 import kotlin.math.roundToInt
 
@@ -60,21 +55,16 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   }
 
   fun listaType(): List<TypePrd> {
-    return query(
-      "select no as typeno, name as typeName from sqldados.type group by no;", TypePrd::class
-    )
+    return query("select no as typeno, name as typeName from sqldados.type group by no;", TypePrd::class)
   }
 
   fun listaCl(): List<Cl> {
-    return query(
-      "select CAST(LPAD(no, 6, '0') AS CHAR) as clno, name as clname from sqldados.cl group by no", Cl::class
-    )
+    return query("select CAST(LPAD(no, 6, '0') AS CHAR) as clno, name as clname from sqldados.cl group by no",
+                 Cl::class)
   }
 
   fun listaFornecedores(): List<Fornecedor> {
-    return query(
-      "select no as vendno, name as fornecedor from sqldados.vend group by no", Fornecedor::class
-    )
+    return query("select no as vendno, name as fornecedor from sqldados.vend group by no", Fornecedor::class)
   }
 
   fun savePromocao(promocao: Promocao, prdno: String, grade: String, price: Double) {
@@ -96,15 +86,16 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     }
   }
 
-  fun <R : Any> filtroProdutosPromocional(
-    filtro: FiltroProdutosPromocional,
-    complemento: String,
-    result: (Query) -> R
-  ): R {
+  fun <R : Any> filtroProdutosPromocional(filtro: FiltroProdutosPromocional,
+                                          complemento: String,
+                                          result: (Query) -> R): R {
     val sql = "/sqlSaci/produtosPromocional.sql"
-    val codigos = local.fetchProduto(
-      FiltroProduto(editado = EEditor.ENVIADO), 0, Int.MAX_VALUE, emptyList()
-    ).map { it.codigo }.distinct().map { it.toIntOrNull().toString().lpad(16, " ") }
+    val codigos =
+      local
+        .fetchProduto(FiltroProduto(editado = EEditor.ENVIADO), 0, Int.MAX_VALUE, emptyList())
+        .map { it.codigo }
+        .distinct()
+        .map { it.toIntOrNull().toString().lpad(16, " ") }
     return querySerivce(sql, complemento, lambda = {
       addOptionalParameter("centroLucro", filtro.centroLucro)
       addOptionalParameter("fornecedor", filtro.fornecedor)
@@ -115,7 +106,6 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     }, result = result)
   }
 
-
   fun countProduto(filter: FiltroProdutosPromocional): Int {
     val complemento = "SELECT COUNT(*) FROM T_RESULT"
     return filtroProdutosPromocional(filter, complemento) {
@@ -123,12 +113,12 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     }
   }
 
-  fun fetchProduto(
-    filter: FiltroProdutosPromocional, offset: Int, limit: Int, sortOrders: List<SortOrder>
-  ): List<ProdutoPromocao> {
-    val orderBy = if (sortOrders.isEmpty()) "" else "ORDER BY " + sortOrders.joinToString(
-      separator = ", "
-    ) { it.sql() }
+  fun fetchProduto(filter: FiltroProdutosPromocional,
+                   offset: Int,
+                   limit: Int,
+                   sortOrders: List<SortOrder>): List<ProdutoPromocao> {
+    val orderBy = if (sortOrders.isEmpty()) ""
+    else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
     val complemento = "SELECT * FROM T_RESULT $orderBy LIMIT $limit OFFSET $offset"
     return filtroProdutosPromocional(filter, complemento) {
       it.executeAndFetch(ProdutoPromocao::class.java)
