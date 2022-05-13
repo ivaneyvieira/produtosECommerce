@@ -8,14 +8,15 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceParcial {
-  private val campos: List<Campo<*, Produto>> = listOf(
-    CampoString("codigo") { codigo.replace("^0+".toRegex(), "") },
-    CampoString("codigo de barras") { barcode ?: "" },
-    CampoString("descricao") { descricao },
-    CampoString("grade") { grade },
-    CampoString("referencia do fornecedor") { prdRef },
-    CampoInt("codigo do fornecedor") { vendno },
-  )
+  private val campos: List<Campo<*, Produto>> =
+    listOf(
+      CampoString("codigo") { codigo.replace("^0+".toRegex(), "") },
+      CampoString("codigo de barras") { barcode ?: "" },
+      CampoString("descricao") { descricao },
+      CampoString("grade") { grade },
+      CampoString("referencia do fornecedor") { prdRef },
+      CampoInt("codigo do fornecedor") { vendno },
+          )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {

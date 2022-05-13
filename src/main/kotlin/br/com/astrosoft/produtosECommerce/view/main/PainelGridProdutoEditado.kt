@@ -21,9 +21,8 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoEditado(
-  view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
+class PainelGridProdutoEditado(view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto) :
+        PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = EDITADO
 
   override fun filterBar() = FilterBarEditado()
@@ -79,16 +78,14 @@ class PainelGridProdutoEditado(
       }
     }
 
-    override fun filtro() = FiltroProduto(
-      codigo = edtCodigo.value ?: 0,
-      descricaoI = edtDescricaoI.value ?: "",
-      descricaoF = edtDescricaoF.value ?: "",
-      fornecedor = edtFornecedor.value,
-      type = edtTipo.value,
-      cl = edtCl.value,
-      categoria = edtCategoria.value,
-      editado = statusDefault()
-    )
+    override fun filtro() = FiltroProduto(codigo = edtCodigo.value ?: 0,
+                                          descricaoI = edtDescricaoI.value ?: "",
+                                          descricaoF = edtDescricaoF.value ?: "",
+                                          fornecedor = edtFornecedor.value,
+                                          type = edtTipo.value,
+                                          cl = edtCl.value,
+                                          categoria = edtCategoria.value,
+                                          editado = statusDefault())
   }
 
   private fun filename(): String {
@@ -108,6 +105,5 @@ class PainelGridProdutoEditado(
     button.tooltip = "Salva a planilha"
     add(button)
   }
-
 }
 

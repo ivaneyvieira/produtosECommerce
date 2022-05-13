@@ -8,14 +8,19 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaEcommerceNovaEAC {
-  private val campos: List<Campo<*, Produto>> = listOf(
-    // CampoString("codigo") {codigo},
-    CampoString("código produto") { codigo },
-    CampoString("código de barras") { barcode ?: "" },
-    CampoString("grade") { grade },
-    CampoString("grade do aplicativo") { if (gradeCompleta == "") grade else gradeCompleta ?: grade.replace(".", " ") },
-    CampoString("descricao completa") { "$descricaoCompleta - $marcaDesc" },
-  )
+  private val campos: List<Campo<*, Produto>> =
+    listOf(
+      // CampoString("codigo") {codigo},
+      CampoString("código produto") { codigo },
+      CampoString("código de barras") { barcode ?: "" },
+      CampoString("grade") { grade },
+      CampoString("grade do aplicativo") {
+        if (gradeCompleta == "") grade
+        else gradeCompleta ?: grade.replace(".",
+                                            " ")
+      },
+      CampoString("descricao completa") { "$descricaoCompleta - $marcaDesc" },
+          )
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {

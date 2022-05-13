@@ -5,13 +5,11 @@ import br.com.astrosoft.produtosECommerce.model.saci
 import java.time.LocalDateTime
 
 @Suppress("UNUSED_PARAMETER")
-class GradeCor(
-  var descricao: String = "",
-  var codigoCor: String = "",
-  var userno: Int? = 0,
-  var dataHoraMudanca: LocalDateTime? = LocalDateTime.now(),
-  var enviado: Int? = 0
-) {
+class GradeCor(var descricao: String = "",
+               var codigoCor: String = "",
+               var userno: Int? = 0,
+               var dataHoraMudanca: LocalDateTime? = LocalDateTime.now(),
+               var enviado: Int? = 0) {
   var descricaoOriginal: String = ""
   var enviadoBool: Boolean?
     get() = enviado != 0

@@ -11,9 +11,10 @@ class ServiceQueryProdutoPromocional : IServiceQuery<ProdutoPromocao, FiltroProd
     return saci.countProduto(filter)
   }
 
-  override fun fetch(
-    filter: FiltroProdutosPromocional, offset: Int, limit: Int, sortOrders: List<SortOrder>
-  ): List<ProdutoPromocao> {
+  override fun fetch(filter: FiltroProdutosPromocional,
+                     offset: Int,
+                     limit: Int,
+                     sortOrders: List<SortOrder>): List<ProdutoPromocao> {
     return saci.fetchProduto(filter, offset, limit, sortOrders)
   }
 }

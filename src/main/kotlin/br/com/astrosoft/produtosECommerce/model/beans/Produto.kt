@@ -45,7 +45,7 @@ class Produto(
   var userno: Int?,
   var modificado: String,
   var gradeAlternativa: String,
-) : ILookup {
+             ) : ILookup {
   val userName: String?
     get() = if (userno == null) null
     else saci.findAllUser().firstOrNull {
@@ -83,7 +83,7 @@ class Produto(
     }
     val parteGrade = when {
       !gradeCompleta.isNullOrBlank() -> "$gradeCompleta - "
-      else -> ""
+      else                           -> ""
     }
     return "$descricaoCompleta - $parteBitola $parteGrade $marcaDesc"
   }
@@ -153,14 +153,14 @@ class Produto(
 
   fun skuPai() = when (variacao) {
     VARIACAO.descricao -> codigo
-    else -> ""
+    else               -> ""
   }
 
   fun sku() = when (variacao) {
     COM_VARIACAO.descricao -> codigo
-    SIMPLES.descricao -> codigo
-    VARIACAO.descricao -> barcode ?: ""
-    else -> ""
+    SIMPLES.descricao      -> codigo
+    VARIACAO.descricao     -> barcode ?: ""
+    else                   -> ""
   }
 
   fun slugProduto() = if (variacao == VARIACAO.descricao) ""
@@ -171,56 +171,54 @@ class Produto(
   fun descricaoPagina() = if (variacao == VARIACAO.descricao) "" else descricaoCompleta ?: ""
   fun gradeCor() = when (variacao) {
     VARIACAO.descricao -> when (gradeAlternativa) {
-      "" -> gradeCompleta ?: ""
+      ""   -> gradeCompleta ?: ""
       else -> gradeAlternativa.split(":").getOrNull(1) ?: ""
     }
-    else -> ""
+    else               -> ""
   }
 
   fun cor() = if (variacao == VARIACAO.descricao) when (gradeAlternativa) {
-    "" -> "Cor"
+    ""   -> "Cor"
     else -> gradeAlternativa.split(":").getOrNull(0) ?: ""
   }
   else ""
 
   fun chave() = ChaveProduto(codigo, grade)
-  fun copy(variacaoNova: EVariacao) = Produto(
-    seq,
-    codigo,
-    grade,
-    gradeCompleta,
-    barcode,
-    descricao,
-    vendno,
-    fornecedor,
-    typeno,
-    typeName,
-    clno,
-    clname,
-    marca,
-    marcaNome,
-    categoria,
-    categoriaNome,
-    descricaoCompleta,
-    bitola,
-    imagem,
-    peso,
-    altura,
-    comprimento,
-    largura,
-    textLink,
-    especificacoes,
-    editado,
-    precoCheio,
-    ncm,
-    cor,
-    variacaoNova.descricao,
-    corStr,
-    dataHoraMudanca,
-    userno,
-    modificado,
-    gradeAlternativa
-  )
+  fun copy(variacaoNova: EVariacao) = Produto(seq,
+                                              codigo,
+                                              grade,
+                                              gradeCompleta,
+                                              barcode,
+                                              descricao,
+                                              vendno,
+                                              fornecedor,
+                                              typeno,
+                                              typeName,
+                                              clno,
+                                              clname,
+                                              marca,
+                                              marcaNome,
+                                              categoria,
+                                              categoriaNome,
+                                              descricaoCompleta,
+                                              bitola,
+                                              imagem,
+                                              peso,
+                                              altura,
+                                              comprimento,
+                                              largura,
+                                              textLink,
+                                              especificacoes,
+                                              editado,
+                                              precoCheio,
+                                              ncm,
+                                              cor,
+                                              variacaoNova.descricao,
+                                              corStr,
+                                              dataHoraMudanca,
+                                              userno,
+                                              modificado,
+                                              gradeAlternativa)
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -250,7 +248,7 @@ class Produto(
     fun saldoLoja4(
       codigo: String,
       grade: String,
-    ) = listSaldos[Pair(codigo, grade)].orEmpty().firstOrNull()
+                  ) = listSaldos[Pair(codigo, grade)].orEmpty().firstOrNull()
 
     fun price(codigo: String) = listPreco[codigo].orEmpty().firstOrNull()
 
@@ -283,7 +281,7 @@ class Produto(
 data class ChaveProduto(
   val codigo: String,
   val grade: String,
-)
+                       )
 
 enum class EEditor(val value: Int, val canEdit: Boolean) {
   BASE(0, false),
@@ -297,9 +295,7 @@ enum class EEditor(val value: Int, val canEdit: Boolean) {
 }
 
 enum class EVariacao(val descricao: String) {
-  SIMPLES("simples"),
-  VARIACAO("variacao"),
-  COM_VARIACAO("com-variacao")
+  SIMPLES("simples"), VARIACAO("variacao"), COM_VARIACAO("com-variacao")
 }
 
 fun List<Produto>.explodeGrade(): List<Produto> {
@@ -318,4 +314,4 @@ data class FiltroProduto(
   val cl: Cl? = null,
   val categoria: Categoria? = null,
   val editado: EEditor,
-)
+                        )

@@ -8,10 +8,11 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 import java.io.ByteArrayOutputStream
 
 class PlanilhaCategoria {
-  private val campos: List<Campo<*, Categoria>> = listOf(CampoInt("Número") { categoriaNo },
-    CampoString("Grupo") { grupo },
-    CampoString("Departamento") { departamento },
-    CampoString("Seção") { secao })
+  private val campos: List<Campo<*, Categoria>> =
+    listOf(CampoInt("Número") { categoriaNo },
+           CampoString("Grupo") { grupo },
+           CampoString("Departamento") { departamento },
+           CampoString("Seção") { secao })
 
   fun grava(listaBean: List<Categoria>): ByteArray {
     val wb = workbook {

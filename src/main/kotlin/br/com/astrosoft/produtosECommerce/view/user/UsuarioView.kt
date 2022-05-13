@@ -53,9 +53,7 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
 
   private fun gridCrud(): GridCrud<UserSaci> {
     val crud: GridCrud<UserSaci> = GridCrud(UserSaci::class.java)
-    crud.grid.setColumns(
-      UserSaci::no.name, UserSaci::login.name, UserSaci::storeno.name, UserSaci::name.name
-    )
+    crud.grid.setColumns(UserSaci::no.name, UserSaci::login.name, UserSaci::storeno.name, UserSaci::name.name)
     crud.grid.getColumnBy(UserSaci::storeno).setHeader("Loja")
 
     crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
@@ -67,9 +65,9 @@ class UsuarioView : ViewLayout<UsuarioViewModel>(), IUserView {
 
   private fun setOperation(crud: GridCrud<UserSaci>) {
     crud.setOperations({ viewModel.findAll() },
-      { user: UserSaci -> viewModel.add(user) },
-      { user: UserSaci? -> viewModel.update(user) },
-      { user: UserSaci? -> viewModel.delete(user) })
+                       { user: UserSaci -> viewModel.add(user) },
+                       { user: UserSaci? -> viewModel.update(user) },
+                       { user: UserSaci? -> viewModel.delete(user) })
   }
 
   private fun Grid<UserSaci>.addColumnBool(caption: String, value: UserSaci.() -> Boolean) {
@@ -86,13 +84,11 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCru
   private var _newInstanceSupplier: Supplier<UserSaci?>? = null
   private lateinit var comboAbreviacao: MultiselectComboBox<String>
 
-  override fun buildNewForm(
-    operation: CrudOperation?,
-    domainObject: UserSaci?,
-    readOnly: Boolean,
-    cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
-    operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?
-  ): Component {
+  override fun buildNewForm(operation: CrudOperation?,
+                            domainObject: UserSaci?,
+                            readOnly: Boolean,
+                            cancelButtonClickListener: ComponentEventListener<ClickEvent<Button>>?,
+                            operationButtonClickListener: ComponentEventListener<ClickEvent<Button>>?): Component {
     val binder = Binder<UserSaci>(UserSaci::class.java)
     return VerticalLayout().apply {
       isSpacing = false
@@ -105,25 +101,26 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCru
         if (operation in listOf(ADD, READ, DELETE, UPDATE)) comboBox<UserSaci>("Login") {
           val allUser = viewModel.findAllUser()
           val filter: ItemFilter<UserSaci> = ItemFilter { user: UserSaci, filterString: String ->
-            user.login.contains(filterString, ignoreCase = true) || user.name.contains(
-              filterString, ignoreCase = true
-            ) || user.no == filterString.toIntOrNull() ?: 0
+            user.login.contains(filterString, ignoreCase = true) || user.name.contains(filterString,
+                                                                                       ignoreCase = true) || user.no == filterString.toIntOrNull() ?: 0
           }
           this.setItems(filter, allUser)
           this.setItemLabelGenerator(UserSaci::login)
-          this.setRenderer(TemplateRenderer.of<UserSaci>("<div>[[item.login]]<br><small>[[item.nome]]</small></div>")
-            .withProperty("login") {
-              it.login
-            }.withProperty("nome") { user ->
-              "${user.no} - ${user.name}"
-            })
+          this.setRenderer(TemplateRenderer
+                             .of<UserSaci>("<div>[[item.login]]<br><small>[[item.nome]]</small></div>")
+                             .withProperty("login") {
+                               it.login
+                             }
+                             .withProperty("nome") { user ->
+                               "${user.no} - ${user.name}"
+                             })
           binder.bind(this, { bean ->
             bean
           }, { bean, field ->
-            bean.no = field.no
-            bean.name = field.name
-            bean.login = field.login
-          })
+                        bean.no = field.no
+                        bean.name = field.name
+                        bean.login = field.login
+                      })
         }
         if (operation in listOf(READ, DELETE, UPDATE)) textField("Nome") {
           isReadOnly = true
@@ -182,8 +179,8 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel) : AbstractCru
   override fun buildCaption(operation: CrudOperation?, domainObject: UserSaci?): String {
     return operation?.let { crudOperation ->
       when (crudOperation) {
-        READ -> "Consulta"
-        ADD -> "Adiciona"
+        READ   -> "Consulta"
+        ADD    -> "Adiciona"
         UPDATE -> "Atualiza"
         DELETE -> "Remove"
       }

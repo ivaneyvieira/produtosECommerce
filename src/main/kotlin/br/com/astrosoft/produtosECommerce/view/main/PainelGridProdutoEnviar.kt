@@ -20,9 +20,8 @@ import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridProdutoEnviar(
-  view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto
-) : PainelGridProdutoAbstract(view, serviceQuery) {
+class PainelGridProdutoEnviar(view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto) :
+        PainelGridProdutoAbstract(view, serviceQuery) {
   override fun statusDefault() = ENVIAR
 
   override fun filterBar() = FilterBarEnviar()
@@ -81,17 +80,15 @@ class PainelGridProdutoEnviar(
       }
     }
 
-    override fun filtro() = FiltroProduto(
-      codigo = 0,
-      listaProduto = edtCodigo.value ?: "",
-      descricaoI = edtDescricaoI.value ?: "",
-      descricaoF = edtDescricaoF.value ?: "",
-      fornecedor = edtFornecedor.value,
-      type = edtTipo.value,
-      cl = edtCl.value,
-      categoria = edtCategoria.value,
-      editado = statusDefault()
-    )
+    override fun filtro() = FiltroProduto(codigo = 0,
+                                          listaProduto = edtCodigo.value ?: "",
+                                          descricaoI = edtDescricaoI.value ?: "",
+                                          descricaoF = edtDescricaoF.value ?: "",
+                                          fornecedor = edtFornecedor.value,
+                                          type = edtTipo.value,
+                                          cl = edtCl.value,
+                                          categoria = edtCategoria.value,
+                                          editado = statusDefault())
   }
 
   private fun filename(): String {

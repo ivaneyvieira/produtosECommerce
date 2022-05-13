@@ -5,14 +5,12 @@ import br.com.astrosoft.produtosECommerce.model.saci
 import kotlin.math.pow
 import kotlin.reflect.KProperty
 
-class UserSaci(
-  var no: Int = 0,
-  var name: String = "",
-  override var login: String = "",
-  var storeno: Int = 0,
-  override var senha: String = "",
-  var bitAcesso: Int = 0
-) : IUser {
+class UserSaci(var no: Int = 0,
+               var name: String = "",
+               override var login: String = "",
+               var storeno: Int = 0,
+               override var senha: String = "",
+               var bitAcesso: Int = 0) : IUser {
 
   override fun roles(): List<String> {
     val roles = if (admin) listOf("ADMIN") else listOf("USER")
@@ -48,7 +46,6 @@ class UserSaci(
   }
 }
 
-
 class DelegateAuthorized(numBit: Int) {
   private val bit = 2.toDouble().pow(numBit).toInt()
 
@@ -61,7 +58,7 @@ class DelegateAuthorized(numBit: Int) {
     thisRef ?: return
     val v = value ?: false
     thisRef.bitAcesso = when {
-      v -> thisRef.bitAcesso or bit
+      v    -> thisRef.bitAcesso or bit
       else -> thisRef.bitAcesso and bit.inv()
     }
   }

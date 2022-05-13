@@ -8,7 +8,6 @@ import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroProduto
 import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.beans.UserSaci
-import br.com.astrosoft.produtosECommerce.view.diferencas.PainelGridProdutoConferencia
 import br.com.astrosoft.produtosECommerce.view.layout.ProdutoECommerceLayout
 import br.com.astrosoft.produtosECommerce.viewmodel.IProdutosEComerceView
 import br.com.astrosoft.produtosECommerce.viewmodel.ProcessaBean
@@ -85,15 +84,15 @@ class ProdutosEComerceView : ViewLayout<ProdutosEComerceViewModel>(), IProdutosE
   override fun panelStatus(): EEditor {
     val id = tabMain.selectedTab?.id?.orElseGet { "" } ?: ""
     return when (id) {
-      TAB_BASE -> BASE
-      TAB_EDITAR -> EDITAR
-      TAB_EDITADO -> EDITADO
-      TAB_IMPORTADO -> IMPORTADO
-      TAB_ENVIAR -> ENVIAR
-      TAB_ENVIADO -> ENVIADO
-      TAB_CORRECAO -> CORRECAO
+      TAB_BASE        -> BASE
+      TAB_EDITAR      -> EDITAR
+      TAB_EDITADO     -> EDITADO
+      TAB_IMPORTADO   -> IMPORTADO
+      TAB_ENVIAR      -> ENVIAR
+      TAB_ENVIADO     -> ENVIADO
+      TAB_CORRECAO    -> CORRECAO
       TAB_CONFERENCIA -> CONFERENCIA
-      else -> BASE
+      else            -> BASE
     }
   }
 

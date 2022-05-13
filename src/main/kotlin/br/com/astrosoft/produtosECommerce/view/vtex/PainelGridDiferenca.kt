@@ -5,10 +5,8 @@ import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
-import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaConferencia
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
-import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
-import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.comboBox
 import com.github.mvysny.karibudsl.v10.isExpand
@@ -78,7 +76,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
         val bytes = buffer.getInputStream(it.fileName).readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
-        (serviceQuery as? ServiceQueryVtex)?.readExcel(fileName)
+        (serviceQuery as? ServiceQueryVtexDif)?.readExcel(fileName)
         updateGrid()
       }
 
@@ -97,20 +95,20 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
         setItemLabelGenerator {
           it.label
         }
+        value = EDiferenca.PROMO
         isAutoOpen = true
         isAllowCustomValue = false
+        addValueChangeListener { updateGrid() }
       }
     }
 
     override fun filtro(): FiltroVtexDif {
-      return FiltroVtexDif(
-        produto = edtProduto.value ?: "",
-        sku = edtSku.value ?: "",
-        departamento = "",
-        categoria = "",
-        marca = "",
-        diferenca  = cmbDiferenca.value ?: EDiferenca.PROMO
-                       )
+      return FiltroVtexDif(produto = edtProduto.value ?: "",
+                           sku = edtSku.value ?: "",
+                           departamento = "",
+                           categoria = "",
+                           marca = "",
+                           diferenca = cmbDiferenca.value ?: EDiferenca.PROMO)
     }
   }
 
@@ -168,8 +166,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isResizable = true
       isAutoWidth = true
       setClassNameGenerator {
-        if(it.validade != it.validadeVtex)
-          "marcaDiferenca"
+        if (it.validade != it.validadeVtex) "marcaDiferenca"
         else null
       }
     }
@@ -180,8 +177,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if(it.promoprice != it.promoVtex)
-          "marcaDiferenca"
+        if (it.promoprice != it.promoVtex) "marcaDiferenca"
         else null
       }
     }
@@ -198,8 +194,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isResizable = true
       isAutoWidth = true
       setClassNameGenerator {
-        if(it.validade != it.validadeVtex)
-          "marcaDiferenca"
+        if (it.validade != it.validadeVtex) "marcaDiferenca"
         else null
       }
     }
@@ -210,8 +205,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if(it.promoprice != it.promoVtex)
-          "marcaDiferenca"
+        if (it.promoprice != it.promoVtex) "marcaDiferenca"
         else null
       }
     }
