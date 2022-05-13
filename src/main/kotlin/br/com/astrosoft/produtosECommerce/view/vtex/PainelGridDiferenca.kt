@@ -2,6 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.view.*
+import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaConferencia
@@ -9,12 +10,14 @@ import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
+import com.github.mvysny.karibudsl.v10.comboBox
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
 import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
@@ -48,6 +51,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
   inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
     private lateinit var edtProduto: TextField
     private lateinit var edtSku: TextField
+    private lateinit var cmbDiferenca: ComboBox<EDiferenca>
 
     private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
       val buffer = MultiFileMemoryBuffer()
@@ -88,6 +92,14 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
+      cmbDiferenca = comboBox<EDiferenca>("Diferença") {
+        setItems(EDiferenca.values().toList())
+        setItemLabelGenerator {
+          it.label
+        }
+        isAutoOpen = true
+        isAllowCustomValue = false
+      }
     }
 
     override fun filtro(): FiltroVtexDif {
@@ -97,6 +109,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
         departamento = "",
         categoria = "",
         marca = "",
+        diferenca  = cmbDiferenca.value ?: EDiferenca.PROMO
                        )
     }
   }
