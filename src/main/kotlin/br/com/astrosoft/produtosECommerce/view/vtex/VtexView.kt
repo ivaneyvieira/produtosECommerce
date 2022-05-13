@@ -21,6 +21,7 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
   private val gridProduto = PainelGridProduto(this, viewModel.servicoVtexProduto())
   private val gridPreco = PainelGridPreco(this, viewModel.servicoVtexProduto())
   private val gridPromocao = PainelGridPromocao(this, viewModel.servicoVtexProduto())
+  private val gridDiferenca = PainelGridDiferenca(this, viewModel.servicoVtexDiferenca())
 
   override fun isAccept() = true
 
@@ -31,8 +32,9 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
       tabGrid("Produto", gridProduto)
       tabGrid("Preco", gridPreco)
       tabGrid("Promocao", gridPromocao)
+      tabGrid("Diferença", gridDiferenca)
     }
-    viewModel.updateGridProduto()
+    updateGridProduto()
   }
 
   override fun updateGridProduto() {
