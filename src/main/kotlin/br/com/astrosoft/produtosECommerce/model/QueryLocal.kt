@@ -6,6 +6,7 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
+import br.com.astrosoft.framework.util.toSaciDate
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 import org.sql2o.Query
@@ -383,7 +384,7 @@ GROUP BY barcode"""
       addOptionalParameter("promoprice", vtex.promoprice())
       addOptionalParameter("refprice", vtex.refprice())
       addOptionalParameter("codigo", vtex.codigo())
-      addOptionalParameter("validade", vtex.validade())
+      addOptionalParameter("validade", vtex.validade()?.toSaciDate() ?: 0)
       addOptionalParameter("skuId", vtex.skuId)
     }
   }
