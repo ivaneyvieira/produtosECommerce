@@ -384,7 +384,7 @@ GROUP BY barcode"""
       addOptionalParameter("promoprice", vtex.promoprice())
       addOptionalParameter("refprice", vtex.refprice())
       addOptionalParameter("codigo", vtex.codigo())
-      addOptionalParameter("validade", vtex.validade()?.toSaciDate() ?: 0)
+      addOptionalParameter("validade", vtex.validade())
       addOptionalParameter("skuId", vtex.skuId)
     }
   }
