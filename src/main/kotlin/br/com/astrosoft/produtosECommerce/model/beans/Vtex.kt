@@ -35,14 +35,12 @@ data class Vtex(
   fun validade() = priceSaci?.validadev?.localDate()
 
   fun update() {
-    if (promoprice != promoprice() || refprice != refprice() || precoCompor != precoCompor() || codigo != codigo() || validade != validade()) {
-      local.updateVtex(this)
-      promoprice = promoprice()
-      refprice = refprice()
-      precoCompor = precoCompor()
-      codigo = codigo()
-      validade = validade()
-    }
+    local.updateVtex(this)
+    promoprice = promoprice()
+    refprice = refprice()
+    precoCompor = precoCompor()
+    codigo = codigo()
+    validade = validade()
   }
 }
 
