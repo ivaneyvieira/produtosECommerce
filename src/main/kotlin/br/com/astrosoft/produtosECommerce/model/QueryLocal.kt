@@ -371,7 +371,7 @@ GROUP BY barcode"""
       addOptionalParameter("marca", filtro.marca)
       addOptionalParameter("categoria", filtro.categoria)
       addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
-      addOptionalParameter("diferencai", filtro.diferenca.id)
+      addOptionalParameter("diferenca", filtro.diferenca.id)
     }
   }
 
@@ -411,6 +411,7 @@ GROUP BY barcode"""
       addOptionalParameter("marca", filtro.marca)
       addOptionalParameter("categoria", filtro.categoria)
       addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
+      addOptionalParameter("diferenca", filtro.diferenca.id)
     }, result = {
       it.executeScalar(Int::class.java)
     })
