@@ -1,6 +1,7 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.model.IServiceQuery
+import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
@@ -36,6 +37,10 @@ import java.time.format.DateTimeFormatter
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
 class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtexDif>) :
         PainelGrid<Vtex, FiltroVtexDif>(serviceQuery) {
+  private lateinit var edtProduto: TextField
+  private lateinit var edtSku: TextField
+  private lateinit var cmbDiferenca: ComboBox<EDiferenca>
+
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtexDif>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
@@ -47,10 +52,6 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
   }
 
   inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
-    private lateinit var edtProduto: TextField
-    private lateinit var edtSku: TextField
-    private lateinit var cmbDiferenca: ComboBox<EDiferenca>
-
     private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
       val buffer = MultiFileMemoryBuffer()
       val upload = Upload(buffer)
@@ -166,7 +167,9 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isResizable = true
       isAutoWidth = true
       setClassNameGenerator {
-        if (it.validade != it.validadeVtex) "marcaDiferenca"
+        val validade = it.validade.format()
+        val validadeVtex = it.validadeVtex.format()
+        if (validade != validadeVtex && cmbDiferenca.value == EDiferenca.DATA) "marcaDiferenca"
         else null
       }
     }
@@ -177,7 +180,9 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.promoprice != it.promoVtex) "marcaDiferenca"
+        val promoprice = it.promoprice ?: 0.00
+        val promoVtex = it.promoVtex ?: 0.00
+        if (promoprice != promoVtex && cmbDiferenca.value == EDiferenca.PROMO) "marcaDiferenca"
         else null
       }
     }
@@ -187,6 +192,12 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        val refprice = it.refprice ?: 0.00
+        val preco = it.preco
+        if (refprice != preco && cmbDiferenca.value == EDiferenca.PRICE) "marcaDiferenca"
+        else null
+      }
     }
     addColumnLocalDate(Vtex::validadeVtex) {
       setHeader("Validade Vtex")
@@ -194,7 +205,9 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isResizable = true
       isAutoWidth = true
       setClassNameGenerator {
-        if (it.validade != it.validadeVtex) "marcaDiferenca"
+        val validade = it.validade.format()
+        val validadeVtex = it.validadeVtex.format()
+        if (validade != validadeVtex && cmbDiferenca.value == EDiferenca.DATA) "marcaDiferenca"
         else null
       }
     }
@@ -205,7 +218,9 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.promoprice != it.promoVtex) "marcaDiferenca"
+        val promoprice = it.promoprice ?: 0.00
+        val promoVtex = it.promoVtex ?: 0.00
+        if (promoprice != promoVtex && cmbDiferenca.value == EDiferenca.PROMO) "marcaDiferenca"
         else null
       }
     }
@@ -215,6 +230,12 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        val refprice = it.refprice ?: 0.00
+        val preco = it.preco
+        if (refprice != preco && cmbDiferenca.value == EDiferenca.PRICE) "marcaDiferenca"
+        else null
+      }
     }
   }
 
