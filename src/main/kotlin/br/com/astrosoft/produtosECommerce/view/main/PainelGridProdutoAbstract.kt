@@ -20,7 +20,7 @@ import com.vaadin.flow.data.provider.SortDirection
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
 abstract class PainelGridProdutoAbstract(
   val view: IProdutosEComerceView, serviceQuery: ServiceQueryProduto,
-) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
+                                        ) : PainelGrid<Produto, FiltroProduto>(serviceQuery) {
   override fun Grid<Produto>.gridConfig() {
     setSelectionMode(MULTI)
     val userSaci = AppConfig.userSaci as? UserSaci
@@ -98,7 +98,7 @@ abstract class PainelGridProdutoAbstract(
 
   override fun gridPanel(
     dataProvider: ConfigurableFilterDataProvider<Produto, Void, FiltroProduto>,
-  ): Grid<Produto> {
+                        ): Grid<Produto> {
     val grid = Grid(Produto::class.java, false)
     grid.dataProvider = dataProvider
     return grid

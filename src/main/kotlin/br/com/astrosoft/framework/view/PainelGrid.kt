@@ -40,9 +40,8 @@ import kotlin.streams.toList
 
 abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F>) : VerticalLayout() {
   protected var grid: Grid<T>
-  private val dataProvider = DataProvider.fromFilteringCallbacks(
-    ::fetchCallback, ::countCallback
-  ).withConfigurableFilter()
+  private val dataProvider =
+    DataProvider.fromFilteringCallbacks(::fetchCallback, ::countCallback).withConfigurableFilter()
 
   private fun fetchCallback(query: Query<T, F>?): Stream<T>? {
     val filter = query?.filter?.orElseGet(null) ?: return emptyList<T>().stream()
@@ -122,9 +121,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
 
   protected abstract fun Grid<T>.gridConfig()
 
-  fun Grid<T>.withEditor(
-    classBean: KClass<T>, openEditor: (Binder<T>) -> Unit, closeEditor: (Binder<T>) -> Unit
-  ) {
+  fun Grid<T>.withEditor(classBean: KClass<T>, openEditor: (Binder<T>) -> Unit, closeEditor: (Binder<T>) -> Unit) {
     val binder = Binder(classBean.java)
     editor.binder = binder
     addItemDoubleClickListener { event ->
@@ -145,8 +142,8 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
     return ComboBox<T>().apply {
       this.setSizeFull()
       this.setDataProvider({ item: T, filterText: String ->
-        item.lookupValue.contains(filterText, ignoreCase = true)
-      }, ListDataProvider(itens()))
+                             item.lookupValue.contains(filterText, ignoreCase = true)
+                           }, ListDataProvider(itens()))
       this.setItemLabelGenerator { bean ->
         bean.lookupValue
       }
@@ -185,7 +182,8 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
       val box = VerticalLayout().apply {
         if (cor == null) {
           this.element.style.remove("backgroundColor")
-        } else {
+        }
+        else {
           this.element.style.set("backgroundColor", cor.codigoCor)
         }
         width = "21px"
@@ -290,16 +288,12 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
 }
 
 class BigDecimalToDoubleConverter : Converter<BigDecimal, Double> {
-  override fun convertToPresentation(
-    value: Double?, context: ValueContext?
-  ): BigDecimal {
+  override fun convertToPresentation(value: Double?, context: ValueContext?): BigDecimal {
     value ?: return BigDecimal.valueOf(0.00)
     return BigDecimal.valueOf(value)
   }
 
-  override fun convertToModel(
-    value: BigDecimal?, context: ValueContext?
-  ): Result<Double> {
+  override fun convertToModel(value: BigDecimal?, context: ValueContext?): Result<Double> {
     return Result.ok(value?.toDouble() ?: 0.00)
   }
 }

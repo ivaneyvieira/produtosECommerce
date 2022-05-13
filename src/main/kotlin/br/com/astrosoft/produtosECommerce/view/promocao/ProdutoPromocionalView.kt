@@ -24,9 +24,8 @@ class ProdutoPromocionalView : ViewLayout<ProdutoPromocionalViewModel>(), IProdu
   private val gridProdutoPromocaoSaci = PainelGridProdutoPromocaoSaci(this, viewModel.serviceQueryProdutoPromocional())
   private val gridProdutoPromocaoWeb = PainelGridProdutoPromocaoWeb(this, viewModel.serviceQueryProdutoPromocional())
   private val gridProdutoPromocaoBase = PainelGridProdutoPromocaoBase(this, viewModel.serviceQueryProdutoPromocional())
-  private val gridProdutoPromocaoWebInvalida = PainelGridProdutoPromocaoWebInvalida(
-    this, viewModel.serviceQueryProdutoPromocional()
-  )
+  private val gridProdutoPromocaoWebInvalida =
+    PainelGridProdutoPromocaoWebInvalida(this, viewModel.serviceQueryProdutoPromocional())
 
   override fun isAccept(): Boolean {
     val user = AppConfig.userSaci as? UserSaci

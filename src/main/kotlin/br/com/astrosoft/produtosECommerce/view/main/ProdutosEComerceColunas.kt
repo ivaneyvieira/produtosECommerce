@@ -61,8 +61,7 @@ fun Grid<Produto>.colFornecedor() = addColumnString(Produto::fornecedor) {
 fun Grid<Produto>.colCor() = addColumnString(Produto::corStr) {
   setHeader("Codigo Cor")
   isAutoWidth = true
-  isResizable = true
-  //width = "8em"
+  isResizable = true //width = "8em"
 }
 
 fun Grid<Produto>.colCorPainel() {
@@ -73,7 +72,8 @@ fun Grid<Produto>.colCorPainel() {
     val box = VerticalLayout().apply {
       if (produto.corStr == "") {
         this.element.style.remove("backgroundColor")
-      } else {
+      }
+      else {
         this.element.style.set("backgroundColor", produto.corStr)
       }
       width = "21px"
@@ -220,11 +220,11 @@ fun HasComponents.promocaoField(block: ComboBox<Promocao>.() -> Unit = {}) = com
   setItemLabelGenerator {
     "${it.promoNo} ${it.descricao}"
   }
-  setRenderer(
-    TemplateRenderer.of<Promocao>("<div>[[item.promoNo]] - [[item.vencimento]]<br><small>[[item.descricao]]</small></div>")
-      .withProperty("promoNo", Promocao::promoNo).withProperty("descricao", Promocao::descricao)
-      .withProperty("vencimento", Promocao::vencimentoFormat)
-  )
+  setRenderer(TemplateRenderer
+                .of<Promocao>("<div>[[item.promoNo]] - [[item.vencimento]]<br><small>[[item.descricao]]</small></div>")
+                .withProperty("promoNo", Promocao::promoNo)
+                .withProperty("descricao", Promocao::descricao)
+                .withProperty("vencimento", Promocao::vencimentoFormat))
   width = "15em"
   element.setAttribute("theme", "small")
   block()
@@ -268,10 +268,10 @@ fun HasComponents.fornecedorField(block: ComboBox<Fornecedor>.() -> Unit = {}) =
   setItemLabelGenerator {
     "${it.vendno} ${it.fornecedor}"
   }
-  setRenderer(
-    TemplateRenderer.of<Fornecedor>("<div>[[item.vendno]]<br><small>[[item.fornecedor]]</small></div>")
-      .withProperty("vendno", Fornecedor::vendno).withProperty("fornecedor", Fornecedor::fornecedor)
-  )
+  setRenderer(TemplateRenderer
+                .of<Fornecedor>("<div>[[item.vendno]]<br><small>[[item.fornecedor]]</small></div>")
+                .withProperty("vendno", Fornecedor::vendno)
+                .withProperty("fornecedor", Fornecedor::fornecedor))
   width = "15em"
   element.setAttribute("theme", "small")
   block()
@@ -287,10 +287,10 @@ fun HasComponents.tipoField(block: ComboBox<TypePrd>.() -> Unit = {}) = comboBox
   setItemLabelGenerator {
     "${it.typeno} ${it.typeName}"
   }
-  setRenderer(
-    TemplateRenderer.of<TypePrd>("<div>[[item.typeno]]<br><small>[[item.typeName]]</small></div>")
-      .withProperty("typeno", TypePrd::typeno).withProperty("typeName", TypePrd::typeName)
-  )
+  setRenderer(TemplateRenderer
+                .of<TypePrd>("<div>[[item.typeno]]<br><small>[[item.typeName]]</small></div>")
+                .withProperty("typeno", TypePrd::typeno)
+                .withProperty("typeName", TypePrd::typeName))
   width = "15em"
   element.setAttribute("theme", "small")
   block()
@@ -306,10 +306,10 @@ fun HasComponents.clField(block: ComboBox<Cl>.() -> Unit = {}) = comboBox<Cl>("C
   setItemLabelGenerator {
     "${it.clno} ${it.clname}"
   }
-  setRenderer(
-    TemplateRenderer.of<Cl>("<div>[[item.clno]]<br><small>[[item.clname]]</small></div>").withProperty("clno", Cl::clno)
-      .withProperty("clname", Cl::clname)
-  )
+  setRenderer(TemplateRenderer
+                .of<Cl>("<div>[[item.clno]]<br><small>[[item.clname]]</small></div>")
+                .withProperty("clno", Cl::clno)
+                .withProperty("clname", Cl::clname))
   width = "18em"
   element.setAttribute("theme", "small")
   block()
@@ -329,10 +329,10 @@ fun @VaadinDsl ComboBox<Categoria>.extensionCategoria(block: ComboBox<Categoria>
   setItemLabelGenerator {
     "${it.categoriaNo} ${it.descricao}"
   }
-  setRenderer(
-    TemplateRenderer.of<Categoria>("<div>[[item.categoriaNo]]<br><small>[[item.descricao]]</small></div>")
-      .withProperty("categoriaNo", Categoria::categoriaNo).withProperty("descricao", Categoria::descricao)
-  )
+  setRenderer(TemplateRenderer
+                .of<Categoria>("<div>[[item.categoriaNo]]<br><small>[[item.descricao]]</small></div>")
+                .withProperty("categoriaNo", Categoria::categoriaNo)
+                .withProperty("descricao", Categoria::descricao))
   element.setAttribute("theme", "small")
   width = "20em"
   block()

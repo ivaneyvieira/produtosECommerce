@@ -3,8 +3,9 @@ package br.com.astrosoft.produtosECommerce.viewmodel
 import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
-import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.beans.EEditor.*
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor
+import br.com.astrosoft.produtosECommerce.model.beans.EEditor.CONFERENCIA
+import br.com.astrosoft.produtosECommerce.model.beans.Produto
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProduto
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryProdutoConferencia
 
@@ -37,7 +38,8 @@ class DiferencasViewModel(view: IDiferencasView) : ViewModel<IDiferencasView>(vi
   }
 
   fun replicarProdutos(itens: List<Produto>, marca: EEditor) = exec {
-    val modelo = itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() }
+    val modelo =
+      itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() }
       ?: fail("Nenhum produto " + "selecionado")
     itens.forEach { produto ->
       produto.marca = modelo.marca

@@ -25,6 +25,7 @@ SELECT skuId,
        precoCompor,
        promoVtex,
        validadeVtex,
+       validade,
        codigo
 FROM produtoEcomerce.vtex
 WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
@@ -34,8 +35,9 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (idCat = @ID_CAT OR nomeCategoria LIKE CONCAT('%', @CAT, '%') OR @CAT = '')
   AND (idMarca = @ID_MARCA OR nomeMarca LIKE CONCAT('%', @MARCA, '%') OR @MARCA = '')
   AND (promoprice > 0 OR :promocao != 'S')
-  AND (IFNULL(promoprice, 0) != IFNULL(promoVtex, 0) OR
-       IFNULL(validadeVtex * 1, 0) != IFNULL(validade * 1, 0))
+  AND ((IFNULL(promoprice, 0) != IFNULL(promoVtex, 0) AND :diferenca = 'PROMO') OR
+       (IFNULL(validadeVtex * 1, 0) != IFNULL(validade * 1, 0) AND :diferenca = 'DATA') OR
+       (IFNULL(refprice, 0) != IFNULL(preco, 0) AND :diferenca = 'PRICE'))
 
 
 

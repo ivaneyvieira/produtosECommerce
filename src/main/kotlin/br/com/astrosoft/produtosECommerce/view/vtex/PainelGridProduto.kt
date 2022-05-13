@@ -1,21 +1,19 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.model.IServiceQuery
-import br.com.astrosoft.framework.view.*
+import br.com.astrosoft.framework.view.FilterBar
+import br.com.astrosoft.framework.view.PainelGrid
+import br.com.astrosoft.framework.view.addColumnInt
+import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
-import com.vaadin.flow.component.HasComponents
-import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.component.upload.FileRejectedEvent
-import com.vaadin.flow.component.upload.Upload
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 
@@ -76,7 +74,7 @@ class PainelGridProduto(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, F
     this.setSelectionMode(Grid.SelectionMode.MULTI)
     val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
     multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
-    addColumnInt(Vtex::seq){
+    addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
       isResizable = true

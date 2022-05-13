@@ -36,15 +36,14 @@ data class PrecosEcomerce(val codigo: String, val preco: Double, val descricao: 
           codigo = refID,
           preco = listPrice,
           descricao = descricao,
-        )
+                      )
       }
       return lista
     }
   }
 }
 
-
-fun readXlsx(filename: String, rowIndexCol : Int): List<Map<String, String>> {
+fun readXlsx(filename: String, rowIndexCol: Int): List<Map<String, String>> {
   val listMap = mutableListOf<Map<String, String>>()
   workbook(filename) {
     sheet(0) {
@@ -55,7 +54,8 @@ fun readXlsx(filename: String, rowIndexCol : Int): List<Map<String, String>> {
           row.iterator().forEach { cell ->
             colunas.add(cell.stringCellValue)
           }
-        } else if (rowIndex > rowIndexCol) {
+        }
+        else if (rowIndex > rowIndexCol) {
           val map = mutableMapOf<String, String>()
           var colIndex = 0
           colunas.forEachIndexed { index, col ->

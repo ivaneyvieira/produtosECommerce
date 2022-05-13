@@ -36,18 +36,19 @@ class ProdutosEComerceViewModel(view: IProdutosEComerceView) : ViewModel<IProdut
     Categoria.updateList()
     Marca.updateList()
     when (view.panelStatus()) {
-      BASE -> view.updateGridBase()
-      EDITAR -> view.updateGridEditar()
-      EDITADO -> view.updateGridEditado()
+      BASE      -> view.updateGridBase()
+      EDITAR    -> view.updateGridEditar()
+      EDITADO   -> view.updateGridEditado()
       IMPORTADO -> view.updateGridImportado()
-      ENVIAR -> view.updateGridEnviar()
-      ENVIADO -> view.updateGridEnviado()
-      CORRECAO -> view.updateGridCorrecao()
+      ENVIAR    -> view.updateGridEnviar()
+      ENVIADO   -> view.updateGridEnviado()
+      CORRECAO  -> view.updateGridCorrecao()
     }
   }
 
   fun replicarProdutos(itens: List<Produto>, marca: EEditor) = exec {
-    val modelo = itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() }
+    val modelo =
+      itens.sortedBy { it.descricao }.firstOrNull { it.descricaoCompleta.isNullOrBlank() }
       ?: fail("Nenhum produto " + "selecionado")
     itens.forEach { produto ->
       produto.marca = modelo.marca
@@ -102,4 +103,4 @@ data class ProcessaBean(
   var bitolaCheck: Boolean = true,
   var imagem: String? = "",
   var imagemCheck: Boolean = true,
-)
+                       )

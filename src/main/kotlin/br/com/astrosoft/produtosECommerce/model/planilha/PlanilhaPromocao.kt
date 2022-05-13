@@ -9,20 +9,19 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaPromocao {
-  private val campos: List<Campo<*, ProdutoPromocao>> = listOf(
-    CampoString("codigo") { codigo.replace("^0+".toRegex(), "") },
-    CampoString("descrição") { descricao },
-    CampoString("Nº") { promono.toString() },
-    CampoString("Validade") { validade.format() },
-    CampoNumber("Preço Ref") { precoRef },
-    CampoNumber("Preço %") { perc },
-    CampoNumber("Preço Promo") { precoPromo },
-    CampoString("Fornecedor") { vendno.toString() },
-    CampoString("Abrev") { abrev },
-    CampoString("Tipo") { tipo.toString() },
-    CampoString("CL") { centLucro.toString() },
-    CampoInt("Saldo") { saldo }
-  )
+  private val campos: List<Campo<*, ProdutoPromocao>> =
+    listOf(CampoString("codigo") { codigo.replace("^0+".toRegex(), "") },
+           CampoString("descrição") { descricao },
+           CampoString("Nº") { promono.toString() },
+           CampoString("Validade") { validade.format() },
+           CampoNumber("Preço Ref") { precoRef },
+           CampoNumber("Preço %") { perc },
+           CampoNumber("Preço Promo") { precoPromo },
+           CampoString("Fornecedor") { vendno.toString() },
+           CampoString("Abrev") { abrev },
+           CampoString("Tipo") { tipo.toString() },
+           CampoString("CL") { centLucro.toString() },
+           CampoInt("Saldo") { saldo })
 
   fun grava(listaProdutos: List<ProdutoPromocao>): ByteArray {
     val wb = workbook {

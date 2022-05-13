@@ -9,16 +9,16 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 
 class PlanilhaConferencia {
   private val campos: List<Campo<*, ProdutoConferencia>> =
-          listOf(
-            CampoString("Código Site") { refid },
-            CampoString("Código Saci") { prdno ?: "" },
-            CampoString("Grade") { grade ?: "" },
-            CampoString("Descricao Site") { descricaoSite ?: "" },
-            CampoString("Descricao Saci") { descricaoSaci ?: "" },
-            CampoNumber("Preço Site") { listPrice },
-            CampoNumber("Preço Referência") { precoRef ?: 0.00 },
-            CampoNumber("Preço Promocional") { precoPromo ?: 0.00 },
-                )
+    listOf(
+      CampoString("Código Site") { refid },
+      CampoString("Código Saci") { prdno ?: "" },
+      CampoString("Grade") { grade ?: "" },
+      CampoString("Descricao Site") { descricaoSite ?: "" },
+      CampoString("Descricao Saci") { descricaoSaci ?: "" },
+      CampoNumber("Preço Site") { listPrice },
+      CampoNumber("Preço Referência") { precoRef ?: 0.00 },
+      CampoNumber("Preço Promocional") { precoPromo ?: 0.00 },
+          )
 
   fun grava(listaProdutos: List<ProdutoConferencia>): ByteArray {
     val wb = workbook {

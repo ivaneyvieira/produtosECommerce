@@ -50,8 +50,7 @@ class PlanilhaEcommerceNova {
     CampoString("nome_variacao_1") { cor().trim() },
     CampoString("variacao_1") { gradeCor().trim() },
     CampoString("nome_variacao2"),
-    CampoString("variacao_2")
-  )
+    CampoString("variacao_2"))
 
   fun grava(listaProdutos: List<Produto>): ByteArray {
     val wb = workbook {
@@ -76,8 +75,11 @@ class PlanilhaEcommerceNova {
       val stComGrade = sheet("Produtos Com Grade") {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
-        listaProdutos.filter { it.grade != "" }.explodeGrade()
-          .sortedWith(compareBy({ it.codigo }, { it.variacao }, { it.grade })).forEach { produto ->
+        listaProdutos
+          .filter { it.grade != "" }
+          .explodeGrade()
+          .sortedWith(compareBy({ it.codigo }, { it.variacao }, { it.grade }))
+          .forEach { produto ->
             val valores = campos.map { it.produceVakue(produto) }
             row(valores, rowStyle)
           }

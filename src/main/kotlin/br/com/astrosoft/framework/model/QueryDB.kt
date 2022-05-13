@@ -21,9 +21,7 @@ import kotlin.reflect.KClass
 
 typealias QueryHandle = Query.() -> Unit
 
-open class QueryDB(
-  val name: String, driver: String, url: String, username: String, password: String
-) {
+open class QueryDB(val name: String, driver: String, url: String, username: String, password: String) {
   protected val sql2o: Sql2o
 
   init {
@@ -58,9 +56,7 @@ open class QueryDB(
     return ret
   }
 
-  protected fun <T : Any> query(
-    file: String, classes: KClass<T>, lambda: QueryHandle = {}
-  ): List<T> = timeExec(file) {
+  protected fun <T : Any> query(file: String, classes: KClass<T>, lambda: QueryHandle = {}): List<T> = timeExec(file) {
     val statements = toStratments(file)
     if (statements.isEmpty()) return@timeExec emptyList()
     val lastIndex = statements.lastIndex
@@ -73,9 +69,10 @@ open class QueryDB(
     }
   }
 
-  protected fun <R : Any> querySerivce(
-    file: String, complemento: String? = null, lambda: QueryHandle = {}, result: (Query) -> R
-  ): R = timeExec(file) {
+  protected fun <R : Any> querySerivce(file: String,
+                                       complemento: String? = null,
+                                       lambda: QueryHandle = {},
+                                       result: (Query) -> R): R = timeExec(file) {
     val statements = toStratments(file, complemento)
     val lastIndex = statements.lastIndex
     val query = statements[lastIndex]
@@ -87,17 +84,13 @@ open class QueryDB(
     }
   }
 
-  private fun querySQLResult(
-    con: Connection, sql: String?, lambda: QueryHandle = {}
-  ): Query {
+  private fun querySQLResult(con: Connection, sql: String?, lambda: QueryHandle = {}): Query {
     val query = con.createQuery(sql)
     query.lambda()
     return query
   }
 
-  private fun <T : Any> querySQL(
-    con: Connection, sql: String?, classes: KClass<T>, lambda: QueryHandle = {}
-  ): List<T> {
+  private fun <T : Any> querySQL(con: Connection, sql: String?, classes: KClass<T>, lambda: QueryHandle = {}): List<T> {
     val query = con.createQuery(sql)
     query.lambda()
     return query.executeAndFetch(classes.java)
@@ -199,9 +192,9 @@ class LocalSqlDateTimeConverter : Converter<LocalDateTime?> {
   @Throws(ConverterException::class)
   override fun convert(value: Any?): LocalDateTime? {
     return when (value) {
-      is Date -> value.toLocalDateTime()
+      is Date      -> value.toLocalDateTime()
       is Timestamp -> value.toLocalDateTime()
-      else -> null
+      else         -> null
     }
   }
 

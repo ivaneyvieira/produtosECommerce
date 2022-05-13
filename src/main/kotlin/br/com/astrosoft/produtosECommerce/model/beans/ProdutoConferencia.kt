@@ -9,8 +9,6 @@ class ProdutoConferencia(
   val descricaoSaci: String? = null,
   val precoPromo: Double? = null,
   val precoRef: Double? = null,
-)
+                        )
 
-data class FiltroProdutoConferencia(
-  val codigo: String
-)
+data class FiltroProdutoConferencia(val codigo: String)
