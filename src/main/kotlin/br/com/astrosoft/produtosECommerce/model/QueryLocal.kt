@@ -355,6 +355,25 @@ GROUP BY barcode"""
     }
   }
 
+  fun fetchVtexDif(filtro: FiltroVtexDif, offset: Int, limit: Int, sortOrders: List<SortOrder>): List<Vtex> {
+    val sqlIncial = SystemUtils.readFile("/sqlSaci/fetchVtexDif.sql") ?: return emptyList()
+
+    val orderBy = if (sortOrders.isEmpty()) ""
+    else "ORDER BY " + sortOrders.joinToString(separator = ", ") { it.sql() }
+    val sql = """$sqlIncial
+      |$orderBy 
+      |LIMIT $limit OFFSET $offset
+    """.trimMargin()
+    return query(sql, Vtex::class) {
+      addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("sku", filtro.sku)
+      addOptionalParameter("departamento", filtro.departamento)
+      addOptionalParameter("marca", filtro.marca)
+      addOptionalParameter("categoria", filtro.categoria)
+      addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
+    }
+  }
+
   fun updateVtex(vtex: Vtex) {
     val sql = "/sqlSaci/updateVtex.sql"
 
@@ -370,6 +389,20 @@ GROUP BY barcode"""
 
   fun countVtex(filtro: FiltroVtex): Int {
     val sql = "/sqlSaci/countVtex.sql"
+    return querySerivce(sql, lambda = {
+      addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("sku", filtro.sku)
+      addOptionalParameter("departamento", filtro.departamento)
+      addOptionalParameter("marca", filtro.marca)
+      addOptionalParameter("categoria", filtro.categoria)
+      addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
+    }, result = {
+      it.executeScalar(Int::class.java)
+    })
+  }
+
+  fun countVtexDif(filtro: FiltroVtexDif): Int {
+    val sql = "/sqlSaci/countVtexDif.sql"
     return querySerivce(sql, lambda = {
       addOptionalParameter("produto", filtro.produto)
       addOptionalParameter("sku", filtro.sku)

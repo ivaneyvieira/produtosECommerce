@@ -52,3 +52,10 @@ data class FiltroVtex(val produto: String = "",
                       val categoria: String = "",
                       val marca: String = "",
                       val promocao: Boolean = false)
+
+data class FiltroVtexDif(val produto: String = "",
+                      val sku: String = "",
+                      val departamento: String = "",
+                      val categoria: String = "",
+                      val marca: String = "",
+                      val promocao: Boolean = false)

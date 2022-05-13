@@ -2,7 +2,7 @@ package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.view.*
-import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
+import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaConferencia
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
@@ -15,6 +15,7 @@ import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
@@ -31,19 +32,20 @@ import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
-        PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
-  override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtex>): Grid<Vtex> {
+@CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
+class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtexDif>) :
+        PainelGrid<Vtex, FiltroVtexDif>(serviceQuery) {
+  override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtexDif>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
     return grid
   }
 
-  override fun filterBar(): FilterBar<FiltroVtex> {
+  override fun filterBar(): FilterBar<FiltroVtexDif> {
     return FilterConferencia()
   }
 
-  inner class FilterConferencia : FilterBar<FiltroVtex>() {
+  inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
     private lateinit var edtProduto: TextField
     private lateinit var edtSku: TextField
 
@@ -65,7 +67,7 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       return Pair(buffer, upload)
     }
 
-    override fun FilterBar<FiltroVtex>.contentBlock() {
+    override fun FilterBar<FiltroVtexDif>.contentBlock() {
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
         val fileName = "/tmp/${it.fileName}"
@@ -88,8 +90,8 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       }
     }
 
-    override fun filtro(): FiltroVtex {
-      return FiltroVtex(
+    override fun filtro(): FiltroVtexDif {
+      return FiltroVtexDif(
         produto = edtProduto.value ?: "",
         sku = edtSku.value ?: "",
         departamento = "",
@@ -152,6 +154,11 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       isExpand = false
       isResizable = true
       isAutoWidth = true
+      setClassNameGenerator {
+        if(it.validade != it.validadeVtex)
+          "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::promoprice) {
       setHeader("Preço Promo")
@@ -159,6 +166,11 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if(it.promoprice != it.promoVtex)
+          "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::refprice) {
       setHeader("Preço Ref")
@@ -172,6 +184,11 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       isExpand = false
       isResizable = true
       isAutoWidth = true
+      setClassNameGenerator {
+        if(it.validade != it.validadeVtex)
+          "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::promoVtex) {
       setHeader("Promo Vtex")
@@ -179,6 +196,11 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if(it.promoprice != it.promoVtex)
+          "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::preco) {
       setHeader("Preço Vtex")

@@ -8,24 +8,7 @@ DO @ID_CAT := IF(@CAT REGEXP '^[0-9]+$', @CAT * 1, 0);
 DO @MARCA := :marca;
 DO @ID_MARCA := IF(@MARCA REGEXP '^[0-9]+$', @MARCA * 1, 0);
 
-SELECT skuId,
-       idProd,
-       nomeSku,
-       referenciaSKU,
-       idDep,
-       nomeDepartamento,
-       idCat,
-       nomeCategoria,
-       idMarca,
-       nomeMarca,
-       estoque,
-       preco,
-       promoprice,
-       refprice,
-       precoCompor,
-       promoVtex,
-       validadeVtex,
-       codigo
+SELECT COUNT(*)
 FROM produtoEcomerce.vtex
 WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (idProd = @ID_PRODUTO OR nomeSku LIKE CONCAT('%', @PRODUTO, '%') OR
@@ -34,5 +17,6 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (idCat = @ID_CAT OR nomeCategoria LIKE CONCAT('%', @CAT, '%') OR @CAT = '')
   AND (idMarca = @ID_MARCA OR nomeMarca LIKE CONCAT('%', @MARCA, '%') OR @MARCA = '')
   AND (promoprice > 0 OR :promocao != 'S')
-
+  AND (IFNULL(promoprice, 0) != IFNULL(promoVtex, 0) OR
+       IFNULL(validadeVtex * 1, 0) != IFNULL(validade * 1, 0))
 
