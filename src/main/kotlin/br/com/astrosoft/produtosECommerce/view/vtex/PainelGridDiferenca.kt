@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
-import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
@@ -11,7 +10,6 @@ import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
-import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.dependency.CssImport
@@ -20,14 +18,10 @@ import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.component.upload.FileRejectedEvent
-import com.vaadin.flow.component.upload.Upload
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
-import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -69,20 +63,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         isAutoOpen = true
         isAllowCustomValue = false
         addValueChangeListener { updateGrid() }
-      }
-
-      button("Atualiza dados Saci") {
-        icon = VaadinIcon.DISC.create()
-        onLeftClick {
-          val filter=  FiltroVtexDif(produto = edtProduto.value ?: "",
-                                     sku = edtSku.value ?: "",
-                                     departamento = "",
-                                     categoria = "",
-                                     marca = "",
-                                     diferenca = cmbDiferenca.value ?: EDiferenca.PROMO)
-          serviceQueryDif.updateSaci(filter)
-          updateGrid()
-        }
       }
     }
 

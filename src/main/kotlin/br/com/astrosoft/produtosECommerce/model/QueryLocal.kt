@@ -6,7 +6,6 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
-import br.com.astrosoft.framework.util.toSaciDate
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
@@ -434,6 +433,23 @@ GROUP BY barcode"""
       addOptionalParameter("validadeVtex", preco.validade)
       addOptionalParameter("skuId", preco.skuId)
     }
+  }
+
+  fun apagaPrecoPromocionalVtex() {
+    val sql = """
+      UPDATE produtoEcomerce.vtex
+      SET  promoVtex   = NULL,
+          validadeVtex = NULL
+    """.trimIndent()
+    script(sql)
+  }
+
+  fun apagaPrecoReferenciaVtex() {
+    val sql = """
+      UPDATE produtoEcomerce.vtex
+      SET  preco = NULL
+    """.trimIndent()
+    script(sql)
   }
 
   companion object {
