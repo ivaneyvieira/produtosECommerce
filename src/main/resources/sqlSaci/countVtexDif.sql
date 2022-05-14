@@ -19,5 +19,5 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (promoprice > 0 OR :promocao != 'S')
   AND ((IFNULL(promoprice, 0) != IFNULL(promoVtex, 0) AND :diferenca = 'PROMO') OR
        (IFNULL(validadeVtex * 1, 0) != IFNULL(validade * 1, 0) AND :diferenca = 'DATA') OR
-       (IFNULL(promoprice, 0) != IFNULL(promoVtex, 0) AND :diferenca = 'PRICE'))
+       (IFNULL(refprice, 0) != IFNULL(preco, 0) AND :diferenca = 'PRICE'))
 
