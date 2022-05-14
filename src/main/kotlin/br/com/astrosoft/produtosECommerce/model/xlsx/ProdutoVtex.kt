@@ -2,10 +2,20 @@ package br.com.astrosoft.produtosECommerce.model.xlsx
 
 import br.com.astrosoft.framework.util.parserDate
 import java.text.Normalizer
-import java.time.LocalDate
 import java.util.regex.Pattern
 
-data class PromoVtex(val skuId: Int, val precoPromo: Double, val validade: LocalDate?) {
+data class ProdutoVtex(
+  val skuId: Int,
+  val idProd: Int,
+  val nomeSku: String,
+  val referenciaSKU: String,
+  val idDep: Int,
+  val nomeDepartamento: String,
+  val idCat: Int,
+  val nomeCategoria: String,
+  val idMarca: Int,
+  val nomeMarca: String,
+                      ) {
   companion object {
     private val mapKey = mutableMapOf<String, String>()
     private fun deAccent(str: String): String {
@@ -18,7 +28,7 @@ data class PromoVtex(val skuId: Int, val precoPromo: Double, val validade: Local
       val key = if (mapKey.keys.contains(colname)) mapKey[colname]
       else {
         val result = this.keys.firstOrNull { key ->
-          deAccent(key).toUpperCase().equals(colname, ignoreCase = true)
+          deAccent(key).toUpperCase().contains(colname, ignoreCase = true)
         }
         mapKey[colname] = result ?: ""
         result
@@ -27,14 +37,25 @@ data class PromoVtex(val skuId: Int, val precoPromo: Double, val validade: Local
       return this[key]?.trim()
     }
 
-    fun readExcel(filename: String): List<PromoVtex> {
+    fun readExcel(filename: String): List<ProdutoVtex> {
       val dataFrame = readXlsx(filename, 0)
       val lista = dataFrame.mapNotNull {
         val skuId = it.getString("SKU ID")?.toIntOrNull() ?: return@mapNotNull null
         val precoPromo = it.getString("Price")?.toDoubleOrNull() ?: 0.00
         val validade = it.getString("Date To")?.split(" ")?.get(0)
         val data = validade.parserDate("M/d/yyyy")
-        PromoVtex(skuId = skuId, precoPromo = precoPromo, validade = data)
+        ProdutoVtex(
+          skuId = skuId,
+          idProd = it.getString("SKU ID")?.toIntOrNull() ?: 0,
+          nomeSku = it.getString("SKU ID") ?: "",
+          referenciaSKU = it.getString("SKU ID") ?: "",
+          idDep = it.getString("SKU ID")?.toIntOrNull() ?: 0,
+          nomeDepartamento = it.getString("SKU ID") ?: "",
+          idCat = it.getString("SKU ID")?.toIntOrNull() ?: 0,
+          nomeCategoria = it.getString("SKU ID") ?: "",
+          idMarca = it.getString("SKU ID")?.toIntOrNull() ?: 0,
+          nomeMarca = it.getString("SKU ID") ?: "",
+                   )
       }
       return lista
     }

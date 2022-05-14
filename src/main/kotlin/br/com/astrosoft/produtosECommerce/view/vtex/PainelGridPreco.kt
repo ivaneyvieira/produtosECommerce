@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
-import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
@@ -29,8 +28,8 @@ import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
-        PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
+class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVtex) :
+        PainelGrid<Vtex, FiltroVtex>(serviceQueryVtex) {
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
@@ -70,7 +69,7 @@ class PainelGridPreco(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, Fil
         val bytes = buffer.getInputStream(it.fileName).readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
-        (serviceQuery as? ServiceQueryVtex)?.readExcel(fileName)
+        serviceQueryVtex.readExcelPreco(fileName)
         updateGrid()
       }
 

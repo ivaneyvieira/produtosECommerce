@@ -5,6 +5,7 @@ import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
+import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
@@ -24,11 +25,12 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
+import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PainelGridPromocao(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
-        PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
+class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQueryVtex) :
+        PainelGrid<Vtex, FiltroVtex>(serviceQueryVtex) {
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
@@ -62,6 +64,16 @@ class PainelGridPromocao(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, 
     }
 
     override fun FilterBar<FiltroVtex>.contentBlock() {
+      val (buffer, upload) = uploadFileXls()
+      upload.addSucceededListener {
+        val fileName = "/tmp/${it.fileName}"
+        val bytes = buffer.getInputStream(it.fileName).readBytes()
+        val file = File(fileName)
+        file.writeBytes(bytes)
+        serviceQueryVtex.readExcelPromo(fileName)
+        updateGrid()
+      }
+
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {

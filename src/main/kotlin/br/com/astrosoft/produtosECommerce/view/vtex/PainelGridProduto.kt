@@ -7,15 +7,24 @@ import br.com.astrosoft.framework.view.addColumnInt
 import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.tooltip
+import com.vaadin.flow.component.HasComponents
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
+import org.vaadin.stefan.LazyDownloadButton
+import java.io.ByteArrayInputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PainelGridProduto(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtex>) :
         PainelGrid<Vtex, FiltroVtex>(serviceQuery) {
@@ -36,7 +45,9 @@ class PainelGridProduto(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, F
     private lateinit var edtCategoria: TextField
     private lateinit var edtMarca: TextField
 
-    override fun FilterBar<FiltroVtex>.contentBlock() { //this.selectAll()
+    override fun FilterBar<FiltroVtex>.contentBlock() {
+      this.downloadExcel()
+
       edtSku = textField("SKU ID") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
@@ -148,5 +159,23 @@ class PainelGridProduto(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, F
       isResizable = true
       isAutoWidth = true
     }
+  }
+
+  private fun HasComponents.downloadExcel() {
+    val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
+      val planilha = PlanilhaVtexPreco()
+      val bytes = planilha.grava(allItens())
+      ByteArrayInputStream(bytes)
+    })
+    button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+    button.tooltip = "Salva a planilha"
+    add(button)
+  }
+
+  private fun filename(): String {
+    val sdf = DateTimeFormatter.ofPattern("yyMMddHHmmss")
+    val textTime = LocalDateTime.now().format(sdf)
+    val filename = "planilha$textTime.xlsx"
+    return filename
   }
 }

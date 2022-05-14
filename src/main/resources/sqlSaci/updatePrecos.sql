@@ -1,5 +1,3 @@
 UPDATE produtoEcomerce.vtex
-SET preco = :preco,
-    promoVtex = :promoVtex,
-    validadeVtex = :validadeVtex
+SET  preco = :preco
 WHERE skuId = :skuId

@@ -9,10 +9,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.comboBox
-import com.github.mvysny.karibudsl.v10.isExpand
-import com.github.mvysny.karibudsl.v10.textField
-import com.github.mvysny.karibudsl.v10.tooltip
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -35,8 +32,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
-class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex, FiltroVtexDif>) :
-        PainelGrid<Vtex, FiltroVtexDif>(serviceQuery) {
+class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
+        PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
   private lateinit var edtProduto: TextField
   private lateinit var edtSku: TextField
   private lateinit var cmbDiferenca: ComboBox<EDiferenca>
@@ -52,35 +49,7 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
   }
 
   inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
-    private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
-      val buffer = MultiFileMemoryBuffer()
-      val upload = Upload(buffer)
-      val uploadButton = Button(VaadinIcon.MONEY.create())
-      upload.uploadButton = uploadButton
-      upload.isAutoUpload = true
-      upload.isDropAllowed = false
-      upload.maxFileSize = 1024 * 1024 * 1024
-      upload.addFileRejectedListener { event: FileRejectedEvent ->
-        println(event.errorMessage)
-      }
-      upload.addFailedListener { event ->
-        println(event.reason.message)
-      }
-      add(upload)
-      return Pair(buffer, upload)
-    }
-
     override fun FilterBar<FiltroVtexDif>.contentBlock() {
-      val (buffer, upload) = uploadFileXls()
-      upload.addSucceededListener {
-        val fileName = "/tmp/${it.fileName}"
-        val bytes = buffer.getInputStream(it.fileName).readBytes()
-        val file = File(fileName)
-        file.writeBytes(bytes)
-        (serviceQuery as? ServiceQueryVtexDif)?.readExcel(fileName)
-        updateGrid()
-      }
-
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {
@@ -100,6 +69,20 @@ class PainelGridDiferenca(val view: IVtexView, serviceQuery: IServiceQuery<Vtex,
         isAutoOpen = true
         isAllowCustomValue = false
         addValueChangeListener { updateGrid() }
+      }
+
+      button("Atualiza dados Saci") {
+        icon = VaadinIcon.DISC.create()
+        onLeftClick {
+          val filter=  FiltroVtexDif(produto = edtProduto.value ?: "",
+                                     sku = edtSku.value ?: "",
+                                     departamento = "",
+                                     categoria = "",
+                                     marca = "",
+                                     diferenca = cmbDiferenca.value ?: EDiferenca.PROMO)
+          serviceQueryDif.updateSaci(filter)
+          updateGrid()
+        }
       }
     }
 
