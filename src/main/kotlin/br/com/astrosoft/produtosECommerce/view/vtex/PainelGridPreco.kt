@@ -1,14 +1,14 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.view.*
+import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
+import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.isExpand
-import com.github.mvysny.karibudsl.v10.textField
-import com.github.mvysny.karibudsl.v10.tooltip
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -82,6 +82,20 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       edtProduto = textField("Produto") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
+      }
+
+      button("Atualiza dados Saci") {
+        icon = VaadinIcon.DISC.create()
+        onLeftClick {
+          val filter =
+            FiltroVtex(produto = edtProduto.value ?: "",
+                          sku = edtSku.value ?: "",
+                          departamento = "",
+                          categoria = "",
+                          marca = "")
+          serviceQueryVtex.updateSaci(filter)
+          updateGrid()
+        }
       }
     }
 

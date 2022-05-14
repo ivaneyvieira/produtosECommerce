@@ -3,6 +3,7 @@ package br.com.astrosoft.produtosECommerce.model.services
 import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
+import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.PrecoSaci
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.local
@@ -33,14 +34,13 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
     val lista = local.fetchVtex(filter, offset, limit, sortOrders)
     lista.forEachIndexed { index, vtex ->
       vtex.seq = offset + index + 1
-      vtex.priceSaci = findPrice(vtex.referenciaSKU)
-      vtex.update()
     }
     return lista
   }
 
   fun readExcelPreco(fileName: String) {
     val precos = PrecosVtex.readExcel(fileName)
+    local.apagaPrecoReferenciaVtex()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
@@ -48,8 +48,17 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
 
   fun readExcelPromo(fileName: String) {
     val precos = PromoVtex.readExcel(fileName)
+    local.apagaPrecoPromocionalVtex()
     precos.forEach { preco ->
       local.updatePromoVtex(preco)
+    }
+  }
+
+  fun updateSaci(filter: FiltroVtex) {
+    val list = fetch(filter)
+    list.forEach {
+      it.priceSaci = findPrice(it.referenciaSKU)
+      it.update()
     }
   }
 }
