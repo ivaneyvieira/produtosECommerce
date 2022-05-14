@@ -8,6 +8,7 @@ import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.framework.util.toSaciDate
 import br.com.astrosoft.produtosECommerce.model.beans.*
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 import org.sql2o.Query
 import java.time.LocalDateTime
@@ -380,11 +381,11 @@ GROUP BY barcode"""
     val sql = "/sqlSaci/updateVtex.sql"
 
     script(sql) {
-      addOptionalParameter("precoCompor", vtex.precoCompor())
-      addOptionalParameter("promoprice", vtex.promoprice())
-      addOptionalParameter("refprice", vtex.refprice())
-      addOptionalParameter("codigo", vtex.codigo())
-      addOptionalParameter("validade", vtex.validade())
+      addOptionalParameter("precoCompor", vtex.precoCompor)
+      addOptionalParameter("promoprice", vtex.promoprice)
+      addOptionalParameter("refprice", vtex.refprice)
+      addOptionalParameter("codigo", vtex.codigo)
+      addOptionalParameter("validade", vtex.validade)
       addOptionalParameter("skuId", vtex.skuId)
     }
   }
@@ -418,10 +419,17 @@ GROUP BY barcode"""
     })
   }
 
-  fun updatePrecoVtex(preco: PromoVtex) {
+  fun updatePrecoVtex(preco: PrecosVtex) {
     val sql = "/sqlSaci/updatePrecos.sql"
     script(sql) {
-      addOptionalParameter("preco", preco.precoList)
+      addOptionalParameter("preco", preco.preco)
+      addOptionalParameter("skuId", preco.skuId)
+    }
+  }
+
+  fun updatePromoVtex(preco: PromoVtex) {
+    val sql = "/sqlSaci/updatePromo.sql"
+    script(sql) {
       addOptionalParameter("promoVtex", preco.precoPromo)
       addOptionalParameter("validadeVtex", preco.validade)
       addOptionalParameter("skuId", preco.skuId)
