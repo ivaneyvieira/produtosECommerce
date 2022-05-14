@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
-import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
