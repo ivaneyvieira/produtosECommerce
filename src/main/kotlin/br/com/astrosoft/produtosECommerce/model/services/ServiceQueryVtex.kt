@@ -3,7 +3,6 @@ package br.com.astrosoft.produtosECommerce.model.services
 import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
-import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.PrecoSaci
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.local
