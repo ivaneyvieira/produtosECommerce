@@ -11,6 +11,7 @@ class PrecoSaci(
   val promoprice: Double?,
   val precoCompor: Double?,
   val preco: Double?,
+  val promono: Int?
                ) {
   val promopricev
     get() = if (LocalDate.now().toSaciDate() <= validade) promoprice else null
