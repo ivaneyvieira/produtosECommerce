@@ -127,6 +127,12 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       isAutoWidth = false
       width = "100px"
     }
+    addColumnInt(Vtex::promono) {
+      setHeader("Nº Prom")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnLocalDate(Vtex::validade) {
       setHeader("Validade")
       isExpand = false

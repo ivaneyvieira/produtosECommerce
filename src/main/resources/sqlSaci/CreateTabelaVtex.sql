@@ -59,3 +59,6 @@ ALTER TABLE vtex
 
 ALTER TABLE vtex
   MODIFY precoCompor DECIMAL(13, 2) DEFAULT 0.00 NULL;
+
+ALTER TABLE vtex
+  ADD promono INT NULL;

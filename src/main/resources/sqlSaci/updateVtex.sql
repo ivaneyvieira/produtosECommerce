@@ -3,5 +3,6 @@ SET promoprice  = :promoprice,
     refprice    = :refprice,
     precoCompor = :precoCompor,
     codigo      = :codigo,
-    validade    = :validade
+    validade    = :validade,
+    promono     = :promono
 WHERE skuId = :skuId
