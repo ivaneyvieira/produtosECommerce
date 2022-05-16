@@ -86,6 +86,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
+      isSortable = false
       isResizable = true
       isAutoWidth = false
       width = "70px"

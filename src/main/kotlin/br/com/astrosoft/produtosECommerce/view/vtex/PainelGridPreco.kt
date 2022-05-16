@@ -115,6 +115,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
+      isSortable = false
       isResizable = true
       isAutoWidth = false
       width = "70px"
