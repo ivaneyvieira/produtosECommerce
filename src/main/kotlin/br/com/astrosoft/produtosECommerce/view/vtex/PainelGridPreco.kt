@@ -1,9 +1,7 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.view.*
-import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
-import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
@@ -89,10 +87,10 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
         onLeftClick {
           val filter =
             FiltroVtex(produto = edtProduto.value ?: "",
-                          sku = edtSku.value ?: "",
-                          departamento = "",
-                          categoria = "",
-                          marca = "")
+                       sku = edtSku.value ?: "",
+                       departamento = "",
+                       categoria = "",
+                       marca = "")
           serviceQueryVtex.updateSaci(filter)
           updateGrid()
         }
@@ -117,6 +115,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
+      isSortable = false
       isResizable = true
       isAutoWidth = false
       width = "70px"
@@ -157,6 +156,12 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = false
       width = "100px"
+    }
+    addColumnInt(Vtex::promono) {
+      setHeader("Nº Prom")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
     }
     addColumnLocalDate(Vtex::validade) {
       setHeader("Validade")

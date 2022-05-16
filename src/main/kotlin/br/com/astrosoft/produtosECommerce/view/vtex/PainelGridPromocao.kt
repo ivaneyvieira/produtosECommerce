@@ -104,6 +104,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
+      isSortable = false
       isResizable = true
       isAutoWidth = false
       width = "70px"
@@ -144,6 +145,12 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isResizable = true
       isAutoWidth = false
       width = "100px"
+    }
+    addColumnInt(Vtex::promono) {
+      setHeader("Nº Prom")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
     }
     addColumnLocalDate(Vtex::validade) {
       setHeader("Validade")

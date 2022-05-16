@@ -386,6 +386,7 @@ GROUP BY barcode"""
       addOptionalParameter("codigo", vtex.codigo)
       addOptionalParameter("validade", vtex.validade)
       addOptionalParameter("skuId", vtex.skuId)
+      addOptionalParameter("promono", vtex.promono ?: 0)
     }
   }
 

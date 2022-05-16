@@ -8,7 +8,10 @@ import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.*
+import com.github.mvysny.karibudsl.v10.comboBox
+import com.github.mvysny.karibudsl.v10.isExpand
+import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
@@ -83,6 +86,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
+      isSortable = false
       isResizable = true
       isAutoWidth = false
       width = "70px"
@@ -123,6 +127,12 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       isResizable = true
       isAutoWidth = false
       width = "100px"
+    }
+    addColumnInt(Vtex::promono) {
+      setHeader("Nº Prom")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
     }
     addColumnLocalDate(Vtex::validade) {
       setHeader("Validade")

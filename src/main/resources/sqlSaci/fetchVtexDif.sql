@@ -26,7 +26,8 @@ SELECT skuId,
        promoVtex,
        validadeVtex,
        validade,
-       codigo
+       codigo,
+       promono
 FROM produtoEcomerce.vtex
 WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (idProd = @ID_PRODUTO OR nomeSku LIKE CONCAT('%', @PRODUTO, '%') OR
