@@ -18,14 +18,14 @@ data class Vtex(
   val nomeMarca: String,
   val estoque: Int,
   val preco: Double,
-  var promoprice: Double?,
-  var refprice: Double?,
-  var precoCompor: Double?,
-  var codigo: String,
-  var validade: LocalDate?,
+  val promoprice: Double?,
+  val refprice: Double?,
+  val precoCompor: Double?,
+  val codigo: String,
+  val validade: LocalDate?,
   val promoVtex: Double?,
   val validadeVtex: LocalDate?,
-  var promono: Int?,
+  val promono: Int?,
                ) {
   var priceSaci: PrecoSaci? = null
 
@@ -34,15 +34,9 @@ data class Vtex(
   fun precoCompor() = priceSaci?.precoCompor
   fun codigo() = priceSaci?.codigo?.toString() ?: ""
   fun validade() = priceSaci?.validadev?.localDate()
-  fun promono() = priceSaci?.promono
+  fun promono() = priceSaci?.promono ?: 0
 
   fun update() {
-    promoprice = promoprice()
-    refprice = refprice()
-    precoCompor = precoCompor()
-    codigo = codigo()
-    validade = validade()
-    promono = promono()
     local.updateVtex(this)
   }
 }
