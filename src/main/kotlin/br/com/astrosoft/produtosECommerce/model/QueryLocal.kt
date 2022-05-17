@@ -380,13 +380,13 @@ GROUP BY barcode"""
     val sql = "/sqlSaci/updateVtex.sql"
 
     script(sql) {
-      addOptionalParameter("precoCompor", vtex.precoCompor)
-      addOptionalParameter("promoprice", vtex.promoprice)
-      addOptionalParameter("refprice", vtex.refprice)
-      addOptionalParameter("codigo", vtex.codigo)
-      addOptionalParameter("validade", vtex.validade)
+      addOptionalParameter("precoCompor", vtex.precoCompor())
+      addOptionalParameter("promoprice", vtex.promoprice())
+      addOptionalParameter("refprice", vtex.refprice())
+      addOptionalParameter("codigo", vtex.codigo())
+      addOptionalParameter("validade", vtex.validade())
       addOptionalParameter("skuId", vtex.skuId)
-      addOptionalParameter("promono", vtex.promono ?: 0)
+      addOptionalParameter("promono", vtex.promono())
     }
   }
 

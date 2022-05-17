@@ -163,6 +163,16 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     }
   }
 
+  fun removerPromocao(vtex: Vtex) {
+    val sql = "/sqlSaci/removerPromocao.sql"
+    script(sql) {
+      val promono = vtex.promono()
+      val codigo = vtex.codigo()
+      addOptionalParameter("promono", promono)
+      addOptionalParameter("codigo", codigo)
+    }
+  }
+
   companion object {
     private val db = DB("saci")
     internal val driver = db.driver

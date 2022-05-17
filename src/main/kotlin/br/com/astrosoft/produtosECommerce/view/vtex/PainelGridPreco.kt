@@ -4,6 +4,7 @@ import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
+import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.*
@@ -92,6 +93,26 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
                        categoria = "",
                        marca = "")
           serviceQueryVtex.updateSaci(filter)
+          updateGrid()
+        }
+      }
+      button("Remover Promoção") {
+        icon = VaadinIcon.DOWNLOAD.create()
+        onLeftClick {
+          val filter =
+            FiltroVtex(produto = edtProduto.value ?: "",
+                       sku = edtSku.value ?: "",
+                       departamento = "",
+                       categoria = "",
+                       marca = "")
+
+          val promocaaARemover = serviceQueryVtex.promocaaARemover(filter)
+
+          promocaaARemover.forEach {vtex ->
+            saci.removerPromocao(vtex)
+          }
+
+
           updateGrid()
         }
       }
