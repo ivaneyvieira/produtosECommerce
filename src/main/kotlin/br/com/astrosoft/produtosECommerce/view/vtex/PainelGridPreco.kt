@@ -12,9 +12,8 @@ import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridMultiSelectionModel
-import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
@@ -62,6 +61,8 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
     }
 
     override fun FilterBar<FiltroVtex>.contentBlock() {
+      this.selectAll()
+
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
         val fileName = "/tmp/${it.fileName}"
@@ -99,21 +100,26 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       button("Remover Promoção") {
         icon = VaadinIcon.DOWNLOAD.create()
         onLeftClick {
-          val filter =
-            FiltroVtex(produto = edtProduto.value ?: "",
-                       sku = edtSku.value ?: "",
-                       departamento = "",
-                       categoria = "",
-                       marca = "")
-
-          val promocaaARemover = serviceQueryVtex.promocaaARemover(filter)
-
-          promocaaARemover.forEach {vtex ->
-            saci.removerPromocao(vtex)
+          val itens = grid.selectedItems.toList()
+          if (itens.isEmpty()) {
+            Notification.show("Não tem nenhum item selecionado")
           }
+          else {
+            val promocaaARemover = serviceQueryVtex.promocaaARemover(itens)
 
+            if (promocaaARemover.isEmpty()) {
+              Notification.show("Não tem nenhum item selecionado")
+            }
+            else {
+              promocaaARemover.forEach { vtex ->
+                saci.removerPromocao(vtex)
+              }
 
-          updateGrid()
+              serviceQueryVtex.updateSaci(itens)
+
+              updateGrid()
+            }
+          }
         }
       }
     }
@@ -130,9 +136,8 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
   }
 
   override fun Grid<Vtex>.gridConfig() {
-    this.setSelectionMode(Grid.SelectionMode.MULTI)
-    val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
-    multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
+    this.setSelectionMode(Grid.SelectionMode.MULTI) //val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
+    //multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
