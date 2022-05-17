@@ -2,22 +2,35 @@ package br.com.astrosoft.produtosECommerce.model.services
 
 import br.com.astrosoft.framework.model.IServiceQuery
 import br.com.astrosoft.framework.model.SortOrder
-import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
-import br.com.astrosoft.produtosECommerce.model.beans.PrecoSaci
-import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 
 class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
-  private val precosSaci = saci.precoSaci().groupBy { it.codigo }.mapValues { it.value.firstOrNull() }
-  private val produtosLocal = local.produtosBarcode()
-  private val produtoBarcodeSaci = saci.produtoBarcodeSaci().groupBy { it.barcode }.mapValues { it.value.firstOrNull() }
-  private val produtosBarcode =
-    produtosLocal.groupBy { it.barcode }.mapValues { it.value.firstOrNull()?.toProdutoCodigo() }
-  private val produtosCodigo =
-    produtosLocal.groupBy { it.codigo }.mapValues { it.value.firstOrNull()?.toProdutoCodigo() }
+  private val precosSaci: MutableMap<Int, PrecoSaci?> = mutableMapOf()
+  private val produtosLocal: MutableList<ProdutoBarcode> = mutableListOf()
+  private var produtoBarcodeSaci: MutableMap<String, ProdutoCodigo?> = mutableMapOf()
+  private val produtosBarcode: MutableMap<String, ProdutoCodigo?> = mutableMapOf()
+  private var produtosCodigo: MutableMap<Int, ProdutoCodigo?> = mutableMapOf()
+
+  fun updatePricesSaci() {
+    precosSaci.clear()
+    precosSaci.putAll(saci.precoSaci().groupBy { it.codigo }.mapValues { it.value.firstOrNull() })
+
+    produtosLocal.clear()
+    produtosLocal.addAll(local.produtosBarcode())
+
+    produtoBarcodeSaci.clear()
+    produtoBarcodeSaci.putAll(saci.produtoBarcodeSaci().groupBy { it.barcode }.mapValues { it.value.firstOrNull() })
+
+    produtosBarcode.clear()
+    produtosBarcode.putAll(produtosLocal.groupBy { it.barcode }.mapValues { it.value.firstOrNull()?.toProdutoCodigo() })
+
+    produtosCodigo.clear()
+    produtosCodigo.putAll(produtosLocal.groupBy { it.codigo }.mapValues { it.value.firstOrNull()?.toProdutoCodigo() })
+  }
 
   private fun findPrice(codigo: String): PrecoSaci? {
     val produto = produtoBarcodeSaci[codigo] ?: produtosBarcode[codigo] ?: produtosCodigo[codigo.toIntOrNull()]
@@ -54,10 +67,20 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
   }
 
   fun updateSaci(filter: FiltroVtex) {
+    updatePricesSaci()
     val list = fetch(filter)
     list.forEach {
       it.priceSaci = findPrice(it.referenciaSKU)
       it.update()
+    }
+  }
+
+  fun promocaaARemover(filter: FiltroVtex): List<Vtex> {
+    updatePricesSaci()
+    val list = fetch(filter)
+    return list.filter {
+      it.priceSaci = findPrice(it.referenciaSKU)
+      it.validade() == null && (it.promono() > 0)
     }
   }
 }

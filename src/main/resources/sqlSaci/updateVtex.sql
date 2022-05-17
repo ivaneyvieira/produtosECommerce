@@ -4,5 +4,5 @@ SET promoprice  = :promoprice,
     precoCompor = :precoCompor,
     codigo      = :codigo,
     validade    = :validade,
-    promono     = :promono
+    promono     = IF(:promono = 0, NULL, :promono)
 WHERE skuId = :skuId
