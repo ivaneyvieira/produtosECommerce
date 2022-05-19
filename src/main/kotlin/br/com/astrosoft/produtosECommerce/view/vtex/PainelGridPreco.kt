@@ -2,15 +2,18 @@ package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
+import br.com.astrosoft.produtosECommerce.model.beans.Promocao
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
+import br.com.astrosoft.produtosECommerce.view.main.promocaoField
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
@@ -28,6 +31,8 @@ import java.time.format.DateTimeFormatter
 
 class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVtex) :
         PainelGrid<Vtex, FiltroVtex>(serviceQueryVtex) {
+  private lateinit var edtPromocao: ComboBox<Promocao>
+
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
@@ -97,7 +102,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
           updateGrid()
         }
       }
-      button("Remover Promoção") {
+      button("Remover") {
         icon = VaadinIcon.DOWNLOAD.create()
         onLeftClick {
           val itens = grid.selectedItems.toList()
@@ -118,6 +123,41 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
               serviceQueryVtex.updateSaci(itens)
 
               updateGrid()
+            }
+          }
+        }
+      }
+      edtPromocao = promocaoField {
+        addValueChangeListener { updateGrid() }
+      }
+      button("Adicionar") {
+        icon = VaadinIcon.UPLOAD.create()
+        onLeftClick {
+          val itens = grid.selectedItems.toList()
+          if (itens.isEmpty()) {
+            Notification.show("Não tem nenhum item selecionado")
+          }
+          else {
+            val promocaaAAdicionar = serviceQueryVtex.promocaaAAdicionar(itens)
+
+            if (promocaaAAdicionar.isEmpty()) {
+              Notification.show("Não tem nenhum item selecionado")
+            }
+            else {
+              val promocao = edtPromocao.value
+
+              if (promocao != null) {
+                promocaaAAdicionar.forEach { vtex ->
+                  saci.adicionarPromocao(vtex, promocao)
+                }
+
+                serviceQueryVtex.updateSaci(itens)
+
+                updateGrid()
+              }
+              else {
+                Notification.show("Não tem nenhum promoção selecionada")
+              }
             }
           }
         }
