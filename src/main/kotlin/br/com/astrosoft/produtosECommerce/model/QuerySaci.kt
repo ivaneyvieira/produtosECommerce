@@ -173,6 +173,10 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     }
   }
 
+  fun adicionarPromocao(vtex: Vtex, promocao: Promocao) {
+    savePromocao(promocao = promocao, prdno = vtex.codigo, grade = vtex.codigo, price = vtex.promoprice ?: 0.00)
+  }
+
   companion object {
     private val db = DB("saci")
     internal val driver = db.driver
