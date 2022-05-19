@@ -99,4 +99,12 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
       it.validade() == null && (it.promono() > 0)
     }
   }
+
+  fun promocaaAAdicionar(list: List<Vtex>): List<Vtex> {
+    updatePricesSaci()
+    return list.filter {
+      it.priceSaci = findPrice(it.referenciaSKU)
+      it.validade() != null && (it.promono() == 0)
+    }
+  }
 }
