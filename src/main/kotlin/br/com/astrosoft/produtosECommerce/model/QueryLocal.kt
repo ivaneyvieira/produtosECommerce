@@ -444,6 +444,13 @@ GROUP BY barcode"""
     }
   }
 
+  fun removeProdutoVtex(produto: ProdutoVtex) {
+    val sql = "/sqlSaci/removeProduto.sql"
+    script(sql) {
+      addOptionalParameter("skuId", produto.skuId)
+    }
+  }
+
   fun updatePromoVtex(preco: PromoVtex) {
     val sql = "/sqlSaci/updatePromo.sql"
     script(sql) {

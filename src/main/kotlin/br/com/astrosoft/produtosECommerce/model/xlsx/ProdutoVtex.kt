@@ -75,7 +75,7 @@ data class ProdutoVtex(
           nomeMarca = nomeMarca,
                    )
       }
-      return lista.filter { it.ativarSku == "SIM" }
+      return lista
     }
   }
 }
