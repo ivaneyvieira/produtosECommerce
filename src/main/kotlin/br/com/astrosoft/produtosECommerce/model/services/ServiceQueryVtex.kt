@@ -62,8 +62,14 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
   fun readExcelProduto(fileName: String) {
     val produtos = ProdutoVtex.readExcel(fileName)
     produtos.forEach { produto ->
-      local.replaceProdutoVtex(produto)
+      if (produto.ativarSku == "SIM") {
+        local.replaceProdutoVtex(produto)
+      }
+      else {
+        local.removeProdutoVtex(produto)
+      }
     }
+    updatePricesSaci()
   }
 
   fun readExcelPromo(fileName: String) {
