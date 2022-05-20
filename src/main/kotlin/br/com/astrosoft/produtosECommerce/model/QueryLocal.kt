@@ -8,6 +8,7 @@ import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.ProdutoVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 import org.sql2o.Query
 import java.time.LocalDateTime
@@ -424,6 +425,22 @@ GROUP BY barcode"""
     script(sql) {
       addOptionalParameter("preco", preco.preco)
       addOptionalParameter("skuId", preco.skuId)
+    }
+  }
+
+  fun replaceProdutoVtex(produto: ProdutoVtex) {
+    val sql = "/sqlSaci/replaceProduto.sql"
+    script(sql) {
+      addOptionalParameter("skuId", produto.skuId)
+      addOptionalParameter("idProd", produto.idProd)
+      addOptionalParameter("nomeSku", produto.nomeSku)
+      addOptionalParameter("referenciaSKU", produto.referenciaSKU)
+      addOptionalParameter("idDep", produto.idDep)
+      addOptionalParameter("nomeDepartamento", produto.nomeDepartamento)
+      addOptionalParameter("idCat", produto.idCat)
+      addOptionalParameter("nomeCategoria", produto.nomeCategoria)
+      addOptionalParameter("idMarca", produto.idMarca)
+      addOptionalParameter("nomeMarca", produto.nomeMarca)
     }
   }
 

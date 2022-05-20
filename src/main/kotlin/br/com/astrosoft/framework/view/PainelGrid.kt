@@ -219,7 +219,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
     return BigDecimalField().apply {
       this.addThemeVariants(LUMO_ALIGN_RIGHT)
       this.setSizeFull()
-      addThemeVariants(TextFieldVariant.LUMO_SMALL)
+      addThemeVariants(LUMO_SMALL)
       this.valueChangeMode = ON_CHANGE
       this.isAutoselect = true
       this.locale = Locale.forLanguageTag("pt-BR")

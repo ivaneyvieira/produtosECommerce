@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.ProdutoVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 
 class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
@@ -55,6 +56,13 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
     local.apagaPrecoReferenciaVtex()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
+    }
+  }
+
+  fun readExcelProduto(fileName: String) {
+    val produtos = ProdutoVtex.readExcel(fileName)
+    produtos.forEach { produto ->
+      local.replaceProdutoVtex(produto)
     }
   }
 
