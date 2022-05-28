@@ -4,30 +4,28 @@ import br.com.astrosoft.framework.util.localDate
 import br.com.astrosoft.produtosECommerce.model.local
 import java.time.LocalDate
 
-data class Vtex(
-  var seq: Int?,
-  val skuId: Int,
-  val idProd: Int,
-  val nomeSku: String,
-  val referenciaSKU: String,
-  val idDep: Int,
-  val nomeDepartamento: String,
-  val idCat: Int,
-  val nomeCategoria: String,
-  val idMarca: Int,
-  val nomeMarca: String,
-  val estoque: Int,
-  val preco: Double,
-  val promoprice: Double?,
-  val refprice: Double?,
-  val precoCompor: Double?,
-  val codigo: String,
-  val validade: LocalDate?,
-  val promoVtex: Double?,
-  val validadeVtex: LocalDate?,
-  val promono: Int?,
-  val precoPromoEditor: Double?
-               ) {
+data class Vtex(var seq: Int?,
+                val skuId: Int,
+                val idProd: Int,
+                val nomeSku: String,
+                val referenciaSKU: String,
+                val idDep: Int,
+                val nomeDepartamento: String,
+                val idCat: Int,
+                val nomeCategoria: String,
+                val idMarca: Int,
+                val nomeMarca: String,
+                val estoque: Int,
+                val preco: Double,
+                val promoprice: Double?,
+                val refprice: Double?,
+                val precoCompor: Double?,
+                val codigo: String,
+                val validade: LocalDate?,
+                val promoVtex: Double?,
+                val validadeVtex: LocalDate?,
+                val promono: Int?,
+                val precoPromoEditor: Double?) {
   var priceSaci: PrecoSaci? = null
 
   fun promoprice() = priceSaci?.promopricev
