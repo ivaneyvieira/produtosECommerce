@@ -388,6 +388,7 @@ GROUP BY barcode"""
       addOptionalParameter("validade", vtex.validade())
       addOptionalParameter("skuId", vtex.skuId)
       addOptionalParameter("promono", vtex.promono())
+      addOptionalParameter("precoPromoEditor", vtex.precoPromoEditor())
     }
   }
 
