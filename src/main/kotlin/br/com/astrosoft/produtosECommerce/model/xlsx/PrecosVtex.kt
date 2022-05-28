@@ -29,7 +29,7 @@ data class PrecosVtex(val skuId: Int, val preco: Double) {
       val dataFrame = readXlsx(filename, 0)
       val lista = dataFrame.mapNotNull {
         val skuId = it.getString("SKU ID")?.toIntOrNull() ?: return@mapNotNull null
-        val listPrice = it.getString("List Price")?.toDoubleOrNull() ?: return@mapNotNull null
+        val listPrice = it.getString("Base Price")?.toDoubleOrNull() ?: return@mapNotNull null
         PrecosVtex(skuId = skuId, preco = listPrice)
       }
       return lista
