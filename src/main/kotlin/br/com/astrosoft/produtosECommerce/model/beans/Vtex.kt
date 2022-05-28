@@ -26,6 +26,7 @@ data class Vtex(
   val promoVtex: Double?,
   val validadeVtex: LocalDate?,
   val promono: Int?,
+  val precoPromoEditor: Double?
                ) {
   var priceSaci: PrecoSaci? = null
 
@@ -35,6 +36,7 @@ data class Vtex(
   fun codigo() = priceSaci?.codigo?.toString() ?: ""
   fun validade() = priceSaci?.validadev?.localDate()
   fun promono() = priceSaci?.promono ?: 0
+  fun precoPromoEditor() = priceSaci?.precoPromoEditor ?: 0.00
 
   fun update() {
     local.updateVtex(this)
