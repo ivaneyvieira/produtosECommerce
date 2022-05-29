@@ -58,7 +58,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         addValueChangeListener { updateGrid() }
       }
       cmbDiferenca = comboBox<EDiferenca>("Diferença") {
-        setItems(EDiferenca.values().toList())
+        setItems(EDiferenca.values().toList() - EDiferenca.EDITOR)
         setItemLabelGenerator {
           it.label
         }
@@ -153,9 +153,13 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
+        val price = it.preco ?: 0.00
         val promoprice = it.promoprice ?: 0.00
         val promoVtex = it.promoVtex ?: 0.00
-        if (promoprice != promoVtex && cmbDiferenca.value == EDiferenca.PROMO) "marcaDiferenca"
+
+        val testePromo = promoprice != promoVtex && cmbDiferenca.value == EDiferenca.PROMO
+        val testePreco = promoprice != price && cmbDiferenca.value == EDiferenca.PRICE
+        if (testePreco || testePromo) "marcaDiferenca"
         else null
       }
     }
@@ -206,7 +210,11 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       setClassNameGenerator {
         val refprice = it.refprice ?: 0.00
         val preco = it.preco
-        if (refprice != preco && cmbDiferenca.value == EDiferenca.PRICE) "marcaDiferenca"
+        val promoprice = it.promoprice ?: 0.00
+
+        val testePromo = promoprice != 0.00 && preco != promoprice
+        val testePreco = promoprice == 0.00 && preco != refprice
+        if ((testePreco || testePromo) && (cmbDiferenca.value == EDiferenca.PRICE)) "marcaDiferenca"
         else null
       }
     }

@@ -176,8 +176,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
   }
 
   override fun Grid<Vtex>.gridConfig() {
-    this.setSelectionMode(Grid.SelectionMode.MULTI) //val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
-    //multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
+    this.setSelectionMode(Grid.SelectionMode.MULTI)
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false

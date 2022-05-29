@@ -62,3 +62,7 @@ ALTER TABLE vtex
 
 ALTER TABLE vtex
   ADD promono INT NULL;
+
+ALTER TABLE vtex
+  ADD precoPromoEditor DECIMAL(13, 2) NULL;
+
