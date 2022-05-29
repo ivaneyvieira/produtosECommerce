@@ -1,5 +1,6 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
+import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
@@ -125,6 +126,9 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        "marcaDiferenca"
+      }
     }
     addColumnDouble(Vtex::refprice) {
       setHeader("P Ref")
@@ -134,11 +138,14 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
       width = "100px"
     }
     addColumnDouble(Vtex::precoPromoEditor) {
-      setHeader("P Ref")
+      setHeader("Promo Editor")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        "marcaDiferenca"
+      }
     }
   }
 
