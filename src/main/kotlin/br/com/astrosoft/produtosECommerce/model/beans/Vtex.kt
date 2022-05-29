@@ -57,5 +57,5 @@ data class FiltroVtexDif(val produto: String = "",
                          val diferenca: EDiferenca)
 
 enum class EDiferenca(val id: String, val label: String) {
-  PROMO("PROMO", "Promoção"), DATA("DATA", "Validade"), PRICE("PRICE", "Preço")
+  PROMO("PROMO", "Promoção"), DATA("DATA", "Validade"), PRICE("PRICE", "Preço"), EDITOR("EDITOR", "Editor")
 }
