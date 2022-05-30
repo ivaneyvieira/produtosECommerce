@@ -424,7 +424,8 @@ GROUP BY barcode"""
   fun updatePrecoVtex(preco: PrecosVtex) {
     val sql = "/sqlSaci/updatePrecos.sql"
     script(sql) {
-      addOptionalParameter("preco", preco.preco)
+      addOptionalParameter("preco", preco.precoBase)
+      addOptionalParameter("precoList", preco.precoList)
       addOptionalParameter("skuId", preco.skuId)
     }
   }

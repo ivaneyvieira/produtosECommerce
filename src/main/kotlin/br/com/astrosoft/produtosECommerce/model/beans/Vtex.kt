@@ -17,6 +17,7 @@ data class Vtex(var seq: Int?,
                 val nomeMarca: String,
                 val estoque: Int,
                 val preco: Double,
+                val precoList: Double,
                 val promoprice: Double?,
                 val refprice: Double?,
                 val precoCompor: Double?,
@@ -57,5 +58,9 @@ data class FiltroVtexDif(val produto: String = "",
                          val diferenca: EDiferenca)
 
 enum class EDiferenca(val id: String, val label: String) {
-  PROMO("PROMO", "Promoção"), DATA("DATA", "Validade"), PRICE("PRICE", "Preço"), EDITOR("EDITOR", "Editor")
+  PROMO("PROMO", "Promoção"),
+  DATA("DATA", "Validade"),
+  PRICE("PRICE", "Preço"),
+  EDITOR("EDITOR", "Editor"),
+  LIST("LIST", "List")
 }
