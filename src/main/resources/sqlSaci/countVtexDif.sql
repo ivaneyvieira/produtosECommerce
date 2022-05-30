@@ -29,7 +29,7 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
            ((IFNULL(promoprice, 0) = 0))
           ) OR
 	  (
-	    (IFNULL(refprice, 0) != IFNULL(promoprice, 0)) AND
+	    (IFNULL(preco, 0) != IFNULL(promoprice, 0)) AND
 	    ((IFNULL(promoprice, 0) != 0))
 	  )
          ) AND (:diferenca = 'PRICE')
