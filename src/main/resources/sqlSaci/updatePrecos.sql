@@ -1,3 +1,4 @@
 UPDATE produtoEcomerce.vtex
-SET  preco = :preco
+SET  preco = :preco,
+     precoList = :precoList
 WHERE skuId = :skuId

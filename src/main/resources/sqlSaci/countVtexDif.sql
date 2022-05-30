@@ -18,6 +18,7 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (idMarca = @ID_MARCA OR nomeMarca LIKE CONCAT('%', @MARCA, '%') OR @MARCA = '')
   AND (promoprice > 0 OR :promocao != 'S')
   AND ((IFNULL(promoprice, 0) != IFNULL(promoVtex, 0) AND :diferenca = 'PROMO') OR
+       (IFNULL(precoList, 0) != IFNULL(refprice, 0) AND :diferenca = 'LIST') OR
        (IFNULL(promoprice, 0) != IFNULL(precoPromoEditor, 0) AND
 	(IFNULL(promoprice, 0) != 0 OR IFNULL(precoPromoEditor, 0) != 0) AND
 	:diferenca = 'EDITOR') OR
