@@ -17,6 +17,7 @@ class PlanilhaVtexPreco {
       CampoString("Referencia SKU") { referenciaSKU },
       CampoString("Cód Saci") { codigo },
       CampoNumber("Preço Compor") { precoCompor ?: 0.00 },
+      CampoString("Nº Prom") { promono.toString() },
       CampoString("Validade") { validade.format() },
       CampoNumber("Preço Promo") { promoprice ?: 0.00 },
       CampoNumber("Preço Ref") { refprice ?: 0.00 },
