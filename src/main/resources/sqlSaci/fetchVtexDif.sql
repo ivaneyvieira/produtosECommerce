@@ -39,12 +39,22 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
   AND (promoprice > 0 OR :promocao != 'S')
   AND ((IFNULL(promoprice, 0) != IFNULL(promoVtex, 0) AND :diferenca = 'PROMO') OR
        (IFNULL(promoprice, 0) != IFNULL(precoPromoEditor, 0) AND
-	(IFNULL(promoprice, 0) != 0 || IFNULL(precoPromoEditor, 0) != 0) AND
+	(IFNULL(promoprice, 0) != 0 OR IFNULL(precoPromoEditor, 0) != 0) AND
 	:diferenca = 'EDITOR') OR
        (IFNULL(validadeVtex * 1, 0) != IFNULL(validade * 1, 0) AND :diferenca = 'DATA') OR
-       ((((IFNULL(refprice, 0) != IFNULL(preco, 0)) AND ((IFNULL(promoprice, 0) = 0))) OR
-	 ((IFNULL(refprice, 0) != IFNULL(promoprice, 0)) AND ((IFNULL(promoprice, 0) != 0)))) AND
-	(:diferenca = 'PRICE')))
+       (
+	   (
+	       (
+		   (IFNULL(refprice, 0) != IFNULL(preco, 0)) AND
+		   ((IFNULL(promoprice, 0) = 0))
+		 ) OR
+	       (
+		   (IFNULL(refprice, 0) != IFNULL(promoprice, 0)) AND
+		   ((IFNULL(promoprice, 0) != 0))
+		 )
+	     ) AND (:diferenca = 'PRICE')
+	 )
+  )
 
 
 
