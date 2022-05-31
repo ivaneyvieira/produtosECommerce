@@ -3,7 +3,7 @@ package br.com.astrosoft.produtosECommerce.model.xlsx
 import java.text.Normalizer
 import java.util.regex.Pattern
 
-data class PrecosVtex(val skuId: Int, val precoBase: Double, val precoList: Double) {
+data class PrecosVtex(val skuId: Int, val precoBase: Double?, val precoList: Double?) {
   companion object {
     private val mapKey = mutableMapOf<String, String>()
     private fun deAccent(str: String): String {
@@ -29,8 +29,8 @@ data class PrecosVtex(val skuId: Int, val precoBase: Double, val precoList: Doub
       val dataFrame = readXlsx(filename, 0)
       val lista = dataFrame.mapNotNull {
         val skuId = it.getString("SKU ID")?.toIntOrNull() ?: return@mapNotNull null
-        val listPrice = it.getString("List Price")?.toDoubleOrNull() ?: 0.00
-        val basePrice = it.getString("Base Price")?.toDoubleOrNull() ?: 0.00
+        val listPrice = it.getString("List Price")?.toDoubleOrNull()
+        val basePrice = it.getString("Base Price")?.toDoubleOrNull()
         PrecosVtex(skuId = skuId, precoBase = basePrice, precoList = listPrice)
       }
       return lista
