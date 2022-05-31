@@ -62,5 +62,6 @@ enum class EDiferenca(val id: String, val label: String) {
   DATA("DATA", "Validade"),
   PRICE("PRICE", "Preço"),
   EDITOR("EDITOR", "Editor"),
-  LIST("LIST", "List")
+  LIST("LIST", "List"),
+  BASE("BASE", "Base"),
 }
