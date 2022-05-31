@@ -31,6 +31,13 @@ import java.time.format.DateTimeFormatter
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
 class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
         PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
+  private lateinit var colValidadeVtex: Grid.Column<Vtex>
+  private lateinit var colPromoprice: Grid.Column<Vtex>
+  private lateinit var colPromoVtex: Grid.Column<Vtex>
+  private lateinit var colValidade: Grid.Column<Vtex>
+  private lateinit var colPromono: Grid.Column<Vtex>
+  private lateinit var colRefprice: Grid.Column<Vtex>
+  private lateinit var colPreco: Grid.Column<Vtex>
   private lateinit var edtProduto: TextField
   private lateinit var edtSku: TextField
   private lateinit var cmbDiferenca: ComboBox<EDiferenca>
@@ -65,7 +72,10 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         value = EDiferenca.PROMO
         isAutoOpen = true
         isAllowCustomValue = false
-        addValueChangeListener { updateGrid() }
+        addValueChangeListener {
+          updateGrid()
+          updateCols(it.value)
+        }
       }
     }
 
@@ -121,20 +131,13 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       isResizable = true
       isAutoWidth = true
     }
-    addColumnDouble(Vtex::precoCompor) {
-      setHeader("P Compor")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-    }
-    addColumnInt(Vtex::promono) {
+    colPromono = addColumnInt(Vtex::promono) {
       setHeader("Nº Prom")
       isExpand = false
       isResizable = true
       isAutoWidth = true
     }
-    addColumnLocalDate(Vtex::validade) {
+    colValidade = addColumnLocalDate(Vtex::validade) {
       setHeader("Validade")
       isExpand = false
       isResizable = true
@@ -146,7 +149,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         else null
       }
     }
-    addColumnDouble(Vtex::promoprice) {
+    colPromoprice = addColumnDouble(Vtex::promoprice) {
       setHeader("Promoção")
       isExpand = false
       isResizable = true
@@ -163,8 +166,9 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         else null
       }
     }
-    addColumnDouble(Vtex::refprice) {
+    colRefprice = addColumnDouble(Vtex::refprice) {
       setHeader("P Ref")
+      isVisible = false
       isExpand = false
       isResizable = true
       isAutoWidth = false
@@ -176,7 +180,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         else null
       }
     }
-    addColumnLocalDate(Vtex::validadeVtex) {
+    colValidadeVtex = addColumnLocalDate(Vtex::validadeVtex) {
       setHeader("Valid Vtex")
       isExpand = false
       isResizable = true
@@ -188,7 +192,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         else null
       }
     }
-    addColumnDouble(Vtex::promoVtex) {
+    colPromoVtex = addColumnDouble(Vtex::promoVtex) {
       setHeader("Prom Vtex")
       isExpand = false
       isResizable = true
@@ -201,7 +205,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         else null
       }
     }
-    addColumnDouble(Vtex::preco) {
+    colPreco = addColumnDouble(Vtex::preco) {
       setHeader("P. Vtex")
       isExpand = false
       isResizable = true
@@ -216,6 +220,58 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         val testePreco = promoprice == 0.00 && preco != refprice
         if ((testePreco || testePromo) && (cmbDiferenca.value == EDiferenca.PRICE)) "marcaDiferenca"
         else null
+      }
+    }
+    updateCols(cmbDiferenca.value)
+  }
+
+  private fun updateCols(value: EDiferenca?) {
+    value ?: return
+    when (value) {
+      EDiferenca.PRICE  -> {
+        colValidadeVtex.isVisible = false
+        colPromoprice.isVisible = false
+        colPromoVtex.isVisible = false
+        colValidade.isVisible = false
+        colPromono.isVisible = false
+        colPreco.isVisible = true
+        colRefprice.isVisible = true
+      }
+      EDiferenca.PROMO  -> {
+        colValidadeVtex.isVisible = true
+        colPromoprice.isVisible = true
+        colPromoVtex.isVisible = true
+        colValidade.isVisible = true
+        colPromono.isVisible = true
+        colPreco.isVisible = false
+        colRefprice.isVisible = false
+      }
+      EDiferenca.DATA   -> {
+        colValidadeVtex.isVisible = true
+        colPromoprice.isVisible = true
+        colPromoVtex.isVisible = true
+        colValidade.isVisible = true
+        colPromono.isVisible = true
+        colPreco.isVisible = false
+        colRefprice.isVisible = false
+      }
+      EDiferenca.EDITOR -> {
+        colValidadeVtex.isVisible = true
+        colPromoprice.isVisible = true
+        colPromoVtex.isVisible = true
+        colValidade.isVisible = true
+        colPromono.isVisible = true
+        colPreco.isVisible = false
+        colRefprice.isVisible = false
+      }
+      EDiferenca.LIST   -> {
+        colValidadeVtex.isVisible = true
+        colPromoprice.isVisible = true
+        colPromoVtex.isVisible = true
+        colValidade.isVisible = true
+        colPromono.isVisible = true
+        colPreco.isVisible = false
+        colRefprice.isVisible = false
       }
     }
   }
