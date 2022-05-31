@@ -65,7 +65,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         addValueChangeListener { updateGrid() }
       }
       cmbDiferenca = comboBox<EDiferenca>("Diferença") {
-        setItems(EDiferenca.values().toList() - EDiferenca.EDITOR - EDiferenca.LIST)
+        setItems(listOf(EDiferenca.PROMO, EDiferenca.DATA, EDiferenca.PRICE))
         setItemLabelGenerator {
           it.label
         }
