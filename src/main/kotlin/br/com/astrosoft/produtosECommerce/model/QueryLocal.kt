@@ -380,6 +380,11 @@ GROUP BY barcode"""
   fun updateVtex(vtex: Vtex) {
     val sql = "/sqlSaci/updateVtex.sql"
 
+    val validade = vtex.validade()
+    val preco = vtex.promoprice()
+    print(validade)
+    print(preco)
+
     script(sql) {
       addOptionalParameter("precoCompor", vtex.precoCompor())
       addOptionalParameter("promoprice", vtex.promoprice())
