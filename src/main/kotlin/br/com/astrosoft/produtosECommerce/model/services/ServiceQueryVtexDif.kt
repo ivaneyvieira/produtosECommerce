@@ -23,7 +23,7 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
 
   fun readExcelPrecoBase(fileName: String) {
     val precos = PrecosBase.readExcel(fileName)
-    local.apagaPrecoReferenciaVtex()
+    local.apagaPrecoReferenciaBase()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
@@ -31,7 +31,7 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
 
   fun readExcelPrecoList(fileName: String) {
     val precos = PrecosList.readExcel(fileName)
-    local.apagaPrecoReferenciaVtex()
+    local.apagaPrecoReferenciaList()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }

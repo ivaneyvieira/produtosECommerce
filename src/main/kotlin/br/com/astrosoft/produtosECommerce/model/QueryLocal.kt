@@ -486,10 +486,18 @@ GROUP BY barcode"""
     script(sql)
   }
 
-  fun apagaPrecoReferenciaVtex() {
+  fun apagaPrecoReferenciaBase() {
     val sql = """
       UPDATE produtoEcomerce.vtex
       SET  preco = NULL
+    """.trimIndent()
+    script(sql)
+  }
+
+  fun apagaPrecoReferenciaList() {
+    val sql = """
+      UPDATE produtoEcomerce.vtex
+      SET  precoList = NULL
     """.trimIndent()
     script(sql)
   }
