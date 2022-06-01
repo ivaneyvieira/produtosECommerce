@@ -74,7 +74,8 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
         val bytes = buffer.getInputStream(it.fileName).readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
-        serviceQueryVtex.readExcelPreco(fileName)
+        serviceQueryVtex.readExcelPrecoBase(fileName)
+        serviceQueryVtex.readExcelPrecoList(fileName)
         updateGrid()
       }
 
