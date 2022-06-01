@@ -5,7 +5,8 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.local
 import br.com.astrosoft.produtosECommerce.model.saci
-import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosBase
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosList
 import br.com.astrosoft.produtosECommerce.model.xlsx.ProdutoVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 
@@ -51,13 +52,30 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
     return lista
   }
 
-  fun readExcelPreco(fileName: String) {
-    val precos = PrecosVtex.readExcel(fileName)
+  fun readExcelPrecoList(fileName: String) {
+    val precos = PrecosList.readExcel(fileName)
     local.apagaPrecoReferenciaVtex()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
   }
+
+  fun readExcelPrecoBase(fileName: String) {
+    val precos = PrecosBase.readExcel(fileName)
+    local.apagaPrecoReferenciaVtex()
+    precos.forEach { preco ->
+      local.updatePrecoVtex(preco)
+    }
+  }
+
+  fun readExcelPrecoLista(fileName: String) {
+    val precos = PrecosList.readExcel(fileName)
+    local.apagaPrecoReferenciaVtex()
+    precos.forEach { preco ->
+      local.updatePrecoVtex(preco)
+    }
+  }
+
 
   fun readExcelProduto(fileName: String) {
     val produtos = ProdutoVtex.readExcel(fileName)

@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
-import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif

@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
-import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
@@ -55,7 +54,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
         val bytes = buffer.getInputStream(it.fileName).readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
-        serviceQueryDif.readExcelPreco(fileName)
+        serviceQueryDif.readExcelPrecoBase(fileName)
         updateGrid()
       }
 
@@ -88,7 +87,6 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       add(upload)
       return Pair(buffer, upload)
     }
-
 
     override fun filtro(): FiltroVtexDif {
       return FiltroVtexDif(produto = edtProduto.value ?: "",
