@@ -5,6 +5,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPrecoList
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
@@ -166,7 +167,7 @@ class PainelGridDiferencaList(val view: IVtexView, val serviceQueryDif: ServiceQ
 
   private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
-      val planilha = PlanilhaVtexPreco()
+      val planilha = PlanilhaVtexPrecoList()
       val bytes = planilha.grava(allItens())
       ByteArrayInputStream(bytes)
     })
