@@ -4,6 +4,6 @@ WHERE skuId = :skuId
   AND :tipo = 'BASE';
 
 UPDATE produtoEcomerce.vtex
-SET precoList = :precoList
+SET precoList = :preco
 WHERE skuId = :skuId
   AND :tipo = 'LIST'
