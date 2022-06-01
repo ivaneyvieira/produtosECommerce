@@ -10,6 +10,7 @@ import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
 import com.github.mvysny.karibudsl.v10.tooltip
+import com.github.mvysny.karibudsl.v10.upload
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -55,6 +56,7 @@ class PainelGridDiferencaPrice(val view: IVtexView, val serviceQueryDif: Service
         val file = File(fileName)
         file.writeBytes(bytes)
         serviceQueryDif.readExcelPromo(fileName)
+        file.delete()
         updateGrid()
       }
 

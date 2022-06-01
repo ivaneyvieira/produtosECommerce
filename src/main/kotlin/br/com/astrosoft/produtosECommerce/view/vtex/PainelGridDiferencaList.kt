@@ -55,6 +55,7 @@ class PainelGridDiferencaList(val view: IVtexView, val serviceQueryDif: ServiceQ
         val file = File(fileName)
         file.writeBytes(bytes)
         serviceQueryDif.readExcelPrecoList(fileName)
+        file.delete()
         updateGrid()
       }
 

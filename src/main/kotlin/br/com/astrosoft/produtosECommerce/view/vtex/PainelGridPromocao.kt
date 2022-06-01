@@ -70,6 +70,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
         val file = File(fileName)
         file.writeBytes(bytes)
         serviceQueryVtex.readExcelPromo(fileName)
+        file.delete()
         updateGrid()
       }
 
