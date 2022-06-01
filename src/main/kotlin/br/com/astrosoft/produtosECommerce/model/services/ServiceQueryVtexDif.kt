@@ -5,7 +5,8 @@ import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.local
-import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosBase
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosList
 
 class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
   override fun count(filter: FiltroVtexDif): Int {
@@ -20,9 +21,17 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
     return lista
   }
 
-  fun readExcelPreco(fileName: String) {
-    val precos = PrecosVtex.readExcel(fileName)
-    local.apagaPrecoReferenciaVtex()
+  fun readExcelPrecoBase(fileName: String) {
+    val precos = PrecosBase.readExcel(fileName)
+    if (precos.isNotEmpty()) local.apagaPrecoReferenciaBase()
+    precos.forEach { preco ->
+      local.updatePrecoVtex(preco)
+    }
+  }
+
+  fun readExcelPrecoList(fileName: String) {
+    val precos = PrecosList.readExcel(fileName)
+    if (precos.isNotEmpty()) local.apagaPrecoReferenciaList()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }

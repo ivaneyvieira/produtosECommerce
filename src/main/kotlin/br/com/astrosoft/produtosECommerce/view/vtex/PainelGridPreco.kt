@@ -74,7 +74,8 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
         val bytes = buffer.getInputStream(it.fileName).readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
-        serviceQueryVtex.readExcelPreco(fileName)
+        serviceQueryVtex.readExcelPrecoBase(fileName)
+        serviceQueryVtex.readExcelPrecoList(fileName)
         updateGrid()
       }
 
@@ -254,15 +255,15 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = true
     }
-    addColumnDouble(Vtex::promoVtex) {
-      setHeader("Prom Vtex")
+    addColumnDouble(Vtex::preco) {
+      setHeader("P. Base")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "100px"
     }
-    addColumnDouble(Vtex::preco) {
-      setHeader("P. Vtex")
+    addColumnDouble(Vtex::precoList) {
+      setHeader("P. Lista")
       isExpand = false
       isResizable = true
       isAutoWidth = false

@@ -7,7 +7,8 @@ import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
-import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosBase
+import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosList
 import br.com.astrosoft.produtosECommerce.model.xlsx.ProdutoVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.PromoVtex
 import org.sql2o.Query
@@ -380,6 +381,11 @@ GROUP BY barcode"""
   fun updateVtex(vtex: Vtex) {
     val sql = "/sqlSaci/updateVtex.sql"
 
+    val validade = vtex.validade()
+    val preco = vtex.promoprice()
+    print(validade)
+    print(preco)
+
     script(sql) {
       addOptionalParameter("precoCompor", vtex.precoCompor())
       addOptionalParameter("promoprice", vtex.promoprice())
@@ -421,11 +427,20 @@ GROUP BY barcode"""
     })
   }
 
-  fun updatePrecoVtex(preco: PrecosVtex) {
+  fun updatePrecoVtex(preco: PrecosBase) {
     val sql = "/sqlSaci/updatePrecos.sql"
     script(sql) {
-      addOptionalParameter("preco", preco.precoBase)
-      addOptionalParameter("precoList", preco.precoList)
+      addOptionalParameter("preco", preco.preco)
+      addOptionalParameter("tipo", "BASE")
+      addOptionalParameter("skuId", preco.skuId)
+    }
+  }
+
+  fun updatePrecoVtex(preco: PrecosList) {
+    val sql = "/sqlSaci/updatePrecos.sql"
+    script(sql) {
+      addOptionalParameter("preco", preco.preco)
+      addOptionalParameter("tipo", "LIST")
       addOptionalParameter("skuId", preco.skuId)
     }
   }
@@ -471,10 +486,18 @@ GROUP BY barcode"""
     script(sql)
   }
 
-  fun apagaPrecoReferenciaVtex() {
+  fun apagaPrecoReferenciaBase() {
     val sql = """
       UPDATE produtoEcomerce.vtex
       SET  preco = NULL
+    """.trimIndent()
+    script(sql)
+  }
+
+  fun apagaPrecoReferenciaList() {
+    val sql = """
+      UPDATE produtoEcomerce.vtex
+      SET  precoList = NULL
     """.trimIndent()
     script(sql)
   }
