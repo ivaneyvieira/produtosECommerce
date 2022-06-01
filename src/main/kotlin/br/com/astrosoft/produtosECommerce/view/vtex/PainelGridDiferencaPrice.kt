@@ -54,7 +54,7 @@ class PainelGridDiferencaPrice(val view: IVtexView, val serviceQueryDif: Service
         val bytes = buffer.getInputStream(it.fileName).readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
-        serviceQueryDif.readExcelPrecoBase(fileName)
+        serviceQueryDif.readExcelPromo(fileName)
         updateGrid()
       }
 
