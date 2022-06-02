@@ -176,7 +176,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.promoprice) "marcaDiferenca"
+        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
         else null
       }
     }
@@ -198,7 +198,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.promoprice) "marcaDiferenca"
+        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
         else null
       }
     }
