@@ -78,24 +78,22 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
   fun promocaaARemover(list: List<Vtex>): List<Vtex> {
     updatePricesSaci()
     return list.filter {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.validade() == null && (it.promono() > 0)
+      it.validade == null && ((it.promono ?: 0) > 0)
     }
   }
 
   fun promocaaAAdicionar(list: List<Vtex>): List<Vtex> {
     updatePricesSaci()
     return list.filter {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.validade() != null && (it.promono() == 0)
+      it.validade != null && ((it.promono ?: 0) == 0)
     }
   }
 
   fun updateSaci(list: List<Vtex>) {
     updatePricesSaci()
     list.forEach {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.update()
+      val priceSaci = findPrice(it.referenciaSKU)
+      it.update(priceSaci)
     }
   }
 }

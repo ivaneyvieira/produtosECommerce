@@ -5,6 +5,7 @@ import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
+import br.com.astrosoft.framework.util.localDate
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosBase
@@ -378,23 +379,26 @@ GROUP BY barcode"""
     }
   }
 
-  fun updateVtex(vtex: Vtex) {
+  fun updateVtex(vtex : Vtex, priceSaci: PrecoSaci?) {
     val sql = "/sqlSaci/updateVtex.sql"
 
-    val validade = vtex.validade()
-    val preco = vtex.promoprice()
-    print(validade)
-    print(preco)
+    val promoprice = priceSaci?.promopricev
+    val refprice = priceSaci?.refprice
+    val precoCompor = priceSaci?.precoCompor
+    val codigo = priceSaci?.codigo.toString()
+    val validade = priceSaci?.validadev
+    val promono = priceSaci?.promono
+    val precoPromoEditor = priceSaci?.precoPromoEditor
 
     script(sql) {
-      addOptionalParameter("precoCompor", vtex.precoCompor())
-      addOptionalParameter("promoprice", vtex.promoprice())
-      addOptionalParameter("refprice", vtex.refprice())
-      addOptionalParameter("codigo", vtex.codigo())
-      addOptionalParameter("validade", vtex.validade())
+      addOptionalParameter("precoCompor", precoCompor)
+      addOptionalParameter("promoprice", promoprice)
+      addOptionalParameter("refprice", refprice)
+      addOptionalParameter("codigo", codigo)
+      addOptionalParameter("validade", validade)
       addOptionalParameter("skuId", vtex.skuId)
-      addOptionalParameter("promono", vtex.promono())
-      addOptionalParameter("precoPromoEditor", vtex.precoPromoEditor())
+      addOptionalParameter("promono", promono)
+      addOptionalParameter("precoPromoEditor", precoPromoEditor)
     }
   }
 

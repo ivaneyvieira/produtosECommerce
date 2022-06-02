@@ -88,16 +88,16 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
     updatePricesSaci()
     val list = fetch(filter)
     list.forEach {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.update()
+      val priceSaci = findPrice(it.referenciaSKU)
+      it.update(priceSaci)
     }
   }
 
   fun updateSaci(list: List<Vtex>) {
     updatePricesSaci()
     list.forEach {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.update()
+      val priceSaci = findPrice(it.referenciaSKU)
+      it.update(priceSaci)
     }
   }
 }
