@@ -38,7 +38,7 @@ data class ProdutoVtex(
         }
         result
       }
-      key ?: return null
+      key ?: throw EColunaNaoEncontrada(colname)
       return this[key]?.trim()
     }
 

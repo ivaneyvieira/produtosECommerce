@@ -22,7 +22,7 @@ data class PrecosEcomerce(val codigo: String, val preco: Double, val descricao: 
         mapKey[colname] = result ?: ""
         result
       }
-      key ?: return null
+      key ?: throw EColunaNaoEncontrada(colname)
       return this[key]?.trim()
     }
 
