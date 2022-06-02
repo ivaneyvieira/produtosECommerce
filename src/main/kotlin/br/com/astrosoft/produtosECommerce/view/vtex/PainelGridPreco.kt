@@ -2,26 +2,20 @@ package br.com.astrosoft.produtosECommerce.view.vtex
 
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
-import br.com.astrosoft.produtosECommerce.model.beans.Promocao
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
-import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
-import br.com.astrosoft.produtosECommerce.view.main.promocaoField
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
-import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
@@ -181,6 +175,10 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::refprice) {
       setHeader("P Ref")
@@ -188,12 +186,10 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = false
       width = "100px"
-    }
-    addColumnLocalDate(Vtex::validadeVtex) {
-      setHeader("Valid Vtex")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
+      setClassNameGenerator {
+        if (it.precoList != it.refprice) "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::preco) {
       setHeader("P. Base")
@@ -201,6 +197,10 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::precoList) {
       setHeader("P. Lista")
@@ -208,6 +208,10 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.precoList != it.refprice) "marcaDiferenca"
+        else null
+      }
     }
   }
 

@@ -145,6 +145,12 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
       isResizable = true
       isAutoWidth = true
     }
+    addColumnString(Vtex::ativarSku) {
+      setHeader("Ativar")
+      isExpand = true
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnString(Vtex::referenciaSKU) {
       setHeader("Referencia SKU")
       width = "100px"
