@@ -23,7 +23,7 @@ data class PromoVtex(val skuId: Int, val precoPromo: Double, val validade: Local
         mapKey[colname] = result ?: ""
         result
       }
-      key ?: return null
+      key ?: throw EColunaNaoEncontrada(colname)
       return this[key]?.trim()
     }
 
