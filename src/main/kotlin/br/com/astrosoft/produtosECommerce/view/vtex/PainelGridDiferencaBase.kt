@@ -4,7 +4,6 @@ import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
-import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPrecoBase
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
@@ -23,7 +22,6 @@ import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
@@ -162,7 +160,8 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        "marcaDiferenca"
+        if (it.preco != it.promoprice) "marcaDiferenca"
+        else null
       }
     }
     addColumnDouble(Vtex::preco) {
@@ -172,7 +171,8 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        "marcaDiferenca"
+        if (it.preco != it.promoprice) "marcaDiferenca"
+        else null
       }
     }
   }
