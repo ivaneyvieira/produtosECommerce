@@ -68,3 +68,7 @@ ALTER TABLE vtex
 
 ALTER TABLE vtex
   ADD precoList DECIMAL(13, 2) NULL;
+
+
+ALTER TABLE vtex
+  ADD ativarSku VARCHAR(10) DEFAULT '' NULL;
