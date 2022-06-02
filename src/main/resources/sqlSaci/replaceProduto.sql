@@ -5,9 +5,9 @@ SELECT :skuId AS skuId;
 
 
 REPLACE produtoEcomerce.vtex(skuId, idProd, nomeSku, referenciaSKU, idDep, nomeDepartamento, idCat,
-			     nomeCategoria, idMarca, nomeMarca, estoque, preco, promoprice,
-			     refprice, precoCompor, codigo, validade, promoVtex, validadeVtex,
-			     promono)
+			     nomeCategoria, idMarca, nomeMarca, ativarSku, estoque, preco,
+			     promoprice, refprice, precoCompor, codigo, validade, promoVtex,
+			     validadeVtex, promono)
 SELECT :skuId,
        :idProd,
        MID(:nomeSku, 1, 100) AS nomeSku,
@@ -18,6 +18,7 @@ SELECT :skuId,
        :nomeCategoria,
        :idMarca,
        :nomeMarca,
+       :ativarSku,
        estoque,
        preco,
        promoprice,

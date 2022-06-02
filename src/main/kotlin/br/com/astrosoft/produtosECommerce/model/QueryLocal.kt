@@ -458,6 +458,7 @@ GROUP BY barcode"""
       addOptionalParameter("nomeCategoria", produto.nomeCategoria)
       addOptionalParameter("idMarca", produto.idMarca)
       addOptionalParameter("nomeMarca", produto.nomeMarca)
+      addOptionalParameter("ativarSku", produto.ativarSku)
     }
   }
 
