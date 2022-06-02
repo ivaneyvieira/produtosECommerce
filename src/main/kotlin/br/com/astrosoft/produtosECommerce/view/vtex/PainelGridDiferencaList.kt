@@ -5,6 +5,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPrecoList
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
@@ -21,6 +22,7 @@ import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
@@ -51,10 +53,11 @@ class PainelGridDiferencaList(val view: IVtexView, val serviceQueryDif: ServiceQ
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
         val fileName = "/tmp/${it.fileName}"
-        val bytes = buffer.getInputStream(it.fileName).readBytes()
+        val bytes = buffer.inputStream.readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
         serviceQueryDif.readExcelPrecoList(fileName)
+        file.delete()
         updateGrid()
       }
 
@@ -70,8 +73,8 @@ class PainelGridDiferencaList(val view: IVtexView, val serviceQueryDif: ServiceQ
       }
     }
 
-    private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
-      val buffer = MultiFileMemoryBuffer()
+    private fun HasComponents.uploadFileXls(): Pair<MemoryBuffer, Upload> {
+      val buffer = MemoryBuffer()
       val upload = Upload(buffer)
       val uploadButton = Button(VaadinIcon.MONEY.create())
       upload.uploadButton = uploadButton
@@ -164,7 +167,7 @@ class PainelGridDiferencaList(val view: IVtexView, val serviceQueryDif: ServiceQ
 
   private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
-      val planilha = PlanilhaVtexPreco()
+      val planilha = PlanilhaVtexPrecoList()
       val bytes = planilha.grava(allItens())
       ByteArrayInputStream(bytes)
     })

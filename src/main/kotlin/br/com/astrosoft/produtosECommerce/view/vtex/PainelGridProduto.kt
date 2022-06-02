@@ -76,6 +76,7 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
         val file = File(fileName)
         file.writeBytes(bytes)
         serviceQueryVtex.readExcelProduto(fileName)
+        file.delete()
         updateGrid()
       }
 

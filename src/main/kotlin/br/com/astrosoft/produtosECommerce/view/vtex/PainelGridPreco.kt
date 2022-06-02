@@ -20,6 +20,7 @@ import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
@@ -47,8 +48,8 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
     private lateinit var edtProduto: TextField
     private lateinit var edtSku: TextField
 
-    private fun HasComponents.uploadFileXls(): Pair<MultiFileMemoryBuffer, Upload> {
-      val buffer = MultiFileMemoryBuffer()
+    private fun HasComponents.uploadFileXls(): Pair<MemoryBuffer, Upload> {
+      val buffer = MemoryBuffer()
       val upload = Upload(buffer)
       val uploadButton = Button(VaadinIcon.MONEY.create())
       upload.uploadButton = uploadButton
@@ -71,11 +72,12 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
         val fileName = "/tmp/${it.fileName}"
-        val bytes = buffer.getInputStream(it.fileName).readBytes()
+        val bytes = buffer.inputStream.readBytes()
         val file = File(fileName)
         file.writeBytes(bytes)
         serviceQueryVtex.readExcelPrecoBase(fileName)
         serviceQueryVtex.readExcelPrecoList(fileName)
+        file.delete()
         updateGrid()
       }
 
