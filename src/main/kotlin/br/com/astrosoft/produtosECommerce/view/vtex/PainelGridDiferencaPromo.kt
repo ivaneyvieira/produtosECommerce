@@ -3,20 +3,23 @@ package br.com.astrosoft.produtosECommerce.view.vtex
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
+import br.com.astrosoft.produtosECommerce.model.beans.Promocao
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
+import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
+import br.com.astrosoft.produtosECommerce.view.main.promocaoField
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.isExpand
-import com.github.mvysny.karibudsl.v10.textField
-import com.github.mvysny.karibudsl.v10.tooltip
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
@@ -30,6 +33,7 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
         PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
   private lateinit var edtProduto: TextField
   private lateinit var edtSku: TextField
+  private lateinit var edtPromocao: ComboBox<Promocao>
 
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtexDif>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
@@ -52,6 +56,66 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
       edtProduto = textField("Produto") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
+      }
+      button("Remover") {
+        icon = VaadinIcon.DOWNLOAD.create()
+        onLeftClick {
+          val itens = grid.selectedItems.toList()
+          if (itens.isEmpty()) {
+            Notification.show("Não tem nenhum item selecionado")
+          }
+          else {
+            val promocaaARemover = serviceQueryDif.promocaaARemover(itens)
+
+            if (promocaaARemover.isEmpty()) {
+              Notification.show("Não tem nenhum item selecionado")
+            }
+            else {
+              promocaaARemover.forEach { vtex ->
+                saci.removerPromocao(vtex)
+              }
+
+              serviceQueryDif.updateSaci(itens)
+
+              updateGrid()
+            }
+          }
+        }
+      }
+      edtPromocao = promocaoField {
+        addValueChangeListener { updateGrid() }
+      }
+      button("Adicionar") {
+        icon = VaadinIcon.UPLOAD.create()
+        onLeftClick {
+          val itens = grid.selectedItems.toList()
+          if (itens.isEmpty()) {
+            Notification.show("Não tem nenhum item selecionado")
+          }
+          else {
+            val promocaaAAdicionar = serviceQueryDif.promocaaAAdicionar(itens)
+
+            if (promocaaAAdicionar.isEmpty()) {
+              Notification.show("Não tem nenhum item selecionado")
+            }
+            else {
+              val promocao = edtPromocao.value
+
+              if (promocao != null) {
+                promocaaAAdicionar.forEach { vtex ->
+                  saci.adicionarPromocao(vtex, promocao)
+                }
+
+                serviceQueryDif.updateSaci(itens)
+
+                updateGrid()
+              }
+              else {
+                Notification.show("Não tem nenhum promoção selecionada")
+              }
+            }
+          }
+        }
       }
     }
 

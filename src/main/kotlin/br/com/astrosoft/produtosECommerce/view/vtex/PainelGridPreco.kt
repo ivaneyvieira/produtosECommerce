@@ -32,8 +32,6 @@ import java.time.format.DateTimeFormatter
 
 class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVtex) :
         PainelGrid<Vtex, FiltroVtex>(serviceQueryVtex) {
-  private lateinit var edtPromocao: ComboBox<Promocao>
-
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
@@ -103,66 +101,6 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
                        marca = "")
           serviceQueryVtex.updateSaci(filter)
           updateGrid()
-        }
-      }
-      button("Remover") {
-        icon = VaadinIcon.DOWNLOAD.create()
-        onLeftClick {
-          val itens = grid.selectedItems.toList()
-          if (itens.isEmpty()) {
-            Notification.show("Não tem nenhum item selecionado")
-          }
-          else {
-            val promocaaARemover = serviceQueryVtex.promocaaARemover(itens)
-
-            if (promocaaARemover.isEmpty()) {
-              Notification.show("Não tem nenhum item selecionado")
-            }
-            else {
-              promocaaARemover.forEach { vtex ->
-                saci.removerPromocao(vtex)
-              }
-
-              serviceQueryVtex.updateSaci(itens)
-
-              updateGrid()
-            }
-          }
-        }
-      }
-      edtPromocao = promocaoField {
-        addValueChangeListener { updateGrid() }
-      }
-      button("Adicionar") {
-        icon = VaadinIcon.UPLOAD.create()
-        onLeftClick {
-          val itens = grid.selectedItems.toList()
-          if (itens.isEmpty()) {
-            Notification.show("Não tem nenhum item selecionado")
-          }
-          else {
-            val promocaaAAdicionar = serviceQueryVtex.promocaaAAdicionar(itens)
-
-            if (promocaaAAdicionar.isEmpty()) {
-              Notification.show("Não tem nenhum item selecionado")
-            }
-            else {
-              val promocao = edtPromocao.value
-
-              if (promocao != null) {
-                promocaaAAdicionar.forEach { vtex ->
-                  saci.adicionarPromocao(vtex, promocao)
-                }
-
-                serviceQueryVtex.updateSaci(itens)
-
-                updateGrid()
-              }
-              else {
-                Notification.show("Não tem nenhum promoção selecionada")
-              }
-            }
-          }
         }
       }
     }
