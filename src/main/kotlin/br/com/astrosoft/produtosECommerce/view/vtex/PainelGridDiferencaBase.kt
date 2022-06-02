@@ -164,6 +164,17 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
         else null
       }
     }
+    addColumnDouble(Vtex::precoList) {
+      setHeader("P. Lista")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.promoprice) "marcaDiferenca"
+        else null
+      }
+    }
     addColumnDouble(Vtex::preco) {
       setHeader("P. Base")
       isExpand = false
