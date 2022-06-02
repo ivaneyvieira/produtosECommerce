@@ -105,29 +105,4 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
       it.update()
     }
   }
-
-  fun promocaaARemover(filter: FiltroVtex): List<Vtex> {
-    updatePricesSaci()
-    val list = fetch(filter)
-    return list.filter {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.validade() == null && (it.promono() > 0)
-    }
-  }
-
-  fun promocaaARemover(list: List<Vtex>): List<Vtex> {
-    updatePricesSaci()
-    return list.filter {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.validade() == null && (it.promono() > 0)
-    }
-  }
-
-  fun promocaaAAdicionar(list: List<Vtex>): List<Vtex> {
-    updatePricesSaci()
-    return list.filter {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.validade() != null && (it.promono() == 0)
-    }
-  }
 }
