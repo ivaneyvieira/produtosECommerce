@@ -156,7 +156,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        val price = it.preco ?: 0.00
+        val price = it.preco
         val promoprice = it.promoprice ?: 0.00
         val promoVtex = it.promoVtex ?: 0.00
 
@@ -265,6 +265,15 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colRefprice.isVisible = false
       }
       EDiferenca.LIST   -> {
+        colValidadeVtex.isVisible = true
+        colPromoprice.isVisible = true
+        colPromoVtex.isVisible = true
+        colValidade.isVisible = true
+        colPromono.isVisible = true
+        colPreco.isVisible = false
+        colRefprice.isVisible = false
+      }
+      else              -> {
         colValidadeVtex.isVisible = true
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
