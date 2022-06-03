@@ -8,6 +8,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
+import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
@@ -71,13 +72,17 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
     override fun FilterBar<FiltroVtex>.contentBlock() {
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
-        val fileName = "/tmp/${it.fileName}"
-        val bytes = buffer.inputStream.readBytes()
-        val file = File(fileName)
-        file.writeBytes(bytes)
-        serviceQueryVtex.readExcelProduto(fileName)
-        file.delete()
-        updateGrid()
+        try {
+          val fileName = "/tmp/${it.fileName}"
+          val bytes = buffer.inputStream.readBytes()
+          val file = File(fileName)
+          file.writeBytes(bytes)
+          serviceQueryVtex.readExcelProduto(fileName)
+          file.delete()
+          updateGrid()
+        } catch (e: EColunaNaoEncontrada) {
+          showErro(e.message)
+        }
       }
 
       this.downloadExcel()
