@@ -6,6 +6,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPrecoBase
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
+import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
@@ -50,13 +51,17 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
     override fun FilterBar<FiltroVtexDif>.contentBlock() {
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
-        val fileName = "/tmp/${it.fileName}"
-        val bytes = buffer.inputStream.readBytes()
-        val file = File(fileName)
-        file.writeBytes(bytes)
-        serviceQueryDif.readExcelPrecoBase(fileName)
-        file.delete()
-        updateGrid()
+        try {
+          val fileName = "/tmp/${it.fileName}"
+          val bytes = buffer.inputStream.readBytes()
+          val file = File(fileName)
+          file.writeBytes(bytes)
+          serviceQueryDif.readExcelPrecoBase(fileName)
+          file.delete()
+          updateGrid()
+        } catch (e: EColunaNaoEncontrada) {
+          showErro(e.message)
+        }
       }
 
       this.downloadExcel()
@@ -163,6 +168,13 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
         if (it.preco != it.promoprice) "marcaDiferenca"
         else null
       }
+    }
+    addColumnDouble(Vtex::refprice) {
+      setHeader("P. Ref.")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
     }
     addColumnDouble(Vtex::precoList) {
       setHeader("P. Lista")

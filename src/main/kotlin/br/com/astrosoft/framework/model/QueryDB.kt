@@ -123,7 +123,7 @@ open class QueryDB(val name: String, driver: String, url: String, username: Stri
     return this
   }
 
-  fun Query.addOptionalParameter(name: String, value: Int): Query {
+  fun Query.addOptionalParameter(name: String, value: Int?): Query {
     if (this.paramNameToIdxMap.containsKey(name)) this.addParameter(name, value)
     return this
   }

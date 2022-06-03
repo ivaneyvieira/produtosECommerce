@@ -36,7 +36,7 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
 
   fun readExcelPrecoBase(fileName: String) {
     val precos = PrecosBase.readExcel(fileName)
-    if (precos.isNotEmpty()) local.apagaPrecoReferenciaBase()
+    local.apagaPrecoReferenciaBase()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
@@ -44,7 +44,7 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
 
   fun readExcelPrecoList(fileName: String) {
     val precos = PrecosList.readExcel(fileName)
-    if (precos.isNotEmpty()) local.apagaPrecoReferenciaList()
+    local.apagaPrecoReferenciaList()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
@@ -52,7 +52,7 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
 
   fun readExcelPromo(fileName: String) {
     val precos = PromoVtex.readExcel(fileName)
-    if(precos.isNotEmpty()) local.apagaPrecoPromocionalVtex()
+    local.apagaPrecoPromocionalVtex()
     precos.forEach { preco ->
       local.updatePromoVtex(preco)
     }
@@ -78,24 +78,22 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
   fun promocaaARemover(list: List<Vtex>): List<Vtex> {
     updatePricesSaci()
     return list.filter {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.validade() == null && (it.promono() > 0)
+      it.validade == null && ((it.promono ?: 0) > 0)
     }
   }
 
   fun promocaaAAdicionar(list: List<Vtex>): List<Vtex> {
     updatePricesSaci()
     return list.filter {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.validade() != null && (it.promono() == 0)
+      it.validade != null && ((it.promono ?: 0) == 0)
     }
   }
 
   fun updateSaci(list: List<Vtex>) {
     updatePricesSaci()
     list.forEach {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.update()
+      val priceSaci = findPrice(it.referenciaSKU)
+      it.update(priceSaci)
     }
   }
 }

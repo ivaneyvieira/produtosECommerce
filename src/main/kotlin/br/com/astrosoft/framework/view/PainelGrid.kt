@@ -10,13 +10,21 @@ import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
+import com.vaadin.flow.component.Text
+import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.Column
 import com.vaadin.flow.component.grid.GridVariant.*
 import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.notification.Notification
+import com.vaadin.flow.component.notification.NotificationVariant
+import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.FlexLayout
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.BigDecimalField
 import com.vaadin.flow.component.textfield.TextArea
@@ -66,6 +74,24 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
   }
 
   abstract fun gridPanel(dataProvider: ConfigurableFilterDataProvider<T, Void, F>): Grid<T>
+
+  fun showErro(msg : String?){
+    val notification = Notification()
+    notification.addThemeVariants(NotificationVariant.LUMO_ERROR)
+
+    val text = Div(Text(msg))
+
+    val closeButton = Button(Icon("lumo", "cross"))
+    closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE)
+    closeButton.element.setAttribute("aria-label", "Close")
+    closeButton.addClickListener { event -> notification.close() }
+
+    val layout = HorizontalLayout(text, closeButton)
+    layout.alignItems = FlexComponent.Alignment.CENTER
+
+    notification.add(layout)
+    notification.open()
+  }
 
   init {
     this.setSizeFull()

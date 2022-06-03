@@ -54,7 +54,7 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
 
   fun readExcelPrecoList(fileName: String) {
     val precos = PrecosList.readExcel(fileName)
-    if (precos.isNotEmpty()) local.apagaPrecoReferenciaList()
+    local.apagaPrecoReferenciaList()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
@@ -62,7 +62,7 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
 
   fun readExcelPrecoBase(fileName: String) {
     val precos = PrecosBase.readExcel(fileName)
-    if (precos.isNotEmpty()) local.apagaPrecoReferenciaBase()
+    local.apagaPrecoReferenciaBase()
     precos.forEach { preco ->
       local.updatePrecoVtex(preco)
     }
@@ -88,16 +88,16 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
     updatePricesSaci()
     val list = fetch(filter)
     list.forEach {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.update()
+      val priceSaci = findPrice(it.referenciaSKU)
+      it.update(priceSaci)
     }
   }
 
   fun updateSaci(list: List<Vtex>) {
     updatePricesSaci()
     list.forEach {
-      it.priceSaci = findPrice(it.referenciaSKU)
-      it.update()
+      val priceSaci = findPrice(it.referenciaSKU)
+      it.update(priceSaci)
     }
   }
 }

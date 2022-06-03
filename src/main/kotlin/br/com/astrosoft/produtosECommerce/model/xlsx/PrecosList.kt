@@ -21,7 +21,7 @@ data class PrecosList(val skuId: Int, val preco: Double?) {
         mapKey[colname] = result ?: ""
         result
       }
-      key ?: return null
+      key ?: throw EColunaNaoEncontrada(colname)
       return this[key]?.trim()
     }
 
