@@ -119,6 +119,12 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       isResizable = true
       isAutoWidth = true
     }
+    addColumnString(Vtex::ativarSku) {
+      setHeader("Ativar")
+      isExpand = true
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnString(Vtex::referenciaSKU) {
       setHeader("Referencia SKU")
       isExpand = false
