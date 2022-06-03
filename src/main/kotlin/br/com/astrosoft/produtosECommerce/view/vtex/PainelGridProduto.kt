@@ -152,7 +152,7 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
     }
     addColumnString(Vtex::ativarSku) {
       setHeader("Ativar")
-      isExpand = true
+      isExpand = false
       isResizable = true
       isAutoWidth = true
     }
