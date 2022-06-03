@@ -136,7 +136,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
     }
     addColumnString(Vtex::ativarSku) {
       setHeader("Ativar")
-      isExpand = true
+      isExpand = false
       isResizable = true
       isAutoWidth = true
     }
