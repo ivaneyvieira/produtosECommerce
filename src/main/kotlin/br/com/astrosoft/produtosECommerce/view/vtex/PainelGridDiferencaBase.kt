@@ -169,6 +169,13 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
         else null
       }
     }
+    addColumnDouble(Vtex::refprice) {
+      setHeader("P. Ref.")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+    }
     addColumnDouble(Vtex::precoList) {
       setHeader("P. Lista")
       isExpand = false
