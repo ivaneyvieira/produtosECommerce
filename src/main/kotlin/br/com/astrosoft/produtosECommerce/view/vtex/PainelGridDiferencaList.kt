@@ -4,9 +4,9 @@ import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
-import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPrecoList
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
+import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.textField
@@ -23,7 +23,6 @@ import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
@@ -52,13 +51,17 @@ class PainelGridDiferencaList(val view: IVtexView, val serviceQueryDif: ServiceQ
     override fun FilterBar<FiltroVtexDif>.contentBlock() {
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
-        val fileName = "/tmp/${it.fileName}"
-        val bytes = buffer.inputStream.readBytes()
-        val file = File(fileName)
-        file.writeBytes(bytes)
-        serviceQueryDif.readExcelPrecoList(fileName)
-        file.delete()
-        updateGrid()
+        try {
+          val fileName = "/tmp/${it.fileName}"
+          val bytes = buffer.inputStream.readBytes()
+          val file = File(fileName)
+          file.writeBytes(bytes)
+          serviceQueryDif.readExcelPrecoList(fileName)
+          file.delete()
+          updateGrid()
+        } catch (e: EColunaNaoEncontrada) {
+          showErro(e.message)
+        }
       }
 
       this.downloadExcel()
