@@ -184,17 +184,6 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
         else null
       }
     }
-    addColumnDouble(Vtex::refprice) {
-      setHeader("Referência")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-      setClassNameGenerator {
-        if (it.precoList != it.refprice) "marcaDiferenca"
-        else null
-      }
-    }
     addColumnDouble(Vtex::preco) {
       setHeader("Base")
       isExpand = false
@@ -203,6 +192,17 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       width = "100px"
       setClassNameGenerator {
         if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
+        else null
+      }
+    }
+    addColumnDouble(Vtex::refprice) {
+      setHeader("Referência")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+      setClassNameGenerator {
+        if (it.precoList != it.refprice) "marcaDiferenca"
         else null
       }
     }
