@@ -173,7 +173,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       }
     }
     colRefprice = addColumnDouble(Vtex::refprice) {
-      setHeader("P Ref")
+      setHeader("Referência")
       isVisible = false
       isExpand = false
       isResizable = true
@@ -183,18 +183,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         val refprice = it.refprice ?: 0.00
         val preco = it.preco
         if (refprice != preco && cmbDiferenca.value == EDiferenca.PRICE) "marcaDiferenca"
-        else null
-      }
-    }
-    colValidadeVtex = addColumnLocalDate(Vtex::validadeVtex) {
-      setHeader("Valid Vtex")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-      setClassNameGenerator {
-        val validade = it.validade.format()
-        val validadeVtex = it.validadeVtex.format()
-        if (validade != validadeVtex && cmbDiferenca.value == EDiferenca.DATA) "marcaDiferenca"
         else null
       }
     }
@@ -212,7 +200,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
       }
     }
     colPreco = addColumnDouble(Vtex::preco) {
-      setHeader("P. Vtex")
+      setHeader("Base")
       isExpand = false
       isResizable = true
       isAutoWidth = false

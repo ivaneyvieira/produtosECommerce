@@ -152,12 +152,6 @@ class PainelGridDiferencaPrice(val view: IVtexView, val serviceQueryDif: Service
       isResizable = true
       isAutoWidth = true
     }
-    addColumnLocalDate(Vtex::validadeVtex) {
-      setHeader("Validade")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
     addColumnDouble(Vtex::promoVtex) {
       setHeader("P. Price")
       isExpand = false
@@ -170,7 +164,7 @@ class PainelGridDiferencaPrice(val view: IVtexView, val serviceQueryDif: Service
       }
     }
     addColumnDouble(Vtex::preco) {
-      setHeader("P. Base")
+      setHeader("Base")
       isExpand = false
       isResizable = true
       isAutoWidth = false

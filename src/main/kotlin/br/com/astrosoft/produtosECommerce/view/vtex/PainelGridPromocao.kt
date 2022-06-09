@@ -151,13 +151,6 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isResizable = true
       isAutoWidth = true
     }
-    addColumnDouble(Vtex::precoCompor) {
-      setHeader("P Compor")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-    }
     addColumnInt(Vtex::promono) {
       setHeader("Nº Prom")
       isExpand = false
@@ -177,28 +170,22 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isAutoWidth = false
       width = "100px"
     }
-    addColumnDouble(Vtex::refprice) {
-      setHeader("P Ref")
+    addColumnDouble(Vtex::preco) {
+      setHeader("Base")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "100px"
     }
-    addColumnLocalDate(Vtex::validadeVtex) {
-      setHeader("Valid Vtex")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
-    addColumnDouble(Vtex::promoVtex) {
-      setHeader("Prom Vtex")
+    addColumnDouble(Vtex::refprice) {
+      setHeader("Referência")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "100px"
     }
     addColumnDouble(Vtex::preco) {
-      setHeader("P. Vtex")
+      setHeader("Base")
       isExpand = false
       isResizable = true
       isAutoWidth = false
