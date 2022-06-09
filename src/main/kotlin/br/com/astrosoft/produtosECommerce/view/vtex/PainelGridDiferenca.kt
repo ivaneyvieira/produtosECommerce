@@ -31,7 +31,6 @@ import java.time.format.DateTimeFormatter
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
 class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
         PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
-  private lateinit var colValidadeVtex: Grid.Column<Vtex>
   private lateinit var colPromoprice: Grid.Column<Vtex>
   private lateinit var colPromoVtex: Grid.Column<Vtex>
   private lateinit var colValidade: Grid.Column<Vtex>
@@ -223,7 +222,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
     value ?: return
     when (value) {
       EDiferenca.PRICE  -> {
-        colValidadeVtex.isVisible = false
         colPromoprice.isVisible = false
         colPromoVtex.isVisible = false
         colValidade.isVisible = false
@@ -232,7 +230,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colRefprice.isVisible = true
       }
       EDiferenca.PROMO  -> {
-        colValidadeVtex.isVisible = true
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
         colValidade.isVisible = true
@@ -241,7 +238,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colRefprice.isVisible = false
       }
       EDiferenca.DATA   -> {
-        colValidadeVtex.isVisible = true
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
         colValidade.isVisible = true
@@ -250,7 +246,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colRefprice.isVisible = false
       }
       EDiferenca.EDITOR -> {
-        colValidadeVtex.isVisible = true
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
         colValidade.isVisible = true
@@ -259,7 +254,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colRefprice.isVisible = false
       }
       EDiferenca.LIST   -> {
-        colValidadeVtex.isVisible = true
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
         colValidade.isVisible = true
@@ -268,7 +262,6 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colRefprice.isVisible = false
       }
       else              -> {
-        colValidadeVtex.isVisible = true
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
         colValidade.isVisible = true
