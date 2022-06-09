@@ -165,7 +165,18 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isAutoWidth = true
     }
     addColumnDouble(Vtex::promoprice) {
-      setHeader("P. Promo")
+      setHeader("Promoção")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.promoprice) "marcaDiferenca"
+        else null
+      }
+    }
+    addColumnDouble(Vtex::preco) {
+      setHeader("Base")
       isExpand = false
       isResizable = true
       isAutoWidth = false
@@ -193,17 +204,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
         else null
       }
     }
-    addColumnDouble(Vtex::preco) {
-      setHeader("Base")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-      setClassNameGenerator {
-        if (it.preco != it.promoprice) "marcaDiferenca"
-        else null
-      }
-    }
+
   }
 
   private fun HasComponents.downloadExcel() {
