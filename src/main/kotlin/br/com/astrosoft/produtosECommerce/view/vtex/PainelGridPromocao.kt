@@ -169,6 +169,10 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.promoprice) "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::preco) {
       setHeader("Base")
@@ -176,6 +180,10 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.promoprice) "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::refprice) {
       setHeader("Referência")
@@ -183,6 +191,10 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.refprice != it.precoList) "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::precoList) {
       setHeader("Lista")
@@ -190,6 +202,10 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.refprice != it.precoList) "marcaDiferenca"
+        else null
+      }
     }
   }
 
