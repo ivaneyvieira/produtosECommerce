@@ -184,8 +184,8 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       isAutoWidth = false
       width = "100px"
     }
-    addColumnDouble(Vtex::preco) {
-      setHeader("Base")
+    addColumnDouble(Vtex::precoList) {
+      setHeader("Lista")
       isExpand = false
       isResizable = true
       isAutoWidth = false
