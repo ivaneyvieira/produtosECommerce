@@ -200,7 +200,7 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
       }
     }
     addColumnDouble(Vtex::refprice) {
-      setHeader("P Ref")
+      setHeader("Referência")
       isExpand = false
       isResizable = true
       isAutoWidth = false

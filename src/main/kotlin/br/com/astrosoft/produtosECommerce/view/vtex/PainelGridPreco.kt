@@ -161,13 +161,6 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = true
     }
-    addColumnDouble(Vtex::precoCompor) {
-      setHeader("P Compor")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-    }
     addColumnInt(Vtex::promono) {
       setHeader("Nº Prom")
       isExpand = false
@@ -192,7 +185,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       }
     }
     addColumnDouble(Vtex::refprice) {
-      setHeader("P Ref")
+      setHeader("Referência")
       isExpand = false
       isResizable = true
       isAutoWidth = false
@@ -203,7 +196,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       }
     }
     addColumnDouble(Vtex::preco) {
-      setHeader("P. Base")
+      setHeader("Base")
       isExpand = false
       isResizable = true
       isAutoWidth = false
@@ -214,7 +207,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       }
     }
     addColumnDouble(Vtex::precoList) {
-      setHeader("P. Lista")
+      setHeader("Lista")
       isExpand = false
       isResizable = true
       isAutoWidth = false
