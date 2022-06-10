@@ -190,7 +190,17 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
       isAutoWidth = true
     }
     addColumnDouble(Vtex::promoprice) {
-      setHeader("Promoção")
+      setHeader("Ctrl+P")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+      setClassNameGenerator {
+        "marcaDiferenca"
+      }
+    }
+    addColumnDouble(Vtex::precoPromoEditor) {
+      setHeader("Editor")
       isExpand = false
       isResizable = true
       isAutoWidth = false
@@ -205,16 +215,6 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
       isResizable = true
       isAutoWidth = false
       width = "100px"
-    }
-    addColumnDouble(Vtex::precoPromoEditor) {
-      setHeader("Promo Editor")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-      setClassNameGenerator {
-        "marcaDiferenca"
-      }
     }
   }
 
