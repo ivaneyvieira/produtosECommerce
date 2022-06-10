@@ -192,6 +192,10 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.refprice) "marcaDiferenca"
+        else null
+      }
     }
     addColumnDouble(Vtex::precoList) {
       setHeader("Lista")
@@ -200,7 +204,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.promoprice) "marcaDiferenca"
+        if (it.preco != it.refprice) "marcaDiferenca"
         else null
       }
     }
