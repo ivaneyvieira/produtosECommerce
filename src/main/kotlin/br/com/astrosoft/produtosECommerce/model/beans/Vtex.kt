@@ -45,6 +45,7 @@ data class Vtex(var seq: Int?,
 }
 
 data class FiltroVtex(val produto: String = "",
+                      val preco: Double,
                       val sku: String = "",
                       val departamento: String = "",
                       val categoria: String = "",
@@ -52,6 +53,7 @@ data class FiltroVtex(val produto: String = "",
                       val promocao: Boolean = false)
 
 data class FiltroVtexDif(val produto: String = "",
+                         val preco: Double,
                          val sku: String = "",
                          val departamento: String = "",
                          val categoria: String = "",

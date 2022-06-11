@@ -8,6 +8,7 @@ import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
+import com.github.mvysny.karibudsl.v10.numberField
 import com.github.mvysny.karibudsl.v10.textField
 import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
@@ -17,6 +18,7 @@ import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
@@ -44,6 +46,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
   inner class FilterConferencia : FilterBar<FiltroVtex>() {
     private lateinit var edtProduto: TextField
     private lateinit var edtSku: TextField
+    private lateinit var edtPreco: NumberField
 
     private fun HasComponents.uploadFileXls(): Pair<MemoryBuffer, Upload> {
       val buffer = MemoryBuffer()
@@ -89,11 +92,16 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
+      edtPreco = numberField("Preco") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
+        addValueChangeListener { updateGrid() }
+      }
     }
 
     override fun filtro(): FiltroVtex {
       return FiltroVtex(
         produto = edtProduto.value ?: "",
+        preco = edtPreco.value ?: 0.00,
         sku = edtSku.value ?: "",
         departamento = "",
         categoria = "",
