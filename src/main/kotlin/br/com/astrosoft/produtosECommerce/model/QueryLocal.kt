@@ -351,6 +351,7 @@ GROUP BY barcode"""
     """.trimMargin()
     return query(sql, Vtex::class) {
       addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("preco", filtro.preco)
       addOptionalParameter("sku", filtro.sku)
       addOptionalParameter("departamento", filtro.departamento)
       addOptionalParameter("marca", filtro.marca)
@@ -370,6 +371,7 @@ GROUP BY barcode"""
     """.trimMargin()
     return query(sql, Vtex::class) {
       addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("preco", filtro.preco)
       addOptionalParameter("sku", filtro.sku)
       addOptionalParameter("departamento", filtro.departamento)
       addOptionalParameter("marca", filtro.marca)
@@ -406,6 +408,7 @@ GROUP BY barcode"""
     val sql = "/sqlSaci/countVtex.sql"
     return querySerivce(sql, lambda = {
       addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("preco", filtro.preco)
       addOptionalParameter("sku", filtro.sku)
       addOptionalParameter("departamento", filtro.departamento)
       addOptionalParameter("marca", filtro.marca)
@@ -420,6 +423,7 @@ GROUP BY barcode"""
     val sql = "/sqlSaci/countVtexDif.sql"
     return querySerivce(sql, lambda = {
       addOptionalParameter("produto", filtro.produto)
+      addOptionalParameter("preco", filtro.preco)
       addOptionalParameter("sku", filtro.sku)
       addOptionalParameter("departamento", filtro.departamento)
       addOptionalParameter("marca", filtro.marca)

@@ -8,10 +8,7 @@ import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.comboBox
-import com.github.mvysny.karibudsl.v10.isExpand
-import com.github.mvysny.karibudsl.v10.textField
-import com.github.mvysny.karibudsl.v10.tooltip
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
@@ -20,6 +17,7 @@ import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
@@ -38,6 +36,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
   private lateinit var colRefprice: Grid.Column<Vtex>
   private lateinit var colPreco: Grid.Column<Vtex>
   private lateinit var edtProduto: TextField
+  private lateinit var edtPreco: NumberField
   private lateinit var edtSku: TextField
   private lateinit var cmbDiferenca: ComboBox<EDiferenca>
 
@@ -63,6 +62,10 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
+      edtPreco = numberField("Preco") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
+        addValueChangeListener { updateGrid() }
+      }
       cmbDiferenca = comboBox<EDiferenca>("Diferença") {
         setItems(listOf(EDiferenca.PROMO, EDiferenca.DATA, EDiferenca.PRICE))
         setItemLabelGenerator {
@@ -80,6 +83,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
 
     override fun filtro(): FiltroVtexDif {
       return FiltroVtexDif(produto = edtProduto.value ?: "",
+                           preco = edtPreco.value ?: 0.00,
                            sku = edtSku.value ?: "",
                            departamento = "",
                            categoria = "",

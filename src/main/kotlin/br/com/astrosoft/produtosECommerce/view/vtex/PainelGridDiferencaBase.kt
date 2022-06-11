@@ -9,6 +9,7 @@ import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
+import com.github.mvysny.karibudsl.v10.numberField
 import com.github.mvysny.karibudsl.v10.textField
 import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
@@ -19,6 +20,7 @@ import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
@@ -35,6 +37,7 @@ import java.time.format.DateTimeFormatter
 class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
         PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
   private lateinit var edtProduto: TextField
+  private lateinit var edtPreco: NumberField
   private lateinit var edtSku: TextField
 
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtexDif>): Grid<Vtex> {
@@ -74,6 +77,10 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
+      edtPreco = numberField("Preco") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
+        addValueChangeListener { updateGrid() }
+      }
     }
 
     private fun HasComponents.uploadFileXls(): Pair<MemoryBuffer, Upload> {
@@ -96,6 +103,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
 
     override fun filtro(): FiltroVtexDif {
       return FiltroVtexDif(produto = edtProduto.value ?: "",
+                           preco = edtPreco.value ?: 0.00,
                            sku = edtSku.value ?: "",
                            departamento = "",
                            categoria = "",

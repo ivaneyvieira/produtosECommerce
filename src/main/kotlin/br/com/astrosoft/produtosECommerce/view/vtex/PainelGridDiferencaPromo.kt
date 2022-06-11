@@ -20,6 +20,7 @@ import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
+import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
@@ -34,6 +35,7 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
   private lateinit var edtProduto: TextField
   private lateinit var edtSku: TextField
   private lateinit var edtPromocao: ComboBox<Promocao>
+  private lateinit var edtPreco: NumberField
 
   override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtexDif>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
@@ -54,6 +56,10 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
         addValueChangeListener { updateGrid() }
       }
       edtProduto = textField("Produto") {
+        valueChangeMode = ValueChangeMode.TIMEOUT
+        addValueChangeListener { updateGrid() }
+      }
+      edtPreco = numberField("Preco") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
       }
@@ -121,11 +127,13 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
 
     override fun filtro(): FiltroVtexDif {
       return FiltroVtexDif(produto = edtProduto.value ?: "",
+                           preco = edtPreco.value ?: 0.00,
                            sku = edtSku.value ?: "",
                            departamento = "",
                            categoria = "",
                            marca = "",
-                           diferenca = EDiferenca.EDITOR)
+                           diferenca = EDiferenca.EDITOR
+                          )
     }
   }
 
