@@ -49,6 +49,7 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
 
   inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
     override fun FilterBar<FiltroVtexDif>.contentBlock() {
+      this.selectAll()
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {
@@ -139,8 +140,6 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
 
   override fun Grid<Vtex>.gridConfig() {
     this.setSelectionMode(Grid.SelectionMode.MULTI)
-    val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
-    multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
