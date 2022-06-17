@@ -120,12 +120,13 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
     return serviceQuery.fetch(filter, 0, Int.MAX_VALUE, sortOrders)
   }
 
-  fun HasComponents.selectAll(allItensList : () -> List<T>) {
+  fun HasComponents.selectAll() {
     button {
       icon = VaadinIcon.CHECK_SQUARE_O.create()
       tooltip = "Seleciona todos"
       onLeftClick {
-        val allItens = allItensList()
+        serviceQuery.fetch(filterBar.filtro())
+        val allItens = serviceQuery.fetch(filterBar.filtro())
         val multiSelect = multiSelect()
         if (multiSelect.size == allItens.size) grid.asMultiSelect().deselectAll()
         else {
