@@ -22,7 +22,6 @@ import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.ListDataProvider
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
@@ -33,8 +32,7 @@ import java.time.format.DateTimeFormatter
 class PainelGridProdutoConferencia(
   val view: IDiferencasView, serviceQuery: ServiceQueryProdutoConferencia,
                                   ) : PainelGrid<ProdutoConferencia, FiltroProdutoConferencia>(serviceQuery) {
-  override fun gridPanel(dataProvider: ListDataProvider<ProdutoConferencia>):
-          Grid<ProdutoConferencia> {
+  override fun gridPanel(dataProvider: ListDataProvider<ProdutoConferencia>): Grid<ProdutoConferencia> {
     val grid = Grid(ProdutoConferencia::class.java, false)
     grid.dataProvider = dataProvider
     return grid

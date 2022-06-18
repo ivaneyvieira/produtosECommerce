@@ -14,13 +14,11 @@ import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.ListDataProvider
 
 class PainelGridProdutoPromocaoSaci(val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional) :
         PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
-  override fun gridPanel(dataProvider: ListDataProvider<ProdutoPromocao>):
-          Grid<ProdutoPromocao> {
+  override fun gridPanel(dataProvider: ListDataProvider<ProdutoPromocao>): Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid

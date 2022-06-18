@@ -36,7 +36,6 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.binder.Result
 import com.vaadin.flow.data.binder.ValueContext
 import com.vaadin.flow.data.converter.Converter
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.DataProvider
 import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.provider.Query
@@ -51,8 +50,9 @@ import kotlin.streams.toList
 
 abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F>) : VerticalLayout() {
   protected var grid: Grid<T>
-//  DataProvider.fromFilteringCallbacks(::fetchCallback, ::countCallback).withConfigurableFilter()
-  private val dataProvider =  DataProvider.ofCollection(mutableListOf<T>())
+
+  //  DataProvider.fromFilteringCallbacks(::fetchCallback, ::countCallback).withConfigurableFilter()
+  private val dataProvider = DataProvider.ofCollection(mutableListOf<T>())
 
   private fun fetchCallback(query: Query<T, F>?): Stream<T>? {
     val filter = query?.filter?.orElseGet(null) ?: return emptyList<T>().stream()
@@ -75,7 +75,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
 
   abstract fun gridPanel(dataProvider: ListDataProvider<T>): Grid<T>
 
-  fun showErro(msg : String?){
+  fun showErro(msg: String?) {
     val notification = Notification()
     notification.addThemeVariants(NotificationVariant.LUMO_ERROR)
 
@@ -130,7 +130,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
         val multiSelect = multiSelect()
         if (multiSelect.size == allItens.size) grid.asMultiSelect().deselectAll()
         else {
-          allItens.forEach {bean ->
+          allItens.forEach { bean ->
             grid.select(bean)
           }
         }
