@@ -39,7 +39,6 @@ class PainelGridProdutoEnviado(view: IProdutosEComerceView, serviceQuery: Servic
     override fun FilterBar<FiltroProduto>.contentBlock() {
       val user = AppConfig.userSaci as? UserSaci
 
-      this.selectAll()
       if (user?.admin == true) {
         button {
           icon = ARROW_CIRCLE_LEFT.create()

@@ -38,7 +38,6 @@ class PainelGridProdutoCorrecao(
     private lateinit var edtListaProduto: TextField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
-      this.selectAll()
       button {
         icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)

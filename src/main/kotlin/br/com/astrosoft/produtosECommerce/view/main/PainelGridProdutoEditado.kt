@@ -38,7 +38,6 @@ class PainelGridProdutoEditado(view: IProdutosEComerceView, serviceQuery: Servic
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
       val user = AppConfig.userSaci as? UserSaci
-      this.selectAll()
       button {
         icon = ARROW_CIRCLE_LEFT.create()
         addThemeVariants(LUMO_SMALL)

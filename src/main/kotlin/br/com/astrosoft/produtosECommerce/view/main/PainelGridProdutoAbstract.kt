@@ -14,7 +14,7 @@ import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.grid.GridSortOrder
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.TextArea
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.provider.SortDirection
 
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
@@ -96,9 +96,7 @@ abstract class PainelGridProdutoAbstract(
     }
   }
 
-  override fun gridPanel(
-    dataProvider: ConfigurableFilterDataProvider<Produto, Void, FiltroProduto>,
-                        ): Grid<Produto> {
+  override fun gridPanel(dataProvider: ListDataProvider<Produto>): Grid<Produto> {
     val grid = Grid(Produto::class.java, false)
     grid.dataProvider = dataProvider
     return grid

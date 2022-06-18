@@ -37,7 +37,6 @@ class PainelGridProdutoEnviar(view: IProdutosEComerceView, serviceQuery: Service
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
       val user = AppConfig.userSaci as? UserSaci
-      this.selectAll()
 
       if (user?.admin == true) {
         button {

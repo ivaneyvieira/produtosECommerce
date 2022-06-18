@@ -51,8 +51,8 @@ import kotlin.streams.toList
 
 abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F>) : VerticalLayout() {
   protected var grid: Grid<T>
-  private val dataProvider =
-    DataProvider.fromFilteringCallbacks(::fetchCallback, ::countCallback).withConfigurableFilter()
+//  DataProvider.fromFilteringCallbacks(::fetchCallback, ::countCallback).withConfigurableFilter()
+  private val dataProvider =  DataProvider.ofCollection(mutableListOf<T>())
 
   private fun fetchCallback(query: Query<T, F>?): Stream<T>? {
     val filter = query?.filter?.orElseGet(null) ?: return emptyList<T>().stream()
@@ -73,7 +73,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
     filterBar()
   }
 
-  abstract fun gridPanel(dataProvider: ConfigurableFilterDataProvider<T, Void, F>): Grid<T>
+  abstract fun gridPanel(dataProvider: ListDataProvider<T>): Grid<T>
 
   fun showErro(msg : String?){
     val notification = Notification()
@@ -120,7 +120,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
     return serviceQuery.fetch(filter, 0, Int.MAX_VALUE, sortOrders)
   }
 
-  fun HasComponents.selectAll() {
+  fun HasComponents.selectAllDelete() {
     button {
       icon = VaadinIcon.CHECK_SQUARE_O.create()
       tooltip = "Seleciona todos"
@@ -142,7 +142,8 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
 
   fun updateFiltro() {
     val filter = filterBar.filtro()
-    dataProvider.setFilter(filter)
+    dataProvider.items.clear()
+    dataProvider.items.addAll(serviceQuery.fetch(filter))
   }
 
   open fun updateGrid() {

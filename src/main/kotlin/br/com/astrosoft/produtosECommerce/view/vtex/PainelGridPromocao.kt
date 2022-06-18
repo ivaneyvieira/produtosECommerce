@@ -24,6 +24,7 @@ import com.vaadin.flow.component.upload.FileRejectedEvent
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
@@ -33,7 +34,7 @@ import java.time.format.DateTimeFormatter
 
 class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQueryVtex) :
         PainelGrid<Vtex, FiltroVtex>(serviceQueryVtex) {
-  override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtex>): Grid<Vtex> {
+  override fun gridPanel(dataProvider: ListDataProvider<Vtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
     return grid
