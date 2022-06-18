@@ -38,7 +38,6 @@ class PainelGridProdutoBase(view: IProdutosEComerceView, serviceQuery: ServiceQu
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProduto>.contentBlock() {
-      this.selectAll()
       button {
         icon = ARROW_CIRCLE_RIGHT.create()
         addThemeVariants(LUMO_SMALL)

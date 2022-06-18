@@ -15,10 +15,12 @@ import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.provider.ListDataProvider
 
 class PainelGridProdutoPromocaoSaci(val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional) :
         PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
-  override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao, Void, FiltroProdutosPromocional>): Grid<ProdutoPromocao> {
+  override fun gridPanel(dataProvider: ListDataProvider<ProdutoPromocao>):
+          Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -34,7 +36,6 @@ class PainelGridProdutoPromocaoSaci(val view: IProdutoPromocionalView, serviceQu
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProdutosPromocional>.contentBlock() {
-      this.selectAll()
       button {
         icon = VaadinIcon.MONEY_WITHDRAW.create()
         addThemeVariants(ButtonVariant.LUMO_SMALL)

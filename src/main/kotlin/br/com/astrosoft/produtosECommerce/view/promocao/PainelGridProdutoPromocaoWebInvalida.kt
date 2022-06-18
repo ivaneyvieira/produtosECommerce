@@ -18,7 +18,7 @@ import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon.TABLE
 import com.vaadin.flow.component.textfield.IntegerField
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.provider.ListDataProvider
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
 import java.time.LocalDateTime
@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter
 class PainelGridProdutoPromocaoWebInvalida(val view: IProdutoPromocionalView,
                                            serviceQuery: ServiceQueryProdutoPromocional) :
         PainelGrid<ProdutoPromocao, FiltroProdutosPromocional>(serviceQuery) {
-  override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<ProdutoPromocao, Void, FiltroProdutosPromocional>): Grid<ProdutoPromocao> {
+  override fun gridPanel(dataProvider: ListDataProvider<ProdutoPromocao>): Grid<ProdutoPromocao> {
     val grid = Grid(ProdutoPromocao::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -43,8 +43,6 @@ class PainelGridProdutoPromocaoWebInvalida(val view: IProdutoPromocionalView,
     private lateinit var edtCodigo: IntegerField
 
     override fun FilterBar<FiltroProdutosPromocional>.contentBlock() {
-      this.selectAll()
-
       this.downloadExcel()
 
       edtCodigo = codigoField {

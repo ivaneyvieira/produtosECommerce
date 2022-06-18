@@ -23,6 +23,7 @@ import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
@@ -37,7 +38,7 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
   private lateinit var edtPromocao: ComboBox<Promocao>
   private lateinit var edtPreco: NumberField
 
-  override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtexDif>): Grid<Vtex> {
+  override fun gridPanel(dataProvider: ListDataProvider<Vtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
     return grid
@@ -49,7 +50,6 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
 
   inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
     override fun FilterBar<FiltroVtexDif>.contentBlock() {
-      this.selectAll()
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {

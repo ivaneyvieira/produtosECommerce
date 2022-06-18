@@ -20,6 +20,7 @@ import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
+import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
@@ -40,7 +41,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
   private lateinit var edtSku: TextField
   private lateinit var cmbDiferenca: ComboBox<EDiferenca>
 
-  override fun gridPanel(dataProvider: ConfigurableFilterDataProvider<Vtex, Void, FiltroVtexDif>): Grid<Vtex> {
+  override fun gridPanel(dataProvider: ListDataProvider<Vtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
     grid.dataProvider = dataProvider
     return grid
