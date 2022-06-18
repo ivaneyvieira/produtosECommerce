@@ -5,7 +5,6 @@ import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.model.SortOrder
 import br.com.astrosoft.framework.util.DB
 import br.com.astrosoft.framework.util.SystemUtils
-import br.com.astrosoft.framework.util.localDate
 import br.com.astrosoft.framework.util.lpad
 import br.com.astrosoft.produtosECommerce.model.beans.*
 import br.com.astrosoft.produtosECommerce.model.xlsx.PrecosBase
@@ -381,7 +380,7 @@ GROUP BY barcode"""
     }
   }
 
-  fun updateVtex(vtex : Vtex, priceSaci: PrecoSaci?) {
+  fun updateVtex(vtex: Vtex, priceSaci: PrecoSaci?) {
     val sql = "/sqlSaci/updateVtex.sql"
 
     val promoprice = priceSaci?.promopricev

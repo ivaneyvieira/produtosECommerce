@@ -12,7 +12,6 @@ import br.com.astrosoft.produtosECommerce.viewmodel.IProdutoPromocionalView
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.ListDataProvider
 
 class PainelGridProdutoPromocaoBase(val view: IProdutoPromocionalView, serviceQuery: ServiceQueryProdutoPromocional) :

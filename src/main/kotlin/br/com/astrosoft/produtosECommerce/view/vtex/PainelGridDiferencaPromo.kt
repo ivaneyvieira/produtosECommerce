@@ -16,13 +16,10 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridMultiSelectionModel
-import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider
 import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
@@ -133,8 +130,7 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
                            departamento = "",
                            categoria = "",
                            marca = "",
-                           diferenca = EDiferenca.EDITOR
-                          )
+                           diferenca = EDiferenca.EDITOR)
     }
   }
 

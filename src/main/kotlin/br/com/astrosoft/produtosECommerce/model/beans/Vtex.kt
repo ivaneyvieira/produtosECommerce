@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.model.beans
 
-import br.com.astrosoft.framework.util.localDate
 import br.com.astrosoft.produtosECommerce.model.local
 import java.time.LocalDate
 
