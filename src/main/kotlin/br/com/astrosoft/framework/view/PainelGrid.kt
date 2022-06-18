@@ -144,6 +144,7 @@ abstract class PainelGrid<T : Any, F : Any>(val serviceQuery: IServiceQuery<T, F
     val filter = filterBar.filtro()
     dataProvider.items.clear()
     dataProvider.items.addAll(serviceQuery.fetch(filter))
+    dataProvider.refreshAll()
   }
 
   open fun updateGrid() {
