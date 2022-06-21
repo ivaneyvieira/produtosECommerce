@@ -160,6 +160,13 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isResizable = true
       isAutoWidth = true
     }
+    addColumnDouble(Vtex::precoCompor) {
+      setHeader("P. Compor")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+    }
     addColumnDouble(Vtex::promoVtex) {
       setHeader("P. Price")
       isExpand = false
