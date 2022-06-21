@@ -114,8 +114,6 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
 
   override fun Grid<Vtex>.gridConfig() {
     this.setSelectionMode(Grid.SelectionMode.MULTI)
-    val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
-    multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
@@ -167,14 +165,26 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isAutoWidth = false
       width = "100px"
     }
-    addColumnDouble(Vtex::promoVtex) {
-      setHeader("P. Price")
+    addColumnInt(Vtex::promono) {
+      setHeader("Nº Prom")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
+    addColumnLocalDate(Vtex::validade) {
+      setHeader("Validade")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
+    addColumnDouble(Vtex::promoprice) {
+      setHeader("Promoção")
       isExpand = false
       isResizable = true
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.promoVtex) "marcaDiferenca"
+        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
         else null
       }
     }
@@ -184,6 +194,32 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isResizable = true
       isAutoWidth = false
       width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
+        else null
+      }
+    }
+    addColumnDouble(Vtex::refprice) {
+      setHeader("Referência")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+      setClassNameGenerator {
+        if (it.precoList != it.refprice) "marcaDiferenca"
+        else null
+      }
+    }
+    addColumnDouble(Vtex::precoList) {
+      setHeader("Lista")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+      setClassNameGenerator {
+        if (it.precoList != it.refprice) "marcaDiferenca"
+        else null
+      }
     }
   }
 
