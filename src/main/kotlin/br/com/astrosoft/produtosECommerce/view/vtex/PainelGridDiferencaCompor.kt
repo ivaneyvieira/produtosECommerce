@@ -166,10 +166,6 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isResizable = true
       isAutoWidth = false
       width = "100px"
-      setClassNameGenerator {
-        if (it.preco != it.promoVtex) "marcaDiferenca"
-        else null
-      }
     }
     addColumnDouble(Vtex::preco) {
       setHeader("Base")
@@ -177,10 +173,6 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isResizable = true
       isAutoWidth = false
       width = "100px"
-      setClassNameGenerator {
-        if (it.preco != it.promoVtex) "marcaDiferenca"
-        else null
-      }
     }
   }
 
