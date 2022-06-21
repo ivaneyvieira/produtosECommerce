@@ -5,13 +5,11 @@ import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPrecoPrice
+import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.isExpand
-import com.github.mvysny.karibudsl.v10.numberField
-import com.github.mvysny.karibudsl.v10.textField
-import com.github.mvysny.karibudsl.v10.tooltip
+import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -20,6 +18,7 @@ import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridMultiSelectionModel
 import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
@@ -80,6 +79,20 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       edtPreco = numberField("Preco") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
+      }
+      button("Zerar Compor") {
+        icon = VaadinIcon.MINUS_CIRCLE.create()
+        onLeftClick {
+          val itens = grid.selectedItems.toList()
+          if (itens.isEmpty()) {
+            Notification.show("Não tem nenhum item selecionado")
+          }
+          else {
+            serviceQueryDif.zeraCompor(itens)
+            serviceQueryDif.updateSaci(itens)
+            updateGrid()
+          }
+        }
       }
     }
 

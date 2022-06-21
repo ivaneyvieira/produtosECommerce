@@ -177,6 +177,11 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
     savePromocao(promocao = promocao, prdno = vtex.codigo, grade = vtex.codigo, price = vtex.promoprice ?: 0.00)
   }
 
+  fun zeraCompor(codigo: String) {
+    val sql = "UPDATE sqldados.prp SET precoCompor = 0 WHERE prdno = LPAD($codigo * 1, 16, ' ') AND storeno = 10"
+    script(sql)
+  }
+
   companion object {
     private val db = DB("saci")
     internal val driver = db.driver

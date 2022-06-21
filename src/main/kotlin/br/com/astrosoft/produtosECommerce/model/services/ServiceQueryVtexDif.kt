@@ -96,4 +96,10 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
       it.update(priceSaci)
     }
   }
+
+  fun zeraCompor(itens: List<Vtex>) {
+    itens.forEach {vtex ->
+      saci.zeraCompor(vtex.codigo)
+    }
+  }
 }
