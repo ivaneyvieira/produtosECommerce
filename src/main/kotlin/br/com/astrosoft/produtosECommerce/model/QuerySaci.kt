@@ -178,7 +178,7 @@ class QuerySaci : QueryDB("saci", driver, url, username, password) {
   }
 
   fun zeraCompor(codigo: String) {
-    val sql = "UPDATE sqldados.prp SET precoCompor = 0 WHERE prdno = LPAD($codigo * 1, 16, ' ') AND storeno = 10"
+    val sql = "UPDATE sqldados.prp SET prp.l8 = 0 WHERE prdno = LPAD($codigo * 1, 16, ' ') AND storeno = 10"
     script(sql)
   }
 
