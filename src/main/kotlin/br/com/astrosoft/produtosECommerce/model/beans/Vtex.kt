@@ -68,4 +68,5 @@ enum class EDiferenca(val id: String, val label: String) {
   LIST("LIST", "List"),
   BASE("BASE", "Base"),
   PRICEBASE("PRICEBASE", "Base"),
+  COMPOR("COMPOR", "Ctrl+D"),
 }
