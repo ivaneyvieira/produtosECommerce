@@ -1,10 +1,14 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
+import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Promocao
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoInt
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoNumber
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoString
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.saci
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
@@ -223,7 +227,22 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
 
   private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
-      val planilha = PlanilhaVtexPreco()
+      val planilha = PlanilhaVtexPreco {
+        listOf(
+          CampoInt("Seq") { seq ?: 0 },
+          CampoString("Sku ID") { skuId.toString() },
+          CampoString("Id Prod") { idProd.toString() },
+          CampoString("Nome SKU") { nomeSku },
+          CampoString("Ativar") { ativarSku },
+          CampoString("Referencia SKU") { referenciaSKU },
+          CampoString("Cód Saci") { codigo },
+          CampoString("Nº Prom") { promono.toString() },
+          CampoString("Validade") { validade.format() },
+          CampoNumber("Ctrl+P") { promoprice ?: 0.00 },
+          CampoNumber("Editor") { precoPromoEditor ?: 0.00 },
+          CampoNumber("Referência") { refprice ?: 0.00 },
+              )
+      }
       val bytes = planilha.grava(allItens())
       ByteArrayInputStream(bytes)
     })

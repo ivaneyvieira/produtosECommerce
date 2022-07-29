@@ -6,6 +6,8 @@ import br.com.astrosoft.framework.view.addColumnInt
 import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoInt
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoString
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
@@ -217,7 +219,23 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
 
   private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
-      val planilha = PlanilhaVtexPreco()
+      val planilha = PlanilhaVtexPreco {
+        listOf(
+          CampoInt("Seq") { seq ?: 0 },
+          CampoString("Sku ID") { skuId.toString() },
+          CampoString("Id Prod") { idProd.toString() },
+          CampoString("Nome SKU") { nomeSku },
+          CampoString("Ativar") { ativarSku },
+          CampoString("Referencia SKU") { referenciaSKU },
+          CampoString("Cód Saci") { codigo },
+          CampoInt("Id Dep") { idDep },
+          CampoString("Nome Departamento") { nomeDepartamento },
+          CampoInt("Id Cat") { idCat },
+          CampoString("Nome Categoria") { nomeCategoria },
+          CampoInt("Base") { idMarca },
+          CampoString("Nome Marca") { nomeMarca },
+              )
+      }
       val bytes = planilha.grava(allItens())
       ByteArrayInputStream(bytes)
     })

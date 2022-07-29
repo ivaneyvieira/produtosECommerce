@@ -4,6 +4,7 @@ import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoInt
 import br.com.astrosoft.produtosECommerce.model.planilha.CampoNumber
 import br.com.astrosoft.produtosECommerce.model.planilha.CampoString
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
@@ -224,19 +225,19 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
       val planilha = PlanilhaVtexPreco {
         listOf(
+          CampoInt("Seq") { seq ?: 0 },
           CampoString("Sku ID") { skuId.toString() },
           CampoString("Id Prod") { idProd.toString() },
           CampoString("Nome SKU") { nomeSku },
+          CampoString("Ativar") { ativarSku },
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
-          CampoNumber("Preço Compor") { precoCompor ?: 0.00 },
           CampoString("Nº Prom") { promono.toString() },
           CampoString("Validade") { validade.format() },
-          CampoNumber("Preço Promo") { promoprice ?: 0.00 },
-          CampoNumber("Preço Ref") { refprice ?: 0.00 },
-          CampoString("Validade Vtex") { validadeVtex.format() },
-          CampoNumber("Promo Vtex") { promoVtex ?: 0.00 },
-          CampoNumber("Preço Vtex") { preco },
+          CampoNumber("Promoção") { promoprice ?: 0.00 },
+          CampoNumber("Base") { preco },
+          CampoNumber("Referência") { refprice ?: 0.00 },
+          CampoNumber("Lista") { precoList ?: 0.00 },
               )
       }
       val bytes = planilha.grava(allItens())

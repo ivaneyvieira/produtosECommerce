@@ -1,8 +1,12 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
+import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoInt
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoNumber
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoString
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
 import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
@@ -227,7 +231,23 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
 
   private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
-      val planilha = PlanilhaVtexPreco()
+      val planilha = PlanilhaVtexPreco {
+        listOf(
+          CampoInt("Seq") { seq ?: 0 },
+          CampoString("Sku ID") { skuId.toString() },
+          CampoString("Id Prod") { idProd.toString() },
+          CampoString("Nome SKU") { nomeSku },
+          CampoString("Ativar") { ativarSku },
+          CampoString("Referencia SKU") { referenciaSKU },
+          CampoString("Cód Saci") { codigo },
+          CampoInt("Nº Prom") { promono ?: 0 },
+          CampoString("Validade") { validade.format() },
+          CampoNumber("Promoção") { promoprice ?: 0.00 },
+          CampoNumber("Base") { preco },
+          CampoNumber("Referência") { refprice ?: 0.00 },
+          CampoNumber("Lista") { precoList },
+              )
+      }
       val bytes = planilha.grava(allItens())
       ByteArrayInputStream(bytes)
     })
