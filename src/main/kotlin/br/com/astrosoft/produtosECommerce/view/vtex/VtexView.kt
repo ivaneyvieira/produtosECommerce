@@ -41,8 +41,7 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
       tabGrid("Promocao", gridPromocao) //tabGrid("Diferença", gridDiferenca)
       tabGrid("Diferença Promo", gridDiferencaPromo)
       tabGrid("Ref x Lista", gridDiferencaList)
-      tabGrid("Promo x Base", gridDiferencaBase)
-      //tabGrid("Price x Base", gridDiferencaPrice)
+      tabGrid("Promo x Base", gridDiferencaBase) //tabGrid("Price x Base", gridDiferencaPrice)
       tabGrid("Ctrl+D", gridDiferencaCompor)
     }
     updateGridProduto()

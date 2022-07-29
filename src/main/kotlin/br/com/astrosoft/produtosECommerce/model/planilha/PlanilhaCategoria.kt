@@ -28,7 +28,7 @@ class PlanilhaCategoria {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
         listaBean.forEach { bean ->
-          val valores = campos.map { it.produceVakue(bean) }
+          val valores = campos.map { it.produceValue(bean) ?: "" }
           row(valores, rowStyle)
         }
       }

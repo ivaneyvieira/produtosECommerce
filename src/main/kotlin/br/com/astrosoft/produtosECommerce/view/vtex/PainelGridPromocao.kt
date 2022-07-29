@@ -237,7 +237,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
           CampoNumber("Promoção") { promoprice ?: 0.00 },
           CampoNumber("Base") { preco },
           CampoNumber("Referência") { refprice ?: 0.00 },
-          CampoNumber("Lista") { precoList ?: 0.00 },
+          CampoNumber("Lista") { precoList },
               )
       }
       val bytes = planilha.grava(allItens())
