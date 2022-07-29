@@ -1,11 +1,14 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
+import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
-import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPrecoPrice
-import br.com.astrosoft.produtosECommerce.model.saci
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoInt
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoNumber
+import br.com.astrosoft.produtosECommerce.model.planilha.CampoString
+import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
@@ -15,8 +18,6 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridMultiSelectionModel
-import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.NumberField
@@ -238,7 +239,24 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
 
   private fun HasComponents.downloadExcel() {
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
-      val planilha = PlanilhaVtexPrecoPrice()
+      val planilha = PlanilhaVtexPreco {
+        listOf(
+          CampoInt("Seq") { seq ?: 0 },
+          CampoString("Sku ID") { skuId.toString() },
+          CampoString("Id Prod") { idProd.toString() },
+          CampoString("Nome SKU") { nomeSku },
+          CampoString("Ativar") { ativarSku },
+          CampoString("Referencia SKU") { referenciaSKU },
+          CampoString("Cód Saci") { codigo },
+          CampoNumber("P. Compor") { precoCompor ?: 0.00 },
+          CampoInt("Nº Prom") { promono ?: 0 },
+          CampoString("Validade") { validade.format() },
+          CampoNumber("Promoção") { promoprice ?: 0.00 },
+          CampoNumber("Base") { preco },
+          CampoNumber("Referência") { refprice ?: 0.00 },
+          CampoNumber("Lista") { precoList },
+              )
+      }
       val bytes = planilha.grava(allItens())
       ByteArrayInputStream(bytes)
     })
