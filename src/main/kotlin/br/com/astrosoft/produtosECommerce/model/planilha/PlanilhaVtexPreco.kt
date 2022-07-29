@@ -8,23 +8,8 @@ import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.VerticalAlignment
 
-class PlanilhaVtexPreco {
-  private val campos: List<Campo<*, Vtex>> =
-    listOf(
-      CampoString("Sku ID") { skuId.toString() },
-      CampoString("Id Prod") { idProd.toString() },
-      CampoString("Nome SKU") { nomeSku },
-      CampoString("Referencia SKU") { referenciaSKU },
-      CampoString("Cód Saci") { codigo },
-      CampoNumber("Preço Compor") { precoCompor ?: 0.00 },
-      CampoString("Nº Prom") { promono.toString() },
-      CampoString("Validade") { validade.format() },
-      CampoNumber("Preço Promo") { promoprice ?: 0.00 },
-      CampoNumber("Preço Ref") { refprice ?: 0.00 },
-      CampoString("Validade Vtex") { validadeVtex.format() },
-      CampoNumber("Promo Vtex") { promoVtex ?: 0.00 },
-      CampoNumber("Preço Vtex") { preco },
-          )
+class PlanilhaVtexPreco(createColuns : () -> List<Campo<*, Vtex>>) {
+  private val campos: List<Campo<*, Vtex>> = createColuns()
 
   fun grava(listaProdutos: List<Vtex>): ByteArray {
     val wb = workbook {
