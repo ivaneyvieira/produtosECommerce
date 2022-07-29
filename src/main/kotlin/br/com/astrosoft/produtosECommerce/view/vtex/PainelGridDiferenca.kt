@@ -236,6 +236,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colPreco.isVisible = true
         colRefprice.isVisible = true
       }
+
       EDiferenca.PROMO  -> {
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
@@ -244,6 +245,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colPreco.isVisible = false
         colRefprice.isVisible = false
       }
+
       EDiferenca.DATA   -> {
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
@@ -252,6 +254,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colPreco.isVisible = false
         colRefprice.isVisible = false
       }
+
       EDiferenca.EDITOR -> {
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
@@ -260,6 +263,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colPreco.isVisible = false
         colRefprice.isVisible = false
       }
+
       EDiferenca.LIST   -> {
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true
@@ -268,6 +272,7 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
         colPreco.isVisible = false
         colRefprice.isVisible = false
       }
+
       else              -> {
         colPromoprice.isVisible = true
         colPromoVtex.isVisible = true

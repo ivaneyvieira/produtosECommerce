@@ -33,7 +33,7 @@ class PlanilhaVtexPrecoList {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
         listaProdutos.forEach { produto ->
-          val valores = campos.map { it.produceVakue(produto) }
+          val valores = campos.map { it.produceValue(produto) ?: ""}
           row(valores, rowStyle)
         }
       }

@@ -40,7 +40,7 @@ class PlanilhaEcommerceNovaEAC {
         listaProdutosCompleta.distinctBy {
           it.codigo + it.barcode + it.grade
         }.sortedBy { it.codigo + it.grade }.forEach { produto ->
-          val valores = campos.map { it.produceVakue(produto) }
+          val valores = campos.map { it.produceValue(produto) ?: "" }
           row(valores, rowStyle)
         }
       }

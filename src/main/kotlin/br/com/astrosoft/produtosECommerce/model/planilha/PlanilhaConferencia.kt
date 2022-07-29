@@ -34,7 +34,7 @@ class PlanilhaConferencia {
         val headers = campos.map { it.header }
         row(headers, headerStyle)
         listaProdutos.sortedBy { it.prdno + it.grade }.forEach { produto ->
-          val valores = campos.map { it.produceVakue(produto) }
+          val valores = campos.map { it.produceValue(produto) ?: "" }
           row(valores, rowStyle)
         }
       }

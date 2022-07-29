@@ -68,7 +68,7 @@ class PlanilhaEcommerceNova {
         listaProdutos.filter { it.grade == "" }.map {
           it.copy(SIMPLES)
         }.sortedBy { it.codigo + it.grade }.forEach { produto ->
-          val valores = campos.map { it.produceVakue(produto) }
+          val valores = campos.map { it.produceValue(produto) ?: "" }
           row(valores, rowStyle)
         }
       }
@@ -80,7 +80,7 @@ class PlanilhaEcommerceNova {
           .explodeGrade()
           .sortedWith(compareBy({ it.codigo }, { it.variacao }, { it.grade }))
           .forEach { produto ->
-            val valores = campos.map { it.produceVakue(produto) }
+            val valores = campos.map { it.produceValue(produto) ?: "" }
             row(valores, rowStyle)
           }
       }
