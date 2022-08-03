@@ -27,6 +27,7 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
   private val gridDiferencaPromo = PainelGridDiferencaPromo(this, viewModel.servicoVtexDiferenca())
   private val gridDiferencaList = PainelGridDiferencaList(this, viewModel.servicoVtexDiferenca())
   private val gridDiferencaBase = PainelGridDiferencaBase(this, viewModel.servicoVtexDiferenca())
+  private val gridDiferencaBaseRef = PainelGridDiferencaBaseRef(this, viewModel.servicoVtexDiferenca())
   private val gridDiferencaPrice = PainelGridDiferencaPrice(this, viewModel.servicoVtexDiferenca())
   private val gridDiferencaCompor = PainelGridDiferencaCompor(this, viewModel.servicoVtexDiferenca())
 
@@ -41,6 +42,7 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
       tabGrid("Promocao", gridPromocao) //tabGrid("Diferença", gridDiferenca)
       tabGrid("Diferença Promo", gridDiferencaPromo)
       tabGrid("Ref x Lista", gridDiferencaList)
+      tabGrid("Base x Ref", gridDiferencaBaseRef)
       tabGrid("Promo x Base", gridDiferencaBase) //tabGrid("Price x Base", gridDiferencaPrice)
       tabGrid("Ctrl+D", gridDiferencaCompor)
     }
