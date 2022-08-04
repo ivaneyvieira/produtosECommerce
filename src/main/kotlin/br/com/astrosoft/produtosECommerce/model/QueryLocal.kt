@@ -356,6 +356,7 @@ GROUP BY barcode"""
       addOptionalParameter("marca", filtro.marca)
       addOptionalParameter("categoria", filtro.categoria)
       addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
+      addOptionalParameter("ativar", if (filtro.ativar) "S" else "N")
     }
   }
 
@@ -377,6 +378,7 @@ GROUP BY barcode"""
       addOptionalParameter("categoria", filtro.categoria)
       addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
       addOptionalParameter("diferenca", filtro.diferenca.id)
+      addOptionalParameter("ativar", if (filtro.ativar) "S" else "N")
     }
   }
 
@@ -413,6 +415,7 @@ GROUP BY barcode"""
       addOptionalParameter("marca", filtro.marca)
       addOptionalParameter("categoria", filtro.categoria)
       addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
+      addOptionalParameter("ativar", if (filtro.ativar) "S" else "N")
     }, result = {
       it.executeScalar(Int::class.java)
     })
@@ -429,6 +432,7 @@ GROUP BY barcode"""
       addOptionalParameter("categoria", filtro.categoria)
       addOptionalParameter("promocao", if (filtro.promocao) "S" else "N")
       addOptionalParameter("diferenca", filtro.diferenca.id)
+      addOptionalParameter("ativar", if (filtro.ativar) "S" else "N")
     }, result = {
       it.executeScalar(Int::class.java)
     })

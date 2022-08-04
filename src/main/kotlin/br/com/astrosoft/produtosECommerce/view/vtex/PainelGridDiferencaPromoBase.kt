@@ -12,14 +12,18 @@ import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
 import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
-import com.github.mvysny.karibudsl.v10.*
+import com.github.mvysny.karibudsl.v10.isExpand
+import com.github.mvysny.karibudsl.v10.numberField
+import com.github.mvysny.karibudsl.v10.textField
+import com.github.mvysny.karibudsl.v10.tooltip
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridMultiSelectionModel
+import com.vaadin.flow.component.grid.GridMultiSelectionModel.SelectAllCheckboxVisibility
 import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.FileRejectedEvent
@@ -34,11 +38,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
-class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
+class PainelGridDiferencaPromoBase(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
         PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
   private lateinit var edtProduto: TextField
-  private lateinit var edtSku: TextField
   private lateinit var edtPreco: NumberField
+  private lateinit var edtSku: TextField
 
   override fun gridPanel(dataProvider: ListDataProvider<Vtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
@@ -59,7 +63,7 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
           val bytes = buffer.inputStream.readBytes()
           val file = File(fileName)
           file.writeBytes(bytes)
-          serviceQueryDif.readExcelPromo(fileName)
+          serviceQueryDif.readExcelPrecoBase(fileName)
           file.delete()
           updateGrid()
         } catch (e: EColunaNaoEncontrada) {
@@ -80,20 +84,6 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       edtPreco = numberField("Preco") {
         valueChangeMode = ValueChangeMode.TIMEOUT
         addValueChangeListener { updateGrid() }
-      }
-      button("Zerar Compor") {
-        icon = VaadinIcon.MINUS_CIRCLE.create()
-        onLeftClick {
-          val itens = grid.selectedItems.toList()
-          if (itens.isEmpty()) {
-            Notification.show("Não tem nenhum item selecionado")
-          }
-          else {
-            serviceQueryDif.zeraCompor(itens)
-            serviceQueryDif.updateSaci(itens)
-            updateGrid()
-          }
-        }
       }
     }
 
@@ -122,12 +112,14 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
                            departamento = "",
                            categoria = "",
                            marca = "",
-                           diferenca = EDiferenca.COMPOR)
+                           diferenca = EDiferenca.BASE)
     }
   }
 
   override fun Grid<Vtex>.gridConfig() {
     this.setSelectionMode(Grid.SelectionMode.MULTI)
+    val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
+    multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
     addColumnInt(Vtex::seq) {
       setHeader("Seq")
       isExpand = false
@@ -154,12 +146,6 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isResizable = true
       isAutoWidth = true
     }
-    addColumnString(Vtex::ativarSku) {
-      setHeader("Ativar")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
     addColumnString(Vtex::referenciaSKU) {
       setHeader("Referencia SKU")
       isExpand = false
@@ -171,13 +157,6 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isExpand = false
       isResizable = true
       isAutoWidth = true
-    }
-    addColumnDouble(Vtex::precoCompor) {
-      setHeader("P. Compor")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
     }
     addColumnInt(Vtex::promono) {
       setHeader("Nº Prom")
@@ -198,7 +177,7 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
+        if (it.preco != it.promoprice) "marcaDiferenca"
         else null
       }
     }
@@ -209,7 +188,7 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.promoprice && it.preco != it.precoList) "marcaDiferenca"
+        if (it.preco != it.promoprice) "marcaDiferenca"
         else null
       }
     }
@@ -220,7 +199,7 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.precoList != it.refprice) "marcaDiferenca"
+        if (it.preco != it.refprice) "marcaDiferenca"
         else null
       }
     }
@@ -231,7 +210,7 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.precoList != it.refprice) "marcaDiferenca"
+        if (it.preco != it.refprice) "marcaDiferenca"
         else null
       }
     }
@@ -245,11 +224,9 @@ class PainelGridDiferencaCompor(val view: IVtexView, val serviceQueryDif: Servic
           CampoString("Sku ID") { skuId.toString() },
           CampoString("Id Prod") { idProd.toString() },
           CampoString("Nome SKU") { nomeSku },
-          CampoString("Ativar") { ativarSku },
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
-          CampoNumber("P. Compor") { precoCompor ?: 0.00 },
-          CampoInt("Nº Prom") { promono ?: 0 },
+          CampoString("Nº Prom") { promono.toString() },
           CampoString("Validade") { validade.format() },
           CampoNumber("Promoção") { promoprice ?: 0.00 },
           CampoNumber("Base") { preco },

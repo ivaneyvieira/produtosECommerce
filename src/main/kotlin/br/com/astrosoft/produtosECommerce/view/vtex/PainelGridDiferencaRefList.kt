@@ -1,6 +1,5 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
-import br.com.astrosoft.framework.util.format
 import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.EDiferenca
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtexDif
@@ -38,11 +37,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
-class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
+class PainelGridDiferencaRefList(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
         PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
   private lateinit var edtProduto: TextField
-  private lateinit var edtPreco: NumberField
   private lateinit var edtSku: TextField
+  private lateinit var edtPreco: NumberField
 
   override fun gridPanel(dataProvider: ListDataProvider<Vtex>): Grid<Vtex> {
     val grid = Grid(Vtex::class.java, false)
@@ -63,7 +62,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
           val bytes = buffer.inputStream.readBytes()
           val file = File(fileName)
           file.writeBytes(bytes)
-          serviceQueryDif.readExcelPrecoBase(fileName)
+          serviceQueryDif.readExcelPrecoList(fileName)
           file.delete()
           updateGrid()
         } catch (e: EColunaNaoEncontrada) {
@@ -112,7 +111,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
                            departamento = "",
                            categoria = "",
                            marca = "",
-                           diferenca = EDiferenca.BASE)
+                           diferenca = EDiferenca.LIST)
     }
   }
 
@@ -146,12 +145,6 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isResizable = true
       isAutoWidth = true
     }
-    addColumnString(Vtex::ativarSku) {
-      setHeader("Ativar")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
     addColumnString(Vtex::referenciaSKU) {
       setHeader("Referencia SKU")
       isExpand = false
@@ -164,40 +157,6 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isResizable = true
       isAutoWidth = true
     }
-    addColumnInt(Vtex::promono) {
-      setHeader("Nº Prom")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
-    addColumnLocalDate(Vtex::validade) {
-      setHeader("Validade")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
-    addColumnDouble(Vtex::promoprice) {
-      setHeader("Promoção")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-      setClassNameGenerator {
-        if (it.preco != it.promoprice) "marcaDiferenca"
-        else null
-      }
-    }
-    addColumnDouble(Vtex::preco) {
-      setHeader("Base")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = false
-      width = "100px"
-      setClassNameGenerator {
-        if (it.preco != it.promoprice) "marcaDiferenca"
-        else null
-      }
-    }
     addColumnDouble(Vtex::refprice) {
       setHeader("Referência")
       isExpand = false
@@ -205,8 +164,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.refprice) "marcaDiferenca"
-        else null
+        "marcaDiferenca"
       }
     }
     addColumnDouble(Vtex::precoList) {
@@ -216,8 +174,7 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
       isAutoWidth = false
       width = "100px"
       setClassNameGenerator {
-        if (it.preco != it.refprice) "marcaDiferenca"
-        else null
+        "marcaDiferenca"
       }
     }
   }
@@ -230,13 +187,8 @@ class PainelGridDiferencaBase(val view: IVtexView, val serviceQueryDif: ServiceQ
           CampoString("Sku ID") { skuId.toString() },
           CampoString("Id Prod") { idProd.toString() },
           CampoString("Nome SKU") { nomeSku },
-          CampoString("Ativar") { ativarSku },
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
-          CampoString("Nº Prom") { promono.toString() },
-          CampoString("Validade") { validade.format() },
-          CampoNumber("Promoção") { promoprice ?: 0.00 },
-          CampoNumber("Base") { preco },
           CampoNumber("Referência") { refprice ?: 0.00 },
           CampoNumber("Lista") { precoList },
               )

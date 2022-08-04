@@ -49,7 +49,8 @@ data class FiltroVtex(val produto: String = "",
                       val departamento: String = "",
                       val categoria: String = "",
                       val marca: String = "",
-                      val promocao: Boolean = false)
+                      val promocao: Boolean = false,
+                      val ativar: Boolean)
 
 data class FiltroVtexDif(val produto: String = "",
                          val preco: Double,
@@ -58,7 +59,8 @@ data class FiltroVtexDif(val produto: String = "",
                          val categoria: String = "",
                          val marca: String = "",
                          val promocao: Boolean = false,
-                         val diferenca: EDiferenca)
+                         val diferenca: EDiferenca,
+                         val ativar: Boolean)
 
 enum class EDiferenca(val id: String, val label: String) {
   PROMO("PROMO", "Promoção"),
