@@ -91,7 +91,8 @@ class PainelGridDiferenca(val view: IVtexView, val serviceQueryDif: ServiceQuery
                            departamento = "",
                            categoria = "",
                            marca = "",
-                           diferenca = cmbDiferenca.value ?: EDiferenca.PROMO)
+                           diferenca = cmbDiferenca.value ?: EDiferenca.PROMO,
+                           ativar = true)
     }
   }
 

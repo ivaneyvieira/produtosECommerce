@@ -101,12 +101,15 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
         icon = VaadinIcon.DISC.create()
         onLeftClick {
           val filter =
-            FiltroVtex(produto = edtProduto.value ?: "",
-                       preco = edtPreco.value ?: 0.00,
-                       sku = edtSku.value ?: "",
-                       departamento = "",
-                       categoria = "",
-                       marca = "")
+            FiltroVtex(
+              produto = edtProduto.value ?: "",
+              preco = edtPreco.value ?: 0.00,
+              sku = edtSku.value ?: "",
+              departamento = "",
+              categoria = "",
+              marca = "",
+              ativar = false,
+                      )
           serviceQueryVtex.updateSaci(filter)
           updateGrid()
         }
@@ -121,6 +124,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
         departamento = "",
         categoria = "",
         marca = "",
+        ativar = false,
                        )
     }
   }
