@@ -166,12 +166,6 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
       isResizable = true
       isAutoWidth = true
     }
-    addColumnString(Vtex::ativarSku) {
-      setHeader("Ativar")
-      isExpand = false
-      isResizable = true
-      isAutoWidth = true
-    }
     addColumnString(Vtex::referenciaSKU) {
       setHeader("Referencia SKU")
       isExpand = false
@@ -233,7 +227,6 @@ class PainelGridDiferencaPromo(val view: IVtexView, val serviceQueryDif: Service
           CampoString("Sku ID") { skuId.toString() },
           CampoString("Id Prod") { idProd.toString() },
           CampoString("Nome SKU") { nomeSku },
-          CampoString("Ativar") { ativarSku },
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
           CampoString("Nº Prom") { promono.toString() },
