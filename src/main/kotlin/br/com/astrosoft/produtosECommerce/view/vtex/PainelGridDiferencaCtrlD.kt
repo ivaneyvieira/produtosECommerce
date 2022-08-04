@@ -116,13 +116,16 @@ class PainelGridDiferencaCtrlD(val view: IVtexView, val serviceQueryDif: Service
     }
 
     override fun filtro(): FiltroVtexDif {
-      return FiltroVtexDif(produto = edtProduto.value ?: "",
-                           preco = edtPreco.value ?: 0.00,
-                           sku = edtSku.value ?: "",
-                           departamento = "",
-                           categoria = "",
-                           marca = "",
-                           diferenca = EDiferenca.COMPOR)
+      return FiltroVtexDif(
+        produto = edtProduto.value ?: "",
+        preco = edtPreco.value ?: 0.00,
+        sku = edtSku.value ?: "",
+        departamento = "",
+        categoria = "",
+        marca = "",
+        diferenca = EDiferenca.COMPOR,
+        ativar = true,
+                          )
     }
   }
 

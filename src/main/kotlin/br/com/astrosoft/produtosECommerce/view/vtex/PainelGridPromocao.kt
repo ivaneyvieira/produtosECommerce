@@ -111,6 +111,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
         categoria = "",
         marca = "",
         promocao = true,
+        ativar = true,
                        )
     }
   }

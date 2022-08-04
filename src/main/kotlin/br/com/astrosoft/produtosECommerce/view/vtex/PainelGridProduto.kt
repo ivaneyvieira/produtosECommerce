@@ -126,6 +126,7 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
         departamento = edtDepartamento.value ?: "",
         categoria = edtCategoria.value ?: "",
         marca = edtMarca.value ?: "",
+        ativar = false,
                        )
     }
   }
