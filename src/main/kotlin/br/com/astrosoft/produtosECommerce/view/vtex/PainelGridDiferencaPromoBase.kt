@@ -167,6 +167,17 @@ class PainelGridDiferencaPromoBase(val view: IVtexView, val serviceQueryDif: Ser
       isResizable = true
       isAutoWidth = true
     }
+    addColumnDouble(Vtex::precoPromoEditor) {
+      setHeader("Editor")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+      setClassNameGenerator {
+        if (it.preco != it.precoPromoEditor) "marcaDiferenca"
+        else null
+      }
+    }
     addColumnLocalDate(Vtex::validade) {
       setHeader("Validade")
       isExpand = false
@@ -174,7 +185,7 @@ class PainelGridDiferencaPromoBase(val view: IVtexView, val serviceQueryDif: Ser
       isAutoWidth = true
     }
     addColumnDouble(Vtex::promoprice) {
-      setHeader("Promoção")
+      setHeader("Ctrl+P")
       isExpand = false
       isResizable = true
       isAutoWidth = false
@@ -230,8 +241,9 @@ class PainelGridDiferencaPromoBase(val view: IVtexView, val serviceQueryDif: Ser
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
           CampoString("Nº Prom") { promono.toString() },
+          CampoNumber("Editor") { precoPromoEditor ?: 0.00 },
           CampoString("Validade") { validade.format() },
-          CampoNumber("Promoção") { promoprice ?: 0.00 },
+          CampoNumber("Ctrl+P") { promoprice ?: 0.00 },
           CampoNumber("Base") { preco },
           CampoNumber("Referência") { refprice ?: 0.00 },
           CampoNumber("Lista") { precoList },
