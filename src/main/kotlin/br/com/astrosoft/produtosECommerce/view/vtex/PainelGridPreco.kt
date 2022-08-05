@@ -181,6 +181,13 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
       isResizable = true
       isAutoWidth = true
     }
+    addColumnDouble(Vtex::precoPromoEditor) {
+      setHeader("Editor")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = false
+      width = "100px"
+    }
     addColumnLocalDate(Vtex::validade) {
       setHeader("Validade")
       isExpand = false
@@ -245,6 +252,7 @@ class PainelGridPreco(val view: IVtexView, val serviceQueryVtex: ServiceQueryVte
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
           CampoInt("Nº Prom") { promono ?: 0 },
+          CampoNumber("Editor") { precoPromoEditor ?: 0.00 },
           CampoString("Validade") { validade.format() },
           CampoNumber("Promoção") { promoprice ?: 0.00 },
           CampoNumber("Base") { preco },
