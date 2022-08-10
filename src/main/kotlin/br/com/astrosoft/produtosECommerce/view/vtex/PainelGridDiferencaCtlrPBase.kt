@@ -38,7 +38,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @CssImport(value = "./styles/gridmark.css", themeFor = "vaadin-grid")
-class PainelGridDiferencaPromoBase(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
+class PainelGridDiferencaCtlrPBase(val view: IVtexView, val serviceQueryDif: ServiceQueryVtexDif) :
         PainelGrid<Vtex, FiltroVtexDif>(serviceQueryDif) {
   private lateinit var edtProduto: TextField
   private lateinit var edtPreco: NumberField
