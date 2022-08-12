@@ -45,7 +45,7 @@ SELECT TRIM(P.prdno) * 1                                                   AS co
 	 WHEN type = 0
 	   THEN (P.refprice / 100) * (1 - perce / 100)
 	 WHEN type = 3
-	   THEN V.price / 100
+	   THEN V.price
 	 ELSE 0.00
        END                                                                 AS precoPromoEditor
 FROM sqldados.prp                     AS P
