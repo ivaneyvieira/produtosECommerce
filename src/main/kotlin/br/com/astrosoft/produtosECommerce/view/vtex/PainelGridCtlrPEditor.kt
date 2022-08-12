@@ -181,6 +181,12 @@ class PainelGridCtlrPEditor(val view: IVtexView, val serviceQueryDif: ServiceQue
       isResizable = true
       isAutoWidth = true
     }
+    addColumnString(Vtex::grade) {
+      setHeader("Grade")
+      isExpand = false
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnInt(Vtex::promono) {
       setHeader("Nº Prom")
       isExpand = false
@@ -232,6 +238,7 @@ class PainelGridCtlrPEditor(val view: IVtexView, val serviceQueryDif: ServiceQue
           CampoString("Nome SKU") { nomeSku },
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
+          CampoString("Grade") { grade },
           CampoString("Nº Prom") { promono.toString() },
           CampoString("Validade") { validade.format() },
           CampoNumber("Ctrl+P") { promoprice ?: 0.00 },

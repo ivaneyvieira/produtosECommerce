@@ -29,6 +29,7 @@ SELECT skuId,
        validadeVtex,
        validade,
        codigo,
+       grade,
        promono,
        precoPromoEditor,
        ativarSku
