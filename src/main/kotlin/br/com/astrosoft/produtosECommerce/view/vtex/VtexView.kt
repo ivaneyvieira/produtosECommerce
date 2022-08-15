@@ -30,6 +30,7 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
   private val gridDiferencaBaseRef = PainelGridDiferencaBaseRef(this, viewModel.servicoVtexDiferenca())
   private val gridDiferencaPrice = PainelGridDiferencaPrice(this, viewModel.servicoVtexDiferenca())
   private val gridDiferencaCtrlD = PainelGridDiferencaCtrlD(this, viewModel.servicoVtexDiferenca())
+  private val gridDiferencaEditorBase = PainelGridDiferencaEditorBase(this, viewModel.servicoVtexDiferenca())
 
   override fun isAccept() = true
 
@@ -43,7 +44,8 @@ class VtexView : ViewLayout<VtexViewModel>(), IVtexView {
       tabGrid("Ctrl+P x Editor", gridCtlrPEditor)
       tabGrid("Ref x Lista", gridDiferencaRefList)
       tabGrid("Base x Ref", gridDiferencaBaseRef)
-      tabGrid("Ctrl+P x Base", gridDiferencaCtlrPBase) //tabGrid("Price x Base", gridDiferencaPrice)
+      tabGrid("Ctrl+P x Base", gridDiferencaCtlrPBase)
+      tabGrid("Editor x Base", gridDiferencaEditorBase)
       tabGrid("Ctrl+D", gridDiferencaCtrlD)
     }
     updateGridProduto()

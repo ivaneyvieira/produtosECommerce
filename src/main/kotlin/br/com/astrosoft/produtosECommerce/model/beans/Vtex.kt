@@ -70,6 +70,7 @@ enum class EDiferenca(val id: String, val label: String) {
   EDITOR("EDITOR", "Diferença Promo"),
   LIST("LIST", "Ref x Lista"),
   BASE("BASE", "Promo x Base"),
+  EDITORBASE("EDITORBASE", "Editor x Base"),
   PRICEBASE("PRICEBASE", "Base"),
   COMPOR("COMPOR", "Ctrl+D"),
   BASEREF("BASEREF", "Base x Ref"),
