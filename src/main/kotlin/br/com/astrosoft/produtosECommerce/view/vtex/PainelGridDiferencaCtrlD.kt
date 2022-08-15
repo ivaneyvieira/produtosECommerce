@@ -10,7 +10,6 @@ import br.com.astrosoft.produtosECommerce.model.planilha.CampoNumber
 import br.com.astrosoft.produtosECommerce.model.planilha.CampoString
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtexDif
-import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.*
 import com.vaadin.flow.component.HasComponents
@@ -29,7 +28,6 @@ import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
-import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -51,7 +49,7 @@ class PainelGridDiferencaCtrlD(val view: IVtexView, val serviceQueryDif: Service
   }
 
   inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
-    override fun FilterBar<FiltroVtexDif>.contentBlock() {
+    override fun FilterBar<FiltroVtexDif>.contentBlock() {/*
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
         try {
@@ -66,7 +64,7 @@ class PainelGridDiferencaCtrlD(val view: IVtexView, val serviceQueryDif: Service
           showErro(e.message)
         }
       }
-
+*/
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {

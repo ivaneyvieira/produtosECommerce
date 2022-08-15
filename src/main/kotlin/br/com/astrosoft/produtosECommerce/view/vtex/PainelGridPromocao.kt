@@ -9,7 +9,6 @@ import br.com.astrosoft.produtosECommerce.model.planilha.CampoNumber
 import br.com.astrosoft.produtosECommerce.model.planilha.CampoString
 import br.com.astrosoft.produtosECommerce.model.planilha.PlanilhaVtexPreco
 import br.com.astrosoft.produtosECommerce.model.services.ServiceQueryVtex
-import br.com.astrosoft.produtosECommerce.model.xlsx.EColunaNaoEncontrada
 import br.com.astrosoft.produtosECommerce.viewmodel.IVtexView
 import com.github.mvysny.karibudsl.v10.isExpand
 import com.github.mvysny.karibudsl.v10.numberField
@@ -31,7 +30,6 @@ import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.value.ValueChangeMode
 import org.vaadin.stefan.LazyDownloadButton
 import java.io.ByteArrayInputStream
-import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -70,7 +68,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       return Pair(buffer, upload)
     }
 
-    override fun FilterBar<FiltroVtex>.contentBlock() {
+    override fun FilterBar<FiltroVtex>.contentBlock() {/*
       val (buffer, upload) = uploadFileXls()
       upload.addSucceededListener {
         try {
@@ -85,7 +83,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
           showErro(e.message)
         }
       }
-
+*/
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {
