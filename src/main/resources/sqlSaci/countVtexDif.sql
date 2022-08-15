@@ -29,6 +29,7 @@ WHERE (skuId LIKE CONCAT(@SKU, '%') OR @SKU = '')
 	 IFNULL(preco, 0) != IFNULL(precoPromoEditor, 0)) AND
 	IFNULL(refprice, 0) != IFNULL(preco, 0) AND :diferenca = 'BASE') OR
        (IFNULL(refprice, 0) != IFNULL(preco, 0) AND :diferenca = 'BASEREF') OR
+       (IFNULL(precoPromoEditor, 0) != IFNULL(preco, 0) AND :diferenca = 'EDITORBASE') OR
        (IFNULL(promoprice, 0) != IFNULL(precoPromoEditor, 0) AND
 	(IFNULL(promoprice, 0) != 0 OR IFNULL(precoPromoEditor, 0) != 0) AND
 	:diferenca = 'EDITOR') OR
