@@ -122,14 +122,7 @@ class PainelGridDiferencaPrice(val view: IVtexView, val serviceQueryDif: Service
     this.setSelectionMode(Grid.SelectionMode.MULTI)
     val multiModel = this.selectionModel as GridMultiSelectionModel<Vtex>
     multiModel.selectAllCheckboxVisibility = SelectAllCheckboxVisibility.VISIBLE
-    addColumnInt(Vtex::seq) {
-      setHeader("Seq")
-      isExpand = false
-      isSortable = false
-      isResizable = true
-      isAutoWidth = false
-      width = "70px"
-    }
+    addColumnSeq("Seq")
     addColumnInt(Vtex::skuId) {
       setHeader("Sku ID")
       isExpand = false
@@ -194,7 +187,6 @@ class PainelGridDiferencaPrice(val view: IVtexView, val serviceQueryDif: Service
     val button = LazyDownloadButton(VaadinIcon.TABLE.create(), { filename() }, {
       val planilha = PlanilhaVtexPreco {
         listOf(
-          CampoInt("Seq") { seq ?: 0 },
           CampoString("Sku ID") { skuId.toString() },
           CampoString("Id Prod") { idProd.toString() },
           CampoString("Nome SKU") { nomeSku },

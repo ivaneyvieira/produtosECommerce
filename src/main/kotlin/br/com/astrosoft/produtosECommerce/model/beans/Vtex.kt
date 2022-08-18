@@ -3,8 +3,7 @@ package br.com.astrosoft.produtosECommerce.model.beans
 import br.com.astrosoft.produtosECommerce.model.local
 import java.time.LocalDate
 
-data class Vtex(var seq: Int?,
-                val skuId: Int,
+data class Vtex(val skuId: Int,
                 val idProd: Int,
                 val nomeSku: String,
                 val referenciaSKU: String,
