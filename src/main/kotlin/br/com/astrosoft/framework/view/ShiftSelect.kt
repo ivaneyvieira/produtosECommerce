@@ -94,6 +94,7 @@ inline fun <reified T> (@VaadinDsl Grid<T>).addColumnSeq(label: String) {
   }.apply {
     this.textAlign = ColumnTextAlign.END
     isAutoWidth = true
+    isResizable = true
     setHeader(label)
     width = "30px"
   }
