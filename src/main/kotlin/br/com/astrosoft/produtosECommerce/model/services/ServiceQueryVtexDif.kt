@@ -30,11 +30,7 @@ class ServiceQueryVtexDif : IServiceQuery<Vtex, FiltroVtexDif> {
   }
 
   override fun fetch(filter: FiltroVtexDif, offset: Int, limit: Int, sortOrders: List<SortOrder>): List<Vtex> {
-    val lista = local.fetchVtexDif(filter, offset, limit, sortOrders)
-    lista.forEachIndexed { index, vtex ->
-      vtex.seq = offset + index + 1
-    }
-    return lista
+    return local.fetchVtexDif(filter, offset, limit, sortOrders)
   }
 
   fun readExcelPrecoBase(fileName: String) {
