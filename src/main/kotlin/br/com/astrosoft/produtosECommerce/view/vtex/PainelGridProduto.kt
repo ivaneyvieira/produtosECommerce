@@ -1,9 +1,6 @@
 package br.com.astrosoft.produtosECommerce.view.vtex
 
-import br.com.astrosoft.framework.view.FilterBar
-import br.com.astrosoft.framework.view.PainelGrid
-import br.com.astrosoft.framework.view.addColumnInt
-import br.com.astrosoft.framework.view.addColumnString
+import br.com.astrosoft.framework.view.*
 import br.com.astrosoft.produtosECommerce.model.beans.FiltroVtex
 import br.com.astrosoft.produtosECommerce.model.beans.Vtex
 import br.com.astrosoft.produtosECommerce.model.planilha.CampoInt
@@ -143,6 +140,7 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
       isAutoWidth = false
       width = "70px"
     }
+    addColumnSeq("Seq")
     addColumnInt(Vtex::skuId) {
       setHeader("Sku ID")
       isExpand = false
