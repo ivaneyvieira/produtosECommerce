@@ -30,6 +30,7 @@ SELECT skuId,
        validade,
        codigo,
        grade,
+       descricaoSaci,
        promono,
        precoPromoEditor,
        ativarSku
