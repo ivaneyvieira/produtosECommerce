@@ -4,7 +4,7 @@ import br.com.astrosoft.framework.util.toSaciDate
 import java.time.LocalDate
 
 class PrecoSaci(val codigo: Int,
-                val grade: String,
+                var grade: String,
                 val descricao: String,
                 val refprice: Double,
                 val validade: Int,
