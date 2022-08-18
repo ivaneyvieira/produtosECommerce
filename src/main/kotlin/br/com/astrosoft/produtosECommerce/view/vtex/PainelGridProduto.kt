@@ -227,6 +227,8 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
           CampoString("Sku ID") { skuId.toString() },
           CampoString("Id Prod") { idProd.toString() },
           CampoString("Nome SKU") { nomeSku },
+          CampoString("Descrição Nérus") { descricaoSaci },
+          CampoString("Grade") { grade },
           CampoString("Ativar") { ativarSku },
           CampoString("Referencia SKU") { referenciaSKU },
           CampoString("Cód Saci") { codigo },
