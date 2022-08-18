@@ -75,3 +75,6 @@ ALTER TABLE vtex
 
 ALTER TABLE vtex
   ADD grade VARCHAR(8) DEFAULT '' NULL;
+
+ALTER TABLE vtex
+  ADD descricaoSaci VARCHAR(40) DEFAULT '' NULL;

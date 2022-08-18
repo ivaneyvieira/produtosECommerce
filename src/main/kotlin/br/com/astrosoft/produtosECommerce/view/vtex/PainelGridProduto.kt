@@ -161,6 +161,18 @@ class PainelGridProduto(val view: IVtexView, val serviceQueryVtex: ServiceQueryV
       isResizable = true
       isAutoWidth = true
     }
+    addColumnString(Vtex::descricaoSaci) {
+      setHeader("Descrição Nérus")
+      isExpand = true
+      isResizable = true
+      isAutoWidth = true
+    }
+    addColumnString(Vtex::grade) {
+      setHeader("Grade")
+      isExpand = true
+      isResizable = true
+      isAutoWidth = true
+    }
     addColumnString(Vtex::ativarSku) {
       setHeader("Ativar")
       isExpand = false

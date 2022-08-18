@@ -393,9 +393,11 @@ GROUP BY barcode"""
     val promono = priceSaci?.promono
     val precoPromoEditor = priceSaci?.precoPromoEditor
     val grade = priceSaci?.grade
+    val descricaoSaci = priceSaci?.descricao ?: ""
 
     script(sql) {
       addOptionalParameter("precoCompor", precoCompor)
+      addOptionalParameter("descricaoSaci", descricaoSaci)
       addOptionalParameter("grade", grade)
       addOptionalParameter("promoprice", promoprice)
       addOptionalParameter("refprice", refprice)

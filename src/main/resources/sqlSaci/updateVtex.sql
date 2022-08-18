@@ -1,6 +1,7 @@
 UPDATE produtoEcomerce.vtex
 SET promoprice       = :promoprice,
     grade            = :grade,
+    descricaoSaci    = :descricaoSaci,
     refprice         = :refprice,
     precoCompor      = :precoCompor,
     codigo           = :codigo,
