@@ -37,6 +37,9 @@ class ServiceQueryVtex : IServiceQuery<Vtex, FiltroVtex> {
   private fun findPrice(codigo: String): PrecoSaci? {
     val produto = produtoBarcodeSaci[codigo] ?: produtosBarcode[codigo] ?: produtosCodigo[codigo.toIntOrNull()]
     val prdSaci = precosSaci[produto?.codigo?.toIntOrNull()] ?: precosSaci[codigo.toIntOrNull()]
+    if(produto != null){
+      prdSaci?.grade = produto.grade
+    }
     return prdSaci
   }
 
