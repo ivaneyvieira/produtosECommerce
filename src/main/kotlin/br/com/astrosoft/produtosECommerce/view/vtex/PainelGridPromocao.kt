@@ -68,22 +68,7 @@ class PainelGridPromocao(val view: IVtexView, val serviceQueryVtex: ServiceQuery
       return Pair(buffer, upload)
     }
 
-    override fun FilterBar<FiltroVtex>.contentBlock() {/*
-      val (buffer, upload) = uploadFileXls()
-      upload.addSucceededListener {
-        try {
-          val fileName = "/tmp/${it.fileName}"
-          val bytes = buffer.inputStream.readBytes()
-          val file = File(fileName)
-          file.writeBytes(bytes)
-          serviceQueryVtex.readExcelPromo(fileName)
-          file.delete()
-          updateGrid()
-        } catch (e: EColunaNaoEncontrada) {
-          showErro(e.message)
-        }
-      }
-*/
+    override fun FilterBar<FiltroVtex>.contentBlock() {
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {

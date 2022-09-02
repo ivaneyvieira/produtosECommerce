@@ -53,22 +53,7 @@ class PainelGridDiferencaEditorBase(val view: IVtexView, val serviceQueryDif: Se
   }
 
   inner class FilterConferencia : FilterBar<FiltroVtexDif>() {
-    override fun FilterBar<FiltroVtexDif>.contentBlock() {/*
-      val (buffer, upload) = uploadFileXls()
-      upload.addSucceededListener {
-        try {
-          val fileName = "/tmp/${it.fileName}"
-          val bytes = buffer.inputStream.readBytes()
-          val file = File(fileName)
-          file.writeBytes(bytes)
-          serviceQueryDif.readExcelPrecoBase(fileName)
-          file.delete()
-          updateGrid()
-        } catch (e: EColunaNaoEncontrada) {
-          showErro(e.message)
-        }
-      }
-*/
+    override fun FilterBar<FiltroVtexDif>.contentBlock() {
       this.downloadExcel()
 
       edtSku = textField("SKU ID") {
